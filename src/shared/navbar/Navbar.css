@@ -1,0 +1,29 @@
+.navbar .container-login-regis {
+    width: 100vw;
+    height: 100vh;
+    background-image: url("./Log\ In.png");
+    background-size: cover;
+  }
+
+.navbar {
+    width: 100%;
+    display: flex;
+    /* padding: 3rem 7%; */
+    padding-top: 0;
+    justify-content: space-between;
+}
+
+.navbar ul {
+    flex: 1;
+    list-style: none;
+    justify-content: space-between;
+}
+
+.navbar ul li, .navbar ul a {
+    display: inline-block;
+    margin: 10px 20px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #fff;
+    text-decoration: none;
+}
