@@ -1,7 +1,7 @@
 .sidebar {
   height: 100%;
   width: 78px;
-  background-color: #11235A;
+  background-color: #11235a;
   top: 0;
   left: 0;
   padding: 6px 14px;
@@ -106,7 +106,7 @@
 }
 
 .sidebar ul li a:hover {
-  color: #11235A;
+  color: #11235a;
   background: #fff;
 }
 
@@ -148,13 +148,13 @@
 .sidebar .profile_content .profile {
   position: relative;
   padding: 10px 6px;
-  height: 60px;
+  height: 100px;
   background: none;
   transition: all 0.5s ease;
 }
 
 .sidebar.active .profile_content .profile {
-    background: #1d1b31;
+  background: #1d1b31;
 }
 
 .profile_content .profile .profile_details {
@@ -177,6 +177,22 @@
   border-radius: 12px;
 }
 
+.profile .button button {
+  margin-bottom: 10px;
+  outline: none;
+  background: none;
+  width: 100%;
+  border-radius: 10px;
+  border: #fff 1px solid;
+  color: #fff;
+  font-size: 14px;
+  height: 30px;
+}
+
+.profile .button button a {
+  text-decoration: none;
+}
+
 .profile #logout {
   position: absolute;
   left: 50%;
@@ -187,13 +203,13 @@
   font-size: 20px;
   border-radius: 12px;
   text-align: center;
-    background: #1d1b31;
-    transition: all 0.5s ease;
+  background: #1d1b31;
+  transition: all 0.5s ease;
 }
 
 .sidebar.active .profile #logout {
-    left: 88%;
-    background: none;
+  left: 88%;
+  background: none;
 }
 
 .home-content {
@@ -205,6 +221,6 @@
 }
 
 .sidebar.active ~ .home-content {
-    width: calc(100% - 240px);
-    left: 240px;
+  width: calc(100% - 240px);
+  left: 240px;
 }

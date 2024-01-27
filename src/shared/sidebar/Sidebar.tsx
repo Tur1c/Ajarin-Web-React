@@ -4,6 +4,7 @@ import { HiOutlineBookOpen } from "react-icons/hi2";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import { MdMenu } from "react-icons/md";
 import { PiEyeglassesLight } from "react-icons/pi";
+import { Link } from "react-router-dom";
 import "./Sidebar.css";
 
 interface Props {
@@ -77,6 +78,18 @@ const Sidebar = ({ children }: Props) => {
           <div className="profile">
             <div className="profile_details">
               {/* <img src="profile.jpg" alt="profile" /> */}
+            </div>
+            <div className="button">
+              <button style={{ backgroundColor: "#F6ECA9" }}>
+                <Link to={"/login"} style={{ color: "#000" }}>
+                  Login
+                </Link>
+              </button>
+              <button>
+                <Link to={"/register"} style={{ color: "#fff" }}>
+                  Signin
+                </Link>
+              </button>
             </div>
             <i id="logout"></i>
           </div>
