@@ -5,13 +5,12 @@ import Navbar from "../../../shared/navbar/Navbar";
 import learningImg from "./Learning 1.png";
 import "./Login.css";
 import AuthContext from "../../../context/AuthProvider";
-import axios from 'axios';
+import axios from "../../../api/axios";
 
-const LOGIN_URL = '/auth';
+const LOGIN_URL = "/api/account/login";
 
 function Login() {
-
-  const {setAuth}:any = useContext(AuthContext);
+  const { setAuth }: any = useContext(AuthContext);
 
   const userRef = useRef<HTMLInputElement>(null);
   const errRef = useRef<HTMLParagraphElement>(null);
@@ -31,19 +30,19 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(LOGIN_URL, JSON.stringify(accountLogin),
-      {
-        headers: {'Content-Type': 'application/json'},
-        withCredentials: true
-      });
+      const response = await axios.post(
+        LOGIN_URL,
+        JSON.stringify(accountLogin),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
-      setAuth({accountLogin, accessToken, roles});
-    } catch (error) {
-      
-    }
-    
-  }
+      setAuth({ accountLogin, accessToken, roles });
+    } catch (error) {}
+  };
 
   return (
     <section>

@@ -3,7 +3,7 @@ import axios from "../../../../api/axios";
 import { AccountRegisterSchema } from "../../../../model/Account";
 import "./RegisterPartTwo.css";
 
-const REGISTER_URL = "/register";
+const REGISTER_URL = "/api/account/register";
 
 function RegisterPartTwo(props: AccountRegisterSchema) {
   
