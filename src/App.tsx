@@ -27,10 +27,6 @@ const router = createBrowserRouter(
 );
 
 function App() {
-  useEffect(() => {
-    const script = document.createElement('script');
-    
-  }, []);
 
   return (
     <RouterProvider router={router}></RouterProvider>
