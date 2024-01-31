@@ -9,9 +9,9 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import Login from './features/account/login/Login';
-import Register from './features/account/register/pages/Register';
-import ErrorPage from './shared/error-page/ErrorPage';
+import { ErrorPage } from './shared';
+import { Register } from './features/account/register';
+import { Login } from './features/account/login';
 import Home from './features/dashboard/Home';
 
 const router = createBrowserRouter(

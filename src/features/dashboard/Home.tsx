@@ -1,7 +1,7 @@
 import React from 'react'
-import Sidebar from '../../shared/sidebar/Sidebar'
+import { Sidebar } from '../../shared';
 
-const Home = () => {
+function Home () {
     
   return (
     <div>
@@ -10,4 +10,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Home;

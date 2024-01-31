@@ -6,6 +6,9 @@ import learningImg from "./Learning 1.png";
 import "./Login.css";
 import AuthContext from "../../../context/AuthProvider";
 import axios from "../../../api/axios";
+import { ApiResponse } from "../../../model/schema/base_schema";
+import { transfromToServiceLoginAccountOutput } from "../../../service/Account/account.service";
+import { AxiosError } from "axios";
 
 const LOGIN_URL = "/api/account/login";
 
@@ -30,7 +33,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
+      const response = await axios.post<ApiResponse<AccountLoginSchema>>(
         LOGIN_URL,
         JSON.stringify(accountLogin),
         {
@@ -38,10 +41,17 @@ function Login() {
           withCredentials: true,
         }
       );
-      const accessToken = response?.data?.accessToken;
-      const roles = response?.data?.roles;
-      setAuth({ accountLogin, accessToken, roles });
-    } catch (error) {}
+      // const accessToken = response?.data?.accessToken;
+      // const roles = response?.data?.roles;
+      // setAuth({ accountLogin, accessToken, roles });
+      console.log(transfromToServiceLoginAccountOutput(response.data));
+      
+    } catch (error) {
+      if(error instanceof AxiosError) {
+        console.log(error?.response?.data.errorSchema);
+      }
+      
+    }
   };
 
   return (
