@@ -97,7 +97,6 @@ const Sidebar = ({ children }: Props) => {
       </div>
       <div className="home-content">
         {children}
-        aa
       </div>
     </>
   );

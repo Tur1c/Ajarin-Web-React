@@ -1,23 +1,19 @@
-import React, { useEffect } from 'react';
-import logo from './logo.svg';
-import './App.css';
 import {
   Route,
-  BrowserRouter as Router,
   RouterProvider,
-  Routes,
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import { ErrorPage } from './shared';
-import { Register } from './features/account/register';
-import { Login } from './features/account/login';
-import Home from './features/dashboard/Home';
+import "./App.css";
+import { Login } from "./features/account/login";
+import { Register } from "./features/account/register";
+import Home from "./features/dashboard/pages/home";
+import { ErrorPage } from "./shared";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route path='/' element={<Home></Home>}></Route>
+      <Route path="/" element={<Home></Home>}></Route>
       <Route path="/login" element={<Login></Login>}></Route>
       <Route path="/register" element={<Register></Register>}></Route>
 
@@ -27,10 +23,7 @@ const router = createBrowserRouter(
 );
 
 function App() {
-
-  return (
-    <RouterProvider router={router}></RouterProvider>
-  );
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 export default App;
