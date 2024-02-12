@@ -28,17 +28,15 @@ function Home() {
     lastClassIndex
   );
 
-  let pageNo = 1;
-  if (currentPage <= Math.ceil(classList.classList.length / classPerPage)) {
-    pageNo = currentPage;
-  } else {
-    setCurrentPage(Math.ceil(classList.classList.length / classPerPage));
-    pageNo = currentPage;
-  }
+  // let pageNo = 1;
+  // if (currentPage <= Math.ceil(classList.classList.length / classPerPage)) {
+  //   pageNo = currentPage;
+  // } else {
+  //   setCurrentPage(Math.ceil(classList.classList.length / classPerPage));
+  //   pageNo = currentPage;
+  // }
 
   function handlePageChange(value: any) {
-    console.log(currentPage);
-
     if (value === "&laquo;" || value === "... ") {
       setCurrentPage(1);
     } else if (value === "&lsaquo;") {
@@ -46,7 +44,9 @@ function Home() {
         setCurrentPage(currentPage - 1);
       }
     } else if (value === "&rsaquo;") {
-      if (currentPage !== Math.ceil(classList.classList.length / classPerPage)) {
+      if (
+        currentPage !== Math.ceil(classList.classList.length / classPerPage)
+      ) {
         setCurrentPage(currentPage + 1);
       }
     } else if (value === "&raquo;" || value === " ...") {
@@ -115,7 +115,7 @@ function Home() {
                         totalClass={classList.classList.length}
                         classPerPage={classPerPage}
                         onPageChange={handlePageChange}
-                        currentPage={pageNo}
+                        currentPage={currentPage}
                       />
                       {/* <ClassList data={classList}/> */}
                     </div>

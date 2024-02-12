@@ -5,7 +5,6 @@ export function transfromToServiceLoginAccountOutput(
     response: ApiResponse<AccountLoginSchema>
 ) {
     const {errorSchema} = response;
-    console.log(errorSchema);
     
     // const result = {
     //     email: response.email,
