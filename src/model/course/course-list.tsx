@@ -1,18 +1,18 @@
 export interface DiscussionListSchema {
-  class_list: Class[];
+  discussions: Class[];
 }
 
 export interface Class {
-  title: string;
-  grade: string;
-  subject: string;
-  lecturer_name: string;
-  people: string;
-  max_people: string;
-  price: string;
-  date: string;
-  time: string;
-  description: string;
+  discTitle: string;
+  discGrade: string;
+  discSubject: string;
+  discLecturerName: string;
+  discPeople: string;
+  discMaxPeople: string;
+  discPrice: string;
+  discDate: string;
+  discTime: string;
+  discDescription: string;
 }
 
 export interface DiscussionListOutput {
@@ -34,18 +34,18 @@ export function transfromToDiscussionListOutput(
   response: DiscussionListSchema
 ): DiscussionListOutput {
   const result: DiscussionListOutput = {
-    classList: response.class_list.map((data) => {
+    classList: response.discussions.map((data) => {
       return {
-        title: data.title,
-        grade: data.grade,
-        subject: data.subject,
-        lecturerName: data.lecturer_name,
-        people: data.people,
-        maxPeople: data.max_people,
-        price: data.price,
-        date: data.date,
-        time: data.time,
-        description: data.description,
+        title: data.discTitle,
+        grade: data.discGrade,
+        subject: data.discSubject,
+        lecturerName: data.discLecturerName,
+        people: data.discPeople,
+        maxPeople: data.discMaxPeople,
+        price: data.discPrice,
+        date: data.discDate,
+        time: data.discTime,
+        description: data.discDescription,
       };
     }),
   };

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
-import axios from "../../../api/axios";
+// import axios from "../../../api/axios";
+import axios from "axios";
 import {
   DiscussionListOutput,
   DiscussionListSchema,
@@ -10,19 +11,50 @@ import { ApiResponse } from "../../../model/schema/base_schema";
 import { Pagination, Sidebar } from "../../../shared";
 import "./home.css";
 
-const CLASS_URL = "/api/discussion";
+const CLASS_URL = "http://localhost:8081/api/discussion";
 
 function Home() {
   const [classList, setClassList] = useState<DiscussionListOutput>({
     classList: [],
   });
 
-  const [currentPage, setCurrentPage] = useState(2);
+  const [currentPage, setCurrentPage] = useState(1);
   const [classPerPage, setClassPerPage] = useState(8);
 
   const lastClassIndex = currentPage * classPerPage;
   const firstClassIndex = lastClassIndex - classPerPage;
-  const currentClass = classList.classList.slice(firstClassIndex, lastClassIndex)
+  const currentClass = classList.classList.slice(
+    firstClassIndex,
+    lastClassIndex
+  );
+
+  let pageNo = 1;
+  if (currentPage <= Math.ceil(classList.classList.length / classPerPage)) {
+    pageNo = currentPage;
+  } else {
+    setCurrentPage(Math.ceil(classList.classList.length / classPerPage));
+    pageNo = currentPage;
+  }
+
+  function handlePageChange(value: any) {
+    console.log(currentPage);
+
+    if (value === "&laquo;" || value === "... ") {
+      setCurrentPage(1);
+    } else if (value === "&lsaquo;") {
+      if (currentPage !== 1) {
+        setCurrentPage(currentPage - 1);
+      }
+    } else if (value === "&rsaquo;") {
+      if (currentPage !== Math.ceil(classList.classList.length / classPerPage)) {
+        setCurrentPage(currentPage + 1);
+      }
+    } else if (value === "&raquo;" || value === " ...") {
+      setCurrentPage(Math.ceil(classList.classList.length / classPerPage));
+    } else {
+      setCurrentPage(value);
+    }
+  }
 
   const fetchData = async () => {
     try {
@@ -75,11 +107,16 @@ function Home() {
                   <div className="card-body">
                     <div className="row">
                       {currentClass.map((data, index) => (
-                        <div className="col-md-3">
-                          <p key={index}>{data.date}</p>
+                        <div className="col-md-3" key={index}>
+                          <p>{data.date}</p>
                         </div>
                       ))}
-                      <Pagination totalClass={classList.classList.length} classPerPage={classPerPage} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
+                      <Pagination
+                        totalClass={classList.classList.length}
+                        classPerPage={classPerPage}
+                        onPageChange={handlePageChange}
+                        currentPage={pageNo}
+                      />
                       {/* <ClassList data={classList}/> */}
                     </div>
                   </div>

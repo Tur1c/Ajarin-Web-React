@@ -1,30 +1,49 @@
+import { returnPaginationRange } from "../../utils/appUtils";
 import "./pagination.css";
 
 function Pagination(props: {
   totalClass: number;
   classPerPage: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  onPageChange: (arg0: number|string) => void,
   currentPage: number;
 }) {
-  let pages = [];
+  let array = returnPaginationRange(
+    Math.ceil(props.totalClass / props.classPerPage),
+    props.currentPage,
+    props.classPerPage,
+    1
+  );
 
-  for (let i = 1; i <= Math.ceil(props.totalClass / props.classPerPage); i++) {
-    pages.push(i);
-  }
   return (
-    <div className="pagination">
-      {pages.map((page, index) => {
-        return (
-          <button
-            key={index}
-            onClick={() => props.setCurrentPage(page)}
-            className={page === props.currentPage ? "active" : ""}
-          >
-            {page}
-          </button>
-        );
+    <ul className="pagination pagination-md justify-content-center">
+      <li className="page-item">
+        <span className="page-link" onClick={() => props.onPageChange("&laquo;")}>&laquo;</span>
+      </li>
+      <li className="page-item">
+        <span className="page-link" onClick={() => props.onPageChange("&lsaquo;")}>&lsaquo;</span>
+      </li>
+      {array.map((value: string | number, index) => {
+        if (value === props.currentPage) {
+          return (
+            <li className="page-item active" key={index}>
+              <span className="page-link" onClick={() => props.onPageChange(value)}>{value}</span>
+            </li>
+          );
+        } else {
+          return (
+            <li className="page-item" key={index}>
+              <span className="page-link"  onClick={() => props.onPageChange(value)}>{value}</span>
+            </li>
+          );
+        }
       })}
-    </div>
+      <li className="page-item">
+        <span className="page-link" onClick={() => props.onPageChange("&rsaquo;")}>&rsaquo;</span>
+      </li>
+      <li className="page-item">
+        <span className="page-link" onClick={() => props.onPageChange("&raquo;")}>&raquo;</span>
+      </li>
+    </ul>
   );
 }
 
