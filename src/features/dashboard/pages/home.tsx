@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
-// import axios from "../../../api/axios";
-import axios from "axios";
+import axios from "../../../api/axios";
 import {
   DiscussionListOutput,
   DiscussionListSchema,
@@ -11,7 +10,7 @@ import { ApiResponse } from "../../../model/schema/base_schema";
 import { Pagination, Sidebar } from "../../../shared";
 import "./home.css";
 
-const CLASS_URL = "http://localhost:8081/api/discussion";
+const CLASS_URL = "/api/discussion";
 
 function Home() {
   const [classList, setClassList] = useState<DiscussionListOutput>({
