@@ -11,32 +11,22 @@
   border-end-end-radius: 25px;
 }
 
-.sidebar.active {
-  width: 240px;
-}
-
 .sidebar .logo_content .logo {
   color: #fff;
   height: 50px;
   display: flex;
   width: 100%;
-  align-items: center;
-  opacity: 0;
   pointer-events: none;
   transition: all 0.5s ease;
 }
 
-.sidebar.active .logo_content .logo {
-  opacity: 1;
-  pointer-events: none;
-}
 
 .sidebar .logo_content .logo .logo-name {
   font-size: 20px;
   font-weight: 400;
 }
 
-.sidebar #btn {
+.sidebar .logo-name {
   position: absolute;
   color: #fff;
   left: 50%;
@@ -47,12 +37,6 @@
   text-align: center;
   line-height: 50px;
   transform: translateX(-50%);
-}
-
-.sidebar.active #btn {
-  left: 90%;
-  font-size: 30px;
-  padding-right: 10px;
 }
 
 .sidebar ul {
@@ -87,9 +71,6 @@
   display: block;
 }
 
-.sidebar.active ul li .tooltip {
-  display: none;
-}
 
 .sidebar ul li:hover .tooltip {
   transition: all 0.5s ease;
@@ -128,7 +109,7 @@
   text-align: center;
 }
 
-.sidebar .links_name {
+/* .sidebar .links_name {
   opacity: 0;
   pointer-events: none;
   transition: all 0.5s ease;
@@ -137,7 +118,7 @@
 .sidebar.active .links_name {
   opacity: 1;
   pointer-events: auto;
-}
+} */
 
 .sidebar .profile_content {
   position: absolute;
@@ -155,9 +136,9 @@
   transition: all 0.5s ease;
 }
 
-.sidebar.active .profile_content .profile {
+/* .sidebar.active .profile_content .profile {
   background: #1d1b31;
-}
+} */
 
 .profile_content .profile .profile_details {
   display: flex;
@@ -209,10 +190,10 @@
   transition: all 0.5s ease;
 }
 
-.sidebar.active .profile #logout {
+/* .sidebar.active .profile #logout {
   left: 88%;
   background: none;
-}
+} */
 
 .home-content {
   position: absolute;
@@ -222,7 +203,7 @@
   transition: all 0.5s ease;
 }
 
-.sidebar.active ~ .home-content {
+/* .sidebar.active ~ .home-content {
   width: calc(100% - 240px);
   left: 240px;
-}
+} */

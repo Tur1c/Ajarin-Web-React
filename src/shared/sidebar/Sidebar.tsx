@@ -6,6 +6,7 @@ import { MdMenu } from "react-icons/md";
 import { PiEyeglassesLight } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import "./Sidebar.css";
+import SidebarLoginRegister from "./SidebarLoginRegister";
 
 interface Props {
   children?: ReactNode;
@@ -25,16 +26,16 @@ const Sidebar = ({ children }: Props) => {
             <div className="logo_name">
               <h1
                 className="fw-bold"
-                style={{ color: "#fff", fontSize: "36px" }}
+                style={{ color: "#fff", fontSize: "22px" }}
               >
                 ajar
                 <span style={{ color: "#F6ECA9" }}>in</span>
               </h1>
             </div>
           </div>
-          <i id="btn" onClick={addElement}>
+          {/* <i id="btn" onClick={addElement}>
             <MdMenu />
-          </i>
+          </i> */}
         </div>
         <ul className="">
           <li>
@@ -42,7 +43,7 @@ const Sidebar = ({ children }: Props) => {
               <i>
                 <GoHome />
               </i>
-              <span className="links_name">Dashboard</span>
+              {/* <span className="links_name">Dashboard</span> */}
             </a>
             <span className="tooltip">Dashboard</span>
           </li>
@@ -51,7 +52,7 @@ const Sidebar = ({ children }: Props) => {
               <i>
                 <HiOutlineBookOpen />
               </i>
-              <span className="links_name">Discussion</span>
+              {/* <span className="links_name">Discussion</span> */}
             </a>
             <span className="tooltip">Discussion</span>
           </li>
@@ -60,7 +61,7 @@ const Sidebar = ({ children }: Props) => {
               <i>
                 <PiEyeglassesLight />
               </i>
-              <span className="links_name">Lecturer</span>
+              {/* <span className="links_name">Lecturer</span> */}
             </a>
             <span className="tooltip">Lecturer</span>
           </li>
@@ -69,7 +70,7 @@ const Sidebar = ({ children }: Props) => {
               <i>
                 <IoChatboxEllipsesOutline />
               </i>
-              <span className="links_name">Forum</span>
+              {/* <span className="links_name">Forum</span> */}
             </a>
             <span className="tooltip">Forum</span>
           </li>
@@ -79,19 +80,7 @@ const Sidebar = ({ children }: Props) => {
             <div className="profile_details">
               {/* <img src="profile.jpg" alt="profile" /> */}
             </div>
-            <div className="button">
-              <button style={{ backgroundColor: "#F6ECA9" }}>
-                <Link to={"/login"} style={{ color: "#000" }}>
-                  Login
-                </Link>
-              </button>
-              <button>
-                <Link to={"/register"} style={{ color: "#fff" }}>
-                  Signin
-                </Link>
-              </button>
-            </div>
-            <i id="logout"></i>
+            <SidebarLoginRegister/>
           </div>
         </div>
       </div>

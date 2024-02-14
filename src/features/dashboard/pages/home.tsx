@@ -9,6 +9,7 @@ import {
 import { ApiResponse } from "../../../model/schema/base_schema";
 import { Pagination, Sidebar } from "../../../shared";
 import "./home.css";
+import Tabs from "../tabs/Tabs";
 
 const CLASS_URL = "/api/discussion";
 
@@ -19,6 +20,8 @@ function Home() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [classPerPage, setClassPerPage] = useState(8);
+
+  const [selected, setSelected] = useState();
 
   const lastClassIndex = currentPage * classPerPage;
   const firstClassIndex = lastClassIndex - classPerPage;
@@ -34,6 +37,10 @@ function Home() {
   //   setCurrentPage(Math.ceil(classList.classList.length / classPerPage));
   //   pageNo = currentPage;
   // }
+
+  function handleTabClick(selectedTab:any){
+    setSelected(selectedTab);
+  }
 
   function handlePageChange(value: any) {
     if (value === "&laquo;" || value === "... ") {
@@ -64,6 +71,7 @@ function Home() {
           withCredentials: true,
         }
       );
+      console.log(response);
       setClassList(transfromToDiscussionListOutput(response.data.outputSchema));
     } catch (error) {}
   };
@@ -71,6 +79,7 @@ function Home() {
   useEffect(() => {
     fetchData();
   }, []);
+
 
   return (
     <div>
@@ -101,13 +110,19 @@ function Home() {
                 <span style={{ alignItems: "flex-end" }}>12</span>
               </div>
 
+            {/* <Tabs isSelected={selected === 'course'}
+            onClick={() => handleTabClick('course')}>
+              Course
+            </Tabs> */}
+            
               <div className="class-wrapper">
                 <div className="card">
                   <div className="card-body">
                     <div className="row">
                       {currentClass.map((data, index) => (
                         <div className="col-md-3" key={index}>
-                          <p>{data.date}</p>
+                          <img className="disc-image" src={`assets/${data.image}` } alt="" />
+                          <p>{data.date.toString()}</p>
                         </div>
                       ))}
                       <Pagination
