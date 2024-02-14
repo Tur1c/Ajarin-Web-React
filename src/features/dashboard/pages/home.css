@@ -13,7 +13,7 @@
 .disc-image {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: fill;
 }
 
 .search-container {
@@ -35,6 +35,10 @@
 }
 
 .class-wrapper {
-  height: 100%;
-  background-color: blue;
+  height: fit-content;
+}
+
+.content-home {
+  background-color: #11235a;
+  padding: 20px;
 }

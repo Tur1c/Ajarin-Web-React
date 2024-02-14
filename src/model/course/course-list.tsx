@@ -15,17 +15,19 @@ export interface Class {
 }
 
 export interface DiscussionListOutput {
-  classList: {
-    title: string;
-    maxPeople: string;
-    price: string;
-    date: Date;
-    starttime: Date;
-    endtime: Date;
-    description: string;
-    category: string;
-    image: string;
-  }[];
+  classList: ClassList[];
+}
+
+export interface ClassList {
+  title: string;
+  maxPeople: string;
+  price: string;
+  date: Date;
+  starttime: Date;
+  endtime: Date;
+  description: string;
+  category: string;
+  image: string;
 }
 
 export function transfromToDiscussionListOutput(
