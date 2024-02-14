@@ -30,14 +30,6 @@ function Home() {
     lastClassIndex
   );
 
-  // let pageNo = 1;
-  // if (currentPage <= Math.ceil(classList.classList.length / classPerPage)) {
-  //   pageNo = currentPage;
-  // } else {
-  //   setCurrentPage(Math.ceil(classList.classList.length / classPerPage));
-  //   pageNo = currentPage;
-  // }
-
   function handleTabClick(selectedTab:any){
     setSelected(selectedTab);
   }
