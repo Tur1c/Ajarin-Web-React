@@ -9,14 +9,12 @@ interface callBack {
   callBack: (data:string) => void
 };
 
-function RegisterPartTwo( {callBack}:callBack, props:AccountRegisterSchema  ) {
+function RegisterPartTwo( props:any ) {
   
-  const [accountRegister, setAccountRegister] = useState({ ...props });
-  console.log({...props},"ini props");
+  const [accountRegister, setAccountRegister] = useState({ ...props.data });
   
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(accountRegister,'asd');
     
     try {
       const response = await axios.post(
@@ -30,7 +28,7 @@ function RegisterPartTwo( {callBack}:callBack, props:AccountRegisterSchema  ) {
         }
       );
       if (response.data.errorSchema.message = "Sukses") {
-        callBack(response.data.errorSchema.message)
+        props.callBack(response.data.errorSchema.message)
       }
       
     } catch (err) {

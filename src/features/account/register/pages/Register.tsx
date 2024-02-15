@@ -224,7 +224,7 @@ function Register() {
               </div>
             </div>
           ) : (
-            <RegisterPartTwo callBack={callBack} {...accountRegister} />
+            <RegisterPartTwo callBack={callBack} data={accountRegister} />
           )}
         </section>
       </Navbar>
