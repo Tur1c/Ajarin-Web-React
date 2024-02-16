@@ -15,4 +15,9 @@ export interface AccountRegisterSchema {
 export interface AccountLoginSchema {
   email: string;
   password: string;
+  token?: string;
+}
+
+export interface AccountLoginOutput {
+  token: string;
 }

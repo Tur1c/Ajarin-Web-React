@@ -21,6 +21,7 @@ function Login() {
   const [accountLogin, setAccountLogin] = useState<AccountLoginSchema>({
     email: "",
     password: "",
+    token: "",
   });
 
   const [errMsg, setErrMsg] = useState("");
@@ -44,13 +45,13 @@ function Login() {
       // const accessToken = response?.data?.accessToken;
       // const roles = response?.data?.roles;
       // setAuth({ accountLogin, accessToken, roles });
-      console.log(transfromToServiceLoginAccountOutput(response.data));
-      
+      const output = transfromToServiceLoginAccountOutput(response.data);
+      const token = output.token;
+      setAuth({ accountLogin, token });
     } catch (error) {
-      if(error instanceof AxiosError) {
+      if (error instanceof AxiosError) {
         console.log(error?.response?.data.errorSchema);
       }
-      
     }
   };
 

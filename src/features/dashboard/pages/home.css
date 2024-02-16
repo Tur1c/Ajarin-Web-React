@@ -7,7 +7,6 @@
   padding: 0 15px;
   display: flex;
   background-color: blue;
-  margin: 10px;
 }
 
 .disc-image {
@@ -41,4 +40,5 @@
 .content-home {
   background-color: #11235a;
   padding: 20px;
+  flex: 1 1 auto;
 }

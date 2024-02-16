@@ -5,10 +5,6 @@ import "./RegisterPartTwo.css";
 
 const REGISTER_URL = "/api/account/register";
 
-interface callBack {
-  callBack: (data:string) => void
-};
-
 function RegisterPartTwo( props:any ) {
   
   const [accountRegister, setAccountRegister] = useState({ ...props.data });
