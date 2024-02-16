@@ -2,7 +2,7 @@ import { AccountLoginOutput, AccountLoginSchema } from "../../model/Account";
 import { ApiResponse } from "../../model/schema/base_schema";
 
 export function transfromToServiceLoginAccountOutput(
-  response: ApiResponse<AccountLoginSchema>
+    response: ApiResponse<AccountLoginSchema>
 ): AccountLoginOutput {
   const { outputSchema } = response;
   return {

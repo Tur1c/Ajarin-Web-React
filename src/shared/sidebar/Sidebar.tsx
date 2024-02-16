@@ -2,11 +2,11 @@ import { ReactNode } from "react";
 import { GoHome } from "react-icons/go";
 import { HiOutlineBookOpen } from "react-icons/hi2";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
-import { MdMenu } from "react-icons/md";
 import { PiEyeglassesLight } from "react-icons/pi";
-import { Link } from "react-router-dom";
+import { CgProfile } from "react-icons/cg";
 import "./Sidebar.css";
 import SidebarLoginRegister from "./SidebarLoginRegister";
+import { Link } from "react-router-dom";
 
 interface Props {
   children?: ReactNode;
@@ -18,6 +18,9 @@ const addElement = () => {
 };
 
 const Sidebar = ({ children }: Props) => {
+  const isLogged = localStorage.getItem('jwt');
+  console.log(isLogged);
+  const style = {color: "white", fontSize: "30px"};
   return (
     <>
       <div className="sidebar">
@@ -33,9 +36,6 @@ const Sidebar = ({ children }: Props) => {
               </h1>
             </div>
           </div>
-          {/* <i id="btn" onClick={addElement}>
-            <MdMenu />
-          </i> */}
         </div>
         <ul className="">
           <li>
@@ -77,10 +77,22 @@ const Sidebar = ({ children }: Props) => {
         </ul>
         <div className="profile_content">
           <div className="profile">
-            <div className="profile_details">
-              {/* <img src="profile.jpg" alt="profile" /> */}
-            </div>
-            <SidebarLoginRegister/>
+            {isLogged ? 
+              (
+              <div className="profile_details">
+                {/* <img src="profile.jpg" alt="profile" /> */}
+                <a href="/profile">
+                    <i>
+                      <CgProfile style={style}/>
+                    </i>
+                </a>
+                  
+              </div>
+              ):
+              (
+                <SidebarLoginRegister/>
+              )  
+            }
           </div>
         </div>
       </div>

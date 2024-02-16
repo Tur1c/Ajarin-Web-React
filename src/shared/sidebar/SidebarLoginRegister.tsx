@@ -15,7 +15,7 @@ const SidebarLoginRegister = () => {
                 </Link>
               </button>
             </div>
-            <i id="logout"></i>
+            {/* <i id="logout"></i> */}
         </>
     )
 }

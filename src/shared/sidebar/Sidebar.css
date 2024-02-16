@@ -138,17 +138,15 @@
   background: #1d1b31;
 } */
 
+.profile_details{
+  height: 100px;
+}
+
 .profile_content .profile .profile_details {
   display: flex;
   pointer-events: none;
   align-items: center;
-  opacity: 0;
   white-space: nowrap;
-}
-
-.sidebar.active .profile .profile_details {
-  opacity: 1;
-  pointer-events: auto;
 }
 
 .profile_content .profile .profile_details img {
@@ -173,6 +171,7 @@
 .profile .button button a {
   text-decoration: none;
 }
+
 
 .profile #logout {
   position: absolute;

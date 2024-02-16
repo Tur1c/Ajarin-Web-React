@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AccountLoginSchema } from "../../../model/Account";
 import Navbar from "../../../shared/navbar/Navbar";
 import learningImg from "./Learning 1.png";
@@ -25,6 +25,7 @@ function Login() {
   });
 
   const [errMsg, setErrMsg] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     userRef.current?.focus();
@@ -47,7 +48,11 @@ function Login() {
       // setAuth({ accountLogin, accessToken, roles });
       const output = transfromToServiceLoginAccountOutput(response.data);
       const token = output.token;
+      localStorage.setItem('jwt',token);
+      localStorage.setItem('user',accountLogin.email);
       setAuth({ accountLogin, token });
+      navigate('/');
+
     } catch (error) {
       if (error instanceof AxiosError) {
         console.log(error?.response?.data.errorSchema);
