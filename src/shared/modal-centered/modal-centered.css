@@ -1,0 +1,45 @@
+.modal-content .container-class-header {
+  position: relative;
+  text-align: center;
+  color: white;
+  width: 100%;
+  height: 25rem;
+}
+
+.modal-content .bottom-left {
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
+  font-size: 12px;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content .top-left {
+  position: absolute;
+  top: 8px;
+  font-size: 32px;
+  left: 16px;
+}
+
+.modal-content .top-right {
+  position: absolute;
+  top: 8px;
+  background-color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  right: 16px;
+}
+
+.modal-content .bottom-right {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+  background-color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+}
+
+.modal-content .centered {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

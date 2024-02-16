@@ -42,3 +42,79 @@
   padding: 20px;
   flex: 1 1 auto;
 }
+
+.class-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.class-content .class {
+  width: 270px;
+  margin-bottom: 30px;
+}
+
+.class .title-class {
+  display: flex;
+  flex-direction: column;
+}
+
+.class .title-class h3 {
+  color: #fff;
+  line-height: 18px;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.class .title-class span {
+  text-decoration: none;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 20%;
+}
+
+.badge.badge-outlined {
+  border: 1px solid transparent;
+  border-color: #fff;
+  background-color: #11235a;
+  color: #fff;
+}
+
+.container-class-header {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+.bottom-left {
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
+  font-size: 12px;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.top-left {
+  position: absolute;
+  top: 8px;
+  font-size: 12px;
+  background-color: rgba(0, 0, 0, 0.6);
+  left: 16px;
+}
+
+.top-right {
+  position: absolute;
+  top: 8px;
+  background-color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  right: 16px;
+}
+
+.bottom-right {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+  background-color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+}
