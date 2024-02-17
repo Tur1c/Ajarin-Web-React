@@ -1,4 +1,5 @@
 import {
+  Navigate,
   Route,
   RouterProvider,
   createBrowserRouter,
@@ -11,13 +12,18 @@ import Home from "./features/dashboard/pages/home";
 import { ErrorPage } from "./shared";
 import Profile from "./features/account/profile/Profile";
 
+const isLogged = localStorage.getItem("jwt");
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<Home></Home>}></Route>
       <Route path="/login" element={<Login></Login>}></Route>
       <Route path="/register" element={<Register></Register>}></Route>
-      <Route path="/profile" element={<Profile></Profile>}></Route>
+      <Route
+        path="/profile"
+        element={isLogged ? <Profile></Profile> : <Navigate to="/login"/>}
+      ></Route>
       <Route path="*" element={<ErrorPage></ErrorPage>}></Route>
     </Route>
   )

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "../../../api/axios";
 import {
-    ClassList,
+  ClassList,
   DiscussionListOutput,
   DiscussionListSchema,
   transfromToDiscussionListOutput,
@@ -96,7 +96,10 @@ function HomeDiscussion() {
   return (
     <>
       <div className="class-wrapper">
-        <div className="card" style={{ backgroundColor: "#11235a" }}>
+        <div
+          className="card"
+          style={{ backgroundColor: "#11235a", border: "none" }}
+        >
           <div className="card-body">
             <div className="row">
               {currentClass.map((data, index) => (

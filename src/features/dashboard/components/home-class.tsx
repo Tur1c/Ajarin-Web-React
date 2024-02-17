@@ -68,7 +68,10 @@ function HomeClass() {
   return (
     <>
       <div className="class-wrapper">
-        <div className="card" style={{ backgroundColor: "#11235a" }}>
+        <div
+          className="card"
+          style={{ backgroundColor: "#11235a", border: "none" }}
+        >
           <div className="card-body">
             <div className="row">
               {currentCourse.map((data, index) => (

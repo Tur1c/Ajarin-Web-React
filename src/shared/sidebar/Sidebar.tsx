@@ -7,7 +7,7 @@ import { CgProfile } from "react-icons/cg";
 import "./Sidebar.css";
 import SidebarLoginRegister from "./SidebarLoginRegister";
 import { Link } from "react-router-dom";
-import { AccountOutput} from "../../model/Account";
+import { AccountOutput } from "../../model/Account";
 
 interface Props {
   children?: ReactNode;
@@ -20,7 +20,7 @@ const addElement = () => {
 };
 
 const Sidebar = ({ children, account }: Props) => {
-  const isLogged = localStorage.getItem('jwt');
+  const isLogged = localStorage.getItem("jwt");
   console.log(isLogged);
   return (
     <>
@@ -78,27 +78,22 @@ const Sidebar = ({ children, account }: Props) => {
         </ul>
         <div className="profile_content">
           <div className="profile">
-            {isLogged ? 
-              (
+            {isLogged ? (
               <div className="profile_details">
                 <Link to={"/profile"} state={account}>
-                      <i>
-                        <CgProfile /> {account.name}
-                      </i>
+                  <i>
+                    <CgProfile />
+                  </i>
                 </Link>
                 {/* <img src="profile.jpg" alt="profile" /> */}
               </div>
-              ):
-              (
-                <SidebarLoginRegister account={account}/>
-              )  
-            }
+            ) : (
+              <SidebarLoginRegister account={account} />
+            )}
           </div>
         </div>
       </div>
-      <div className="home-content">
-        {children}
-      </div>
+      <div className="home-content">{children}</div>
     </>
   );
 };

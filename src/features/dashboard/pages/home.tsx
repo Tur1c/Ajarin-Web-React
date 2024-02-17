@@ -9,14 +9,17 @@ import HomeDiscussion from "../components/home-discussion";
 import "./home.css";
 import axios from "../../../api/axios";
 import { ApiResponse } from "../../../model/schema/base_schema";
-import { AccountOutput, 
-  AccountRegisterSchema, 
-  transfromToAccountOutput } 
-  from "../../../model/Account";
+import {
+  AccountOutput,
+  AccountRegisterSchema,
+  transfromToAccountOutput,
+} from "../../../model/Account";
 
 function Home() {
   const [account, setAccount] = useState<AccountOutput>({
-    name: "",
+    fullName: "",
+    firstName: "",
+    lastName: "",
     email: "",
     age: 0,
     gender: "",
@@ -24,10 +27,10 @@ function Home() {
     education: "",
     city: "",
     country: "",
-    school: ""
+    school: "",
   });
   const [key, setKey] = useState("discussion");
-  const HOME_URL = "/api/account/" + localStorage.getItem("user");
+  const HOME_URL = "/api/account?email=" + localStorage.getItem("user");
 
   const fetchDataAccount = async () => {
     try {
@@ -47,7 +50,6 @@ function Home() {
     fetchDataAccount();
   }, []);
 
-  
   return (
     <div>
       <Sidebar account={account}>
@@ -68,7 +70,7 @@ function Home() {
               </div>
               <div className="home-wrapper">
                 <div className="greetings">
-                  <h1>Hello, {account.name}</h1>
+                  <h1>Hello, {account.fullName}</h1>
                   <h4>
                     <i>Ready to Learn Something New ?</i>
                   </h4>
@@ -94,7 +96,7 @@ function Home() {
                   </div>
                 </div>
               </div>
-              <div className="content-home">
+              <div className="content-home" style={{ height: "865px" }}>
                 <Tabs
                   id="home-tab"
                   activeKey={key}

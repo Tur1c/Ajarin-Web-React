@@ -23,7 +23,9 @@ export interface AccountLoginOutput {
 }
 
 export interface AccountOutput{
-  name: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
   email: string;
   age: number;
   gender: string;
@@ -38,7 +40,9 @@ export function transfromToAccountOutput(
   response: AccountRegisterSchema
 ) : AccountOutput {
   const result: AccountOutput = {
-    name: response.firstName + " " + response.lastName,
+    firstName: response.firstName,
+    lastName: response.lastName,
+    fullName: response.firstName + " " + response.lastName,
     email: response.email,
     age: response.age,
     gender: response.gender,
