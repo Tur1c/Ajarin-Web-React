@@ -139,7 +139,15 @@
 } */
 
 .profile_details{
-  height: 100px;
+  height: 80px;
+  min-width: 40px;
+  border-radius: 12px;
+  line-height: 50px;
+  text-align: center;
+}
+
+.profile_details a {
+  pointer-events: all;
 }
 
 .profile_content .profile .profile_details {
@@ -149,7 +157,7 @@
   white-space: nowrap;
 }
 
-.profile_content .profile .profile_details img {
+.profile_content .profile img {
   height: 45px;
   width: 45px;
   object-fit: cover;

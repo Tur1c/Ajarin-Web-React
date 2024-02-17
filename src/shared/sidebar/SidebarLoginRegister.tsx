@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
+import { AccountOutput } from "../../model/Account";
 
-const SidebarLoginRegister = () => {
+interface Props{
+  account: AccountOutput
+}
+
+const SidebarLoginRegister = ({account}:Props) => {
     return (
         <>
             <div className="button">
