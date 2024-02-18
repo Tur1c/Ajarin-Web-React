@@ -4,16 +4,16 @@ import { AccountLoginSchema } from "../../../model/Account";
 import Navbar from "../../../shared/navbar/Navbar";
 import learningImg from "./Learning 1.png";
 import "./Login.css";
-import AuthContext from "../../../context/AuthProvider";
 import axios from "../../../api/axios";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import { transfromToServiceLoginAccountOutput } from "../../../service/Account/account.service";
 import { AxiosError } from "axios";
+import { useAuth } from "../../../context/AuthProvider";
 
 const LOGIN_URL = "/api/account/login";
 
 function Login() {
-  const { setAuth }: any = useContext(AuthContext);
+  const { login }: any = useAuth();
 
   const userRef = useRef<HTMLInputElement>(null);
   const errRef = useRef<HTMLParagraphElement>(null);
@@ -48,11 +48,10 @@ function Login() {
       // setAuth({ accountLogin, accessToken, roles });
       const output = transfromToServiceLoginAccountOutput(response.data);
       const token = output.token;
-      localStorage.setItem('jwt',token);
-      localStorage.setItem('user',accountLogin.email);
-      setAuth({ accountLogin, token });
-      navigate('/');
-
+      // localStorage.setItem("jwt", token);
+      // localStorage.setItem("user", accountLogin.email);
+      await login({ accountLogin, token });
+      navigate("/");
     } catch (error) {
       if (error instanceof AxiosError) {
         console.log(error?.response?.data.errorSchema);

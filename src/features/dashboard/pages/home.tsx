@@ -34,6 +34,8 @@ function Home() {
   const HOME_URL = "/api/account?email=" + localStorage.getItem("user");
 
   const fetchDataAccount = async () => {
+    console.log(localStorage.getItem("jwt"));
+
     try {
       const response = await axios.get<ApiResponse<AccountRegisterSchema>>(
         HOME_URL,
