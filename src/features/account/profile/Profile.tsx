@@ -3,6 +3,7 @@ import { Tab, Tabs } from "react-bootstrap";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
+import { useAuth } from "../../../context/AuthProvider";
 import {
   AccountOutput,
   AccountRegisterSchema,
@@ -10,9 +11,9 @@ import {
 } from "../../../model/Account";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import "./profile.css";
-import { useAuth } from "../../../context/AuthProvider";
 
 const HOME_URL = "/api/account?email=" + sessionStorage.getItem("user");
+const UPDATE_URL = "/api/account/";
 
 const Profile = (props: any) => {
   const { logout }: any = useAuth();
@@ -29,11 +30,13 @@ const Profile = (props: any) => {
     city: "",
     country: "",
     school: "",
+    id: "",
   });
 
   const navigate = useNavigate();
 
   const [key, setKey] = useState("profile");
+  const [editProfile, setEditProfile] = useState(false);
 
   const fetchDataAccount = async () => {
     try {
@@ -53,8 +56,32 @@ const Profile = (props: any) => {
     } catch (error) {}
   };
 
+  const editProfileAccount = async () => {
+    try {
+      const response = await axios.put<ApiResponse<AccountRegisterSchema>>(
+        UPDATE_URL + account.id,
+        JSON.stringify(account),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + sessionStorage.getItem("jwt"),
+          },
+          withCredentials: true,
+        }
+      );
+      console.log(response);
+    } catch {}
+  };
+
   const handleLogout = () => {
+    setAccount({ ...account, id: account.id });
     logout();
+  };
+
+  const handleEditProfile = () => {
+    // console.log(account);
+    editProfileAccount();
+    setEditProfile(false);
   };
 
   useEffect(() => {
@@ -154,7 +181,13 @@ const Profile = (props: any) => {
                                 className="form-control"
                                 placeholder="First Name"
                                 value={account.firstName}
-                                disabled
+                                onChange={(e) =>
+                                  setAccount({
+                                    ...account,
+                                    firstName: e.target.value,
+                                  })
+                                }
+                                disabled={!editProfile}
                               />
                             </div>
                             <div className="col-md-6">
@@ -164,7 +197,13 @@ const Profile = (props: any) => {
                                 placeholder="Last Name"
                                 className="form-control"
                                 value={account.lastName}
-                                disabled
+                                onChange={(e) =>
+                                  setAccount({
+                                    ...account,
+                                    lastName: e.target.value,
+                                  })
+                                }
+                                disabled={!editProfile}
                               />
                             </div>
                           </div>
@@ -176,7 +215,13 @@ const Profile = (props: any) => {
                                 placeholder="Age"
                                 className="form-control"
                                 value={account.age}
-                                disabled
+                                onChange={(e) =>
+                                  setAccount({
+                                    ...account,
+                                    age: e.target.valueAsNumber,
+                                  })
+                                }
+                                disabled={!editProfile}
                               />
                             </div>
                             <div className="col-md-6">
@@ -185,8 +230,14 @@ const Profile = (props: any) => {
                                 type="text"
                                 className="form-control"
                                 value={account.gender}
+                                onChange={(e) =>
+                                  setAccount({
+                                    ...account,
+                                    gender: e.target.value,
+                                  })
+                                }
                                 placeholder="Gender"
-                                disabled
+                                disabled={!editProfile}
                               />
                             </div>
                           </div>
@@ -198,7 +249,13 @@ const Profile = (props: any) => {
                                 className="form-control"
                                 placeholder="Phone Number"
                                 value={account.phoneNumber}
-                                disabled
+                                onChange={(e) =>
+                                  setAccount({
+                                    ...account,
+                                    phoneNumber: e.target.value,
+                                  })
+                                }
+                                disabled={!editProfile}
                               />
                             </div>
                             <div className="col-md-6">
@@ -207,8 +264,14 @@ const Profile = (props: any) => {
                                 type="text"
                                 className="form-control"
                                 value={account.email}
+                                onChange={(e) =>
+                                  setAccount({
+                                    ...account,
+                                    email: e.target.value,
+                                  })
+                                }
                                 placeholder="Email Address"
-                                disabled
+                                disabled={!editProfile}
                               />
                             </div>
                           </div>
@@ -220,7 +283,13 @@ const Profile = (props: any) => {
                                 className="form-control"
                                 placeholder="Education"
                                 value={account.education}
-                                disabled
+                                onChange={(e) =>
+                                  setAccount({
+                                    ...account,
+                                    education: e.target.value,
+                                  })
+                                }
+                                disabled={!editProfile}
                               />
                             </div>
                             <div className="col-md-6">
@@ -231,8 +300,14 @@ const Profile = (props: any) => {
                                 type="text"
                                 className="form-control"
                                 value={account.school}
+                                onChange={(e) =>
+                                  setAccount({
+                                    ...account,
+                                    school: e.target.value,
+                                  })
+                                }
                                 placeholder="School / Works at"
-                                disabled
+                                disabled={!editProfile}
                               />
                             </div>
                           </div>
@@ -244,7 +319,13 @@ const Profile = (props: any) => {
                                 className="form-control"
                                 placeholder="City"
                                 value={account.city}
-                                disabled
+                                onChange={(e) =>
+                                  setAccount({
+                                    ...account,
+                                    city: e.target.value,
+                                  })
+                                }
+                                disabled={!editProfile}
                               />
                             </div>
                             <div className="col-md-6">
@@ -253,26 +334,50 @@ const Profile = (props: any) => {
                                 type="text"
                                 className="form-control"
                                 value={account.country}
+                                onChange={(e) =>
+                                  setAccount({
+                                    ...account,
+                                    country: e.target.value,
+                                  })
+                                }
                                 placeholder="Country"
-                                disabled
+                                disabled={!editProfile}
                               />
                             </div>
                           </div>
                           <div className="d-block text-center">
                             <div className="mt-4">
-                              <button
-                                className="btn btn-primary profile-button"
-                                type="button"
-                                style={{
-                                  width: "150px",
-                                  borderRadius: "25px",
-                                  border: "2px solid none",
-                                  backgroundColor: "#11235A",
-                                  color: "#fff",
-                                }}
-                              >
-                                Edit Profile
-                              </button>
+                              {editProfile ? (
+                                <button
+                                  className="btn btn-primary profile-button"
+                                  type="button"
+                                  style={{
+                                    width: "150px",
+                                    borderRadius: "25px",
+                                    border: "2px solid none",
+                                    backgroundColor: "#11235A",
+                                    color: "#fff",
+                                  }}
+                                  onClick={handleEditProfile}
+                                >
+                                  Save Profile
+                                </button>
+                              ) : (
+                                <button
+                                  className="btn btn-primary profile-button"
+                                  type="button"
+                                  style={{
+                                    width: "150px",
+                                    borderRadius: "25px",
+                                    border: "2px solid none",
+                                    backgroundColor: "#11235A",
+                                    color: "#fff",
+                                  }}
+                                  onClick={() => setEditProfile(true)}
+                                >
+                                  Edit Profile
+                                </button>
+                              )}
                             </div>
                             <div className="mt-3">
                               <button

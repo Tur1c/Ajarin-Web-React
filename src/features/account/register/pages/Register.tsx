@@ -13,6 +13,7 @@ function Register() {
   const [pageState, setPageState] = useState(0);
 
   const [accountRegister, setAccountRegister] = useState<AccountRegisterSchema>({
+    id: "",
     firstName: "",
     lastName: "",
     email: "",
