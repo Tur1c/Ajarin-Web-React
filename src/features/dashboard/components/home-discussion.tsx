@@ -68,7 +68,6 @@ function HomeDiscussion() {
           withCredentials: true,
         }
       );
-      console.log(response);
       setClassList(transfromToDiscussionListOutput(response.data.outputSchema));
     } catch (error) {}
   };

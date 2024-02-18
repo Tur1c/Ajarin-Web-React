@@ -20,8 +20,7 @@ const addElement = () => {
 };
 
 const Sidebar = ({ children, account }: Props) => {
-  const isLogged = localStorage.getItem("jwt");
-  console.log(isLogged);
+  const isLogged = sessionStorage.getItem("jwt");
   return (
     <>
       <div className="sidebar">

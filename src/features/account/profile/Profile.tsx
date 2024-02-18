@@ -10,10 +10,12 @@ import {
 } from "../../../model/Account";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import "./profile.css";
+import { useAuth } from "../../../context/AuthProvider";
 
-const HOME_URL = "/api/account?email=" + localStorage.getItem("user");
+const HOME_URL = "/api/account?email=" + sessionStorage.getItem("user");
 
 const Profile = (props: any) => {
+  const { logout }: any = useAuth();
   const { state } = useLocation();
   const [account, setAccount] = useState<AccountOutput>({
     fullName: "",
@@ -40,19 +42,19 @@ const Profile = (props: any) => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("jwt"),
+            Authorization: "Bearer " + sessionStorage.getItem("jwt"),
           },
           withCredentials: true,
         }
       );
-      console.log(response);
       if (state.fullName.length === 0) {
-        console.log("masuk state");
-
         setAccount(transfromToAccountOutput(response.data.outputSchema));
       }
-      console.log(account);
     } catch (error) {}
+  };
+
+  const handleLogout = () => {
+    logout();
   };
 
   useEffect(() => {
@@ -61,8 +63,6 @@ const Profile = (props: any) => {
         ...state,
       }));
     } else {
-      console.log("masuk fetch");
-
       fetchDataAccount();
     }
   }, []);
@@ -285,6 +285,7 @@ const Profile = (props: any) => {
                                   backgroundColor: "#fff",
                                   color: "#11235A",
                                 }}
+                                onClick={handleLogout}
                               >
                                 <b>Logout</b>
                               </button>

@@ -16,7 +16,7 @@ import HomeDiscussion from "../components/home-discussion";
 import "./home.css";
 
 function Home() {
-  const isLogged = localStorage.getItem("jwt");
+  const isLogged = sessionStorage.getItem("jwt");
   const [account, setAccount] = useState<AccountOutput>({
     fullName: "",
     firstName: "",
@@ -31,23 +31,20 @@ function Home() {
     school: "",
   });
   const [key, setKey] = useState("discussion");
-  const HOME_URL = "/api/account?email=" + localStorage.getItem("user");
+  const HOME_URL = "/api/account?email=" + sessionStorage.getItem("user");
 
   const fetchDataAccount = async () => {
-    console.log(localStorage.getItem("jwt"));
-
     try {
       const response = await axios.get<ApiResponse<AccountRegisterSchema>>(
         HOME_URL,
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("jwt"),
+            Authorization: "Bearer " + sessionStorage.getItem("jwt"),
           },
           withCredentials: true,
         }
       );
-      console.log(response);
       setAccount(transfromToAccountOutput(response.data.outputSchema));
     } catch (error) {}
   };

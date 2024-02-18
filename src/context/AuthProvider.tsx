@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLocalStorage } from "./useLocalStorage";
+import { useSessionStorage } from "./useLocalStorage";
 
 interface AuthContextType {
   user: string;
@@ -11,14 +11,12 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthProvider = ({ children }: any) => {
-  const [token, setToken] = useLocalStorage("jwt", "");
-  const [user, setUser] = useLocalStorage("user", "");
+  const [token, setToken] = useSessionStorage("jwt", "");
+  const [user, setUser] = useSessionStorage("user", "");
   const navigate = useNavigate();
 
   // call this function when you want to authenticate the user
   const login = async (data: any) => {
-    console.log(data);
-
     setUser(data.accountLogin.email);
     setToken(data.token);
     navigate("/");
@@ -26,8 +24,8 @@ export const AuthProvider = ({ children }: any) => {
 
   // call this function to sign out logged in user
   const logout = () => {
-    setUser(null);
-    setToken(null);
+    setUser("");
+    setToken("");
     navigate("/", { replace: true });
   };
 
