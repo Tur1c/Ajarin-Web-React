@@ -16,6 +16,7 @@ import HomeDiscussion from "../components/home-discussion";
 import "./home.css";
 
 function Home() {
+  const isLogged = localStorage.getItem("jwt");
   const [account, setAccount] = useState<AccountOutput>({
     fullName: "",
     firstName: "",
@@ -39,7 +40,7 @@ function Home() {
         {
           headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + localStorage.getItem("jwt"),
+            Authorization: "Bearer " + localStorage.getItem("jwt"),
           },
           withCredentials: true,
         }
@@ -50,7 +51,9 @@ function Home() {
   };
 
   useEffect(() => {
-    fetchDataAccount();
+    if (isLogged) {
+      fetchDataAccount();
+    }
   }, []);
 
   return (
