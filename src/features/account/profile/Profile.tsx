@@ -62,7 +62,7 @@ const Profile = (props: any) => {
       }));
     } else {
       console.log("masuk fetch");
-      
+
       fetchDataAccount();
     }
   }, []);

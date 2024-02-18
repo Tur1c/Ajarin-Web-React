@@ -3,17 +3,17 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
-import { Sidebar } from "../../../shared";
-import HomeClass from "../components/home-class";
-import HomeDiscussion from "../components/home-discussion";
-import "./home.css";
 import axios from "../../../api/axios";
-import { ApiResponse } from "../../../model/schema/base_schema";
 import {
   AccountOutput,
   AccountRegisterSchema,
   transfromToAccountOutput,
 } from "../../../model/Account";
+import { ApiResponse } from "../../../model/schema/base_schema";
+import { Sidebar } from "../../../shared";
+import HomeClass from "../components/home-class";
+import HomeDiscussion from "../components/home-discussion";
+import "./home.css";
 
 function Home() {
   const [account, setAccount] = useState<AccountOutput>({
@@ -37,7 +37,10 @@ function Home() {
       const response = await axios.get<ApiResponse<AccountRegisterSchema>>(
         HOME_URL,
         {
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("jwt"),
+          },
           withCredentials: true,
         }
       );
