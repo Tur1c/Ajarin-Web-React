@@ -3,6 +3,7 @@ export interface DiscussionListSchema {
 }
 
 export interface Class {
+  disc_id: number;
   disc_title: string;
   disc_participant: string;
   disc_price: string;
@@ -25,6 +26,7 @@ export interface CategorySchema {
 }
 
 export interface ClassList {
+  id: number;
   title: string;
   maxPeople: string;
   price: string;
@@ -42,6 +44,7 @@ export function transfromToDiscussionListOutput(
   const result: DiscussionListOutput = {
     classList: response.discussions.map((data) => {
       return {
+        id: data.disc_id,
         title: data.disc_title,
         maxPeople: data.disc_participant,
         price: data.disc_price,

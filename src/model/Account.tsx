@@ -23,6 +23,7 @@ export interface AccountLoginOutput {
   token: string;
 }
 
+
 export interface AccountOutput{
   id?: string;
   firstName: string;
@@ -36,6 +37,7 @@ export interface AccountOutput{
   city: string;
   country: string;
   school: string;
+  // disc_list: [];
 }
 
 export function transfromToAccountOutput(
@@ -54,6 +56,7 @@ export function transfromToAccountOutput(
     city: response.city,
     country: response.country,
     school: response.school
+    // disc_list: response.
   };
   return result;
 }

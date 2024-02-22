@@ -17,6 +17,7 @@ import "./home.css";
 
 function Home() {
   const isLogged = sessionStorage.getItem("jwt");
+  const email = sessionStorage.getItem("user");
   const [account, setAccount] = useState<AccountOutput>({
     fullName: "",
     firstName: "",
@@ -31,7 +32,7 @@ function Home() {
     school: "",
   });
   const [key, setKey] = useState("discussion");
-  const HOME_URL = "/api/account?email=" + sessionStorage.getItem("user");
+  const HOME_URL = "/api/account?email=" + email;
 
   const fetchDataAccount = async () => {
     try {
@@ -40,11 +41,12 @@ function Home() {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + sessionStorage.getItem("jwt"),
+            Authorization: "Bearer " + isLogged,
           },
           withCredentials: true,
         }
       );
+      console.log(response.data,'asd');
       setAccount(transfromToAccountOutput(response.data.outputSchema));
     } catch (error) {}
   };
@@ -54,6 +56,8 @@ function Home() {
       fetchDataAccount();
     }
   }, []);
+
+  console.log(account);
 
   return (
     <div>

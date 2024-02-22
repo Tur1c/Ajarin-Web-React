@@ -17,6 +17,7 @@ function HomeDiscussion() {
   });
 
   const [classData, setClassData] = useState<ClassList>({
+    id: 0,
     title: "",
     category: [],
     date: new Date(),
@@ -76,6 +77,7 @@ function HomeDiscussion() {
   const handleShowModal = (data: ClassList) => {
     setClassData({
       ...classData,
+      id: data.id,
       category: data.category,
       date: data.date,
       description: data.description,

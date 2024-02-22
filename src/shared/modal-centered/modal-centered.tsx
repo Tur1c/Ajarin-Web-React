@@ -1,9 +1,46 @@
+import { AxiosError } from "axios";
 import Modal from "react-bootstrap/Modal";
 import { FaUser } from "react-icons/fa";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import axios from "../../api/axios";
 import "./modal-centered.css";
 
 function ModalCentered(props: any) {
+  const isLogged = sessionStorage.getItem("jwt");
+  const user = sessionStorage.getItem("user");
+  console.log(isLogged, user);
+  const JOIN_URL = "/api/account/join?email=" + user + "&id=1";
+
+  const JoinDiscussion = async (discId: number) => {
+    // alert("join" + discId);
+    try {
+      const response = await axios.post(
+        JOIN_URL,
+        // JSON.stringify(accountLogin),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + sessionStorage.getItem("jwt"),
+          },
+          withCredentials: true,
+        }
+      );
+      // const accessToken = response?.data?.accessToken;
+      // const roles = response?.data?.roles;
+      // setAuth({ accountLogin, accessToken, roles });
+      // const output = transfromToServiceLoginAccountOutput(response.data);
+      // const token = output.token;
+      // localStorage.setItem("jwt", token);
+      // localStorage.setItem("user", accountLogin.email);
+      // await login({ accountLogin, token });
+      // navigate("/");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        // console.log(error?.response?.data.errorSchema);
+      }
+    }
+  };
+
   return (
     <Modal
       {...props}
@@ -83,7 +120,16 @@ function ModalCentered(props: any) {
           }}
         >
           <p onClick={props.onHide} className="text-white">
-            <b>Log In</b>
+            {isLogged ? (
+              <button
+                type="button"
+                onClick={() => JoinDiscussion(props.data.id)}
+              >
+                Join
+              </button>
+            ) : (
+              <b>Log In</b>
+            )}
           </p>
         </div>
       </Modal.Footer>
