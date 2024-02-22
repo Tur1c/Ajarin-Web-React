@@ -3,7 +3,9 @@ import { useAuth } from "./context/AuthProvider";
 
 export const ProtectedRoute = ({ children }: any) => {
   const { user } = useAuth();
-  if (!user) {
+  const isLogged = sessionStorage.getItem("jwt");
+  
+  if (!user && !isLogged) {
     // user is not authenticated
     return <Navigate to="/login" />;
   }

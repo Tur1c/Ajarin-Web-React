@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { AccountOutput } from "../../model/Account";
 
 interface Props{
-  account: AccountOutput
+  account: AccountOutput | undefined
 }
 
 const SidebarLoginRegister = ({account}:Props) => {

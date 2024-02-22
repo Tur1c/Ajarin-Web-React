@@ -13,6 +13,7 @@ import Profile from "./features/account/profile/Profile";
 import { Register } from "./features/account/register";
 import Home from "./features/dashboard/pages/home";
 import { ErrorPage } from "./shared";
+import Forum from "./features/forum/page/forum";
 
 function App() {
   // return <RouterProvider router={router}></RouterProvider>;
@@ -22,6 +23,7 @@ function App() {
         <Route path="/" element={<Home></Home>}></Route>
         <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/register" element={<Register></Register>}></Route>
+        <Route path="/forum" element={<Forum></Forum>}></Route>
         <Route
           path="/profile"
           element={

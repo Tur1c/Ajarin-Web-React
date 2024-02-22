@@ -32,6 +32,20 @@ const Profile = (props: any) => {
     school: "",
     id: "",
   });
+  const [editAccount, setEditAccount] = useState<AccountOutput>({
+    fullName: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    age: 0,
+    gender: "",
+    phoneNumber: "",
+    education: "",
+    city: "",
+    country: "",
+    school: "",
+    id: "",
+  });
 
   const navigate = useNavigate();
 
@@ -50,8 +64,9 @@ const Profile = (props: any) => {
           withCredentials: true,
         }
       );
-      if (state.fullName.length === 0) {
+      if (!state) {
         setAccount(transfromToAccountOutput(response.data.outputSchema));
+        setEditAccount(transfromToAccountOutput(response.data.outputSchema));
       }
     } catch (error) {}
   };
@@ -60,7 +75,7 @@ const Profile = (props: any) => {
     try {
       const response = await axios.put<ApiResponse<AccountRegisterSchema>>(
         UPDATE_URL + account.id,
-        JSON.stringify(account),
+        JSON.stringify(editAccount),
         {
           headers: {
             "Content-Type": "application/json",
@@ -69,7 +84,7 @@ const Profile = (props: any) => {
           withCredentials: true,
         }
       );
-      console.log(response);
+      setAccount(transfromToAccountOutput(response.data.outputSchema));
     } catch {}
   };
 
@@ -85,12 +100,19 @@ const Profile = (props: any) => {
   };
 
   useEffect(() => {
-    if (state.fullName.length !== 0) {
-      setAccount((account) => ({
-        ...state,
-      }));
-    } else {
+    if (!state) {
       fetchDataAccount();
+    } else {
+      if (state.fullName.length !== 0) {
+        setAccount((account) => ({
+          ...state,
+        }));
+        setEditAccount((account) => ({
+          ...state,
+        }));
+      } else {
+        fetchDataAccount();
+      }
     }
   }, []);
 
@@ -180,10 +202,10 @@ const Profile = (props: any) => {
                                 type="text"
                                 className="form-control"
                                 placeholder="First Name"
-                                value={account.firstName}
+                                value={editAccount.firstName}
                                 onChange={(e) =>
-                                  setAccount({
-                                    ...account,
+                                  setEditAccount({
+                                    ...editAccount,
                                     firstName: e.target.value,
                                   })
                                 }
@@ -196,10 +218,10 @@ const Profile = (props: any) => {
                                 type="text"
                                 placeholder="Last Name"
                                 className="form-control"
-                                value={account.lastName}
+                                value={editAccount.lastName}
                                 onChange={(e) =>
-                                  setAccount({
-                                    ...account,
+                                  setEditAccount({
+                                    ...editAccount,
                                     lastName: e.target.value,
                                   })
                                 }
@@ -214,10 +236,10 @@ const Profile = (props: any) => {
                                 type="number"
                                 placeholder="Age"
                                 className="form-control"
-                                value={account.age}
+                                value={editAccount.age}
                                 onChange={(e) =>
-                                  setAccount({
-                                    ...account,
+                                  setEditAccount({
+                                    ...editAccount,
                                     age: e.target.valueAsNumber,
                                   })
                                 }
@@ -229,10 +251,10 @@ const Profile = (props: any) => {
                               <input
                                 type="text"
                                 className="form-control"
-                                value={account.gender}
+                                value={editAccount.gender}
                                 onChange={(e) =>
-                                  setAccount({
-                                    ...account,
+                                  setEditAccount({
+                                    ...editAccount,
                                     gender: e.target.value,
                                   })
                                 }
@@ -248,10 +270,10 @@ const Profile = (props: any) => {
                                 type="text"
                                 className="form-control"
                                 placeholder="Phone Number"
-                                value={account.phoneNumber}
+                                value={editAccount.phoneNumber}
                                 onChange={(e) =>
-                                  setAccount({
-                                    ...account,
+                                  setEditAccount({
+                                    ...editAccount,
                                     phoneNumber: e.target.value,
                                   })
                                 }
@@ -263,10 +285,10 @@ const Profile = (props: any) => {
                               <input
                                 type="text"
                                 className="form-control"
-                                value={account.email}
+                                value={editAccount.email}
                                 onChange={(e) =>
-                                  setAccount({
-                                    ...account,
+                                  setEditAccount({
+                                    ...editAccount,
                                     email: e.target.value,
                                   })
                                 }
@@ -282,10 +304,10 @@ const Profile = (props: any) => {
                                 type="text"
                                 className="form-control"
                                 placeholder="Education"
-                                value={account.education}
+                                value={editAccount.education}
                                 onChange={(e) =>
-                                  setAccount({
-                                    ...account,
+                                  setEditAccount({
+                                    ...editAccount,
                                     education: e.target.value,
                                   })
                                 }
@@ -299,10 +321,10 @@ const Profile = (props: any) => {
                               <input
                                 type="text"
                                 className="form-control"
-                                value={account.school}
+                                value={editAccount.school}
                                 onChange={(e) =>
-                                  setAccount({
-                                    ...account,
+                                  setEditAccount({
+                                    ...editAccount,
                                     school: e.target.value,
                                   })
                                 }
@@ -318,10 +340,10 @@ const Profile = (props: any) => {
                                 type="text"
                                 className="form-control"
                                 placeholder="City"
-                                value={account.city}
+                                value={editAccount.city}
                                 onChange={(e) =>
-                                  setAccount({
-                                    ...account,
+                                  setEditAccount({
+                                    ...editAccount,
                                     city: e.target.value,
                                   })
                                 }
@@ -333,10 +355,10 @@ const Profile = (props: any) => {
                               <input
                                 type="text"
                                 className="form-control"
-                                value={account.country}
+                                value={editAccount.country}
                                 onChange={(e) =>
-                                  setAccount({
-                                    ...account,
+                                  setEditAccount({
+                                    ...editAccount,
                                     country: e.target.value,
                                   })
                                 }

@@ -3,15 +3,14 @@ import { GoHome } from "react-icons/go";
 import { HiOutlineBookOpen } from "react-icons/hi2";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import { PiEyeglassesLight } from "react-icons/pi";
-import { CgProfile } from "react-icons/cg";
+import { Link, NavLink } from "react-router-dom";
+import { AccountOutput } from "../../model/Account";
 import "./Sidebar.css";
 import SidebarLoginRegister from "./SidebarLoginRegister";
-import { Link } from "react-router-dom";
-import { AccountOutput } from "../../model/Account";
 
 interface Props {
   children?: ReactNode;
-  account: AccountOutput;
+  account: AccountOutput | undefined;
 }
 
 const addElement = () => {
@@ -21,6 +20,8 @@ const addElement = () => {
 
 const Sidebar = ({ children, account }: Props) => {
   const isLogged = sessionStorage.getItem("jwt");
+  console.log(isLogged);
+
   return (
     <>
       <div className="sidebar">
@@ -39,12 +40,12 @@ const Sidebar = ({ children, account }: Props) => {
         </div>
         <ul className="">
           <li>
-            <a href="#">
+            <NavLink to={"/"}>
               <i>
                 <GoHome />
               </i>
               {/* <span className="links_name">Dashboard</span> */}
-            </a>
+            </NavLink>
             <span className="tooltip">Dashboard</span>
           </li>
           <li>
@@ -66,23 +67,28 @@ const Sidebar = ({ children, account }: Props) => {
             <span className="tooltip">Lecturer</span>
           </li>
           <li>
-            <a href="#">
+            <NavLink to={"/forum"}>
               <i>
                 <IoChatboxEllipsesOutline />
               </i>
               {/* <span className="links_name">Forum</span> */}
-            </a>
+            </NavLink>
             <span className="tooltip">Forum</span>
           </li>
         </ul>
         <div className="profile_content">
           <div className="profile">
             {isLogged ? (
-              <div className="profile_details">
+              <div className="profile_details" style={{display: "block"}}>
                 <Link to={"/profile"} state={account}>
-                  <i>
-                    <CgProfile />
-                  </i>
+                  {/* <i> */}
+                  <img
+                    className="img-fluid"
+                    src={`assets/coin.png`}
+                    alt=""
+                    style={{ height: "100%", width: "100%" }}
+                  />
+                  {/* </i> */}
                 </Link>
                 {/* <img src="profile.jpg" alt="profile" /> */}
               </div>
@@ -92,7 +98,7 @@ const Sidebar = ({ children, account }: Props) => {
           </div>
         </div>
       </div>
-      <div className="home-content">{children}</div>
+      <div>{children}</div>
     </>
   );
 };
