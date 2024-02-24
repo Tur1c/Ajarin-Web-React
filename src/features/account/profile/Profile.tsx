@@ -31,6 +31,7 @@ const Profile = (props: any) => {
     country: "",
     school: "",
     id: "",
+    coin: 0
   });
   const [editAccount, setEditAccount] = useState<AccountOutput>({
     fullName: "",
@@ -45,6 +46,7 @@ const Profile = (props: any) => {
     country: "",
     school: "",
     id: "",
+    coin: 0
   });
 
   const navigate = useNavigate();

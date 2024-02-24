@@ -3,6 +3,7 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
+import { Link } from "react-router-dom";
 import axios from "../../../api/axios";
 import {
   AccountOutput,
@@ -14,7 +15,6 @@ import { Sidebar } from "../../../shared";
 import HomeClass from "../components/home-class";
 import HomeDiscussion from "../components/home-discussion";
 import "./home.css";
-import { Link } from "react-router-dom";
 
 function Home() {
   const isLogged = sessionStorage.getItem("jwt");
@@ -31,6 +31,7 @@ function Home() {
     city: "",
     country: "",
     school: "",
+    coin: 0,
   });
   const [key, setKey] = useState("discussion");
   const HOME_URL = "/api/account?email=" + email;
@@ -47,7 +48,6 @@ function Home() {
           withCredentials: true,
         }
       );
-      console.log(response.data,'asd');
       setAccount(transfromToAccountOutput(response.data.outputSchema));
     } catch (error) {}
   };
@@ -91,9 +91,10 @@ function Home() {
                       textAlign: "center",
                       display: "flex",
                       alignItems: "center",
-                      textDecoration: "none"
+                      textDecoration: "none",
                     }}
                     to={"/coin"}
+                    state={account}
                   >
                     <img
                       className="img-fluid"
@@ -104,8 +105,15 @@ function Home() {
                       src={`assets/coin.png`}
                       alt=""
                     />
-                    <div style={{ textAlign: "center", marginLeft: "1rem", color: "#000" }}>
-                      Coin <IoIosArrowForward />
+                    <div
+                      style={{
+                        textAlign: "center",
+                        marginLeft: "1rem",
+                        color: "#000",
+                      }}
+                    >
+                      {isLogged ? account.coin : <span>Coin</span>}{" "}
+                      <IoIosArrowForward />
                     </div>
                   </Link>
                 </div>

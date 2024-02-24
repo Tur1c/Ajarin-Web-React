@@ -1,10 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "../../../api/axios";
+import {
+  AccountOutput,
+  AccountRegisterSchema,
+  transfromToAccountOutput,
+} from "../../../model/Account";
+import { ApiResponse } from "../../../model/schema/base_schema";
 import "./coin.css";
+
+const UPDATE_URL = "/api/account/";
 
 function Coin() {
   const navigate = useNavigate();
+  const { state } = useLocation();
 
   const [coin, setCoin] = useState({
     coins: [
@@ -42,6 +52,56 @@ function Coin() {
       },
     ],
   });
+
+  const [account, setAccount] = useState<AccountOutput>({
+    fullName: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    age: 0,
+    gender: "",
+    phoneNumber: "",
+    education: "",
+    city: "",
+    country: "",
+    school: "",
+    id: "",
+    coin: 0,
+  });
+
+  const [test, setTest] = useState({
+    fname: "",
+    lname: ""
+  })
+
+  const topupCoin = async (value: string, price: string) => {
+    let topupAccount = {...account, coin: account.coin + parseInt(value)}
+    try {
+      const response = await axios.put<ApiResponse<AccountRegisterSchema>>(
+        UPDATE_URL + account.id,
+        JSON.stringify(topupAccount),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + sessionStorage.getItem("jwt"),
+          },
+          withCredentials: true,
+        }
+      );
+      setAccount(transfromToAccountOutput(response.data.outputSchema));
+    } catch {}
+  };
+
+  const handleTopup = (value: string, price: string) => {
+    topupCoin(value, price);
+    navigate("/");
+  };
+
+  useEffect(() => {
+    setAccount((account) => ({
+      ...state,
+    }));
+  }, []);
 
   return (
     <>
@@ -94,6 +154,7 @@ function Coin() {
                       alt="abc"
                       style={{ height: "40px" }}
                     />
+                    <span>{account.coin}</span>
                   </div>
                 </div>
                 <div className="row">
@@ -113,6 +174,9 @@ function Coin() {
                               style={{
                                 background: "rgba(255, 255, 255, 0.45)",
                               }}
+                              onClick={() =>
+                                handleTopup(data.value, data.price)
+                              }
                             >
                               <div className="card-body p-2">
                                 <div className="card-text">

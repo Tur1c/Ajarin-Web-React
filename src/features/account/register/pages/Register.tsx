@@ -24,7 +24,8 @@ function Register() {
     education: "",
     city: "",
     country: "",
-    school: ""
+    school: "",
+    coin: 0
   });
 
   const errRef = useRef<HTMLParagraphElement>(null);

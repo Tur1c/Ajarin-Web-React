@@ -11,6 +11,7 @@ export interface AccountRegisterSchema {
   city: string;
   country: string;
   school: string;
+  coin: number;
 }
 
 export interface AccountLoginSchema {
@@ -38,6 +39,7 @@ export interface AccountOutput{
   country: string;
   school: string;
   // disc_list: [];
+  coin: number;
 }
 
 export function transfromToAccountOutput(
@@ -55,7 +57,8 @@ export function transfromToAccountOutput(
     education: response.education,
     city: response.city,
     country: response.country,
-    school: response.school
+    school: response.school,
+    coin: response.coin
     // disc_list: response.
   };
   return result;
