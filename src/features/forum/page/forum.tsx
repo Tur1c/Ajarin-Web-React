@@ -18,7 +18,7 @@ import { Pagination, Sidebar } from "../../../shared";
 import "./forum.css";
 
 const CATEGORY_URL = "/api/category";
-const FORUM_URL = "/api/forum/list";
+const FORUM_URL = "/api/forum";
 
 const Forum = () => {
   const [categories, setCategories] = useState<CategoryListOutput>({
@@ -26,7 +26,7 @@ const Forum = () => {
   });
 
   const [forumList, setForumList] = useState<ForumListOutput>({
-    forums: [],
+    forum_list: [],
   });
 
   const [sortCategory, setSortCategory] = useState("Latest Activity");
@@ -36,9 +36,7 @@ const Forum = () => {
       const response = await axios.get<ApiResponse<CategorySchema>>(
         CATEGORY_URL,
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: {"Content-Type": "application/json" },
           withCredentials: true,
         }
       );
@@ -48,12 +46,13 @@ const Forum = () => {
 
   const fetchForumData = async () => {
     try {
-      const response = await axios.get<ApiResponse<ForumSchema>>(FORUM_URL, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
+      const response = await axios.get<ApiResponse<ForumSchema>>(
+        FORUM_URL, 
+        {
+          headers: {"Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
       setForumList(transfromToForumListOutput(response.data.outputSchema));
     } catch (error) {}
   };
@@ -63,12 +62,13 @@ const Forum = () => {
     fetchForumData();
   }, []);
 
+
   const [currentPage, setCurrentPage] = useState(1);
   const [classPerPage, setClassPerPage] = useState(5);
 
   const lastIndex = currentPage * classPerPage;
   const firstIndex = lastIndex - classPerPage;
-  const currentForum = forumList.forums.slice(firstIndex, lastIndex);
+  const currentForum = forumList.forum_list.slice(firstIndex, lastIndex);
 
   function handlePageChange(value: any) {
     if (value === "&laquo;" || value === "... ") {
@@ -78,11 +78,11 @@ const Forum = () => {
         setCurrentPage(currentPage - 1);
       }
     } else if (value === "&rsaquo;") {
-      if (currentPage !== Math.ceil(forumList.forums.length / classPerPage)) {
+      if (currentPage !== Math.ceil(forumList.forum_list.length / classPerPage)) {
         setCurrentPage(currentPage + 1);
       }
     } else if (value === "&raquo;" || value === " ...") {
-      setCurrentPage(Math.ceil(forumList.forums.length / classPerPage));
+      setCurrentPage(Math.ceil(forumList.forum_list.length / classPerPage));
     } else {
       setCurrentPage(value);
     }
@@ -157,7 +157,8 @@ const Forum = () => {
                       >
                         <div className="card-body" style={{ height: "520px" }}>
                           {currentForum.map((data, index) => (
-                            <div className="forum-list-container">
+                           
+                            <div className="forum-list-container" key={index}>
                               <div className="left d-flex">
                                 <img
                                   className="img-fluid"
@@ -167,19 +168,17 @@ const Forum = () => {
                                 />
                                 <div className="forum-list-title ms-4">
                                   <p className="m-0">{data.title}</p>
-                                  <span>{data.createdTime}</span>
+                                  <span>{data.createdDate.toString()}</span>
                                 </div>
                               </div>
                               <div className="right">
                                 <span
                                   className="badge badge-outlined text-white me-2"
-                                  key={index}
                                 >
                                   {data.questionCategory}
                                 </span>
                                 <span
                                   className="badge badge-outlined text-white me-2"
-                                  key={index}
                                 >
                                   {data.questionLevel}
                                 </span>
@@ -190,7 +189,7 @@ const Forum = () => {
                           ))}
                         </div>
                         <Pagination
-                          totalClass={forumList.forums.length}
+                          totalClass={forumList.forum_list.length}
                           classPerPage={classPerPage}
                           onPageChange={handlePageChange}
                           currentPage={currentPage}
@@ -219,10 +218,10 @@ const Forum = () => {
                       <p className="mb-4">All Discussions</p>
                       {categories.categories.map((category, index) => {
                         if (index === categories.categories.length - 1) {
-                          return <p>{category.categoryName}</p>;
+                          return <p key={index}>{category.categoryName}</p>;
                         } else {
                           return (
-                            <p className="mb-4">{category.categoryName}</p>
+                            <p className="mb-4" key={index}>{category.categoryName}</p>
                           );
                         }
                       })}

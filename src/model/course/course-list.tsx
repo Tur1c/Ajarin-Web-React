@@ -25,6 +25,11 @@ export interface CategorySchema {
   category_name: string;
 }
 
+export interface JoinDiscussionSchema {
+  email: string|null;
+  id: number;
+}
+
 export interface ClassList {
   id: number;
   title: string;

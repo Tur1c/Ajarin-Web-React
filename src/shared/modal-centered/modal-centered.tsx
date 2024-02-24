@@ -4,19 +4,26 @@ import { FaUser } from "react-icons/fa";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import axios from "../../api/axios";
 import "./modal-centered.css";
+import { JoinDiscussionSchema } from "../../model/course/course-list";
+import { useNavigate } from "react-router-dom";
 
 function ModalCentered(props: any) {
   const isLogged = sessionStorage.getItem("jwt");
   const user = sessionStorage.getItem("user");
-  console.log(isLogged, user);
-  const JOIN_URL = "/api/account/join?email=" + user + "&id=1";
+  const navigate = useNavigate();
+
+  const JOIN_URL = "/api/account/join";
 
   const JoinDiscussion = async (discId: number) => {
-    // alert("join" + discId);
     try {
+      let schema:JoinDiscussionSchema = {
+        email: user,
+        id: discId
+      }
+      console.log(schema.email,schema.id);
       const response = await axios.post(
         JOIN_URL,
-        // JSON.stringify(accountLogin),
+        JSON.stringify(schema),
         {
           headers: {
             "Content-Type": "application/json",
@@ -25,18 +32,14 @@ function ModalCentered(props: any) {
           withCredentials: true,
         }
       );
-      // const accessToken = response?.data?.accessToken;
-      // const roles = response?.data?.roles;
-      // setAuth({ accountLogin, accessToken, roles });
+
+      console.log(response, "asd");
       // const output = transfromToServiceLoginAccountOutput(response.data);
       // const token = output.token;
-      // localStorage.setItem("jwt", token);
-      // localStorage.setItem("user", accountLogin.email);
-      // await login({ accountLogin, token });
-      // navigate("/");
+      navigate("/");
     } catch (error) {
       if (error instanceof AxiosError) {
-        // console.log(error?.response?.data.errorSchema);
+        console.log(error?.response?.data.errorSchema);
       }
     }
   };

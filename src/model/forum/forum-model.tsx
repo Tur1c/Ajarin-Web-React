@@ -1,24 +1,28 @@
 export interface ForumSchema {
-    forum_list: Forum[];
+    forums: Forum[];
 }
 
 export interface Forum {
-    question_id: string;
-    created_time: string;
+    question_id: number;
     question_title: string;
-    total_comment: string;
-    question_category: string;
+    question_desc: string;
     question_level: string;
+    question_image: string;
+    total_comment: number;
+    created_date: Date;
+    question_category: number;
+    user_id: number;
 }
 
 export interface ForumListOutput {
-    forums: ForumOutput[];
+    forum_list: ForumOutput[];
 }
 
 export interface ForumOutput {
-    createdTime: string;
+    questionId: number;
+    createdDate: Date;
     title: string;
-    totalComment: string;
+    totalComment: number;
     questionCategory: number;
     questionLevel: string;
 }
@@ -26,16 +30,20 @@ export interface ForumOutput {
 export function transfromToForumListOutput(
     response: ForumSchema
   ): ForumListOutput {
+    console.log("masuk");
+    console.log(response);
     const result: ForumListOutput = {
-      forums: response.forum_list.map((data) => {
+      forum_list: response.forums.map((data) => {
         return {
-            createdTime: data.created_time,
+            questionId: data.question_id,
+            createdDate: data.created_date,
             title: data.question_title,
             totalComment: data.total_comment,
-            questionCategory: parseInt(data.question_category),
+            questionCategory: data.question_category,
             questionLevel: data.question_level,
         };
       }),
     };
+    console.log(result, "lewat");
     return result;
   }
