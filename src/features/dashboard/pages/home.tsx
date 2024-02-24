@@ -14,6 +14,7 @@ import { Sidebar } from "../../../shared";
 import HomeClass from "../components/home-class";
 import HomeDiscussion from "../components/home-discussion";
 import "./home.css";
+import { Link } from "react-router-dom";
 
 function Home() {
   const isLogged = sessionStorage.getItem("jwt");
@@ -85,12 +86,14 @@ function Home() {
                       <i>Ready to Learn Something New ?</i>
                     </h4>
                   </div>
-                  <div
+                  <Link
                     style={{
                       textAlign: "center",
                       display: "flex",
                       alignItems: "center",
+                      textDecoration: "none"
                     }}
+                    to={"/coin"}
                   >
                     <img
                       className="img-fluid"
@@ -101,10 +104,10 @@ function Home() {
                       src={`assets/coin.png`}
                       alt=""
                     />
-                    <div style={{ textAlign: "center", marginLeft: "1rem" }}>
+                    <div style={{ textAlign: "center", marginLeft: "1rem", color: "#000" }}>
                       Coin <IoIosArrowForward />
                     </div>
-                  </div>
+                  </Link>
                 </div>
                 <div className="content-home" style={{ height: "865px" }}>
                   <Tabs
