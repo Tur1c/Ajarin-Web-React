@@ -133,20 +133,28 @@ function HomeClass() {
                                     {data.title}
                                   </h3>
                                 </div>
-                                {data.category.map((category, index) => (
-                                  <span
-                                    className="badge badge-outlined me-2"
-                                    style={{
-                                      borderColor: "#000",
-                                      backgroundColor: "#fff",
-                                      color: "#000",
-                                      borderRadius: "15px",
-                                    }}
-                                    key={index}
-                                  >
-                                    {category}
-                                  </span>
-                                ))}
+                                <span
+                                  className="badge badge-outlined me-2"
+                                  style={{
+                                    borderColor: "#000",
+                                    backgroundColor: "#fff",
+                                    color: "#000",
+                                    borderRadius: "15px",
+                                  }}
+                                >
+                                  {data.category}
+                                </span>
+                                <span
+                                  className="badge badge-outlined me-2"
+                                  style={{
+                                    borderColor: "#000",
+                                    backgroundColor: "#fff",
+                                    color: "#000",
+                                    borderRadius: "15px",
+                                  }}
+                                >
+                                  {data.level}
+                                </span>
                               </div>
                             </div>
                           </div>

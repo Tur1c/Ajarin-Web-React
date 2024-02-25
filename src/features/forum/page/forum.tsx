@@ -29,6 +29,8 @@ const Forum = () => {
     forum_list: [],
   });
 
+  const [categoryChosen, setCategoryChosen] = useState("All Discussions");
+
   const [sortCategory, setSortCategory] = useState("Latest Activity");
 
   const fetchCategoryData = async () => {
@@ -36,7 +38,7 @@ const Forum = () => {
       const response = await axios.get<ApiResponse<CategorySchema>>(
         CATEGORY_URL,
         {
-          headers: {"Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
@@ -46,13 +48,10 @@ const Forum = () => {
 
   const fetchForumData = async () => {
     try {
-      const response = await axios.get<ApiResponse<ForumSchema>>(
-        FORUM_URL, 
-        {
-          headers: {"Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.get<ApiResponse<ForumSchema>>(FORUM_URL, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
       setForumList(transfromToForumListOutput(response.data.outputSchema));
     } catch (error) {}
   };
@@ -61,7 +60,6 @@ const Forum = () => {
     fetchCategoryData();
     fetchForumData();
   }, []);
-
 
   const [currentPage, setCurrentPage] = useState(1);
   const [classPerPage, setClassPerPage] = useState(5);
@@ -78,7 +76,9 @@ const Forum = () => {
         setCurrentPage(currentPage - 1);
       }
     } else if (value === "&rsaquo;") {
-      if (currentPage !== Math.ceil(forumList.forum_list.length / classPerPage)) {
+      if (
+        currentPage !== Math.ceil(forumList.forum_list.length / classPerPage)
+      ) {
         setCurrentPage(currentPage + 1);
       }
     } else if (value === "&raquo;" || value === " ...") {
@@ -86,6 +86,18 @@ const Forum = () => {
     } else {
       setCurrentPage(value);
     }
+  }
+
+  function handleCategoryChosenForum(category: string) {
+    let count = 0;
+    for (let i = 0; i < forumList.forum_list.length; i++) {
+      if (forumList.forum_list[i].questionCategory === category) {
+        count++;
+      }
+    }
+    console.log(count);
+
+    return count;
   }
 
   return (
@@ -155,45 +167,101 @@ const Forum = () => {
                         className="card"
                         style={{ backgroundColor: "rgba(255, 255, 255, 0.3)" }}
                       >
-                        <div className="card-body" style={{ height: "520px" }}>
-                          {currentForum.map((data, index) => (
-                           
-                            <div className="forum-list-container" key={index}>
-                              <div className="left d-flex">
-                                <img
-                                  className="img-fluid"
-                                  src={`assets/coin.png`}
-                                  alt=""
-                                  style={{ height: "50px" }}
-                                />
-                                <div className="forum-list-title ms-4">
-                                  <p className="m-0">{data.title}</p>
-                                  <span>{data.createdDate.toString()}</span>
+                        {categoryChosen === "All Discussions" ? (
+                          <>
+                            <div
+                              className="card-body"
+                              style={{ height: "520px" }}
+                            >
+                              {currentForum.map((data, index) => (
+                                <div
+                                  className="forum-list-container"
+                                  key={index}
+                                >
+                                  <div className="left d-flex">
+                                    <img
+                                      className="img-fluid"
+                                      src={`assets/coin.png`}
+                                      alt=""
+                                      style={{ height: "50px" }}
+                                    />
+                                    <div className="forum-list-title ms-4">
+                                      <p className="m-0">{data.title}</p>
+                                      <span>{data.createdDate.toString()}</span>
+                                    </div>
+                                  </div>
+                                  <div className="right">
+                                    <span className="badge badge-outlined text-white me-2">
+                                      {data.questionCategory}
+                                    </span>
+                                    <span className="badge badge-outlined text-white me-2">
+                                      {data.questionLevel}
+                                    </span>
+                                    <BiComment />
+                                    <span>{data.totalComment}</span>
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="right">
-                                <span
-                                  className="badge badge-outlined text-white me-2"
-                                >
-                                  {data.questionCategory}
-                                </span>
-                                <span
-                                  className="badge badge-outlined text-white me-2"
-                                >
-                                  {data.questionLevel}
-                                </span>
-                                <BiComment />
-                                <span>{data.totalComment}</span>
-                              </div>
+                              ))}
                             </div>
-                          ))}
-                        </div>
-                        <Pagination
-                          totalClass={forumList.forum_list.length}
-                          classPerPage={classPerPage}
-                          onPageChange={handlePageChange}
-                          currentPage={currentPage}
-                        />
+                            <Pagination
+                              totalClass={forumList.forum_list.length}
+                              classPerPage={classPerPage}
+                              onPageChange={handlePageChange}
+                              currentPage={currentPage}
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <div
+                              className="card-body"
+                              style={{ height: "520px" }}
+                            >
+                              {currentForum.map((data, index) => {
+                                if (data.questionCategory === categoryChosen) {
+                                  return (
+                                    <div
+                                      className="forum-list-container"
+                                      key={index}
+                                    >
+                                      <div className="left d-flex">
+                                        <img
+                                          className="img-fluid"
+                                          src={`assets/coin.png`}
+                                          alt=""
+                                          style={{ height: "50px" }}
+                                        />
+                                        <div className="forum-list-title ms-4">
+                                          <p className="m-0">{data.title}</p>
+                                          <span>
+                                            {data.createdDate.toString()}
+                                          </span>
+                                        </div>
+                                      </div>
+                                      <div className="right">
+                                        <span className="badge badge-outlined text-white me-2">
+                                          {data.questionCategory}
+                                        </span>
+                                        <span className="badge badge-outlined text-white me-2">
+                                          {data.questionLevel}
+                                        </span>
+                                        <BiComment />
+                                        <span>{data.totalComment}</span>
+                                      </div>
+                                    </div>
+                                  );
+                                }
+                              })}
+                            </div>
+                            <Pagination
+                              totalClass={handleCategoryChosenForum(
+                                categoryChosen
+                              )}
+                              classPerPage={classPerPage}
+                              onPageChange={handlePageChange}
+                              currentPage={currentPage}
+                            />
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -215,13 +283,54 @@ const Forum = () => {
                     }}
                   >
                     <div className="card-text" style={{ color: "#fff" }}>
-                      <p className="mb-4">All Discussions</p>
+                      <p>
+                        <button
+                          style={{
+                            backgroundColor: "transparent",
+                            border: "none",
+                            color: "white",
+                          }}
+                          onClick={() => setCategoryChosen("All Discussions")}
+                        >
+                          All Discussions
+                        </button>
+                      </p>
                       {categories.categories.map((category, index) => {
                         if (index === categories.categories.length - 1) {
-                          return <p key={index}>{category.categoryName}</p>;
+                          return (
+                            <p>
+                              <button
+                                style={{
+                                  backgroundColor: "transparent",
+                                  border: "none",
+                                  color: "white",
+                                }}
+                                key={index}
+                                onClick={() =>
+                                  setCategoryChosen(category.categoryName)
+                                }
+                              >
+                                {category.categoryName}
+                              </button>
+                            </p>
+                          );
                         } else {
                           return (
-                            <p className="mb-4" key={index}>{category.categoryName}</p>
+                            <p>
+                              <button
+                                style={{
+                                  backgroundColor: "transparent",
+                                  border: "none",
+                                  color: "white",
+                                }}
+                                key={index}
+                                onClick={() =>
+                                  setCategoryChosen(category.categoryName)
+                                }
+                              >
+                                {category.categoryName}
+                              </button>
+                            </p>
                           );
                         }
                       })}

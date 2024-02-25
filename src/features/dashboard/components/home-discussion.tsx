@@ -19,7 +19,8 @@ function HomeDiscussion() {
   const [classData, setClassData] = useState<ClassList>({
     id: 0,
     title: "",
-    category: [],
+    category: "",
+    level: "",
     date: new Date(),
     description: "",
     endtime: new Date(),
@@ -151,14 +152,16 @@ function HomeDiscussion() {
                                   <h3>{data.title}</h3>
                                   <span>Pengajar</span>
                                 </div>
-                                {data.category.map((category, index) => (
-                                  <span
-                                    className="badge badge-outlined text-white me-2"
-                                    key={index}
-                                  >
-                                    {category}
-                                  </span>
-                                ))}
+                                <span
+                                  className="badge badge-outlined text-white me-2"
+                                >
+                                  {data.category}
+                                </span>
+                                <span
+                                  className="badge badge-outlined text-white me-2"
+                                >
+                                  {data.level}
+                                </span>
                               </div>
                             </div>
                           </div>

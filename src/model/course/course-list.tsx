@@ -11,9 +11,12 @@ export interface Class {
   disc_starttime: Date;
   disc_endtime: Date;
   disc_description: string;
-  disc_category: string;
+  disc_level: string;
   disc_image: string;
-  categories: CategorySchema[];
+  category: {
+    category_id: string;
+    category_name: string;
+  };
 }
 
 export interface DiscussionListOutput {
@@ -39,7 +42,8 @@ export interface ClassList {
   starttime: Date;
   endtime: Date;
   description: string;
-  category: string[];
+  level: string;
+  category: string;
   image: string;
 }
 
@@ -57,9 +61,8 @@ export function transfromToDiscussionListOutput(
         starttime: data.disc_starttime,
         endtime: data.disc_endtime,
         description: data.disc_description,
-        category: data.categories.map((data) => {
-          return data.category_name;
-        }),
+        level: data.disc_level,
+        category: data.category.category_name,
         image: data.disc_image,
       };
     }),
@@ -79,9 +82,12 @@ export interface Course {
   course_chapter: string;
   course_title: string;
   course_description: string;
-  course_category: string;
+  course_level: string;
   course_image: string;
-  categories: CategorySchema[];
+  category: {
+    category_id: string;
+    category_name: string;
+  };
 }
 
 export interface CourseListOutput {
@@ -93,7 +99,8 @@ export interface CourseList {
   chapter: string;
   title: string;
   description: string;
-  category: string[];
+  level: string;
+  category: string;
   image: string;
 }
 
@@ -107,9 +114,8 @@ export function transfromToCourseListOutput(
         chapter: data.course_chapter,
         title: data.course_title,
         description: data.course_description,
-        category: data.categories.map((data) => {
-          return data.category_name;
-        }),
+        level: data.course_level,
+        category: data.category.category_name,
         image: data.course_image,
       };
     }),
