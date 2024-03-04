@@ -23,63 +23,90 @@ const Sidebar = ({ children, account }: Props) => {
   console.log(isLogged);
 
   return (
-    <>
-      <div className="sidebar">
-        <div className="logo_content">
-          <div className="logo">
-            <div className="logo_name">
-              <h1
-                className="fw-bold"
-                style={{ color: "#fff", fontSize: "22px" }}
-              >
-                ajar
-                <span style={{ color: "#F6ECA9" }}>in</span>
-              </h1>
-            </div>
-          </div>
-        </div>
-        <ul className="">
-          <li>
+    <div className="sidebar">
+      <div className="logo-content">
+        <h1 className="fw-bold" style={{ color: "#fff", fontSize: "32px" }}>
+          ajar<span style={{ color: "#F6ECA9" }}>in</span>
+        </h1>
+      </div>
+      <div className="mid-bottom">
+        <div className="list-menu">
+          <div className="menu">
             <NavLink to={"/"}>
               <i>
                 <GoHome />
               </i>
               {/* <span className="links_name">Dashboard</span> */}
             </NavLink>
-            <span className="tooltip">Dashboard</span>
-          </li>
-          <li>
+            <span className="tooltip-text">Home</span>
+          </div>
+          <div className="menu">
             <a href="#">
               <i>
                 <HiOutlineBookOpen />
               </i>
               {/* <span className="links_name">Discussion</span> */}
             </a>
-            <span className="tooltip">Discussion</span>
-          </li>
-          <li>
+            <span className="tooltip-text">MySpace</span>
+          </div>
+          <div className="menu">
             <a href="#">
               <i>
                 <PiEyeglassesLight />
               </i>
               {/* <span className="links_name">Lecturer</span> */}
             </a>
-            <span className="tooltip">Lecturer</span>
-          </li>
-          <li>
+            <span className="tooltip-text">MyLecturer</span>
+          </div>
+          <div className="menu">
             <NavLink to={"/forum"}>
               <i>
                 <IoChatboxEllipsesOutline />
               </i>
               {/* <span className="links_name">Forum</span> */}
             </NavLink>
-            <span className="tooltip">Forum</span>
-          </li>
-        </ul>
+            <span className="tooltip-text">Forum</span>
+          </div>
+        </div>
+
+        {/* <ul className="menu-list">
+        <li>
+          <NavLink to={"/"}>
+            <i>
+              <GoHome />
+            </i>
+          </NavLink>
+          <span className="tooltip">Dashboard</span>
+        </li>
+        <li>
+          <a href="#">
+            <i>
+              <HiOutlineBookOpen />
+            </i>
+          </a>
+          <span className="tooltip">Discussion</span>
+        </li>
+        <li>
+          <a href="#">
+            <i>
+              <PiEyeglassesLight />
+            </i>
+          </a>
+          <span className="tooltip">Lecturer</span>
+        </li>
+        <li>
+          <NavLink to={"/forum"}>
+            <i>
+              <IoChatboxEllipsesOutline />
+            </i>
+          </NavLink>
+          <span className="tooltip">Forum</span>
+        </li>
+      </ul> */}
         <div className="profile_content">
           <div className="profile">
             {isLogged ? (
-              <div className="profile_details" style={{display: "block"}}>
+              <div className="profile_details" style={{ display: "block" }}>
                 <Link to={"/profile"} state={account}>
                   {/* <i> */}
                   <img
@@ -98,8 +125,7 @@ const Sidebar = ({ children, account }: Props) => {
           </div>
         </div>
       </div>
-      <div>{children}</div>
-    </>
+    </div>
   );
 };
 

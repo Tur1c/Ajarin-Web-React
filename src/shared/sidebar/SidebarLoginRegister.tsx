@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { AccountOutput } from "../../model/Account";
+import "./Sidebar.css";
 
 interface Props{
   account: AccountOutput | undefined
@@ -9,14 +10,14 @@ const SidebarLoginRegister = ({account}:Props) => {
     return (
         <>
             <div className="button">
-              <button style={{ backgroundColor: "#F6ECA9" }}>
-                <Link to={"/login"} style={{ color: "#000" }}>
-                  Login
+              <button className="login-btn">
+                <Link to={"/login"} style={{ color: "var(--blue)", fontWeight: "600" }}>
+                  Log In
                 </Link>
               </button>
-              <button>
-                <Link to={"/register"} style={{ color: "#fff" }}>
-                  Signin
+              <button className="signup-btn">
+                <Link to={"/register"} style={{ color: "var(--white)", fontWeight: "600" }}>
+                  Sign Up
                 </Link>
               </button>
             </div>

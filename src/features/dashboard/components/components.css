@@ -1,0 +1,46 @@
+/* :root {
+  --purple: #0a122b;
+  --blue: #11235a;
+  --yelo: #f6eca9;
+  --black: #000;
+  --white: #fff;
+  --grey: #6e6e6e;
+}
+
+body {
+  height: 100%;
+  margin: 0rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  background-color: var(--purple);
+}
+
+.class-wrapper {
+  /* background-color: yellow; */
+}
+
+.content-list {
+  flex-direction: row;
+}
+
+/* col-md-3 d-flex align-items-stretch */
+
+/* .item-list {
+  background-color: brown;
+  display: flex;
+  flex-direction: column;
+  /* margin: 3rem; */
+  /* align-items: stretch; */
+}
+
+.item {
+  background-color: darkkhaki;
+}
+
+.thumbnail {
+  height: 140px;
+  width: 100%;
+  object-fit: fill;
+} */ */

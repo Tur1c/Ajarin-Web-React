@@ -92,94 +92,90 @@ function HomeDiscussion() {
     setShowModal(true);
   };
 
+  const limitTitle = (input: string): string => {
+    // Regex to match only alphabets
+    const title = input;
+    if (title.length >= 30) {
+      return title.slice(0, 30) + "...";
+    }
+
+    // Return only the first 9 characters
+    return title;
+  };
+
   useEffect(() => {
     fetchDataDiscussion();
   }, []);
+
   return (
     <>
-      <div className="class-wrapper">
-        <div
-          className="card"
-          style={{ backgroundColor: "#11235a", border: "none" }}
-        >
-          <div className="card-body">
-            <div className="row">
-              {currentClass.map((data, index) => (
-                <div
-                  className="col-md-3 d-flex align-items-stretch mb-3"
-                  key={index}
-                  onClick={() => handleShowModal(data)}
-                >
-                  <div
-                    className="card"
-                    style={{
-                      background: "transparent",
-                      border: "none",
-                    }}
-                  >
-                    <div className="container-class-header">
-                      <img
-                        className="disc-image img-fluid"
-                        src={`assets/${data.image}`}
-                        alt=""
-                        style={{ height: "10rem" }}
-                      />
-                      <div className="bottom-left">{data.date.toString()}</div>
-                      <div className="top-left p-1">
-                        <img
-                          className="img-fluid"
-                          src={`assets/coin.png`}
-                          alt=""
-                          style={{ height: "24px" }}
-                        />
-                        <span style={{ marginLeft: "5px" }}>{data.price}</span>
-                      </div>
-                      <div className="top-right">Top Right</div>
-                      <div className="bottom-right">
-                        {data.starttime.toString()} - {data.endtime.toString()}
-                      </div>
+      <div className="disc-container">
+        <div className="m-1 d-flex row">
+          <div className="filter">
+            <div className="filter-btn">Subject</div>
+            <div className="filter-btn">Education Level</div>
+          </div>
+          {currentClass.map((data, index) => (
+            <div
+              className="aaa col-md-3 align-items-center mb-2"
+              key={index}
+              onClick={() => handleShowModal(data)}
+            >
+              <div className="thumbnail container-class-header">
+                <img
+                  className="disc-image"
+                  src={`assets/${data.image}`}
+                  alt=""
+                />
+
+                <div className="bottom-left">{data.date.toString()}</div>
+                <div className="top-left">
+                  <img
+                    className="img-fluid"
+                    src={`assets/coin.png`}
+                    alt=""
+                    style={{ height: "14px" }}
+                  />
+                  <span style={{ marginLeft: "5px" }}>{data.price}</span>
+                </div>
+                <div className="top-right">Top Right</div>
+                <div className="bottom-right">
+                  {data.starttime.toString()} - {data.endtime.toString()}
+                </div>
+              </div>
+
+              <div className="class-content">
+                <div className="class">
+                  <div className="d-flex">
+                    <div className="me-2">
+                      <img src={`assets/coin.png`} alt="abc" />
                     </div>
-                    <div className="card-body p-2">
-                      <div className="card-text">
-                        <div className="class-content">
-                          <div className="class">
-                            <div className="d-flex">
-                              <div className="me-2">
-                                <img src={`assets/coin.png`} alt="abc" />
-                              </div>
-                              <div className="d-block">
-                                <div className="title-class mb-2">
-                                  <h3>{data.title}</h3>
-                                  <span>Pengajar</span>
-                                </div>
-                                <span
-                                  className="badge badge-outlined text-white me-2"
-                                >
-                                  {data.category}
-                                </span>
-                                <span
-                                  className="badge badge-outlined text-white me-2"
-                                >
-                                  {data.level}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+
+                    <div className="disc-detail">
+                      <div className="title-class">
+                        <h3>{limitTitle(data.title)}</h3>
+                        <span className="tooltip-title">{data.title}</span>
+                      </div>
+                      <h4 className="lecturer-discussion">Pengajar</h4>
+
+                      <div className="grouping">
+                        <div className="chip">{data.category}</div>
+                        <div className="chip">{data.level}</div>
                       </div>
                     </div>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
-          <Pagination
-            totalClass={classList.classList.length}
-            classPerPage={classPerPage}
-            onPageChange={handlePageChange}
-            currentPage={currentPage}
-          />
+          ))}
         </div>
+
+        <Pagination
+          totalClass={classList.classList.length}
+          classPerPage={classPerPage}
+          onPageChange={handlePageChange}
+          currentPage={currentPage}
+        />
       </div>
 
       <ModalCentered

@@ -1,6 +1,12 @@
+html,
+body,
+:root {
+  height: 100%;
+}
+
 body {
   margin: 0;
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   position: relative;
@@ -14,4 +20,3 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
-

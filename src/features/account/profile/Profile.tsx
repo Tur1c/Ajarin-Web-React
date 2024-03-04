@@ -31,7 +31,7 @@ const Profile = (props: any) => {
     country: "",
     school: "",
     id: "",
-    coin: 0
+    coin: 0,
   });
   const [editAccount, setEditAccount] = useState<AccountOutput>({
     fullName: "",
@@ -46,7 +46,7 @@ const Profile = (props: any) => {
     country: "",
     school: "",
     id: "",
-    coin: 0
+    coin: 0,
   });
 
   const navigate = useNavigate();
@@ -119,319 +119,316 @@ const Profile = (props: any) => {
   }, []);
 
   return (
-    <>
-      <div className="container-profile">
-        <div className="container p-5" style={{ height: "100vh" }}>
-          <div className="row">
-            <div className="col-5">
-              <div className="left-container d-block">
-                <div className="mb-3">
-                  <IoIosCloseCircleOutline
-                    style={{ color: "#fff", fontSize: "54px" }}
-                    onClick={() => navigate(-1)}
-                  />
-                </div>
-                <div className="card" style={{ height: "600px" }}>
-                  <div className="card-body">
-                    <div className="card-title text-center mb-5">
-                      <img
-                        className="img-fluid rounded-circle mb-4"
-                        src={`assets/coin.png`}
-                        alt=""
-                        style={{ height: "20rem" }}
-                      />
-                      <p className="mb-1">{account.fullName}</p>
-                      <p>{account.school}</p>
-                    </div>
-                    <div className="card-text">
-                      <ul className="list-group list-group-flush">
-                        <li className="list-group-item d-flex justify-content-between">
-                          <span>Courses Completed</span>
-                          <span>kast item</span>
-                        </li>
-                        <li className="list-group-item  d-flex justify-content-between">
-                          <span>Courses Ongoing</span>
-                          <span>kast item</span>
-                        </li>
-                        <li className="list-group-item  d-flex justify-content-between">
-                          <span>Discussion Completed</span>
-                          <span>kast item</span>
-                        </li>
-                      </ul>
-                    </div>
+    // <>  </>
+    <div className="container-profile">
+      <div className="container p-5" style={{ height: "100vh" }}>
+        <div className="row">
+          <div className="col-5">
+            <div className="left-container d-block">
+              <div className="mb-3">
+                <IoIosCloseCircleOutline
+                  style={{ color: "#fff", fontSize: "54px" }}
+                  onClick={() => navigate(-1)}
+                />
+              </div>
+              <div className="card" style={{ height: "600px" }}>
+                <div className="card-body">
+                  <div className="card-title text-center mb-5">
+                    <img
+                      className="img-fluid rounded-circle mb-4"
+                      src={`assets/coin.png`}
+                      alt=""
+                      style={{ height: "20rem" }}
+                    />
+                    <p className="mb-1">{account.fullName}</p>
+                    <p>{account.school}</p>
+                  </div>
+                  <div className="card-text">
+                    <ul className="list-group list-group-flush">
+                      <li className="list-group-item d-flex justify-content-between">
+                        <span>Courses Completed</span>
+                        <span>kast item</span>
+                      </li>
+                      <li className="list-group-item  d-flex justify-content-between">
+                        <span>Courses Ongoing</span>
+                        <span>kast item</span>
+                      </li>
+                      <li className="list-group-item  d-flex justify-content-between">
+                        <span>Discussion Completed</span>
+                        <span>kast item</span>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="col-7">
-              <div className="logo_content" style={{ marginBottom: "45px" }}>
-                <div className="logo">
-                  <div className="logo_name">
-                    <h1
-                      className="fw-bold"
-                      style={{ color: "#fff", fontSize: "22px" }}
-                    >
-                      ajar
-                      <span style={{ color: "#F6ECA9" }}>in</span>
-                    </h1>
-                  </div>
+          </div>
+          <div className="col-7">
+            <div className="logo_content" style={{ marginBottom: "45px" }}>
+              <div className="logo">
+                <div className="logo_name">
+                  <h1
+                    className="fw-bold"
+                    style={{ color: "#fff", fontSize: "22px" }}
+                  >
+                    ajar
+                    <span style={{ color: "#F6ECA9" }}>in</span>
+                  </h1>
                 </div>
               </div>
-              <div
-                className="container-profile-detail bg-white"
-                style={{ height: "600px" }}
+            </div>
+            <div
+              className="container-profile-detail bg-white"
+              style={{ height: "600px" }}
+            >
+              <Tabs
+                variant="underline"
+                id="home-tab"
+                activeKey={key}
+                onSelect={(k) => setKey(k || "discussion")}
+                className="mb-3"
+                justify
+                style={{}}
               >
-                <Tabs
-                  variant="underline"
-                  id="home-tab"
-                  activeKey={key}
-                  onSelect={(k) => setKey(k || "discussion")}
-                  className="mb-3"
-                  justify
-                  style={{}}
-                >
-                  <Tab eventKey="profile" title="Profile">
-                    <div className="row">
-                      <div className="col-md-12 border-right">
-                        <div className="p-3">
-                          <div className="d-flex justify-content-between align-items-center mb-2">
-                            <h4 className="text-right">Profile Settings</h4>
+                <Tab eventKey="profile" title="Profile">
+                  <div className="row">
+                    <div className="col-md-12 border-right text-dark">
+                      <div className="p-3">
+                        <div className="d-flex justify-content-between align-items-center mb-2">
+                          <h4 className="text-right">Profile Settings</h4>
+                        </div>
+                        <div className="row mt-2">
+                          <div className="col-md-6">
+                            <label className="labels">First Name</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="First Name"
+                              value={editAccount.firstName}
+                              onChange={(e) =>
+                                setEditAccount({
+                                  ...editAccount,
+                                  firstName: e.target.value,
+                                })
+                              }
+                              disabled={!editProfile}
+                            />
                           </div>
-                          <div className="row mt-2">
-                            <div className="col-md-6">
-                              <label className="labels">First Name</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                placeholder="First Name"
-                                value={editAccount.firstName}
-                                onChange={(e) =>
-                                  setEditAccount({
-                                    ...editAccount,
-                                    firstName: e.target.value,
-                                  })
-                                }
-                                disabled={!editProfile}
-                              />
-                            </div>
-                            <div className="col-md-6">
-                              <label className="labels">Last Name</label>
-                              <input
-                                type="text"
-                                placeholder="Last Name"
-                                className="form-control"
-                                value={editAccount.lastName}
-                                onChange={(e) =>
-                                  setEditAccount({
-                                    ...editAccount,
-                                    lastName: e.target.value,
-                                  })
-                                }
-                                disabled={!editProfile}
-                              />
-                            </div>
+                          <div className="col-md-6">
+                            <label className="labels">Last Name</label>
+                            <input
+                              type="text"
+                              placeholder="Last Name"
+                              className="form-control"
+                              value={editAccount.lastName}
+                              onChange={(e) =>
+                                setEditAccount({
+                                  ...editAccount,
+                                  lastName: e.target.value,
+                                })
+                              }
+                              disabled={!editProfile}
+                            />
                           </div>
-                          <div className="row mt-2">
-                            <div className="col-md-6">
-                              <label className="labels">Age</label>
-                              <input
-                                type="number"
-                                placeholder="Age"
-                                className="form-control"
-                                value={editAccount.age}
-                                onChange={(e) =>
-                                  setEditAccount({
-                                    ...editAccount,
-                                    age: e.target.valueAsNumber,
-                                  })
-                                }
-                                disabled={!editProfile}
-                              />
-                            </div>
-                            <div className="col-md-6">
-                              <label className="labels">Gender</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                value={editAccount.gender}
-                                onChange={(e) =>
-                                  setEditAccount({
-                                    ...editAccount,
-                                    gender: e.target.value,
-                                  })
-                                }
-                                placeholder="Gender"
-                                disabled={!editProfile}
-                              />
-                            </div>
+                        </div>
+                        <div className="row mt-2">
+                          <div className="col-md-6">
+                            <label className="labels">Age</label>
+                            <input
+                              type="number"
+                              placeholder="Age"
+                              className="form-control"
+                              value={editAccount.age}
+                              onChange={(e) =>
+                                setEditAccount({
+                                  ...editAccount,
+                                  age: e.target.valueAsNumber,
+                                })
+                              }
+                              disabled={!editProfile}
+                            />
                           </div>
-                          <div className="row mt-2">
-                            <div className="col-md-6">
-                              <label className="labels">Phone Number</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Phone Number"
-                                value={editAccount.phoneNumber}
-                                onChange={(e) =>
-                                  setEditAccount({
-                                    ...editAccount,
-                                    phoneNumber: e.target.value,
-                                  })
-                                }
-                                disabled={!editProfile}
-                              />
-                            </div>
-                            <div className="col-md-6">
-                              <label className="labels">Email Address</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                value={editAccount.email}
-                                onChange={(e) =>
-                                  setEditAccount({
-                                    ...editAccount,
-                                    email: e.target.value,
-                                  })
-                                }
-                                placeholder="Email Address"
-                                disabled={!editProfile}
-                              />
-                            </div>
+                          <div className="col-md-6">
+                            <label className="labels">Gender</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={editAccount.gender}
+                              onChange={(e) =>
+                                setEditAccount({
+                                  ...editAccount,
+                                  gender: e.target.value,
+                                })
+                              }
+                              placeholder="Gender"
+                              disabled={!editProfile}
+                            />
                           </div>
-                          <div className="row mt-2">
-                            <div className="col-md-6">
-                              <label className="labels">Education Level</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Education"
-                                value={editAccount.education}
-                                onChange={(e) =>
-                                  setEditAccount({
-                                    ...editAccount,
-                                    education: e.target.value,
-                                  })
-                                }
-                                disabled={!editProfile}
-                              />
-                            </div>
-                            <div className="col-md-6">
-                              <label className="labels">
-                                School / Works at
-                              </label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                value={editAccount.school}
-                                onChange={(e) =>
-                                  setEditAccount({
-                                    ...editAccount,
-                                    school: e.target.value,
-                                  })
-                                }
-                                placeholder="School / Works at"
-                                disabled={!editProfile}
-                              />
-                            </div>
+                        </div>
+                        <div className="row mt-2">
+                          <div className="col-md-6">
+                            <label className="labels">Phone Number</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Phone Number"
+                              value={editAccount.phoneNumber}
+                              onChange={(e) =>
+                                setEditAccount({
+                                  ...editAccount,
+                                  phoneNumber: e.target.value,
+                                })
+                              }
+                              disabled={!editProfile}
+                            />
                           </div>
-                          <div className="row mt-2">
-                            <div className="col-md-6">
-                              <label className="labels">City</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                placeholder="City"
-                                value={editAccount.city}
-                                onChange={(e) =>
-                                  setEditAccount({
-                                    ...editAccount,
-                                    city: e.target.value,
-                                  })
-                                }
-                                disabled={!editProfile}
-                              />
-                            </div>
-                            <div className="col-md-6">
-                              <label className="labels">Country</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                value={editAccount.country}
-                                onChange={(e) =>
-                                  setEditAccount({
-                                    ...editAccount,
-                                    country: e.target.value,
-                                  })
-                                }
-                                placeholder="Country"
-                                disabled={!editProfile}
-                              />
-                            </div>
+                          <div className="col-md-6">
+                            <label className="labels">Email Address</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={editAccount.email}
+                              onChange={(e) =>
+                                setEditAccount({
+                                  ...editAccount,
+                                  email: e.target.value,
+                                })
+                              }
+                              placeholder="Email Address"
+                              disabled={!editProfile}
+                            />
                           </div>
-                          <div className="d-block text-center">
-                            <div className="mt-4">
-                              {editProfile ? (
-                                <button
-                                  className="btn btn-primary profile-button"
-                                  type="button"
-                                  style={{
-                                    width: "150px",
-                                    borderRadius: "25px",
-                                    border: "2px solid none",
-                                    backgroundColor: "#11235A",
-                                    color: "#fff",
-                                  }}
-                                  onClick={handleEditProfile}
-                                >
-                                  Save Profile
-                                </button>
-                              ) : (
-                                <button
-                                  className="btn btn-primary profile-button"
-                                  type="button"
-                                  style={{
-                                    width: "150px",
-                                    borderRadius: "25px",
-                                    border: "2px solid none",
-                                    backgroundColor: "#11235A",
-                                    color: "#fff",
-                                  }}
-                                  onClick={() => setEditProfile(true)}
-                                >
-                                  Edit Profile
-                                </button>
-                              )}
-                            </div>
-                            <div className="mt-3">
+                        </div>
+                        <div className="row mt-2">
+                          <div className="col-md-6">
+                            <label className="labels">Education Level</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Education"
+                              value={editAccount.education}
+                              onChange={(e) =>
+                                setEditAccount({
+                                  ...editAccount,
+                                  education: e.target.value,
+                                })
+                              }
+                              disabled={!editProfile}
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label className="labels">School / Works at</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={editAccount.school}
+                              onChange={(e) =>
+                                setEditAccount({
+                                  ...editAccount,
+                                  school: e.target.value,
+                                })
+                              }
+                              placeholder="School / Works at"
+                              disabled={!editProfile}
+                            />
+                          </div>
+                        </div>
+                        <div className="row mt-2">
+                          <div className="col-md-6">
+                            <label className="labels">City</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="City"
+                              value={editAccount.city}
+                              onChange={(e) =>
+                                setEditAccount({
+                                  ...editAccount,
+                                  city: e.target.value,
+                                })
+                              }
+                              disabled={!editProfile}
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label className="labels">Country</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={editAccount.country}
+                              onChange={(e) =>
+                                setEditAccount({
+                                  ...editAccount,
+                                  country: e.target.value,
+                                })
+                              }
+                              placeholder="Country"
+                              disabled={!editProfile}
+                            />
+                          </div>
+                        </div>
+                        <div className="d-block text-center">
+                          <div className="mt-4">
+                            {editProfile ? (
                               <button
-                                className="btn profile-button"
+                                className="btn btn-primary profile-button"
                                 type="button"
                                 style={{
                                   width: "150px",
                                   borderRadius: "25px",
-                                  border: "2px solid #11235A",
-                                  backgroundColor: "#fff",
-                                  color: "#11235A",
+                                  border: "2px solid none",
+                                  backgroundColor: "#11235A",
+                                  color: "#fff",
                                 }}
-                                onClick={handleLogout}
+                                onClick={handleEditProfile}
                               >
-                                <b>Logout</b>
+                                Save Profile
                               </button>
-                            </div>
+                            ) : (
+                              <button
+                                className="btn btn-primary profile-button"
+                                type="button"
+                                style={{
+                                  width: "150px",
+                                  borderRadius: "25px",
+                                  border: "2px solid none",
+                                  backgroundColor: "#11235A",
+                                  color: "#fff",
+                                }}
+                                onClick={() => setEditProfile(true)}
+                              >
+                                Edit Profile
+                              </button>
+                            )}
+                          </div>
+                          <div className="mt-3">
+                            <button
+                              className="btn profile-button"
+                              type="button"
+                              style={{
+                                width: "150px",
+                                borderRadius: "25px",
+                                border: "2px solid #11235A",
+                                backgroundColor: "#fff",
+                                color: "#11235A",
+                              }}
+                              onClick={handleLogout}
+                            >
+                              <b>Logout</b>
+                            </button>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </Tab>
-                  <Tab eventKey="notification" title="Notification"></Tab>
-                </Tabs>
-              </div>
+                  </div>
+                </Tab>
+                <Tab eventKey="notification" title="Notification"></Tab>
+              </Tabs>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

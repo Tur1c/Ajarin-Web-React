@@ -1,55 +1,134 @@
-.sidebar {
+:root {
+  --purple: #0a122b;
+  --blue: #11235a;
+  --yelo: #f6eca9;
+  --black: #000;
+  --white: #fff;
+  --lightblue: #273a72;
+}
+
+/* .sidebar-container {
   height: 100%;
-  width: 95px;
-  background-color: #11235a;
-  top: 0;
-  left: 0;
-  padding: 16px 14px;
-  position: fixed;
-  transition: all 0.5s ease;
-  border-top-right-radius: 25px;
-  border-end-end-radius: 25px;
-}
-
-.sidebar .logo_content .logo {
-  color: #fff;
-  height: 50px;
+  margin: 0rem;
+  overflow: hidden;
   display: flex;
+  flex-direction: column;
+  color: white;
+  background-color: orange;
+} */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  /* margin-left: 0.5rem; */
+  height: 100%;
   width: 100%;
-  pointer-events: none;
+  padding: 1rem;
+  position: relative;
   transition: all 0.5s ease;
+  border-radius: 0.5rem;
+  background-color: var(--blue);
 }
 
-.sidebar .logo_content .logo .logo-name {
+.logo-content {
+  /* background-color: white; */
   font-size: 20px;
   font-weight: 400;
+  text-align: center;
+  padding: 1.5rem 0rem;
 }
 
-.sidebar .logo-name {
-  position: absolute;
+.mid-bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.list-menu {
+  /* background-color: black; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu-list {
+  align-items: center;
+  background-color: peru;
+  justify-content: center;
+}
+
+.sidebar .menu {
+  /* background-color: yellow; */
+  padding: 2rem;
+}
+
+.sidebar .menu svg {
+  color: var(--white);
+  position: relative;
+  height: 35px;
+  width: 35px;
+  opacity: 0.4;
+  /* box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); */
+  /* transform: translate(-50%, -50%); */
+  /* border-radius: 6px; */
+  /* transition: 0s; */
+  /* pointer-events: none; */
+  /* display: block; */
+  /* padding: 1rem; */
+  /* display: inline-block; */
+}
+
+.tooltip-text {
+  visibility: hidden;
+  font-size: 14px;
+  /* width: 100%; */
+  background-color: var(--lightblue);
   color: #fff;
-  left: 50%;
-  top: 6px;
-  font-size: 30px;
-  height: 50px;
-  width: 50px;
   text-align: center;
-  line-height: 50px;
-  transform: translateX(-50%);
+  border-radius: 0.5rem;
+  padding: 0.25rem 1rem;
+  margin-left: 0.5rem;
+  position: absolute;
+  z-index: 1;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.menu:hover .tooltip-text {
+  visibility: visible;
+  transition: 0.25s all ease;
+  transition-delay: 0.5s;
+}
+
+.menu:hover svg {
+  opacity: 1;
+  transition: all 0.5s;
 }
 
 .sidebar ul {
-  margin-top: 20px;
+  margin-top: 2rem;
   padding-left: 0;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  list-style: none;
 }
 
-.sidebar ul li {
+/* .sidebar ul li {
   height: 80px;
   position: relative;
   width: 100%;
-  margin: 0 5px;
   list-style: none;
   line-height: 50px;
+  align-items: center;
+  justify-content: center;
+} */
+
+.sidebar li {
+  position: relative;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
 }
 
 .sidebar ul li .tooltip {
@@ -119,18 +198,16 @@
 } */
 
 .sidebar .profile_content {
-  position: absolute;
+  /* position: relative; */
   color: #fff;
-  bottom: 0;
-  left: 0;
   width: 100%;
 }
 
 .sidebar .profile_content .profile {
-  position: relative;
+  /* position: relative; */
   padding: 10px 6px;
   height: 100px;
-  background: none;
+  /* background: red; */
   transition: all 0.5s ease;
 }
 
@@ -138,7 +215,7 @@
   background: #1d1b31;
 } */
 
-.profile_details{
+.profile_details {
   height: 80px;
   min-width: 40px;
   border-radius: 12px;
@@ -169,7 +246,7 @@
   outline: none;
   background: none;
   width: 100%;
-  border-radius: 10px;
+  border-radius: 5rem;
   border: #fff 1px solid;
   color: #fff;
   font-size: 14px;
@@ -180,6 +257,17 @@
   text-decoration: none;
 }
 
+.profile .button .login-btn {
+  background-color: var(--yelo);
+}
+
+.profile .button .login-btn:hover {
+  opacity: 0.8;
+}
+
+.profile .button .signup-btn:hover {
+  background-color: var(--lightblue);
+}
 
 .profile #logout {
   position: absolute;
@@ -200,7 +288,7 @@
   background: none;
 } */
 
-.home-content {
+/* .home-content {
   position: absolute;
   height: 100%;
   left: 95px;
@@ -208,7 +296,7 @@
   transition: all 0.5s ease;
   overflow: scroll;
   overflow-x: hidden;
-}
+} */
 
 /* .sidebar.active ~ .home-content {
   width: calc(100% - 240px);

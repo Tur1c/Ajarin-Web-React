@@ -61,112 +61,109 @@ function Home() {
   console.log(account);
 
   return (
-    <div>
-      <Sidebar account={account}>
-        <div className="home-content">
-          <div className="container-fluid p-3">
-            <div className="row">
-              <div className="col-9">
-                <div className="search-wrapper mb-3">
-                  <div className="search-container">
-                    <IoSearch />
-                    <input
-                      type="search"
-                      name=""
-                      id="search-input"
-                      placeholder="Search"
-                    />
-                    <button id="search">Search</button>
-                  </div>
-                </div>
-                <div className="home-wrapper">
-                  <div className="greetings">
-                    <h1>Hello, {account.fullName}</h1>
-                    <h4>
-                      <i>Ready to Learn Something New ?</i>
-                    </h4>
-                  </div>
-                  <Link
-                    style={{
-                      textAlign: "center",
-                      display: "flex",
-                      alignItems: "center",
-                      textDecoration: "none",
-                    }}
-                    to={"/coin"}
-                    state={account}
-                  >
-                    <img
-                      className="img-fluid"
-                      style={{
-                        width: "2.5rem",
-                        height: "2.5rem",
-                      }}
-                      src={`assets/coin.png`}
-                      alt=""
-                    />
-                    <div
-                      style={{
-                        textAlign: "center",
-                        marginLeft: "1rem",
-                        color: "#000",
-                      }}
-                    >
-                      {isLogged ? account.coin : <span>Coin</span>}{" "}
-                      <IoIosArrowForward />
-                    </div>
-                  </Link>
-                </div>
-                <div className="content-home" style={{ height: "865px" }}>
-                  <Tabs
-                    id="home-tab"
-                    activeKey={key}
-                    onSelect={(k) => setKey(k || "discussion")}
-                    className="mb-3"
-                    fill
-                  >
-                    <Tab eventKey="discussion" title="Discussion">
-                      <HomeDiscussion />
-                    </Tab>
-                    <Tab eventKey="class" title="Class">
-                      <HomeClass />
-                    </Tab>
-                  </Tabs>
-                </div>
-              </div>
+    <body className="">
+      <div className="all-page">
+        <div className="sidebar-content">
+          <Sidebar account={account}></Sidebar>
+        </div>
 
-              <div className="col-3">
-                <div className="right-menu d-block">
-                  <div
-                    className="card mb-3 text-center"
-                    style={{ height: "20rem" }}
-                  >
-                    <h3 className="card-title p-3">Upcoming Discussion</h3>
-                    <div
-                      className="card-body"
-                      style={{ backgroundColor: "#11235A" }}
-                    >
-                      <div className="card-text"></div>
-                    </div>
-                  </div>
-                  <div className="card p-3" style={{ height: "44rem" }}>
-                    <div className="card-title fw-bold">
-                      <h2 className="mb-0">Statistics</h2>
-                      <small>
-                        You have finished xxx courses in this Month! Keep it up!
-                      </small>
-                    </div>
-                    <div className="card-body">
-                      <div className="card-text"></div>
-                    </div>
-                  </div>
-                </div>
+        <div className="home-content">
+          <div className="greetings">
+            <h1>Hello, {account.fullName}</h1>
+            <h4>
+              <i className="no-italic">Ready to Learn Something New ?</i>
+            </h4>
+          </div>
+
+          <div className="search-wrapper">
+            <div className="search-container">
+              <div className="search-left">
+                <input
+                  type="search"
+                  name=""
+                  id="search-input"
+                  placeholder="Search"
+                />
+              </div>
+              <div className="search-right">
+                <button className="search-button" id="search">
+                  <IoSearch color="#6E6E6E" font-size={"24"} />
+                </button>
               </div>
             </div>
           </div>
+
+          <div className="coin-wrapper">
+            <Link
+              style={{
+                textAlign: "center",
+                display: "flex",
+                alignItems: "center",
+                textDecoration: "none",
+              }}
+              to={"/coin"}
+            >
+              <img
+                className="img-fluid"
+                style={{
+                  width: "36px",
+                  height: "36px",
+                }}
+                src={`assets/coin.png`}
+                alt=""
+              />
+              <div className="coin-link">
+                COIN <IoIosArrowForward />
+              </div>
+            </Link>
+          </div>
+
+          <div className="home-list">
+            <Tabs
+              id="home-tab"
+              activeKey={key}
+              onSelect={(k) => setKey(k || "discussion")}
+              className=""
+              fill
+            >
+              <Tab
+                className=""
+                eventKey="discussion"
+                title="Discussion"
+              >
+                <HomeDiscussion />
+              </Tab>
+
+              <Tab className="" eventKey="class" title="Class">
+                <HomeClass />
+              </Tab>
+            </Tabs>
+            
+          </div>
         </div>
-      </Sidebar>
-    </div>
+
+        <div className="right-home">
+          <div className="upcoming-discussion">
+            <p>Upcoming Discussion</p>
+            <Link
+              style={{
+                textDecoration: "none",
+              }}
+              to={"/discussion"}
+            >
+              <div className="view-all">View All</div>
+            </Link>
+          </div>
+
+          <div className="statistic">
+            <div className="card-title fw-bold">
+              <h2>Statistics</h2>
+              <p>You have finished xxx courses in this Month! Keep it up!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </body>
   );
 }
 
