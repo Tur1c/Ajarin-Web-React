@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Tab, Tabs } from "react-bootstrap";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -18,60 +18,34 @@ const UPDATE_URL = "/api/account/";
 const Profile = (props: any) => {
   const { logout }: any = useAuth();
   const { state } = useLocation();
-  const [account, setAccount] = useState<AccountOutput>({
-    fullName: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    age: 0,
-    gender: "",
-    phoneNumber: "",
-    education: "",
-    city: "",
-    country: "",
-    school: "",
-    id: "",
-    coin: 0,
-  });
-  const [editAccount, setEditAccount] = useState<AccountOutput>({
-    fullName: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    age: 0,
-    gender: "",
-    phoneNumber: "",
-    education: "",
-    city: "",
-    country: "",
-    school: "",
-    id: "",
-    coin: 0,
-  });
+  console.log(state,"di state nih");
+
+  const [account, setAccount] = useState<AccountOutput>(state.account);
+  const [editAccount, setEditAccount] = useState<AccountOutput>(state.account);
 
   const navigate = useNavigate();
 
   const [key, setKey] = useState("profile");
   const [editProfile, setEditProfile] = useState(false);
 
-  const fetchDataAccount = async () => {
-    try {
-      const response = await axios.get<ApiResponse<AccountRegisterSchema>>(
-        HOME_URL,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + sessionStorage.getItem("jwt"),
-          },
-          withCredentials: true,
-        }
-      );
-      if (!state) {
-        setAccount(transfromToAccountOutput(response.data.outputSchema));
-        setEditAccount(transfromToAccountOutput(response.data.outputSchema));
-      }
-    } catch (error) {}
-  };
+  // const fetchDataAccount = async () => {
+  //   try {
+  //     const response = await axios.get<ApiResponse<AccountRegisterSchema>>(
+  //       HOME_URL,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: "Bearer " + sessionStorage.getItem("jwt"),
+  //         },
+  //         withCredentials: true,
+  //       }
+  //     );
+  //     if (!state) {
+  //       setAccount(transfromToAccountOutput(response.data.outputSchema));
+  //       setEditAccount(transfromToAccountOutput(response.data.outputSchema));
+  //     }
+  //   } catch (error) {}
+  // };
 
   const editProfileAccount = async () => {
     try {
@@ -90,6 +64,9 @@ const Profile = (props: any) => {
     } catch {}
   };
 
+  console.log(!state);
+  console.log(account,"di profile");
+  console.log(editAccount,"hadeh");
   const handleLogout = () => {
     setAccount({ ...account, id: account.id });
     logout();
@@ -101,22 +78,22 @@ const Profile = (props: any) => {
     setEditProfile(false);
   };
 
-  useEffect(() => {
-    if (!state) {
-      fetchDataAccount();
-    } else {
-      if (state.fullName.length !== 0) {
-        setAccount((account) => ({
-          ...state,
-        }));
-        setEditAccount((account) => ({
-          ...state,
-        }));
-      } else {
-        fetchDataAccount();
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!state) {
+  //     fetchDataAccount();
+  //   } else {
+  //     if (state.account.fullName.length !== 0) {
+  //       setAccount((account) => ({
+  //         ...state,
+  //       }));
+  //       setEditAccount((account) => ({
+  //         ...state,
+  //       }));
+  //     } else {
+  //       fetchDataAccount();
+  //     }
+  //   }
+  // }, []);
 
   return (
     // <>  </>

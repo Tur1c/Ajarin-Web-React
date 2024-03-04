@@ -34,9 +34,9 @@ function ModalCentered(props: any) {
       );
 
       console.log(response, "asd");
+      window.location.reload();
       // const output = transfromToServiceLoginAccountOutput(response.data);
       // const token = output.token;
-      navigate("/");
     } catch (error) {
       if (error instanceof AxiosError) {
         console.log(error?.response?.data.errorSchema);

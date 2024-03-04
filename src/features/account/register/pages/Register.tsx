@@ -6,6 +6,7 @@ import RegisterPartTwo from "../components/RegisterPartTwo";
 import "./Register.css";
 import { AccountRegisterSchema } from "../../../../model/Account";
 import RegisterSuccess from "../components/RegisterSuccess";
+import { DiscussionListOutput, DiscussionListSchema } from "../../../../model/course/course-list";
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 

@@ -9,6 +9,7 @@ import Coin from "./features/dashboard/pages/coin";
 import Home from "./features/dashboard/pages/home";
 import Forum from "./features/forum/page/forum";
 import { ErrorPage } from "./shared";
+import Calendar from "./features/calendar/Calendar";
 
 function App() {
   // return <RouterProvider router={router}></RouterProvider>;
@@ -32,6 +33,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Coin></Coin>
+            </ProtectedRoute>
+          }
+        ></Route>
+        <Route
+          path="/calendar"
+          element={
+            <ProtectedRoute>
+                <Calendar></Calendar>
             </ProtectedRoute>
           }
         ></Route>

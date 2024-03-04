@@ -1,0 +1,46 @@
+.calendar-prevbutton,
+.calendar-nextbutton {
+  border: none;
+  background: none;
+}
+
+.date-column {
+  border: none;
+  background: none;
+}
+
+.date-span {
+  width: 35px !important;
+  display: inline-block;
+}
+
+.disc-image{
+    position: relative;
+}
+
+.participant-total{
+    position: absolute;
+    left: 1rem;
+    top: 0.8rem;
+    background-color: grey;
+    color: white;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+}
+
+.card{
+    --bs-card-spacer-y: 0; 
+    --bs-card-spacer-x: 0; 
+}
+
+.disc-body{
+    background-color: #11235A;
+    color: white;
+}
+
+.right-container{
+    width: 50%;
+    overflow: hidden;
+}
+
+

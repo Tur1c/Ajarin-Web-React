@@ -2,11 +2,7 @@ import { Link } from "react-router-dom";
 import { AccountOutput } from "../../model/Account";
 import "./Sidebar.css";
 
-interface Props{
-  account: AccountOutput | undefined
-}
-
-const SidebarLoginRegister = ({account}:Props) => {
+const SidebarLoginRegister = () => {
     return (
         <>
             <div className="button">

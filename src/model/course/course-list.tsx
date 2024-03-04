@@ -50,6 +50,7 @@ export interface ClassList {
 export function transfromToDiscussionListOutput(
   response: DiscussionListSchema
 ): DiscussionListOutput {
+  console.log(response,"masuk");
   const result: DiscussionListOutput = {
     classList: response.discussions.map((data) => {
       return {
@@ -65,10 +66,12 @@ export function transfromToDiscussionListOutput(
         category: data.category.category_name,
         image: data.disc_image,
       };
+
     }),
   };
   return result;
 }
+
 
 // course
 

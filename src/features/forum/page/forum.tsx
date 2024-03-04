@@ -102,7 +102,7 @@ const Forum = () => {
 
   return (
     <>
-      <Sidebar account={undefined}>
+      {/* <Sidebar account={undefined}> */}
         <div className="forum-content">
           <div className="container-fluid p-3">
             <div className="row">
@@ -341,7 +341,7 @@ const Forum = () => {
             </div>
           </div>
         </div>
-      </Sidebar>
+      {/* </Sidebar> */}
     </>
   );
 };

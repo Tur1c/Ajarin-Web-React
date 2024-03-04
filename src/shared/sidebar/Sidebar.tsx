@@ -4,24 +4,27 @@ import { HiOutlineBookOpen } from "react-icons/hi2";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import { PiEyeglassesLight } from "react-icons/pi";
 import { Link, NavLink } from "react-router-dom";
-import { AccountOutput } from "../../model/Account";
+import { AccountOutput, StudentDiscOutput } from "../../model/Account";
 import "./Sidebar.css";
 import SidebarLoginRegister from "./SidebarLoginRegister";
 
 interface Props {
   children?: ReactNode;
-  account: AccountOutput | undefined;
+  account: AccountOutput;
+  accountDisc: StudentDiscOutput;
 }
 
-const addElement = () => {
-  let sidebar = document.querySelector(".sidebar");
-  sidebar?.classList.toggle("active");
-};
+// const addElement = () => {
+//   let sidebar = document.querySelector(".sidebar");
+//   sidebar?.classList.toggle("active");
+// };
 
-const Sidebar = ({ children, account }: Props) => {
+const Sidebar = ({ children, account, accountDisc }: Props) => {
   const isLogged = sessionStorage.getItem("jwt");
   console.log(isLogged);
 
+  
+  console.log(account, "di Sidebar");
   return (
     <div className="sidebar">
       <div className="logo-content">
@@ -41,12 +44,12 @@ const Sidebar = ({ children, account }: Props) => {
             <span className="tooltip-text">Home</span>
           </div>
           <div className="menu">
-            <a href="#">
+            <NavLink to={"/calendar"} state={{account,accountDisc}}>
               <i>
                 <HiOutlineBookOpen />
               </i>
+            </NavLink>
               {/* <span className="links_name">Discussion</span> */}
-            </a>
             <span className="tooltip-text">MySpace</span>
           </div>
           <div className="menu">
@@ -59,7 +62,7 @@ const Sidebar = ({ children, account }: Props) => {
             <span className="tooltip-text">MyLecturer</span>
           </div>
           <div className="menu">
-            <NavLink to={"/forum"}>
+            <NavLink to={"/forum"} state={{account,accountDisc}}>
               <i>
                 <IoChatboxEllipsesOutline />
               </i>
@@ -106,8 +109,8 @@ const Sidebar = ({ children, account }: Props) => {
         <div className="profile_content">
           <div className="profile">
             {isLogged ? (
-              <div className="profile_details" style={{ display: "block" }}>
-                <Link to={"/profile"} state={account}>
+              <div className="profile_details" style={{display: "block"}}>
+                <Link to={"/profile"} state={{account,accountDisc}}>
                   {/* <i> */}
                   <img
                     className="img-fluid"
@@ -120,7 +123,7 @@ const Sidebar = ({ children, account }: Props) => {
                 {/* <img src="profile.jpg" alt="profile" /> */}
               </div>
             ) : (
-              <SidebarLoginRegister account={account} />
+              <SidebarLoginRegister/>
             )}
           </div>
         </div>

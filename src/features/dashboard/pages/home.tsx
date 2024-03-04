@@ -7,7 +7,9 @@ import { Link } from "react-router-dom";
 import axios from "../../../api/axios";
 import {
   AccountOutput,
-  AccountRegisterSchema,
+  AccountSchema,
+  StudentDiscOutput,
+  transformToAccountDiscOutput,
   transfromToAccountOutput,
 } from "../../../model/Account";
 import { ApiResponse } from "../../../model/schema/base_schema";
@@ -31,14 +33,18 @@ function Home() {
     city: "",
     country: "",
     school: "",
-    coin: 0,
+    coin: 0 
   });
+
+  const [accountDisc, setAccountDisc] = useState<StudentDiscOutput>({
+    studentdisc_list: [],
+  })
   const [key, setKey] = useState("discussion");
   const HOME_URL = "/api/account?email=" + email;
 
   const fetchDataAccount = async () => {
     try {
-      const response = await axios.get<ApiResponse<AccountRegisterSchema>>(
+      const response = await axios.get<ApiResponse<AccountSchema>>(
         HOME_URL,
         {
           headers: {
@@ -48,7 +54,10 @@ function Home() {
           withCredentials: true,
         }
       );
+      console.log(response.data.outputSchema);
       setAccount(transfromToAccountOutput(response.data.outputSchema));
+      setAccountDisc(transformToAccountDiscOutput(response.data.outputSchema));
+      console.log(accountDisc,"ini disc");
     } catch (error) {}
   };
 
@@ -64,7 +73,7 @@ function Home() {
     <body className="">
       <div className="all-page">
         <div className="sidebar-content">
-          <Sidebar account={account}></Sidebar>
+          <Sidebar account={account} accountDisc={accountDisc}></Sidebar>
         </div>
 
         <div className="home-content">
