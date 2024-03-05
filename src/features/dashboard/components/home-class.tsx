@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import axios from "../../../api/axios";
 import {
+  CourseList,
   CourseListOutput,
   CourseListSchema,
   transfromToCourseListOutput,
 } from "../../../model/course/course-list";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import { Pagination } from "../../../shared";
+import { Navigate, useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 const COURSE_URL = "/api/course";
 
@@ -23,6 +26,8 @@ function HomeClass() {
     firstCourseIndex,
     lastCourseIndex
   );
+
+  const navigate = useNavigate();
 
   function handlePageChangeCourse(value: any) {
     if (value === "&laquo;" || value === "... ") {
@@ -56,7 +61,7 @@ function HomeClass() {
           withCredentials: true,
         }
       );
-      console.log(response);
+      console.log(response, "course");
       setCourseList(transfromToCourseListOutput(response.data.outputSchema));
     } catch (error) {}
   };
@@ -64,6 +69,8 @@ function HomeClass() {
   useEffect(() => {
     fetchDataCourse();
   }, []);
+
+  console.log(courseList,"courseluist");
 
   return (
     <>
@@ -80,27 +87,29 @@ function HomeClass() {
                   key={index}
                 >
                   <div className="card" style={{ border: "none" }}>
-                    <div className="container-class-header">
-                      <img
-                        className="disc-image img-fluid"
-                        src={`assets/${data.image}`}
-                        alt=""
-                        style={{ height: "20rem" }}
-                      />
-
-                      <div className="top-left p-1">
+                    <Link to={'/course/'+ data.title} state={data}>
+                      <div className="container-class-header">
                         <img
-                          className="img-fluid"
-                          src={`assets/coin.png`}
+                          className="disc-image img-fluid"
+                          src={`assets/${data.image}`}
                           alt=""
-                          style={{ height: "24px" }}
+                          style={{ height: "10rem" }}
                         />
-                        <span style={{ marginLeft: "5px" }}>{data.price}</span>
+
+                        <div className="top-left p-1">
+                          <img
+                            className="img-fluid"
+                            src={`assets/coin.png`}
+                            alt=""
+                            style={{ height: "24px" }}
+                          />
+                          <span style={{ marginLeft: "5px" }}>{data.price}</span>
+                        </div>
+                        <div className="top-right" style={{ fontSize: "14px" }}>
+                          {data.chapter} chapter
+                        </div>
                       </div>
-                      <div className="top-right" style={{ fontSize: "14px" }}>
-                        {data.chapter} chapter
-                      </div>
-                    </div>
+                    </Link>
                     <div className="card-body p-2">
                       <div className="card-text">
                         <div className="class-content">

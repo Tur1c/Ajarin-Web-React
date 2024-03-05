@@ -58,10 +58,11 @@ export interface AccountOutput{
   country: string;
   school: string;
   coin: number;
+  studentdisc_list: StudentDiscList[];
 }
 
 export function transfromToAccountOutput(
-  response: AccountRegisterSchema
+  response: AccountSchema
 ) : AccountOutput {
   console.log(response,"asdd");
   const result: AccountOutput = {
@@ -77,16 +78,22 @@ export function transfromToAccountOutput(
     city: response.city,
     country: response.country,
     school: response.school,
-    coin: response.coin
+    coin: response.coin,
+    studentdisc_list: response.studentdisc_list.map( (data) => {
+      return {
+        disc: data.disc,
+        status: data.status
+      };
+    }),
   };
   console.log(result);
   return result;
 }
 
 //AccountDiscussion
-export interface StudentDiscSchema {
-  studentdisc_list: StudentDisc[];
-}
+// export interface StudentDiscSchema {
+//   studentdisc_list: StudentDisc[];
+// }
 
 export interface StudentDisc {
   disc: Class;
@@ -102,18 +109,18 @@ export interface StudentDiscList {
   status: string;
 }
 
-export function transformToAccountDiscOutput(response:AccountSchema):StudentDiscOutput{
-  const result:StudentDiscOutput = {
-    studentdisc_list: response.studentdisc_list.map( (data) => {
-      return {
-        disc: data.disc,
-        status: data.status
-      };
-    }),
-  }
+// export function transformToAccountDiscOutput(response:AccountSchema):StudentDiscOutput{
+//   const result:StudentDiscOutput = {
+//     studentdisc_list: response.studentdisc_list.map( (data) => {
+//       return {
+//         disc: data.disc,
+//         status: data.status
+//       };
+//     }),
+//   }
 
-  console.log(result, "apa");
-  return result;
+//   console.log(result, "apa");
+//   return result;
     
-}
+// }
 

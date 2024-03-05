@@ -5,9 +5,10 @@ import {
     BiSolidChevronRightSquare,
 } from "react-icons/bi";
 import { useLocation } from "react-router-dom";
-import { StudentDiscOutput } from "../../model/Account";
+import { StudentDiscList, StudentDiscOutput } from "../../model/Account";
 import { getMonth } from "../../model/calendar/calendar-detail";
 import "./Calendar.css";
+import { Sidebar } from "../../shared";
 
 const Calendar = () => {
   const { state } = useLocation();
@@ -20,14 +21,15 @@ const Calendar = () => {
 
   const [selectedDate, setSelectedDate] = useState(dayjs().format("YYYY-MM-DD"));
 
-  const accountDisc: StudentDiscOutput = state.accountDisc;
+  const account = state;
+  const accountDisc: StudentDiscList[] = state.studentdisc_list;
     console.log(accountDisc, "png");
-  const image:string|undefined = accountDisc.studentdisc_list.at(0)?.disc.disc_image;
-  //   console.log(image);
+  const image:string|undefined = accountDisc.at(0)?.disc.disc_image;
+    // console.log(image);
   
   const getDiscData = (date:any) => {
 
-    const discData = accountDisc.studentdisc_list.filter(
+    const discData = accountDisc.filter(
         (x) => x.disc.disc_date.toString() === date
         ).sort((x,y) => (x.disc.disc_starttime.toString().localeCompare(y.disc.disc_starttime.toString())));
 
@@ -49,7 +51,7 @@ const [disc, setDisc] = useState(getDiscData(dayjs().format("YYYY-MM-DD")));
 //     (i) => i.disc.disc_date.toString() === testDate
 //   );
 
-  var testagain = accountDisc.studentdisc_list.filter(
+  var testagain = accountDisc.filter(
     (x) => x.disc.disc_date.toString() !== testDate
   )
   console.log(accountDisc,testagain, "ehe");
@@ -73,7 +75,7 @@ const [disc, setDisc] = useState(getDiscData(dayjs().format("YYYY-MM-DD")));
   };
 
   const findDateonDisc = (date:any) => {
-    return accountDisc.studentdisc_list.some(
+    return accountDisc.some(
         (x) => x.disc.disc_date === date
     )
   };
@@ -96,10 +98,13 @@ const [disc, setDisc] = useState(getDiscData(dayjs().format("YYYY-MM-DD")));
 
   return (
     <>
-      {/* <Sidebar account={undefined}/> */}
+      
       <div className="container-fluid ms-5" style={{ height: "100vh" }}>
         <div className="row align-items-center h-100">
-          <div className="mt-5 col-4 h-50 border-end">
+        <div className="sidebar-content">
+          <Sidebar account={account}></Sidebar>
+        </div>
+          <div className="mt-3 col-4 h-75 border-end bg-white text-dark rounded align-items-center">
             <header className="d-flex justify-content-between">
               <p className="text-gray-500 font-bold">
                 {dayjs(new Date(dayjs().year(), currMonthIdx)).format(
@@ -161,7 +166,7 @@ const [disc, setDisc] = useState(getDiscData(dayjs().format("YYYY-MM-DD")));
             </div>
           </div>
 
-          <div className="container mt-3 col-8 h-50">
+          <div className="container mt-3 col-7 h-75 bg-white text-dark rounded" style={{ marginLeft:0 }}>
             { !disc?.length ? 
                 ( <p>No Discussion</p> )
                 :

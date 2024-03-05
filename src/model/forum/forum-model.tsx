@@ -1,4 +1,4 @@
-import { AccountOutput, AccountRegisterSchema, transfromToAccountOutput } from "../Account";
+import { AccountOutput, AccountRegisterSchema, AccountSchema, transfromToAccountOutput } from "../Account";
 
 export interface ForumSchema {
     forums: Forum[];
@@ -16,7 +16,7 @@ export interface Forum {
       category_id: number;
       category_name: string;
     };
-    user_id: AccountRegisterSchema;
+    user_id: AccountSchema;
 }
 
 export interface ForumListOutput {

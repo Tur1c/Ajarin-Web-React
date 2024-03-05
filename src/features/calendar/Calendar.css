@@ -44,3 +44,9 @@
 }
 
 
+.sidebar-content{
+    position: relative;
+    flex: 0.075;
+  /* background-color: #f6eca9; */
+    margin-right: 0.5rem;
+}

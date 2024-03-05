@@ -24,7 +24,7 @@ body {
 /* Note: All page ini terapin aja di semua css */
 .all-page {
   display: flex;
-  /* height: auto; */
+  height: 98vh;
   background-color: var(--purple);
   /* overflow: auto; */
   /* padding: 0.5rem; */
@@ -98,10 +98,10 @@ body {
   width: 100%;
 }
 
-search-input {
+/* search-input { */
   /* border: none; */
   /* background-color: rebeccapurple; */
-}
+/* } */
 
 .search-button {
   background-color: white;

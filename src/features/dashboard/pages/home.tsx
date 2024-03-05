@@ -9,7 +9,7 @@ import {
   AccountOutput,
   AccountSchema,
   StudentDiscOutput,
-  transformToAccountDiscOutput,
+  // transformToAccountDiscOutput,
   transfromToAccountOutput,
 } from "../../../model/Account";
 import { ApiResponse } from "../../../model/schema/base_schema";
@@ -33,12 +33,13 @@ function Home() {
     city: "",
     country: "",
     school: "",
-    coin: 0 
+    coin: 0,
+    studentdisc_list: [], 
   });
 
-  const [accountDisc, setAccountDisc] = useState<StudentDiscOutput>({
-    studentdisc_list: [],
-  })
+  // const [accountDisc, setAccountDisc] = useState<StudentDiscOutput>({
+  //   studentdisc_list: [],
+  // })
   const [key, setKey] = useState("discussion");
   const HOME_URL = "/api/account?email=" + email;
 
@@ -56,8 +57,7 @@ function Home() {
       );
       console.log(response.data.outputSchema);
       setAccount(transfromToAccountOutput(response.data.outputSchema));
-      setAccountDisc(transformToAccountDiscOutput(response.data.outputSchema));
-      console.log(accountDisc,"ini disc");
+      // setAccountDisc(transformToAccountDiscOutput(response.data.outputSchema));
     } catch (error) {}
   };
 
@@ -70,10 +70,10 @@ function Home() {
   console.log(account);
 
   return (
-    <body className="">
+    // <body className="">
       <div className="all-page">
         <div className="sidebar-content">
-          <Sidebar account={account} accountDisc={accountDisc}></Sidebar>
+          <Sidebar account={account}></Sidebar>
         </div>
 
         <div className="home-content">
@@ -172,7 +172,7 @@ function Home() {
           </div>
         </div>
       </div>
-    </body>
+    // </body>
   );
 }
 

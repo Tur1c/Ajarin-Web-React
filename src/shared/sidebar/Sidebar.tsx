@@ -11,7 +11,6 @@ import SidebarLoginRegister from "./SidebarLoginRegister";
 interface Props {
   children?: ReactNode;
   account: AccountOutput;
-  accountDisc: StudentDiscOutput;
 }
 
 // const addElement = () => {
@@ -19,12 +18,10 @@ interface Props {
 //   sidebar?.classList.toggle("active");
 // };
 
-const Sidebar = ({ children, account, accountDisc }: Props) => {
+const Sidebar = ({ children, account }: Props) => {
   const isLogged = sessionStorage.getItem("jwt");
   console.log(isLogged);
 
-  
-  console.log(account, "di Sidebar");
   return (
     <div className="sidebar">
       <div className="logo-content">
@@ -44,7 +41,7 @@ const Sidebar = ({ children, account, accountDisc }: Props) => {
             <span className="tooltip-text">Home</span>
           </div>
           <div className="menu">
-            <NavLink to={"/calendar"} state={{account,accountDisc}}>
+            <NavLink to={"/calendar"} state={account}>
               <i>
                 <HiOutlineBookOpen />
               </i>
@@ -62,7 +59,7 @@ const Sidebar = ({ children, account, accountDisc }: Props) => {
             <span className="tooltip-text">MyLecturer</span>
           </div>
           <div className="menu">
-            <NavLink to={"/forum"} state={{account,accountDisc}}>
+            <NavLink to={"/forum"} state={account}>
               <i>
                 <IoChatboxEllipsesOutline />
               </i>
@@ -110,7 +107,7 @@ const Sidebar = ({ children, account, accountDisc }: Props) => {
           <div className="profile">
             {isLogged ? (
               <div className="profile_details" style={{display: "block"}}>
-                <Link to={"/profile"} state={{account,accountDisc}}>
+                <Link to={"/profile"} state={account}>
                   {/* <i> */}
                   <img
                     className="img-fluid"

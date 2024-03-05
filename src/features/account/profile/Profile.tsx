@@ -7,6 +7,7 @@ import { useAuth } from "../../../context/AuthProvider";
 import {
   AccountOutput,
   AccountRegisterSchema,
+  AccountSchema,
   transfromToAccountOutput,
 } from "../../../model/Account";
 import { ApiResponse } from "../../../model/schema/base_schema";
@@ -49,7 +50,7 @@ const Profile = (props: any) => {
 
   const editProfileAccount = async () => {
     try {
-      const response = await axios.put<ApiResponse<AccountRegisterSchema>>(
+      const response = await axios.put<ApiResponse<AccountSchema>>(
         UPDATE_URL + account.id,
         JSON.stringify(editAccount),
         {

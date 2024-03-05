@@ -5,6 +5,7 @@ import axios from "../../../api/axios";
 import {
   AccountOutput,
   AccountRegisterSchema,
+  AccountSchema,
   transfromToAccountOutput,
 } from "../../../model/Account";
 import { ApiResponse } from "../../../model/schema/base_schema";
@@ -67,6 +68,7 @@ function Coin() {
     school: "",
     id: "",
     coin: 0,
+    studentdisc_list: [],
   });
 
   const [test, setTest] = useState({
@@ -77,7 +79,7 @@ function Coin() {
   const topupCoin = async (value: string, price: string) => {
     let topupAccount = {...account, coin: account.coin + parseInt(value)}
     try {
-      const response = await axios.put<ApiResponse<AccountRegisterSchema>>(
+      const response = await axios.put<ApiResponse<AccountSchema>>(
         UPDATE_URL + account.id,
         JSON.stringify(topupAccount),
         {

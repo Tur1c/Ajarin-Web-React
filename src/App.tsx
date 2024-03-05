@@ -10,6 +10,7 @@ import Home from "./features/dashboard/pages/home";
 import Forum from "./features/forum/page/forum";
 import { ErrorPage } from "./shared";
 import Calendar from "./features/calendar/Calendar";
+import CourseDetail from "./features/course_detail/courseDetail";
 
 function App() {
   // return <RouterProvider router={router}></RouterProvider>;
@@ -20,6 +21,7 @@ function App() {
         <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/register" element={<Register></Register>}></Route>
         <Route path="/forum" element={<Forum></Forum>}></Route>
+        <Route path="/course/:course_title" element={<CourseDetail></CourseDetail>}></Route>
         <Route
           path="/profile"
           element={

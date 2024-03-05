@@ -91,6 +91,16 @@ export interface Course {
     category_id: string;
     category_name: string;
   };
+  course_details: CourseDetailSchema[];
+}
+
+export interface CourseDetailSchema{
+    course_detail_id: number;
+    course_id: number;
+    course_detail_chapter: number;
+    chapter_title: string;
+    chapter_video: string;
+    chapter_thumbnail: string;
 }
 
 export interface CourseListOutput {
@@ -105,6 +115,14 @@ export interface CourseList {
   level: string;
   category: string;
   image: string;
+  course_detail: CourseDetailOutput[]
+}
+
+export interface CourseDetailOutput{
+  course_detail_chapter: number;
+  chapter_title: string;
+  chapter_video: string;
+  chapter_thumbnail: string;
 }
 
 export function transfromToCourseListOutput(
@@ -120,6 +138,14 @@ export function transfromToCourseListOutput(
         level: data.course_level,
         category: data.category.category_name,
         image: data.course_image,
+        course_detail: data.course_details.map( (course) => {
+          return {
+            course_detail_chapter: course.course_detail_chapter,
+            chapter_title: course.chapter_title,
+            chapter_video: course.chapter_video,
+            chapter_thumbnail: course.chapter_thumbnail
+          }
+        })
       };
     }),
   };

@@ -16,6 +16,8 @@ import {
 import { ApiResponse } from "../../../model/schema/base_schema";
 import { Pagination, Sidebar } from "../../../shared";
 import "./forum.css";
+import { useLocation } from "react-router";
+import { AccountOutput } from "../../../model/Account";
 
 const CATEGORY_URL = "/api/category";
 const FORUM_URL = "/api/forum";
@@ -28,6 +30,11 @@ const Forum = () => {
   const [forumList, setForumList] = useState<ForumListOutput>({
     forum_list: [],
   });
+
+  const {state} = useLocation();
+
+  const account:AccountOutput = !state.firstName ? undefined : state;
+  console.log(account);
 
   const [categoryChosen, setCategoryChosen] = useState("All Discussions");
 

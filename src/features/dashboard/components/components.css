@@ -19,7 +19,7 @@ body {
 
 .class-wrapper {
   /* background-color: yellow; */
-}
+/* } */
 
 .content-list {
   flex-direction: row;
@@ -33,7 +33,7 @@ body {
   flex-direction: column;
   /* margin: 3rem; */
   /* align-items: stretch; */
-}
+/* } */
 
 .item {
   background-color: darkkhaki;
@@ -43,4 +43,4 @@ body {
   height: 140px;
   width: 100%;
   object-fit: fill;
-} */ */
+}
