@@ -1,14 +1,14 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { AxiosError } from "axios";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "../../../api/axios";
+import { useAuth } from "../../../context/AuthProvider";
 import { AccountLoginSchema } from "../../../model/Account";
+import { ApiResponse } from "../../../model/schema/base_schema";
+import { transfromToServiceLoginAccountOutput } from "../../../service/Account/account.service";
 import Navbar from "../../../shared/navbar/Navbar";
 import learningImg from "./Learning 1.png";
 import "./Login.css";
-import axios from "../../../api/axios";
-import { ApiResponse } from "../../../model/schema/base_schema";
-import { transfromToServiceLoginAccountOutput } from "../../../service/Account/account.service";
-import { AxiosError } from "axios";
-import { useAuth } from "../../../context/AuthProvider";
 
 const LOGIN_URL = "/api/account/login";
 
@@ -56,19 +56,13 @@ function Login() {
       if (error instanceof AxiosError) {
         console.log(error?.response?.data.errorSchema);
       }
+      setErrMsg("Wrong email or password! Please try again");
     }
   };
 
   return (
     <section>
       <Navbar>
-        <p
-          ref={errRef}
-          className={errMsg ? "errmsg" : "offscreen"}
-          aria-live="assertive"
-        >
-          {errMsg}
-        </p>
         <div className="wrapper d-flex">
           <div className="flex-fill">
             <form onSubmit={handleSubmit}>
@@ -83,7 +77,7 @@ function Login() {
                 </Link>
               </div>
               <div className="inputs">
-                <div className="mb-5">
+                <div className="mb-4">
                   <div className="input-box">
                     <input
                       type="text"
@@ -114,8 +108,15 @@ function Login() {
                     />
                     <label>Password</label>
                   </div>
+                <span
+                  ref={errRef}
+                  className={errMsg ? "fw-bold" : ""}
+                  aria-live="assertive"
+                  style={{color: "#ff3d41"}}
+                >
+                  {errMsg}
+                </span>
                 </div>
-
                 <div
                   className="d-flex justify-content-between align-items-center"
                   style={{ width: "70%" }}

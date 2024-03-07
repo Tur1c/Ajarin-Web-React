@@ -138,7 +138,7 @@ export function transfromToCourseListOutput(
         level: data.course_level,
         category: data.category.category_name,
         image: data.course_image,
-        course_detail: data.course_details.map( (course) => {
+        course_detail: data.course_details?.map( (course) => {
           return {
             course_detail_chapter: course.course_detail_chapter,
             chapter_title: course.chapter_title,
@@ -149,5 +149,7 @@ export function transfromToCourseListOutput(
       };
     }),
   };
+  console.log(result, 'model class');
+  
   return result;
 }

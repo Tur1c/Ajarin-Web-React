@@ -49,6 +49,9 @@ export function transfromToForumListOutput(
         };
       }),
     };
-    console.log(result, "lewat");
+    console.log(result, "model");
+    result.forum_list.sort((a, b) =>
+        a.createdDate < b.createdDate ? 1 : -1
+      );
     return result;
   }

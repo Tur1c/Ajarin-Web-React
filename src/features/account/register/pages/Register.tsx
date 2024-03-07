@@ -26,7 +26,10 @@ function Register() {
     city: "",
     country: "",
     school: "",
-    coin: 0
+    coin: 0,
+    pic_name: "",
+    pic_type: "",
+    pic_url: ""
   });
 
   const errRef = useRef<HTMLParagraphElement>(null);

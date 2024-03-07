@@ -2,36 +2,33 @@ import { AxiosError } from "axios";
 import Modal from "react-bootstrap/Modal";
 import { FaUser } from "react-icons/fa";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-import axios from "../../api/axios";
-import "./modal-centered.css";
-import { JoinDiscussionSchema } from "../../model/course/course-list";
 import { useNavigate } from "react-router-dom";
+import axios from "../../api/axios";
+import { JoinDiscussionSchema } from "../../model/course/course-list";
+import "./modal-centered.css";
 
 function ModalCentered(props: any) {
   const isLogged = sessionStorage.getItem("jwt");
   const user = sessionStorage.getItem("user");
   const navigate = useNavigate();
+  console.log(props, "modalehehe");
 
   const JOIN_URL = "/api/account/join";
 
   const JoinDiscussion = async (discId: number) => {
     try {
-      let schema:JoinDiscussionSchema = {
+      let schema: JoinDiscussionSchema = {
         email: user,
-        id: discId
-      }
-      console.log(schema.email,schema.id);
-      const response = await axios.post(
-        JOIN_URL,
-        JSON.stringify(schema),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + sessionStorage.getItem("jwt"),
-          },
-          withCredentials: true,
-        }
-      );
+        id: discId,
+      };
+      console.log(schema.email, schema.id);
+      const response = await axios.post(JOIN_URL, JSON.stringify(schema), {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + sessionStorage.getItem("jwt"),
+        },
+        withCredentials: true,
+      });
 
       console.log(response, "asd");
       window.location.reload();
@@ -51,21 +48,16 @@ function ModalCentered(props: any) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header className="p-0">
-        <div className="container-class-header">
-          <img
-            className="disc-image img-fluid"
-            src={`assets/${props.data.image}`}
-            alt=""
-          />
-          <div className="top-left p-1" style={{ backgroundColor: "#000" }}>
+      <Modal.Header className="p-0 d-block">
+        <div className="container-class-header d-flex justify-content-around" style={{height: "2rem"}}>
+          <div className="p-1" style={{ backgroundColor: "#000" }}>
             <IoIosCloseCircleOutline
               onClick={props.onHide}
               style={{ color: "#fff" }}
             />
           </div>
           <div
-            className="centered"
+            className=""
             style={{ backgroundColor: "#596FB7", width: "450px" }}
           >
             <span>
@@ -73,12 +65,26 @@ function ModalCentered(props: any) {
               {props.data.endtime.toString()}
             </span>
           </div>
+          <div className="p-1" style={{ backgroundColor: "#000" }}>
+            <IoIosCloseCircleOutline
+              onClick={props.onHide}
+              style={{ color: "#fff" }}
+            />
+          </div>
         </div>
+          <div className="container-class-header pt-3">
+            <img
+              className=""
+              style={{width: "80%"}}
+              src={`assets/${props.data.image}`}
+              alt=""
+            />
+          </div>
       </Modal.Header>
       <Modal.Body className="p-5">
         <div className="modal-body-container">
           <div className="header d-flex justify-content-between">
-            <div className="header-title">
+            <div className="header-title text-dark">
               <h2>
                 <b>{props.data.title}</b>
               </h2>
@@ -106,7 +112,7 @@ function ModalCentered(props: any) {
               </div>
             </div>
           </div>
-          <p>{props.data.description}</p>
+          <p className="text-dark">{props.data.description}</p>
         </div>
       </Modal.Body>
       <Modal.Footer className="p-0">

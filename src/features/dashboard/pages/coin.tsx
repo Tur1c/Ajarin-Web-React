@@ -69,15 +69,16 @@ function Coin() {
     id: "",
     coin: 0,
     studentdisc_list: [],
+    urlImage: ""
   });
 
   const [test, setTest] = useState({
     fname: "",
-    lname: ""
-  })
+    lname: "",
+  });
 
   const topupCoin = async (value: string, price: string) => {
-    let topupAccount = {...account, coin: account.coin + parseInt(value)}
+    let topupAccount = { ...account, coin: account.coin + parseInt(value) };
     try {
       const response = await axios.put<ApiResponse<AccountSchema>>(
         UPDATE_URL + account.id,
@@ -114,7 +115,11 @@ function Coin() {
               <div className="col-6">
                 <IoIosCloseCircleOutline
                   style={{ color: "#fff", fontSize: "54px" }}
-                  onClick={() => navigate("/")}
+                  onClick={() => {
+                    setTimeout(() => {
+                      navigate("/");
+                    }, 1000);
+                  }}
                 />
               </div>
               <div

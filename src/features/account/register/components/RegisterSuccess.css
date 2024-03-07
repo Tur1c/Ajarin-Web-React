@@ -1,3 +1,21 @@
-.test{
-    color: blue;
+.register-success {
+  background-image: url("../../../../../public/assets/background.png");
+}
+
+.logo .button button {
+  margin-bottom: 10px;
+  outline: none;
+  background: none;
+  width: 30%;
+  border-radius: 40px;
+  border: #fff 1px solid;
+  color: #fff;
+  font-size: 14px;
+  height: 40px;
+}
+
+.logo .button a {
+    text-decoration: none;
+    color: #000;
+    font-weight: 700;
 }

@@ -20,7 +20,7 @@ interface Props {
 
 const Sidebar = ({ children, account }: Props) => {
   const isLogged = sessionStorage.getItem("jwt");
-  console.log(isLogged);
+  console.log(account);
 
   return (
     <div className="sidebar">
@@ -111,7 +111,7 @@ const Sidebar = ({ children, account }: Props) => {
                   {/* <i> */}
                   <img
                     className="img-fluid"
-                    src={`assets/coin.png`}
+                    src={account?.urlImage || `assets/coin.png`}
                     alt=""
                     style={{ height: "100%", width: "100%" }}
                   />

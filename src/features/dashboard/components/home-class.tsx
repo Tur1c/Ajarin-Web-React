@@ -74,7 +74,7 @@ function HomeClass() {
 
   return (
     <>
-      <div className="class-wrapper">
+      <div className="class-wrapper p-3">
         <div
           className="card"
           style={{ backgroundColor: "#11235a", border: "none" }}

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, ChangeEvent, useEffect, useState } from "react";
 import { Tab, Tabs } from "react-bootstrap";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -15,19 +15,25 @@ import "./profile.css";
 
 const HOME_URL = "/api/account?email=" + sessionStorage.getItem("user");
 const UPDATE_URL = "/api/account/";
+const UPDATE_IMAGE =
+  "/api/account/upload?email=" + sessionStorage.getItem("user");
 
-const Profile = (props: any) => {
+const Profile = () => {
   const { logout }: any = useAuth();
   const { state } = useLocation();
-  console.log(state,"di state nih");
+  console.log(state, "profile");
+  
 
-  const [account, setAccount] = useState<AccountOutput>(state.account);
-  const [editAccount, setEditAccount] = useState<AccountOutput>(state.account);
+  const [account, setAccount] = useState<AccountOutput>(state);
+  const [editAccount, setEditAccount] = useState<AccountOutput>(state);
+
+  const [image, setImage] = useState<File>();
 
   const navigate = useNavigate();
 
   const [key, setKey] = useState("profile");
   const [editProfile, setEditProfile] = useState(false);
+  
 
   // const fetchDataAccount = async () => {
   //   try {
@@ -65,9 +71,29 @@ const Profile = (props: any) => {
     } catch {}
   };
 
-  console.log(!state);
-  console.log(account,"di profile");
-  console.log(editAccount,"hadeh");
+  const uploadImage = async (file: any) => {
+    let formData = new FormData();
+    console.log(file[0]);
+
+    formData.append("file", file);
+    console.log(formData);
+
+    try {
+      const response = await axios.post<ApiResponse<AccountRegisterSchema>>(
+        UPDATE_IMAGE,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + sessionStorage.getItem("jwt"),
+          },
+          withCredentials: true,
+        }
+      );
+      // setAccount(transfromToAccountOutput(response.data.outputSchema));
+    } catch {}
+  };
+
   const handleLogout = () => {
     setAccount({ ...account, id: account.id });
     logout();
@@ -96,6 +122,19 @@ const Profile = (props: any) => {
   //   }
   // }, []);
 
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.currentTarget.files;
+    console.log(file);
+    if (file) {
+      setImage(file[0]);
+    }
+  };
+
+  const handleUploadImage = (event: File) => {
+    uploadImage(event);
+    setEditProfile(false);
+  };
+
   return (
     // <>  </>
     <div className="container-profile">
@@ -112,30 +151,56 @@ const Profile = (props: any) => {
               <div className="card" style={{ height: "600px" }}>
                 <div className="card-body">
                   <div className="card-title text-center mb-5">
-                    <img
-                      className="img-fluid rounded-circle mb-4"
-                      src={`assets/coin.png`}
-                      alt=""
-                      style={{ height: "20rem" }}
-                    />
+                    {image ? (
+                      <img
+                        className="img-fluid rounded-circle mb-4"
+                        src={URL.createObjectURL(image)}
+                        alt=""
+                        style={{ height: "20rem" }}
+                      />
+                    ) : (
+                      <img
+                        className="img-fluid rounded-circle mb-4"
+                        src={account?.urlImage || `assets/coin.png`}
+                        alt=""
+                        style={{ height: "20rem" }}
+                      />
+                    )}
+
                     <p className="mb-1">{account.fullName}</p>
                     <p>{account.school}</p>
-                  </div>
-                  <div className="card-text">
-                    <ul className="list-group list-group-flush">
-                      <li className="list-group-item d-flex justify-content-between">
-                        <span>Courses Completed</span>
-                        <span>kast item</span>
-                      </li>
-                      <li className="list-group-item  d-flex justify-content-between">
-                        <span>Courses Ongoing</span>
-                        <span>kast item</span>
-                      </li>
-                      <li className="list-group-item  d-flex justify-content-between">
-                        <span>Discussion Completed</span>
-                        <span>kast item</span>
-                      </li>
-                    </ul>
+                    {editProfile ? (
+                      <>
+                        <label className="btn btn-default">
+                          <input type="file" onChange={handleImageChange} />
+                        </label>
+                        <button
+                          className="btn btn-success"
+                          onClick={() => {
+                            if (image) handleUploadImage(image);
+                          }}
+                        >
+                          Upload
+                        </button>
+                      </>
+                    ) : (
+                      <div className="card-text">
+                        <ul className="list-group list-group-flush">
+                          <li className="list-group-item d-flex justify-content-between">
+                            <span>Courses Completed</span>
+                            <span>kast item</span>
+                          </li>
+                          <li className="list-group-item  d-flex justify-content-between">
+                            <span>Courses Ongoing</span>
+                            <span>kast item</span>
+                          </li>
+                          <li className="list-group-item  d-flex justify-content-between">
+                            <span>Discussion Completed</span>
+                            <span>kast item</span>
+                          </li>
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -380,20 +445,41 @@ const Profile = (props: any) => {
                             )}
                           </div>
                           <div className="mt-3">
-                            <button
-                              className="btn profile-button"
-                              type="button"
-                              style={{
-                                width: "150px",
-                                borderRadius: "25px",
-                                border: "2px solid #11235A",
-                                backgroundColor: "#fff",
-                                color: "#11235A",
-                              }}
-                              onClick={handleLogout}
-                            >
-                              <b>Logout</b>
-                            </button>
+                            {editProfile ? (
+                              <button
+                                className="btn profile-button"
+                                type="button"
+                                style={{
+                                  width: "150px",
+                                  borderRadius: "25px",
+                                  border: "2px solid #11235A",
+                                  backgroundColor: "#fff",
+                                  color: "#11235A",
+                                }}
+                                onClick={() => {
+                                  setEditProfile(false);
+                                  setEditAccount(account);
+                                  setImage(undefined);
+                                }}
+                              >
+                                <b>Cancel</b>
+                              </button>
+                            ) : (
+                              <button
+                                className="btn profile-button"
+                                type="button"
+                                style={{
+                                  width: "150px",
+                                  borderRadius: "25px",
+                                  border: "2px solid #11235A",
+                                  backgroundColor: "#fff",
+                                  color: "#11235A",
+                                }}
+                                onClick={handleLogout}
+                              >
+                                <b>Logout</b>
+                              </button>
+                            )}
                           </div>
                         </div>
                       </div>

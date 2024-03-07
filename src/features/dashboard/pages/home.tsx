@@ -34,7 +34,8 @@ function Home() {
     country: "",
     school: "",
     coin: 0,
-    studentdisc_list: [], 
+    studentdisc_list: [],
+    urlImage: "",
   });
 
   // const [accountDisc, setAccountDisc] = useState<StudentDiscOutput>({
@@ -55,7 +56,7 @@ function Home() {
           withCredentials: true,
         }
       );
-      console.log(response.data.outputSchema);
+      console.log(response.data.outputSchema, "ABCCCCC");
       setAccount(transfromToAccountOutput(response.data.outputSchema));
       // setAccountDisc(transformToAccountDiscOutput(response.data.outputSchema));
     } catch (error) {}
@@ -118,7 +119,7 @@ function Home() {
                   width: "36px",
                   height: "36px",
                 }}
-                src={`assets/coin.png`}
+                src={account.urlImage || `assets/coin.png`}
                 alt=""
               />
               <div className="coin-link">

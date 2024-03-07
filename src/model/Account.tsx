@@ -14,6 +14,9 @@ export interface AccountRegisterSchema {
   country: string;
   school: string;
   coin: number;
+  pic_name: string;
+  pic_url: string;
+  pic_type: string;
 }
 
 export interface AccountSchema {
@@ -30,6 +33,9 @@ export interface AccountSchema {
   country: string;
   school: string;
   coin: number;
+  pic_name: string;
+  pic_url: string;
+  pic_type: string;
   studentdisc_list: StudentDisc[]
 }
 
@@ -59,6 +65,7 @@ export interface AccountOutput{
   school: string;
   coin: number;
   studentdisc_list: StudentDiscList[];
+  urlImage: string;
 }
 
 export function transfromToAccountOutput(
@@ -79,14 +86,16 @@ export function transfromToAccountOutput(
     country: response.country,
     school: response.school,
     coin: response.coin,
-    studentdisc_list: response.studentdisc_list.map( (data) => {
+    urlImage: response.pic_url,
+    // disc_list: response.,
+    studentdisc_list: response.studentdisc_list?.map( (data) => {
       return {
         disc: data.disc,
         status: data.status
       };
     }),
   };
-  console.log(result);
+  console.log(result, "abc");
   return result;
 }
 
