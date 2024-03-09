@@ -133,3 +133,11 @@ export interface StudentDiscList {
     
 // }
 
+
+export interface TeacherRegisterSchema {
+  profile_description: string;
+  education: string;
+  experience: string;
+  achievement: string;
+}
+

@@ -97,7 +97,9 @@ function Coin() {
 
   const handleTopup = (value: string, price: string) => {
     topupCoin(value, price);
-    navigate("/");
+    setTimeout(() => {
+      navigate("/");
+    }, 500);
   };
 
   useEffect(() => {

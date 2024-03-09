@@ -50,12 +50,12 @@ const Sidebar = ({ children, account }: Props) => {
             <span className="tooltip-text">MySpace</span>
           </div>
           <div className="menu">
-            <a href="#">
+            <NavLink to={"/lecturer"} state={account}>
               <i>
                 <PiEyeglassesLight />
               </i>
               {/* <span className="links_name">Lecturer</span> */}
-            </a>
+            </NavLink>
             <span className="tooltip-text">MyLecturer</span>
           </div>
           <div className="menu">
@@ -68,41 +68,6 @@ const Sidebar = ({ children, account }: Props) => {
             <span className="tooltip-text">Forum</span>
           </div>
         </div>
-
-        {/* <ul className="menu-list">
-        <li>
-          <NavLink to={"/"}>
-            <i>
-              <GoHome />
-            </i>
-          </NavLink>
-          <span className="tooltip">Dashboard</span>
-        </li>
-        <li>
-          <a href="#">
-            <i>
-              <HiOutlineBookOpen />
-            </i>
-          </a>
-          <span className="tooltip">Discussion</span>
-        </li>
-        <li>
-          <a href="#">
-            <i>
-              <PiEyeglassesLight />
-            </i>
-          </a>
-          <span className="tooltip">Lecturer</span>
-        </li>
-        <li>
-          <NavLink to={"/forum"}>
-            <i>
-              <IoChatboxEllipsesOutline />
-            </i>
-          </NavLink>
-          <span className="tooltip">Forum</span>
-        </li>
-      </ul> */}
         <div className="profile_content">
           <div className="profile">
             {isLogged ? (

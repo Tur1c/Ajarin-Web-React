@@ -43,13 +43,8 @@ function Login() {
           withCredentials: true,
         }
       );
-      // const accessToken = response?.data?.accessToken;
-      // const roles = response?.data?.roles;
-      // setAuth({ accountLogin, accessToken, roles });
       const output = transfromToServiceLoginAccountOutput(response.data);
       const token = output.token;
-      // localStorage.setItem("jwt", token);
-      // localStorage.setItem("user", accountLogin.email);
       await login({ accountLogin, token });
       navigate("/");
     } catch (error) {

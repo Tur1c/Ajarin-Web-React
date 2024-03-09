@@ -112,6 +112,7 @@ function Home() {
                 textDecoration: "none",
               }}
               to={"/coin"}
+              state={account}
             >
               <img
                 className="img-fluid"
@@ -119,11 +120,11 @@ function Home() {
                   width: "36px",
                   height: "36px",
                 }}
-                src={account.urlImage || `assets/coin.png`}
+                src={`assets/coin.png`}
                 alt=""
               />
               <div className="coin-link">
-                COIN <IoIosArrowForward />
+                {account.coin} COIN <IoIosArrowForward />
               </div>
             </Link>
           </div>

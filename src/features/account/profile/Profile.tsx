@@ -1,4 +1,4 @@
-import { useContext, ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Tab, Tabs } from "react-bootstrap";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -16,14 +16,13 @@ import "./profile.css";
 const HOME_URL = "/api/account?email=" + sessionStorage.getItem("user");
 const UPDATE_URL = "/api/account/";
 const UPDATE_IMAGE =
-  "/api/account/upload?email=" + sessionStorage.getItem("user");
+  "/api/account/upload?email=";
 
 const Profile = () => {
   const { logout }: any = useAuth();
   const { state } = useLocation();
-  console.log(state, "profile");
+  console.log(state);
   
-
   const [account, setAccount] = useState<AccountOutput>(state);
   const [editAccount, setEditAccount] = useState<AccountOutput>(state);
 
@@ -33,26 +32,15 @@ const Profile = () => {
 
   const [key, setKey] = useState("profile");
   const [editProfile, setEditProfile] = useState(false);
-  
 
-  // const fetchDataAccount = async () => {
-  //   try {
-  //     const response = await axios.get<ApiResponse<AccountRegisterSchema>>(
-  //       HOME_URL,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: "Bearer " + sessionStorage.getItem("jwt"),
-  //         },
-  //         withCredentials: true,
-  //       }
-  //     );
-  //     if (!state) {
-  //       setAccount(transfromToAccountOutput(response.data.outputSchema));
-  //       setEditAccount(transfromToAccountOutput(response.data.outputSchema));
-  //     }
-  //   } catch (error) {}
-  // };
+  let ongoingCourse = 0;
+
+  const ongoingCourseCount = () => {
+    account.studentdisc_list.map((data) => {
+      if(data.status === "Ongoing") ongoingCourse++;
+    })
+    return ongoingCourse;
+  }
 
   const editProfileAccount = async () => {
     try {
@@ -80,7 +68,7 @@ const Profile = () => {
 
     try {
       const response = await axios.post<ApiResponse<AccountRegisterSchema>>(
-        UPDATE_IMAGE,
+        UPDATE_IMAGE + account.email,
         formData,
         {
           headers: {
@@ -148,7 +136,7 @@ const Profile = () => {
                   onClick={() => navigate(-1)}
                 />
               </div>
-              <div className="card" style={{ height: "600px" }}>
+              <div className="card" style={{ height: "700px" }}>
                 <div className="card-body">
                   <div className="card-title text-center mb-5">
                     {image ? (
@@ -192,7 +180,9 @@ const Profile = () => {
                           </li>
                           <li className="list-group-item  d-flex justify-content-between">
                             <span>Courses Ongoing</span>
-                            <span>kast item</span>
+                            <span>
+                              {ongoingCourseCount()}
+                            </span>
                           </li>
                           <li className="list-group-item  d-flex justify-content-between">
                             <span>Discussion Completed</span>
@@ -222,7 +212,7 @@ const Profile = () => {
             </div>
             <div
               className="container-profile-detail bg-white"
-              style={{ height: "600px" }}
+              style={{ height: "700px" }}
             >
               <Tabs
                 variant="underline"
@@ -236,7 +226,7 @@ const Profile = () => {
                 <Tab eventKey="profile" title="Profile">
                   <div className="row">
                     <div className="col-md-12 border-right text-dark">
-                      <div className="p-3">
+                      <div className="p-3" style={{ height: "100vh" }}>
                         <div className="d-flex justify-content-between align-items-center mb-2">
                           <h4 className="text-right">Profile Settings</h4>
                         </div>
@@ -443,6 +433,26 @@ const Profile = () => {
                                 Edit Profile
                               </button>
                             )}
+                          </div>
+                          <div className="mt-3">
+                            <button
+                              className="btn profile-button"
+                              type="button"
+                              style={{
+                                width: "150px",
+                                borderRadius: "25px",
+                                border: "2px solid #11235A",
+                                backgroundColor: "#fff",
+                                color: "#11235A",
+                              }}
+                              onClick={() => {
+                                navigate("/register/teacher", {
+                                  state: { account },
+                                });
+                              }}
+                            >
+                              <b>Become Teacher</b>
+                            </button>
                           </div>
                           <div className="mt-3">
                             {editProfile ? (

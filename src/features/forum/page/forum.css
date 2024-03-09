@@ -50,3 +50,7 @@
 .card-text p button {
   opacity: 0.6;
 }
+
+input:focus {
+  outline: none;
+}
