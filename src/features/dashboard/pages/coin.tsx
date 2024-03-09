@@ -69,6 +69,7 @@ function Coin() {
     id: "",
     coin: 0,
     studentdisc_list: [],
+    studentcourse_list: [],
     urlImage: ""
   });
 

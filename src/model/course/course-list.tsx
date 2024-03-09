@@ -29,7 +29,7 @@ export interface CategorySchema {
 }
 
 export interface JoinDiscussionSchema {
-  email: string|null;
+  email: string|null|undefined;
   id: number;
 }
 
@@ -108,6 +108,7 @@ export interface CourseListOutput {
 }
 
 export interface CourseList {
+  id: number;
   price: number;
   chapter: string;
   title: string;
@@ -131,6 +132,7 @@ export function transfromToCourseListOutput(
   const result: CourseListOutput = {
     courseList: response.courses.map((data) => {
       return {
+        id: data.course_id,
         price: data.course_price,
         chapter: data.course_chapter,
         title: data.course_title,

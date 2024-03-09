@@ -143,11 +143,11 @@ body {
   height: fit-content;
 }
 
-.home-list {
+/* .home-list {
   /* background-color: black; */
   /* flex: 1 1 auto; */
   /* height: 5rem; */
-}
+/* }  */
 
 /* .home-tab {
   color: white;
@@ -184,7 +184,6 @@ body {
   height: 40%;
   /* margin-bottom: 0.5rem; */
   border-radius: 0.5rem;
-  padding: 2rem;
   cursor: default;
 }
 

@@ -5,7 +5,7 @@ import {
     BiSolidChevronRightSquare,
 } from "react-icons/bi";
 import { useLocation } from "react-router-dom";
-import { StudentDiscList, StudentDiscOutput } from "../../model/Account";
+import { StudentDisc, StudentDiscOutput } from "../../model/Account";
 import { getMonth } from "../../model/calendar/calendar-detail";
 import "./Calendar.css";
 import { Sidebar } from "../../shared";
@@ -14,19 +14,14 @@ const Calendar = () => {
   const { state } = useLocation();
   console.log(state);
 
-  // console.log(getMonth(3));
-  // const [currMonthIdx, setCurrMonthIdx] = useState(dayjs().month());
-  const [currMonthIdx, setCurrMonthIdx] = useState(dayjs().month());
+  const [currMonthIdx, setCurrMonthIdx] = useState(state.discDate ? dayjs(state.discDate).month() : dayjs().month());
   const [currMonthCalendar, setCurrMonthCalendar] = useState(getMonth());
+  const [selectedDate, setSelectedDate] = useState( state.discDate ? dayjs(state.discDate).format("YYYY-MM-DD") : dayjs().format("YYYY-MM-DD"));
 
-  const [selectedDate, setSelectedDate] = useState(dayjs().format("YYYY-MM-DD"));
-
-  const account = state;
-  const accountDisc: StudentDiscList[] = state.studentdisc_list;
-    console.log(accountDisc, "png");
-  const image:string|undefined = accountDisc.at(0)?.disc.disc_image;
-    // console.log(image);
+  const account = state.discDate ? state.account : state;
+  const accountDisc: StudentDisc[] = account.studentdisc_list;
   
+
   const getDiscData = (date:any) => {
 
     const discData = accountDisc.filter(
@@ -40,7 +35,7 @@ const Calendar = () => {
         return null;
     }
         
-const [disc, setDisc] = useState(getDiscData(dayjs().format("YYYY-MM-DD")));
+const [disc, setDisc] = useState(getDiscData( state.discDate ? dayjs(state.discDate).format("YYYY-MM-DD") : dayjs().format("YYYY-MM-DD")));
   var testDate = dayjs(new Date(2024, 10, 30)).format("YYYY-MM-DD");
 //   console.log(
 //     testDate,
@@ -166,7 +161,7 @@ const [disc, setDisc] = useState(getDiscData(dayjs().format("YYYY-MM-DD")));
             </div>
           </div>
 
-          <div className="container mt-3 col-7 h-75 bg-white text-dark rounded" style={{ marginLeft:0 }}>
+          <div className="container mt-3 col-6 h-75 bg-white text-dark rounded" style={{ marginLeft:0 }}>
             { !disc?.length ? 
                 ( <p>No Discussion</p> )
                 :

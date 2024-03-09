@@ -10,10 +10,15 @@ import { ApiResponse } from "../../../model/schema/base_schema";
 import { Pagination } from "../../../shared";
 import { Navigate, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import { AccountOutput } from "../../../model/Account";
 
 const COURSE_URL = "/api/course";
 
-function HomeClass() {
+interface Props{
+  account: AccountOutput;
+}
+
+function HomeClass( {account}:Props ) {
   const [courseList, setCourseList] = useState<CourseListOutput>({
     courseList: [],
   });
@@ -28,6 +33,7 @@ function HomeClass() {
   );
 
   const navigate = useNavigate();
+  const acc:AccountOutput|undefined = !account.fullName ? undefined : account;
 
   function handlePageChangeCourse(value: any) {
     if (value === "&laquo;" || value === "... ") {
@@ -87,7 +93,7 @@ function HomeClass() {
                   key={index}
                 >
                   <div className="card" style={{ border: "none" }}>
-                    <Link to={'/course/'+ data.title} state={data}>
+                    <Link to={'/course/'+ data.title} state={{data, acc}}>
                       <div className="container-class-header">
                         <img
                           className="disc-image img-fluid"

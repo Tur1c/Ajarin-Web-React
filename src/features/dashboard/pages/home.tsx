@@ -3,7 +3,7 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
 import {
   AccountOutput,
@@ -17,6 +17,7 @@ import { Sidebar } from "../../../shared";
 import HomeClass from "../components/home-class";
 import HomeDiscussion from "../components/home-discussion";
 import "./home.css";
+import dayjs from "dayjs";
 
 function Home() {
   const isLogged = sessionStorage.getItem("jwt");
@@ -35,6 +36,7 @@ function Home() {
     school: "",
     coin: 0,
     studentdisc_list: [],
+    studentcourse_list: [],
     urlImage: "",
   });
 
@@ -43,6 +45,7 @@ function Home() {
   // })
   const [key, setKey] = useState("discussion");
   const HOME_URL = "/api/account?email=" + email;
+  const navigate = useNavigate();
 
   const fetchDataAccount = async () => {
     try {
@@ -69,6 +72,17 @@ function Home() {
   }, []);
 
   console.log(account);
+
+  const goToDisc = (discDate:any) => {
+    navigate("/calendar", 
+      {
+        state: {
+          account:account,
+          discDate:discDate
+        }
+      }
+    )
+  }
 
   return (
     // <body className="">
@@ -146,7 +160,7 @@ function Home() {
               </Tab>
 
               <Tab className="" eventKey="class" title="Class">
-                <HomeClass />
+                <HomeClass account={account} />
               </Tab>
             </Tabs>
             
@@ -155,15 +169,37 @@ function Home() {
 
         <div className="right-home">
           <div className="upcoming-discussion">
-            <p>Upcoming Discussion</p>
+            <p style={{ marginLeft:"15px" }}>Upcoming Discussion</p>
             <Link
               style={{
                 textDecoration: "none",
+                marginLeft:"15px"
               }}
-              to={"/discussion"}
+              to={"/calendar"}
+              state={account}
             >
               <div className="view-all">View All</div>
             </Link>
+            {
+              account.studentdisc_list.slice(0,3).map( (disc,idx) => (
+                  <div className="card-body disc-body rounded" key={idx} onClick={() => goToDisc(disc.disc.disc_date)}>
+                      <h5 className="card-text d-flex h-100">
+                          <div className="disc-date col-2 pe-3 ps-2 text-center my-auto border-end border-white" >
+                              <h4 style={{ margin:0, fontSize:"18px" }}>{dayjs(disc.disc.disc_date).format("DD")}</h4>
+                              <h5 style={{ fontSize:"12px" }}>{dayjs(disc.disc.disc_date).format("MMM")}</h5>
+                          </div>
+                          <div className="disc-title my-auto col-6 d-flex justify-content-center">
+                              <h6 className=""style={{ margin:0, fontSize:"12px",width:"80%" }}>{disc.disc.disc_title}<br />by Godwin</h6>
+                          </div>
+                          <div className="disc-time col-3 text-center my-auto border-start border-white text-center" style={{ height:"45px" }}>
+                              <h6 className="d-flex align-items-center justify-content-center ms-2" style=  {{ height:"100%",fontSize:"9px" }}>
+                                  {disc.disc.disc_starttime.toString()}-{disc.disc.disc_endtime.toString()}
+                                  </h6>
+                          </div>
+                      </h5>
+                  </div>
+              ))
+            }
           </div>
 
           <div className="statistic">
