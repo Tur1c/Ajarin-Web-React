@@ -1,0 +1,83 @@
+.container-card-scroll {
+  max-width: 1400px;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+.container-card-scroll h2 {
+  font-size: 32px;
+  margin-bottom: 1em;
+}
+
+.container-card-scroll .cards {
+  display: grid;
+  grid-auto-columns: 100%;
+  grid-column-gap: 10px;
+  grid-auto-flow: column;
+  padding: 25px 0px;
+  list-style: none;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+}
+
+.container-card-scroll .card {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  width: 20rem;
+  height: 30rem;
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 15%);
+  scroll-snap-align: start;
+  transition: all 0.2s;
+}
+
+.container-card-scroll .card:hover {
+  color: var(--white);
+  background: var(--orange);
+}
+
+.container-card-scroll .card .card-title {
+  font-size: 20px;
+}
+
+.container-card-scroll .card .card-content {
+  margin: 20px 0;
+  max-width: 85%;
+}
+
+.container-card-scroll .card .card-link {
+  display: inline-block;
+  text-decoration: none;
+  color: white;
+  background: var(--orange);
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.container-card-scroll .cards::-webkit-scrollbar {
+  height: 12px;
+}
+
+.container-card-scroll .cards::-webkit-scrollbar-thumb,
+.container-card-scroll .cards::-webkit-scrollbar-track {
+  border-radius: 92px;
+}
+
+.container-card-scroll .cards::-webkit-scrollbar-thumb {
+  background: var(--purple);
+}
+
+.container-card-scroll .cards::-webkit-scrollbar-track {
+  background: var(--pruple);
+}
+
+
+@media (min-width: 1100px) {
+  .container-card-scroll .cards {
+    grid-auto-columns: calc(25% - 40px);
+    grid-column-gap: 8rem;
+  }
+}

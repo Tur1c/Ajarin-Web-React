@@ -1,3 +1,12 @@
+.modal-content {
+  background-color: #11235A;
+  border: none;
+}
+
+.modal-header {
+  border-bottom: none;
+}
+
 .modal-content .container-class-header {
   position: relative;
   text-align: center;
@@ -42,4 +51,8 @@
   top: 5%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.modal-footer {
+  border: none
 }

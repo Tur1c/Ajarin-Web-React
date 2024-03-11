@@ -49,7 +49,10 @@ function ModalCentered(props: any) {
       centered
     >
       <Modal.Header className="p-0 d-block">
-        <div className="container-class-header d-flex justify-content-around" style={{height: "2rem"}}>
+        <div
+          className="container-class-header d-flex justify-content-around"
+          style={{ height: "2rem" }}
+        >
           <div className="p-1" style={{ backgroundColor: "#000" }}>
             <IoIosCloseCircleOutline
               onClick={props.onHide}
@@ -72,19 +75,19 @@ function ModalCentered(props: any) {
             />
           </div>
         </div>
-          <div className="container-class-header pt-3">
-            <img
-              className=""
-              style={{width: "80%"}}
-              src={`assets/${props.data.image}`}
-              alt=""
-            />
-          </div>
+        <div className="container-class-header pt-3">
+          <img
+            className=""
+            style={{ width: "80%" }}
+            src={`assets/${props.data.image}`}
+            alt=""
+          />
+        </div>
       </Modal.Header>
       <Modal.Body className="p-5">
         <div className="modal-body-container">
           <div className="header d-flex justify-content-between">
-            <div className="header-title text-dark">
+            <div className="header-title text-white">
               <h2>
                 <b>{props.data.title}</b>
               </h2>
@@ -112,7 +115,7 @@ function ModalCentered(props: any) {
               </div>
             </div>
           </div>
-          <p className="text-dark">{props.data.description}</p>
+          <p className="text-white">{props.data.description}</p>
         </div>
       </Modal.Body>
       <Modal.Footer className="p-0">
@@ -131,10 +134,21 @@ function ModalCentered(props: any) {
           <p onClick={props.onHide} className="text-white">
             {isLogged ? (
               <button
+                style={{ background: "none", color: "white", border: "none", fontSize: "30px"}}
                 type="button"
                 onClick={() => JoinDiscussion(props.data.id)}
               >
-                Join
+                Join{" "}
+                <img
+                  className="img-fluid"
+                  style={{
+                    width: "36px",
+                    height: "36px",
+                  }}
+                  src={`assets/coin.png`}
+                  alt=""
+                />
+                {props.data.price}
               </button>
             ) : (
               <b>Log In</b>

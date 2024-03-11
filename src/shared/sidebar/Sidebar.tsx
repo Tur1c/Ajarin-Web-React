@@ -4,7 +4,7 @@ import { HiOutlineBookOpen } from "react-icons/hi2";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import { PiEyeglassesLight } from "react-icons/pi";
 import { Link, NavLink } from "react-router-dom";
-import { AccountOutput, StudentDiscOutput } from "../../model/Account";
+import { AccountOutput } from "../../model/Account";
 import "./Sidebar.css";
 import SidebarLoginRegister from "./SidebarLoginRegister";
 
@@ -46,7 +46,7 @@ const Sidebar = ({ children, account }: Props) => {
                 <HiOutlineBookOpen />
               </i>
             </NavLink>
-              {/* <span className="links_name">Discussion</span> */}
+            {/* <span className="links_name">Discussion</span> */}
             <span className="tooltip-text">MySpace</span>
           </div>
           <div className="menu">
@@ -71,21 +71,21 @@ const Sidebar = ({ children, account }: Props) => {
         <div className="profile_content">
           <div className="profile">
             {isLogged ? (
-              <div className="profile_details" style={{display: "block"}}>
+              <div className="profile_details" style={{ display: "block" }}>
                 <Link to={"/profile"} state={account}>
                   {/* <i> */}
                   <img
                     className="img-fluid"
-                    src={account?.urlImage || `assets/coin.png`}
+                    src={account?.urlImage || `assets/default_picture.png`}
                     alt=""
-                    style={{ height: "100%", width: "100%" }}
+                    style={{ height: "120%", width: "100%" }}
                   />
                   {/* </i> */}
                 </Link>
                 {/* <img src="profile.jpg" alt="profile" /> */}
               </div>
             ) : (
-              <SidebarLoginRegister/>
+              <SidebarLoginRegister />
             )}
           </div>
         </div>

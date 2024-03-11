@@ -70,6 +70,7 @@ function Coin() {
     coin: 0,
     studentdisc_list: [],
     studentcourse_list: [],
+    subscribed_lecturer: [],
     urlImage: ""
   });
 

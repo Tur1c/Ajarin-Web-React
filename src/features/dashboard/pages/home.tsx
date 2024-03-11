@@ -37,12 +37,12 @@ function Home() {
     coin: 0,
     studentdisc_list: [],
     studentcourse_list: [],
+    subscribed_lecturer: [],
     urlImage: "",
   });
 
-  // const [accountDisc, setAccountDisc] = useState<StudentDiscOutput>({
-  //   studentdisc_list: [],
-  // })
+  let search = false;
+  const [searchText, setSearchText] = useState("");
   const [key, setKey] = useState("discussion");
   const HOME_URL = "/api/account?email=" + email;
   const navigate = useNavigate();
@@ -107,11 +107,14 @@ function Home() {
                   name=""
                   id="search-input"
                   placeholder="Search"
+                  onChange={(e) => {
+                    setSearchText(e.target.value);
+                  }}
                 />
               </div>
               <div className="search-right">
                 <button className="search-button" id="search">
-                  <IoSearch color="#6E6E6E" font-size={"24"} />
+                  <IoSearch color="#6E6E6E" fontSize={"24"} onClick={() => search = true}/>
                 </button>
               </div>
             </div>
@@ -156,7 +159,7 @@ function Home() {
                 eventKey="discussion"
                 title="Discussion"
               >
-                <HomeDiscussion />
+                <HomeDiscussion searchData={search? searchText : ""} />
               </Tab>
 
               <Tab className="" eventKey="class" title="Class">

@@ -1,4 +1,31 @@
+.lecturer-page {
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
 .lecturer-content {
-    flex: 0.925;
-    flex: block;
+  flex: 0.925;
+  flex: block;
+}
+
+.lecturer-subscribed-content ul .pagination {
+  justify-content: start;
+}
+
+.lecturer-subscribed-button button {
+  margin-bottom: 10px;
+  outline: none;
+  background: none;
+  width: 12rem;
+  border-radius: 5rem;
+  border: #fff 1px solid;
+  color: #fff;
+  font-size: 16px;
+  height: 30px;
+}
+
+.lecturer-subscribed-button .request-private-btn {
+  background-color: var(--yelo);
+  color: black;
+  font-weight: 700;
 }

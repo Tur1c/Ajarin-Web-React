@@ -1,4 +1,3 @@
-import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,28 +6,84 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa6";
-import { useLocation } from "react-router-dom";
+import { IoSearch } from "react-icons/io5";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
-import { AccountOutput } from "../../model/Account";
+import {
+  AccountOutput,
+  AccountSchema,
+  SubscribedLecturer,
+  transfromToAccountOutput,
+} from "../../model/Account";
 import { ApiResponse } from "../../model/schema/base_schema";
 import {
   InquiryTeacherSchema,
   TeacherListOutput,
   transfromToTeacherListOutput,
 } from "../../model/teacher/teacher-model";
-import { Sidebar } from "../../shared";
+import { Pagination, Sidebar } from "../../shared";
 import "./lecturer.css";
 
 const INQUIRY_TEACHER = "/api/account/inquiry/teacher";
+const UNSUBSCRIBE_LECTURER = "/api/account/unsubscribe?teacher-id=";
 
 const Lecturer = () => {
+  const isLogged = sessionStorage.getItem("jwt");
+  const emailUser = sessionStorage.getItem("user");
   const { state } = useLocation();
+  const [searchText, setSearchText] = useState("");
+  const [searchTeacherText, setSearchTeacherText] = useState("");
+  const HOME_URL = "/api/account?email=" + emailUser;
+
+  console.log(state, "state lecturer");
+
+  const navigate = useNavigate();
 
   const [teachers, setTeacher] = useState<TeacherListOutput>({
     teachers: [],
   });
 
-  const account: AccountOutput = !state?.firstName ? undefined : state;
+  const [tempTeachers, setTempTeacher] = useState<TeacherListOutput>({
+    teachers: [],
+  });
+
+  const [account, setAccount] = useState<AccountOutput>({
+    fullName: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    age: 0,
+    gender: "",
+    phoneNumber: "",
+    education: "",
+    city: "",
+    country: "",
+    school: "",
+    coin: 0,
+    studentdisc_list: [],
+    studentcourse_list: [],
+    subscribed_lecturer: [],
+    urlImage: "",
+  });
+
+  const [tempAccount, setTempAccount] = useState<AccountOutput>({
+    fullName: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    age: 0,
+    gender: "",
+    phoneNumber: "",
+    education: "",
+    city: "",
+    country: "",
+    school: "",
+    coin: 0,
+    studentdisc_list: [],
+    studentcourse_list: [],
+    subscribed_lecturer: [],
+    urlImage: "",
+  });
 
   const fetchTeacherData = async () => {
     try {
@@ -40,73 +95,405 @@ const Lecturer = () => {
         }
       );
       setTeacher(transfromToTeacherListOutput(response.data.outputSchema));
+      setTempTeacher(transfromToTeacherListOutput(response.data.outputSchema));
     } catch (error) {}
+  };
+
+  const fetchDataAccount = async () => {
+    try {
+      const response = await axios.get<ApiResponse<AccountSchema>>(HOME_URL, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + isLogged,
+        },
+        withCredentials: true,
+      });
+      setAccount(transfromToAccountOutput(response.data.outputSchema));
+      setTempAccount(transfromToAccountOutput(response.data.outputSchema));
+    } catch (error) {}
+  };
+
+  const handleTeacherDetail = (data: any) => {
+    navigate("/lecturer/" + data.account.fullName, {
+      state: { data },
+    });
+  };
+
+  const unsubscribeLecturer = async (data: SubscribedLecturer) => {
+    try {
+      const response = await axios.get(
+        UNSUBSCRIBE_LECTURER + data.teacher_id + "&email=" + emailUser,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + isLogged,
+          },
+          withCredentials: true,
+        }
+      );
+      fetchDataAccount();
+      currentTeacherList = account.subscribed_lecturer.slice(
+        firstIndex,
+        lastIndex
+      );
+    } catch (error) {}
+  };
+
+  const handleUnsubscribe = (data: SubscribedLecturer) => {
+    unsubscribeLecturer(data);
   };
 
   useEffect(() => {
     fetchTeacherData();
+    fetchDataAccount();
   }, []);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [classPerPage, setClassPerPage] = useState(6);
+
+  const lastIndex = currentPage * classPerPage;
+  const firstIndex = lastIndex - classPerPage;
+  let currentTeacherList = account.subscribed_lecturer.slice(
+    firstIndex,
+    lastIndex
+  );
+
+  function handlePageChange(value: any) {
+    if (value === "&laquo;" || value === "... ") {
+      setCurrentPage(1);
+    } else if (value === "&lsaquo;") {
+      if (currentPage !== 1) {
+        setCurrentPage(currentPage - 1);
+      }
+    } else if (value === "&rsaquo;") {
+      if (
+        currentPage !==
+        Math.ceil(account.subscribed_lecturer.length / classPerPage)
+      ) {
+        setCurrentPage(currentPage + 1);
+      }
+    } else if (value === "&raquo;" || value === " ...") {
+      setCurrentPage(
+        Math.ceil(account.subscribed_lecturer.length / classPerPage)
+      );
+    } else {
+      setCurrentPage(value);
+    }
+  }
+
+  function handleClickSearch() {
+    const findSubsTeacher = tempAccount.subscribed_lecturer.filter(
+      (u) =>
+        u.user.firstName.toLowerCase().includes(searchText.toLowerCase()) ||
+        u.user.lastName.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setAccount({ ...account, subscribed_lecturer: findSubsTeacher });
+    console.log(tempAccount.subscribed_lecturer);
+    // account.subscribed_lecturer = findSubsTeacher;
+    console.log(account.subscribed_lecturer);
+    currentTeacherList = account.subscribed_lecturer.slice(
+      firstIndex,
+      lastIndex
+    );
+  }
+
+  // search teacher
+  const [currentPageTeacher, setCurrentPageTeacher] = useState(1);
+  const [classPerPageTeacher, setClassPerPageTeacher] = useState(6);
+
+  const lastIndexTeacher = currentPage * classPerPage;
+  const firstIndexTeacher = lastIndex - classPerPage;
+  let currentListTeacher = teachers.teachers.slice(firstIndex, lastIndex);
+
+  function handlePageTeacherChange(value: any) {
+    if (value === "&laquo;" || value === "... ") {
+      setCurrentPage(1);
+    } else if (value === "&lsaquo;") {
+      if (currentPageTeacher !== 1) {
+        setCurrentPageTeacher(currentPageTeacher - 1);
+      }
+    } else if (value === "&rsaquo;") {
+      if (
+        currentPageTeacher !==
+        Math.ceil(account.subscribed_lecturer.length / classPerPageTeacher)
+      ) {
+        setCurrentPageTeacher(currentPageTeacher + 1);
+      }
+    } else if (value === "&raquo;" || value === " ...") {
+      setCurrentPageTeacher(
+        Math.ceil(account.subscribed_lecturer.length / classPerPageTeacher)
+      );
+    } else {
+      setCurrentPageTeacher(value);
+    }
+  }
+
+  function handleClickSearchTeacher() {
+    const findTeacher = tempTeachers.teachers.filter((u) =>
+      u.account.fullName.toLowerCase().includes(searchTeacherText.toLowerCase())
+    );
+    setTeacher({ teachers: findTeacher });
+  }
 
   return (
     <div className="all-page">
       <div className="sidebar-content">
         <Sidebar account={account}></Sidebar>
       </div>
-      <div className="lecturer-content">
-        <div className="greetings">
-          <h3>Lecturer Leaderboard</h3>
-          <h4>
-            <span>
-              There are{" "}
-              <span style={{ color: "#F6ECA9", fontWeight: "bold" }}>
-                10 Best Lecturer
-              </span>{" "}
-              of this Month! Congratulations!
-            </span>
-          </h4>
-        </div>
-        <div className="table-container p-4">
-          <TableContainer>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell className="text-white">#</TableCell>
-                  <TableCell className="text-white">Name</TableCell>
-                  <TableCell className="text-white">Course Sold</TableCell>
-                  <TableCell className="text-white">Discussion Participant</TableCell>
-                  <TableCell className="text-white">Forum Points</TableCell>
-                  <TableCell className="text-white">Rating</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {teachers.teachers.map((data, index) => (
-                  <TableRow
-                    key={index}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row" className="text-white">
-                      {index + 1}
-                    </TableCell>
-                    <TableCell className="text-white">
-                      <img
-                        className="img-fluid"
-                        src={data.account.urlImage}
-                        alt=""
-                        style={{ height: "10%", width: "10%" }}
-                      />
-                      {data.account.fullName}
-                    </TableCell>
-                    <TableCell className="text-white">100 solds</TableCell>
-                    <TableCell className="text-white">200 Participants</TableCell>
-                    <TableCell className="text-white">96 Points</TableCell>
-                    <TableCell className="text-white">
-                      <FaStar style={{color: "green", fontSize: "25px", marginRight: "5px"}}/> {data.rating}
-                    </TableCell>
-                  </TableRow>
+      <div className="d-block w-100 lecturer-page">
+        {isLogged ? (
+          <div className="lecturer-subscribed p-4 ">
+            <h3>My Lecturer</h3>
+            <div className="search-wrapper m-0">
+              <div className="search-container">
+                <div className="search-left">
+                  <input
+                    type="search"
+                    name=""
+                    id="search-input"
+                    style={{ width: "99%" }}
+                    placeholder="Search"
+                    onChange={(e) => {
+                      setSearchText(e.target.value);
+                      fetchDataAccount();
+                    }}
+                  />
+                </div>
+                <div className="search-right">
+                  <button className="search-button" id="search">
+                    <IoSearch
+                      color="#6E6E6E"
+                      fontSize={"24"}
+                      onClick={handleClickSearch}
+                    />
+                  </button>
+                </div>
+              </div>
+              <div
+                className="lecturer-subscribed-content row mt-4"
+                style={{ height: "25rem" }}
+              >
+                {currentTeacherList.map((data) => (
+                  <div className="col-6">
+                    <div
+                      className="card"
+                      style={{
+                        height: "7rem",
+                        background: "rgba(255, 255, 255, 0.2)",
+                      }}
+                    >
+                      <div className="row" style={{ height: "100vh" }}>
+                        <div
+                          className="col-2"
+                          style={{
+                            textAlign: "center",
+                            verticalAlign: "middle",
+                          }}
+                        >
+                          <img
+                            className="img-fluid"
+                            src={
+                              data.user?.pic_url || `assets/default_picture.png`
+                            }
+                            alt=""
+                            style={{ width: "70%" }}
+                          />
+                        </div>
+                        <div className="col-10">
+                          <div className="card-text text-white fw-bold d-flex justify-content-between p-3">
+                            <h5>
+                              {data.user.firstName} {data.user.lastName}
+                            </h5>
+                            <div className="d-flex flex-column lecturer-subscribed-button">
+                              <button className="request-private-btn">
+                                Request Private
+                              </button>
+                              <button
+                                className="unsubscribe-btn"
+                                onClick={() => handleUnsubscribe(data)}
+                              >
+                                Unsubscribe
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+              </div>
+              <Pagination
+                totalClass={account.subscribed_lecturer.length}
+                classPerPage={classPerPage}
+                onPageChange={handlePageChange}
+                currentPage={currentPage}
+              />
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+
+        <div className="lecturer-content">
+          <div className="greetings">
+            <h3>Lecturer Leaderboard</h3>
+            <h4>
+              <span>
+                There are{" "}
+                <span style={{ color: "#F6ECA9", fontWeight: "bold" }}>
+                  10 Best Lecturer
+                </span>{" "}
+                of this Month! Congratulations!
+              </span>
+            </h4>
+          </div>
+          <div className="table-container p-4">
+            <TableContainer>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell className="text-white" width={"2%"}>
+                      #
+                    </TableCell>
+                    <TableCell className="text-white" width={"55%"}>
+                      Name
+                    </TableCell>
+                    <TableCell className="text-white">Course Sold</TableCell>
+                    <TableCell className="text-white">
+                      Discussion Participant
+                    </TableCell>
+                    <TableCell className="text-white">Forum Points</TableCell>
+                    <TableCell className="text-white">Rating</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {teachers.teachers.slice(0, 10).map((data, index) => (
+                    <TableRow
+                      key={index}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                      onClick={() => handleTeacherDetail(data)}
+                    >
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        className="text-white"
+                      >
+                        {index + 1}
+                      </TableCell>
+                      <TableCell className="text-white">
+                        <img
+                          className="img-fluid"
+                          src={
+                            data.account.urlImage ||
+                            `assets/default_picture.png`
+                          }
+                          alt=""
+                          style={{ height: "10%", width: "10%" }}
+                        />
+                        <span> {data.account.fullName}</span>
+                      </TableCell>
+                      <TableCell className="text-white">100 solds</TableCell>
+                      <TableCell className="text-white">
+                        200 Participants
+                      </TableCell>
+                      <TableCell className="text-white">96 Points</TableCell>
+                      <TableCell className="text-white">
+                        <FaStar
+                          style={{
+                            color: "green",
+                            fontSize: "25px",
+                            marginRight: "5px",
+                          }}
+                        />{" "}
+                        {data.rating}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+        </div>
+
+        <div className="lecturer-subscribed p-4 ">
+          <h3>Search Lecturer</h3>
+          <div className="search-wrapper m-0">
+            <div className="search-container">
+              <div className="search-left">
+                <input
+                  type="search"
+                  name=""
+                  id="search-input"
+                  style={{ width: "99%" }}
+                  placeholder="Search"
+                  onChange={(e) => {
+                    setSearchTeacherText(e.target.value);
+                    setTeacher(tempTeachers);
+                  }}
+                />
+              </div>
+              <div className="search-right">
+                <button className="search-button" id="search">
+                  <IoSearch
+                    color="#6E6E6E"
+                    fontSize={"24"}
+                    onClick={handleClickSearchTeacher}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="lecturer-subscribed-content row mt-4"
+              style={{ height: "25rem" }}
+            >
+              {currentListTeacher.map((data) => (
+                <div
+                  className="col-6"
+                  onClick={() => handleTeacherDetail(data)}
+                >
+                  <div
+                    className="card"
+                    style={{
+                      height: "7rem",
+                      background: "rgba(255, 255, 255, 0.2)",
+                    }}
+                  >
+                    <div className="row" style={{ height: "100vh" }}>
+                      <div
+                        className="col-2"
+                        style={{
+                          textAlign: "center",
+                          verticalAlign: "middle",
+                        }}
+                      >
+                        <img
+                          className="img-fluid"
+                          src={
+                            data.account?.urlImage ||
+                            `assets/default_picture.png`
+                          }
+                          alt=""
+                          style={{ width: "70%" }}
+                        />
+                      </div>
+                      <div className="col-10">
+                        <div className="card-text text-white fw-bold d-flex justify-content-between p-3">
+                          <h5>{data.account.fullName}</h5>
+                          <div className="d-flex flex-column lecturer-subscribed-button"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <Pagination
+              totalClass={teachers.teachers.length}
+              classPerPage={classPerPage}
+              onPageChange={handlePageChange}
+              currentPage={currentPage}
+            />
+          </div>
         </div>
       </div>
     </div>

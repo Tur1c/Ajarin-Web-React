@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import axios from "../../../../api/axios";
 import {
   AccountSchema,
@@ -31,9 +31,8 @@ function RegisterTeacher() {
     let formData = new FormData();
     let file;
 
-    
     formData.append("email", state.account.email);
-    if(image) {
+    if (image) {
       formData.append("file", image);
     }
     formData.append("education", accountRegister.education);
@@ -53,6 +52,7 @@ function RegisterTeacher() {
           withCredentials: true,
         }
       );
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
@@ -69,9 +69,7 @@ function RegisterTeacher() {
   return (
     <div className="wrapper">
       <div className="flex-fill">
-        <form
-          onSubmit={handleSubmit}
-        >
+        <form onSubmit={handleSubmit}>
           <h1 className="text fw-bold">Let the Worlds know About You.</h1>
 
           <div className="inputs" style={{ width: "100%" }}>
@@ -145,6 +143,7 @@ function RegisterTeacher() {
                     required
                     id="cv"
                     onChange={handleImageChange}
+                    accept="application/pdf"
                   />
                   <label>Upload Your CV Image</label>
                 </div>

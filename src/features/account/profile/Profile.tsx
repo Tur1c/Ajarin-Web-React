@@ -1,28 +1,42 @@
-import { ChangeEvent, useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Tab, Tabs } from "react-bootstrap";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
 import { useAuth } from "../../../context/AuthProvider";
+import { useSessionStorage } from "../../../context/useLocalStorage";
 import {
+  AccountLoginSchema,
   AccountOutput,
   AccountRegisterSchema,
   AccountSchema,
   transfromToAccountOutput,
 } from "../../../model/Account";
 import { ApiResponse } from "../../../model/schema/base_schema";
+import { transfromToServiceLoginAccountOutput } from "../../../service/Account/account.service";
 import "./profile.css";
 
 const HOME_URL = "/api/account?email=" + sessionStorage.getItem("user");
 const UPDATE_URL = "/api/account/";
-const UPDATE_IMAGE =
-  "/api/account/upload?email=";
+const UPDATE_IMAGE = "/api/account/upload?email=";
+const STATUS_REGISTERED_TEACHER = "/api/account/inquiry/teacher/";
+const CHANGE_ACCOUNT = "/api/account/change-role?email=";
+
+interface JwtPayload {
+  roles: string;
+}
 
 const Profile = () => {
-  const { logout }: any = useAuth();
+  // const { login }: any = useAuth();
+  const { logout, login }: any = useAuth();
   const { state } = useLocation();
   console.log(state);
-  
+
+  const [token, setToken] = useSessionStorage("jwt", "");
+  const [user, setUser] = useSessionStorage("user", "");
+  const [role, setRole] = useSessionStorage("role", "");
+
   const [account, setAccount] = useState<AccountOutput>(state);
   const [editAccount, setEditAccount] = useState<AccountOutput>(state);
 
@@ -34,13 +48,30 @@ const Profile = () => {
   const [editProfile, setEditProfile] = useState(false);
 
   let ongoingCourse = 0;
+  let completedCourse = 0;
+  let completedDiscussion = 0;
+  let isAlreadyTeacher = false;
 
   const ongoingCourseCount = () => {
-    account.studentdisc_list.map((data) => {
-      if(data.status === "Ongoing") ongoingCourse++;
-    })
+    account.studentcourse_list.map((data) => {
+      if (data.status === "Ongoing") ongoingCourse++;
+    });
     return ongoingCourse;
-  }
+  };
+
+  const completedCourseCount = () => {
+    account.studentcourse_list.map((data) => {
+      if (data.status === "Completed") completedCourse++;
+    });
+    return completedCourse;
+  };
+
+  const completedDiscussionCount = () => {
+    account.studentdisc_list.map((data) => {
+      if (data.status === "Completed") completedDiscussion++;
+    });
+    return completedDiscussion;
+  };
 
   const editProfileAccount = async () => {
     try {
@@ -56,6 +87,47 @@ const Profile = () => {
         }
       );
       setAccount(transfromToAccountOutput(response.data.outputSchema));
+    } catch {}
+  };
+
+  const isAlreadyRegisterTeacher = async () => {
+    try {
+      const response = await axios.get(STATUS_REGISTERED_TEACHER + account.id, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + sessionStorage.getItem("jwt"),
+        },
+        withCredentials: true,
+      });
+      isAlreadyTeacher = response.data;
+      console.log(response.data);
+    } catch {}
+  };
+
+  const changeAccount = async () => {
+    try {
+      const response = await axios.get<ApiResponse<AccountLoginSchema>>(
+        CHANGE_ACCOUNT + account.email,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + sessionStorage.getItem("jwt"),
+          },
+          withCredentials: true,
+        }
+      );
+      console.log(response.data, "change account");
+
+      const output = transfromToServiceLoginAccountOutput(response.data);
+      const token = output.token;
+
+      setUser(account.email);
+      setToken(token);
+      const decoded = jwtDecode<JwtPayload>(token);
+      console.log(decoded.roles, "role di login");
+      setRole(decoded.roles.substring(5, decoded.roles.length));
+
+      navigate("/");
     } catch {}
   };
 
@@ -93,22 +165,19 @@ const Profile = () => {
     setEditProfile(false);
   };
 
-  // useEffect(() => {
-  //   if (!state) {
-  //     fetchDataAccount();
-  //   } else {
-  //     if (state.account.fullName.length !== 0) {
-  //       setAccount((account) => ({
-  //         ...state,
-  //       }));
-  //       setEditAccount((account) => ({
-  //         ...state,
-  //       }));
-  //     } else {
-  //       fetchDataAccount();
-  //     }
-  //   }
-  // }, []);
+  const handleAlreadyRegisteredAsTeacher = () => {
+    isAlreadyRegisterTeacher();
+    setTimeout(() => {
+      if (!isAlreadyTeacher) {
+        navigate("/register/teacher", {
+          state: { account },
+        });
+        isAlreadyTeacher = false;
+      } else {
+        changeAccount();
+      }
+    }, 1000);
+  };
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files;
@@ -122,6 +191,10 @@ const Profile = () => {
     uploadImage(event);
     setEditProfile(false);
   };
+
+  useEffect(() => {
+    isAlreadyRegisterTeacher();
+  }, []);
 
   return (
     // <>  </>
@@ -149,7 +222,7 @@ const Profile = () => {
                     ) : (
                       <img
                         className="img-fluid rounded-circle mb-4"
-                        src={account?.urlImage || `assets/coin.png`}
+                        src={account?.urlImage || `assets/default_picture.png`}
                         alt=""
                         style={{ height: "20rem" }}
                       />
@@ -160,7 +233,11 @@ const Profile = () => {
                     {editProfile ? (
                       <>
                         <label className="btn btn-default">
-                          <input type="file" onChange={handleImageChange} />
+                          <input
+                            type="file"
+                            onChange={handleImageChange}
+                            accept="image/*"
+                          />
                         </label>
                         <button
                           className="btn btn-success"
@@ -176,17 +253,15 @@ const Profile = () => {
                         <ul className="list-group list-group-flush">
                           <li className="list-group-item d-flex justify-content-between">
                             <span>Courses Completed</span>
-                            <span>kast item</span>
+                            <span>{completedCourseCount()}</span>
                           </li>
                           <li className="list-group-item  d-flex justify-content-between">
                             <span>Courses Ongoing</span>
-                            <span>
-                              {ongoingCourseCount()}
-                            </span>
+                            <span>{ongoingCourseCount()}</span>
                           </li>
                           <li className="list-group-item  d-flex justify-content-between">
                             <span>Discussion Completed</span>
-                            <span>kast item</span>
+                            <span>{completedDiscussionCount()}</span>
                           </li>
                         </ul>
                       </div>
@@ -407,7 +482,7 @@ const Profile = () => {
                                 className="btn btn-primary profile-button"
                                 type="button"
                                 style={{
-                                  width: "150px",
+                                  width: "250px",
                                   borderRadius: "25px",
                                   border: "2px solid none",
                                   backgroundColor: "#11235A",
@@ -422,7 +497,7 @@ const Profile = () => {
                                 className="btn btn-primary profile-button"
                                 type="button"
                                 style={{
-                                  width: "150px",
+                                  width: "250px",
                                   borderRadius: "25px",
                                   border: "2px solid none",
                                   backgroundColor: "#11235A",
@@ -435,24 +510,26 @@ const Profile = () => {
                             )}
                           </div>
                           <div className="mt-3">
-                            <button
-                              className="btn profile-button"
-                              type="button"
-                              style={{
-                                width: "150px",
-                                borderRadius: "25px",
-                                border: "2px solid #11235A",
-                                backgroundColor: "#fff",
-                                color: "#11235A",
-                              }}
-                              onClick={() => {
-                                navigate("/register/teacher", {
-                                  state: { account },
-                                });
-                              }}
-                            >
-                              <b>Become Teacher</b>
-                            </button>
+                            {!editProfile ? (
+                              <button
+                                className="btn profile-button"
+                                type="button"
+                                style={{
+                                  width: "250px",
+                                  borderRadius: "25px",
+                                  border: "2px solid #11235A",
+                                  backgroundColor: "#fff",
+                                  color: "#11235A",
+                                }}
+                                onClick={() => {
+                                  handleAlreadyRegisteredAsTeacher();
+                                }}
+                              >
+                                <b>Become Teacher</b>
+                              </button>
+                            ) : (
+                              ""
+                            )}
                           </div>
                           <div className="mt-3">
                             {editProfile ? (
@@ -460,7 +537,7 @@ const Profile = () => {
                                 className="btn profile-button"
                                 type="button"
                                 style={{
-                                  width: "150px",
+                                  width: "250px",
                                   borderRadius: "25px",
                                   border: "2px solid #11235A",
                                   backgroundColor: "#fff",
@@ -479,7 +556,7 @@ const Profile = () => {
                                 className="btn profile-button"
                                 type="button"
                                 style={{
-                                  width: "150px",
+                                  width: "250px",
                                   borderRadius: "25px",
                                   border: "2px solid #11235A",
                                   backgroundColor: "#fff",

@@ -45,7 +45,7 @@ function Login() {
       );
       const output = transfromToServiceLoginAccountOutput(response.data);
       const token = output.token;
-      await login({ accountLogin, token });
+      await login({ accountLogin ,token });
       navigate("/");
     } catch (error) {
       if (error instanceof AxiosError) {

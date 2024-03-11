@@ -11,8 +11,14 @@ import { ModalCentered, Pagination } from "../../../shared";
 
 const CLASS_URL = "/api/discussion";
 
-function HomeDiscussion() {
+function HomeDiscussion(props: any) {
+  console.log(props, "discussion home");
+
   const [classList, setClassList] = useState<DiscussionListOutput>({
+    classList: [],
+  });
+
+  const [tempClassList, setTempClassList] = useState<DiscussionListOutput>({
     classList: [],
   });
 
@@ -30,6 +36,7 @@ function HomeDiscussion() {
     starttime: new Date(),
   });
 
+  const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [classPerPage, setClassPerPage] = useState(8);
   const [showModal, setShowModal] = useState(false);
@@ -71,6 +78,10 @@ function HomeDiscussion() {
         }
       );
       setClassList(transfromToDiscussionListOutput(response.data.outputSchema));
+      setTempClassList(
+        transfromToDiscussionListOutput(response.data.outputSchema)
+      );
+      handleSearch();
     } catch (error) {}
   };
 
@@ -102,6 +113,15 @@ function HomeDiscussion() {
     // Return only the first 9 characters
     return title;
   };
+
+  function handleSearch() {
+    if (props.searchData) {
+      const findClass = tempClassList.classList.filter((u) =>
+        u.title.toLowerCase().includes(props.searchText.toLowerCase())
+      );
+      setClassList({ classList: findClass });
+    }
+  }
 
   useEffect(() => {
     fetchDataDiscussion();

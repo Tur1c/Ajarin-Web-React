@@ -1,4 +1,5 @@
 import { Class, Course } from "./course/course-list";
+import { Teacher } from "./teacher/teacher-model";
 
 export interface AccountRegisterSchema {
   id: string;
@@ -36,14 +37,16 @@ export interface AccountSchema {
   pic_name: string;
   pic_url: string;
   pic_type: string;
-  studentdisc_list: StudentDisc[];
-  studentcourse_list: StudentCourse[];
+  studentdisc_list?: StudentDisc[];
+  studentcourse_list?: StudentCourse[];
+  subscribed_lecturer?: SubscribedLecturer[];
 }
 
 export interface AccountLoginSchema {
   email: string;
   password: string;
   token?: string; 
+  role?: string;
 }
 
 export interface AccountLoginOutput {
@@ -67,13 +70,14 @@ export interface AccountOutput{
   coin: number;
   studentdisc_list: StudentDisc[];
   studentcourse_list: StudentCourse[];
+  subscribed_lecturer: SubscribedLecturer[];
   urlImage: string;
 }
 
 export function transfromToAccountOutput(
   response: AccountSchema
 ) : AccountOutput {
-  console.log(response,"asdd");
+  console.log(response.subscribed_lecturer,"asdd");
   const result: AccountOutput = {
     id: response.id,
     firstName: response.firstName,
@@ -90,20 +94,31 @@ export function transfromToAccountOutput(
     coin: response.coin,
     urlImage: response.pic_url,
     // disc_list: response.,
-    studentdisc_list: response.studentdisc_list?.map( (data) => {
+    studentdisc_list: response.studentdisc_list ? response.studentdisc_list.map( (data) => {
       return {
         disc: data.disc,
         status: data.status
       };
-    }),
-    studentcourse_list: response.studentcourse_list.map( (data) => {
+    }) : [],
+    studentcourse_list: response.studentcourse_list ? response.studentcourse_list.map( (data) => {
       return {
         course: data.course,
         status: data.status
       }
-    })
+    }) : [],
+    subscribed_lecturer: response.subscribed_lecturer ? response.subscribed_lecturer.map((data) => {
+      return {
+        teacher_id: data.teacher_id,
+        achievement: data.achievement,
+        education: data.education,
+        experience: data.experience,
+        profile_description: data.profile_description,
+        rating: data.rating,
+        user: data.user
+      }
+    }) : []
   };
-  console.log(result, "abc");
+  console.log(result, "abc account");
   return result;
 }
 
@@ -124,6 +139,16 @@ export interface StudentCourse {
 
 export interface StudentCourseOutput {
   studentcourse_list: StudentCourse[];
+}
+
+export interface SubscribedLecturer {
+  teacher_id: string;
+  profile_description: string;
+  education: string;
+  experience: string;
+  achievement: string;
+  rating: string;
+  user: AccountSchema;
 }
 
 
