@@ -34,6 +34,7 @@ function HomeDiscussion(props: any) {
     maxPeople: "",
     price: "",
     starttime: new Date(),
+    teacher: undefined
   });
 
   const [searchText, setSearchText] = useState("");
@@ -126,6 +127,7 @@ function HomeDiscussion(props: any) {
   useEffect(() => {
     fetchDataDiscussion();
   }, []);
+  console.log(classList,"discussiion");
 
   return (
     <>
@@ -168,7 +170,7 @@ function HomeDiscussion(props: any) {
                 <div className="class">
                   <div className="d-flex">
                     <div className="me-2">
-                      <img src={`assets/coin.png`} alt="abc" />
+                      <img src={ '/assets/' + data.teacher?.image} alt="abc" width={"50px"} />
                     </div>
 
                     <div className="disc-detail">
@@ -176,7 +178,7 @@ function HomeDiscussion(props: any) {
                         <h3>{limitTitle(data.title)}</h3>
                         <span className="tooltip-title">{data.title}</span>
                       </div>
-                      <h4 className="lecturer-discussion">Pengajar</h4>
+                      <h4 className="lecturer-discussion">{data.teacher?.name}</h4>
 
                       <div className="grouping">
                         <div className="chip">{data.category}</div>

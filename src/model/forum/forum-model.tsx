@@ -1,4 +1,4 @@
-import { AccountOutput, AccountRegisterSchema, AccountSchema, transfromToAccountOutput } from "../Account";
+import { AccountNoROutput, AccountOutput, AccountRegisterSchema, AccountSchema, transformToAccountNoROutput } from "../Account";
 
 export interface ForumSchema {
     forums: Forum[];
@@ -16,7 +16,7 @@ export interface Forum {
       category_id: number;
       category_name: string;
     };
-    user_id: AccountSchema;
+    user_id: AccountRegisterSchema;
 }
 
 export interface ForumListOutput {
@@ -30,12 +30,13 @@ export interface ForumOutput {
     totalComment: number;
     questionCategory: string;
     questionLevel: string;
-    questionUser: AccountOutput;
+    questionUser: AccountNoROutput;
 }
 
 export function transfromToForumListOutput(
     response: ForumSchema
   ): ForumListOutput {
+    console.log(response,"di forum");
     const result: ForumListOutput = {
       forum_list: response.forums.map((data) => {
         return {
@@ -45,7 +46,7 @@ export function transfromToForumListOutput(
             totalComment: data.total_comment,
             questionCategory: data.category_id.category_name,
             questionLevel: data.question_level,
-            questionUser: transfromToAccountOutput(data.user_id)
+            questionUser: transformToAccountNoROutput(data.user_id)
         };
       }),
     };

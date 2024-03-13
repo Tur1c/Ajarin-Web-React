@@ -1,3 +1,5 @@
+import { Teacher, TeacherOutput, transformToTeacherOutput } from "../teacher/teacher-model";
+
 export interface DiscussionListSchema {
   discussions: Class[];
 }
@@ -17,6 +19,7 @@ export interface Class {
     category_id: string;
     category_name: string;
   };
+  teacher: Teacher;
 }
 
 export interface DiscussionListOutput {
@@ -45,7 +48,10 @@ export interface ClassList {
   level: string;
   category: string;
   image: string;
+  teacher?: TeacherOutput;
 }
+
+
 
 export function transfromToDiscussionListOutput(
   response: DiscussionListSchema
@@ -65,10 +71,12 @@ export function transfromToDiscussionListOutput(
         level: data.disc_level,
         category: data.category.category_name,
         image: data.disc_image,
+        teacher: transformToTeacherOutput(data.teacher) 
       };
 
     }),
   };
+  console.log(result,"berhasil ga");
   return result;
 }
 

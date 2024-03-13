@@ -206,7 +206,7 @@
 .sidebar .profile_content .profile {
   /* position: relative; */
   padding: 10px 6px;
-  height: 100px;
+  height: 12rem;
   /* background: red; */
   transition: all 0.5s ease;
 }
@@ -216,7 +216,7 @@
 } */
 
 .profile_details {
-  height: 80px;
+  height: 100px;
   min-width: 40px;
   border-radius: 12px;
   line-height: 50px;

@@ -1,6 +1,7 @@
 import { Class, Course } from "./course/course-list";
 import { Teacher } from "./teacher/teacher-model";
 
+//AccountNoRelation
 export interface AccountRegisterSchema {
   id: string;
   firstName: string;
@@ -15,11 +16,53 @@ export interface AccountRegisterSchema {
   country: string;
   school: string;
   coin: number;
-  pic_name: string;
-  pic_url: string;
-  pic_type: string;
+  pic_name?: string;
+  pic_url?: string;
+  pic_type?: string;
 }
 
+export interface AccountNoROutput {
+  id?: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  email: string;
+  age: number;
+  gender: string;
+  phoneNumber: string;
+  education: string;
+  city: string;
+  country: string;
+  school: string;
+  coin: number;
+  urlImage?: string;  
+}
+
+export function transformToAccountNoROutput(
+  response: AccountRegisterSchema
+) : AccountNoROutput {
+  console.log(response,"asdd");
+  const result: AccountNoROutput = {
+    id: response.id,
+    firstName: response.firstName,
+    lastName: response.lastName,
+    fullName: response.firstName + " " + response.lastName,
+    email: response.email,
+    age: response.age,
+    gender: response.gender,
+    phoneNumber: response.phoneNumber,
+    education: response.education,
+    city: response.city,
+    country: response.country,
+    school: response.school,
+    coin: response.coin,
+    urlImage: response.pic_url,
+  };
+  console.log(result, "abc");
+  return result;
+}
+
+//AccountWithRelation
 export interface AccountSchema {
   id: string;
   firstName: string;
@@ -73,6 +116,19 @@ export interface AccountOutput{
   subscribed_lecturer: SubscribedLecturer[];
   urlImage: string;
 }
+// ======================END OF AccountWithRelation
+
+export interface AccountLoginSchema {
+  email: string;
+  password: string;
+  token?: string; 
+}
+
+export interface AccountLoginOutput {
+  token: string;
+}
+
+
 
 export function transfromToAccountOutput(
   response: AccountSchema
@@ -158,4 +214,7 @@ export interface TeacherRegisterSchema {
   experience: string;
   achievement: string;
 }
+
+
+
 

@@ -203,6 +203,15 @@ body {
   font-size: 9px;
 }
 
+.right-disc{
+  cursor: pointer;
+}
+
+.right-disc .right-disc-active{
+  background-color: whitesmoke;
+}
+
+
 .right-home .view-all:hover {
   background-color: var(--lightblue);
   color: var(--whitedark);

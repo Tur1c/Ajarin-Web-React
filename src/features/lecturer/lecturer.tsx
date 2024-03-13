@@ -94,6 +94,7 @@ const Lecturer = () => {
           withCredentials: true,
         }
       );
+      console.log(response,"lecturer");
       setTeacher(transfromToTeacherListOutput(response.data.outputSchema));
       setTempTeacher(transfromToTeacherListOutput(response.data.outputSchema));
     } catch (error) {}

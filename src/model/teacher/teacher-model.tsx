@@ -1,6 +1,9 @@
 import {
+  AccountNoROutput,
   AccountOutput,
+  AccountRegisterSchema,
   AccountSchema,
+  transformToAccountNoROutput,
   transfromToAccountOutput,
 } from "../Account";
 
@@ -9,14 +12,16 @@ export interface InquiryTeacherSchema {
 }
 
 export interface Teacher {
-  id: number;
-  teacher_description: string;
-  teacher_achievement: string;
-  teacher_experience: string;
-  teacher_education: string;
-  teacher_cv_url: string;
-  teacher_rating: string;
-  account: AccountSchema;
+    teacher_id: number;
+    profile_description: string;
+    achievement: string;
+    experience: string;
+    education: string;
+    cv_data: string;
+    rating: string;
+    teacher_image: string;
+    teacher_name: string;
+    user: AccountRegisterSchema;
 }
 
 export interface TeacherListOutput {
@@ -31,27 +36,39 @@ export interface TeacherOutput {
   education: string;
   cvUrl: string;
   rating: string;
-  account: AccountOutput;
+    image: string;
+    name: string;
+  account: AccountNoROutput;
 }
 
 export function transfromToTeacherListOutput(
-  response: InquiryTeacherSchema
-): TeacherListOutput {
-  const result: TeacherListOutput = {
-    teachers: response.teachers.map((data) => {
-      return {
-        id: data.id,
-        description: data.teacher_description,
-        achievement: data.teacher_achievement,
-        experience: data.teacher_experience,
-        education: data.teacher_education,
-        cvUrl: data.teacher_cv_url,
-        rating: data.teacher_rating,
-        account: transfromToAccountOutput(data.account),
-      };
-    }),
-  };
-  console.log(result);
+    response: InquiryTeacherSchema
+  ): TeacherListOutput {
+    console.log(response,"jueng");
+    const result: TeacherListOutput = {
+      teachers: response.teachers.map((data) => {
+        return transformToTeacherOutput(data)
+      }),
+    };
+    console.log(result);
+    
+    return result;
+  }
 
-  return result;
-}
+  export function transformToTeacherOutput(response: Teacher): TeacherOutput {
+      console.log("masuk sini",response);
+      const result: TeacherOutput = {
+          id: response.teacher_id,
+          description: response.profile_description,
+          achievement: response.achievement,
+          experience: response.experience,
+          education: response.education,
+          cvUrl: response.cv_data,
+          rating: response.rating,
+          image: response.teacher_image,
+          name: response.teacher_name,
+          account: transformToAccountNoROutput(response.user)
+      }
+      console.log("lewat");
+      return result;
+  }

@@ -172,7 +172,7 @@ function Home() {
 
         <div className="right-home">
           <div className="upcoming-discussion">
-            <p style={{ marginLeft:"15px" }}>Upcoming Discussion</p>
+            <p className="mt-3" style={{ marginLeft:"15px" }}>Upcoming Discussion</p>
             <Link
               style={{
                 textDecoration: "none",
@@ -181,11 +181,11 @@ function Home() {
               to={"/calendar"}
               state={account}
             >
-              <div className="view-all">View All</div>
+              <div className="view-all mb-3">View All</div>
             </Link>
             {
               account.studentdisc_list.slice(0,3).map( (disc,idx) => (
-                  <div className="card-body disc-body rounded" key={idx} onClick={() => goToDisc(disc.disc.disc_date)}>
+                  <div className={"card-body disc-body rounded right-disc" +  (idx === 0 ? " right-disc-active" : "")} style={{ backgroundColor: idx === 0 ? "rgba(97, 134, 246, 0.3)" : "none" }} key={idx} onClick={() => goToDisc(disc.disc.disc_date)}>
                       <h5 className="card-text d-flex h-100">
                           <div className="disc-date col-2 pe-3 ps-2 text-center my-auto border-end border-white" >
                               <h4 style={{ margin:0, fontSize:"18px" }}>{dayjs(disc.disc.disc_date).format("DD")}</h4>
