@@ -37,6 +37,9 @@ const Profile = () => {
   const [user, setUser] = useSessionStorage("user", "");
   const [role, setRole] = useSessionStorage("role", "");
 
+  const userRole = sessionStorage.getItem("role");
+  
+
   const [account, setAccount] = useState<AccountOutput>(state);
   const [editAccount, setEditAccount] = useState<AccountOutput>(state);
 
@@ -525,7 +528,14 @@ const Profile = () => {
                                   handleAlreadyRegisteredAsTeacher();
                                 }}
                               >
-                                <b>Become Teacher</b>
+                                <b>
+                                  Become{" "}
+                                  {userRole === "Teacher" ? (
+                                    <span>Student</span>
+                                  ) : (
+                                    <span>Teacher</span>
+                                  )}
+                                </b>
                               </button>
                             ) : (
                               ""

@@ -8,6 +8,7 @@ import {
 } from "../../../model/course/course-list";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import { ModalCentered, Pagination } from "../../../shared";
+import TeacherModalAddDiscussion from "./teacher-modal-add-discussion";
 
 const CLASS_URL = "/api/discussion";
 
@@ -27,14 +28,15 @@ function HomeDiscussion(props: any) {
     title: "",
     category: "",
     level: "",
-    date: new Date(),
+    date: "",
     description: "",
     endtime: new Date(),
     image: "",
     maxPeople: "",
     price: "",
     starttime: new Date(),
-    teacher: undefined
+    teacher: undefined,
+    url: "",
   });
 
   const [searchText, setSearchText] = useState("");
@@ -87,6 +89,7 @@ function HomeDiscussion(props: any) {
   };
 
   const handleCloseModal = () => setShowModal(false);
+  
   const handleShowModal = (data: ClassList) => {
     setClassData({
       ...classData,
@@ -146,11 +149,11 @@ function HomeDiscussion(props: any) {
               <div className="thumbnail container-class-header">
                 <img
                   className="disc-image"
-                  src={`assets/${data.image}`}
+                  src={data.url || `assets/${data.image}`}
                   alt=""
                 />
 
-                <div className="bottom-left">{data.date.toString()}</div>
+                <div className="bottom-left">{data.date}</div>
                 <div className="top-left">
                   <img
                     className="img-fluid"
@@ -170,7 +173,7 @@ function HomeDiscussion(props: any) {
                 <div className="class">
                   <div className="d-flex">
                     <div className="me-2">
-                      <img src={ '/assets/' + data.teacher?.image} alt="abc" width={"50px"} />
+                      <img src={data.teacher?.account.urlImage} alt="abc" width={"50px"} />
                     </div>
 
                     <div className="disc-detail">
@@ -178,7 +181,7 @@ function HomeDiscussion(props: any) {
                         <h3>{limitTitle(data.title)}</h3>
                         <span className="tooltip-title">{data.title}</span>
                       </div>
-                      <h4 className="lecturer-discussion">{data.teacher?.name}</h4>
+                      <h4 className="lecturer-discussion">{data.teacher?.account.fullName}</h4>
 
                       <div className="grouping">
                         <div className="chip">{data.category}</div>

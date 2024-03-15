@@ -129,9 +129,10 @@ function HomeClass( {account}:Props ) {
                                 }}
                               >
                                 <img
-                                  src={`assets/coin.png`}
+                                  src={data.teacher?.account.urlImage}
                                   alt="abc"
                                   className="me-2"
+                                  width={"50px"}
                                 />
                                 <span
                                   style={{

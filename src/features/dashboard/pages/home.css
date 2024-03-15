@@ -62,7 +62,7 @@ body {
   /* width: 100%; */
 }
 
-.greetings {
+.greetings, .add-courses {
   margin-top: 2rem;
   margin-left: 2rem;
   margin-right: 2rem;
@@ -462,6 +462,30 @@ body {
 .filter-btn:hover {
   background-color: var(--lightblue);
   color: var(--whitedark);
+}
+
+.create-course-button {
+  background: linear-gradient(rgba(255,255,255,.1), rgba(255,255,255,.1)), url("../../../../public/assets/create_course.png");
+  height: 4rem;
+  font-size: 20px;
+  color: white;
+  font-weight: 700;
+}
+
+.set-discussion-button {
+  background: linear-gradient(rgba(255,255,255,.1), rgba(255,255,255,.1)), url("../../../../public/assets/set_discussion.png");
+  height: 4rem;
+  font-size: 20px;
+  color: white;
+  font-weight: 700;
+}
+
+.private-discussion-button {
+  background: linear-gradient(rgba(255,255,255,.05), rgba(255,255,255,.05)), url("../../../../public/assets/private_discussion.png");
+  height: 4rem;
+  font-size: 20px;
+  color: white;
+  font-weight: 700;
 }
 
 /* Pagination */

@@ -30,6 +30,7 @@ const UNSUBSCRIBE_LECTURER = "/api/account/unsubscribe?teacher-id=";
 const Lecturer = () => {
   const isLogged = sessionStorage.getItem("jwt");
   const emailUser = sessionStorage.getItem("user");
+  const userRole = sessionStorage.getItem("role");
   const { state } = useLocation();
   const [searchText, setSearchText] = useState("");
   const [searchTeacherText, setSearchTeacherText] = useState("");
@@ -243,101 +244,187 @@ const Lecturer = () => {
       </div>
       <div className="d-block w-100 lecturer-page">
         {isLogged ? (
-          <div className="lecturer-subscribed p-4 ">
-            <h3>My Lecturer</h3>
-            <div className="search-wrapper m-0">
-              <div className="search-container">
-                <div className="search-left">
-                  <input
-                    type="search"
-                    name=""
-                    id="search-input"
-                    style={{ width: "99%" }}
-                    placeholder="Search"
-                    onChange={(e) => {
-                      setSearchText(e.target.value);
-                      fetchDataAccount();
-                    }}
-                  />
-                </div>
-                <div className="search-right">
-                  <button className="search-button" id="search">
-                    <IoSearch
-                      color="#6E6E6E"
-                      fontSize={"24"}
-                      onClick={handleClickSearch}
-                    />
-                  </button>
-                </div>
-              </div>
-              <div
-                className="lecturer-subscribed-content row mt-4"
-                style={{ height: "25rem" }}
-              >
-                {currentTeacherList.map((data) => (
-                  <div className="col-6">
-                    <div
-                      className="card"
-                      style={{
-                        height: "7rem",
-                        background: "rgba(255, 255, 255, 0.2)",
-                      }}
-                    >
-                      <div className="row" style={{ height: "100vh" }}>
-                        <div
-                          className="col-2"
-                          style={{
-                            textAlign: "center",
-                            verticalAlign: "middle",
+          userRole === "Teacher" ? (
+            <div className="lecturer-private-discussion p-4">
+              <h3 className="fw-bold">Private Discussion Request</h3>
+              <div className="table-container">
+                <TableContainer>
+                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell className="text-white" width={"2%"}>
+                          #
+                        </TableCell>
+                        <TableCell className="text-white" width={"30%"}>
+                          Title
+                        </TableCell>
+                        <TableCell className="text-white">Date</TableCell>
+                        <TableCell className="text-white">Category</TableCell>
+                        <TableCell className="text-white">
+                          Participant
+                        </TableCell>
+                        <TableCell className="text-white">Coin</TableCell>
+                        <TableCell className="text-white">Action</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {teachers.teachers.slice(0, 10).map((data, index) => (
+                        <TableRow
+                          key={index}
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
                           }}
+                          onClick={() => handleTeacherDetail(data)}
                         >
-                          <img
-                            className="img-fluid"
-                            src={
-                              data.user?.pic_url || `assets/default_picture.png`
-                            }
-                            alt=""
-                            style={{ width: "70%" }}
-                          />
-                        </div>
-                        <div className="col-10">
-                          <div className="card-text text-white fw-bold d-flex justify-content-between p-3">
-                            <h5>
-                              {data.user.firstName} {data.user.lastName}
-                            </h5>
-                            <div className="d-flex flex-column lecturer-subscribed-button">
-                              <button className="request-private-btn">
-                                Request Private
-                              </button>
-                              <button
-                                className="unsubscribe-btn"
-                                onClick={() => handleUnsubscribe(data)}
-                              >
-                                Unsubscribe
-                              </button>
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            className="text-white"
+                          >
+                            {index + 1}
+                          </TableCell>
+                          <TableCell className="text-white">
+                            <img
+                              className="img-fluid"
+                              src={
+                                data.account.urlImage ||
+                                `assets/default_picture.png`
+                              }
+                              alt=""
+                              style={{ height: "10%", width: "10%" }}
+                            />
+                            <span> {data.account.fullName}</span>
+                          </TableCell>
+                          <TableCell className="text-white">
+                            100 solds
+                          </TableCell>
+                          <TableCell className="text-white">
+                            200 Participants
+                          </TableCell>
+                          <TableCell className="text-white">
+                            96 Points
+                          </TableCell>
+                          <TableCell className="text-white">
+                            <FaStar
+                              style={{
+                                color: "green",
+                                fontSize: "25px",
+                                marginRight: "5px",
+                              }}
+                            />{" "}
+                            {data.rating}
+                          </TableCell>
+                          <TableCell className="text-white lecturer-request-private-button">
+                            <button className="request-private-btn me-3">
+                              Accept
+                            </button>
+                            <button className="unsubscribe-btn">Decline</button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </div>
+            </div>
+          ) : (
+            <div className="lecturer-subscribed p-4 ">
+              <h3 className="fw-bold">My Lecturer</h3>
+              <div className="search-wrapper m-0">
+                <div className="search-container">
+                  <div className="search-left">
+                    <input
+                      type="search"
+                      name=""
+                      id="search-input"
+                      style={{ width: "99%" }}
+                      placeholder="Search"
+                      onChange={(e) => {
+                        setSearchText(e.target.value);
+                        fetchDataAccount();
+                      }}
+                    />
+                  </div>
+                  <div className="search-right">
+                    <button className="search-button" id="search">
+                      <IoSearch
+                        color="#6E6E6E"
+                        fontSize={"24"}
+                        onClick={handleClickSearch}
+                      />
+                    </button>
+                  </div>
+                </div>
+                <div
+                  className="lecturer-subscribed-content row mt-4"
+                  style={{ height: "25rem" }}
+                >
+                  {currentTeacherList.map((data) => (
+                    <div className="col-6">
+                      <div
+                        className="card"
+                        style={{
+                          height: "7rem",
+                          background: "rgba(255, 255, 255, 0.2)",
+                        }}
+                      >
+                        <div className="row" style={{ height: "100vh" }}>
+                          <div
+                            className="col-2"
+                            style={{
+                              textAlign: "center",
+                              verticalAlign: "middle",
+                            }}
+                          >
+                            <img
+                              className="img-fluid"
+                              src={
+                                data.user?.pic_url ||
+                                `assets/default_picture.png`
+                              }
+                              alt=""
+                              style={{ width: "70%" }}
+                            />
+                          </div>
+                          <div className="col-10">
+                            <div className="card-text text-white fw-bold d-flex justify-content-between p-3">
+                              <h5>
+                                {data.user.firstName} {data.user.lastName}
+                              </h5>
+                              <div className="d-flex flex-column lecturer-subscribed-button">
+                                <button className="request-private-btn">
+                                  Request Private
+                                </button>
+                                <button
+                                  className="unsubscribe-btn"
+                                  onClick={() => handleUnsubscribe(data)}
+                                >
+                                  Unsubscribe
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                <Pagination
+                  totalClass={account.subscribed_lecturer.length}
+                  classPerPage={classPerPage}
+                  onPageChange={handlePageChange}
+                  currentPage={currentPage}
+                />
               </div>
-              <Pagination
-                totalClass={account.subscribed_lecturer.length}
-                classPerPage={classPerPage}
-                onPageChange={handlePageChange}
-                currentPage={currentPage}
-              />
             </div>
-          </div>
+          )
         ) : (
           ""
         )}
 
         <div className="lecturer-content">
           <div className="greetings">
-            <h3>Lecturer Leaderboard</h3>
+            <h3 className="fw-bold">Lecturer Leaderboard</h3>
             <h4>
               <span>
                 There are{" "}
@@ -417,7 +504,7 @@ const Lecturer = () => {
         </div>
 
         <div className="lecturer-subscribed p-4 ">
-          <h3>Search Lecturer</h3>
+          <h3 className="fw-bold">Search Lecturer</h3>
           <div className="search-wrapper m-0">
             <div className="search-container">
               <div className="search-left">

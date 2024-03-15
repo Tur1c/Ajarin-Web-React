@@ -58,7 +58,7 @@ export function transformToAccountNoROutput(
     coin: response.coin,
     urlImage: response.pic_url,
   };
-  console.log(result, "abc");
+  console.log(result, "abc account hehe");
   return result;
 }
 

@@ -1,5 +1,9 @@
 import { Teacher, TeacherOutput, transformToTeacherOutput } from "../teacher/teacher-model";
 
+import Moment from 'react-moment';
+import moment from 'moment';
+import 'moment-timezone';
+
 export interface DiscussionListSchema {
   discussions: Class[];
 }
@@ -15,6 +19,7 @@ export interface Class {
   disc_description: string;
   disc_level: string;
   disc_image: string;
+  disc_url: string;
   category: {
     category_id: string;
     category_name: string;
@@ -32,7 +37,7 @@ export interface CategorySchema {
 }
 
 export interface JoinDiscussionSchema {
-  email: string|null|undefined;
+  email: string | null | undefined;
   id: number;
 }
 
@@ -41,22 +46,41 @@ export interface ClassList {
   title: string;
   maxPeople: string;
   price: string;
-  date: Date;
+  date: string;
   starttime: Date;
   endtime: Date;
   description: string;
   level: string;
   category: string;
-  image: string;
+  image?: string;
   teacher?: TeacherOutput;
+  url: string;
 }
+
+export interface AddDiscussionSchema {
+  title: string;
+  category: string;
+  education_level: string;
+  description: string;
+  start_date: Date;
+  end_date: Date;
+  max_participant: string;
+  price: string;
+  link: string;
+  user_id: number;
+}
+
+function changeDate(date: string) {
+  const newDate = moment(date).format("MMMM Do YYYY");
+  return newDate;
+} 
 
 
 
 export function transfromToDiscussionListOutput(
   response: DiscussionListSchema
 ): DiscussionListOutput {
-  console.log(response,"masuk");
+  console.log(response, "masuk");
   const result: DiscussionListOutput = {
     classList: response.discussions.map((data) => {
       return {
@@ -64,22 +88,21 @@ export function transfromToDiscussionListOutput(
         title: data.disc_title,
         maxPeople: data.disc_participant,
         price: data.disc_price,
-        date: data.disc_date,
+        date: changeDate(data.disc_date.toString()),
         starttime: data.disc_starttime,
         endtime: data.disc_endtime,
         description: data.disc_description,
         level: data.disc_level,
         category: data.category.category_name,
         image: data.disc_image,
-        teacher: transformToTeacherOutput(data.teacher) 
+        teacher: transformToTeacherOutput(data.teacher),
+        url: data.disc_url,
       };
-
     }),
   };
   console.log(result,"berhasil ga");
   return result;
 }
-
 
 // course
 
@@ -100,15 +123,16 @@ export interface Course {
     category_name: string;
   };
   course_details: CourseDetailSchema[];
+  teacher: Teacher;
 }
 
-export interface CourseDetailSchema{
-    course_detail_id: number;
-    course_id: number;
-    course_detail_chapter: number;
-    chapter_title: string;
-    chapter_video: string;
-    chapter_thumbnail: string;
+export interface CourseDetailSchema {
+  course_detail_id: number;
+  course_id: number;
+  course_detail_chapter: number;
+  chapter_title: string;
+  chapter_video: string;
+  chapter_thumbnail: string;
 }
 
 export interface CourseListOutput {
@@ -124,10 +148,11 @@ export interface CourseList {
   level: string;
   category: string;
   image: string;
-  course_detail: CourseDetailOutput[]
+  teacher?: TeacherOutput;
+  course_detail: CourseDetailOutput[];
 }
 
-export interface CourseDetailOutput{
+export interface CourseDetailOutput {
   course_detail_chapter: number;
   chapter_title: string;
   chapter_video: string;
@@ -148,18 +173,19 @@ export function transfromToCourseListOutput(
         level: data.course_level,
         category: data.category.category_name,
         image: data.course_image,
-        course_detail: data.course_details?.map( (course) => {
+        teacher: transformToTeacherOutput(data.teacher),
+        course_detail: data.course_details?.map((course) => {
           return {
             course_detail_chapter: course.course_detail_chapter,
             chapter_title: course.chapter_title,
             chapter_video: course.chapter_video,
-            chapter_thumbnail: course.chapter_thumbnail
-          }
-        })
+            chapter_thumbnail: course.chapter_thumbnail,
+          };
+        }),
       };
     }),
   };
-  console.log(result, 'model class');
-  
+  console.log(result, "model class");
+
   return result;
 }
