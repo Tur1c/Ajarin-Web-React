@@ -97,7 +97,7 @@ function HomeClass( {account}:Props ) {
                       <div className="container-class-header">
                         <img
                           className="disc-image img-fluid"
-                          src={`assets/${data.image}`}
+                          src={data.image}
                           alt=""
                           style={{ height: "10rem" }}
                         />

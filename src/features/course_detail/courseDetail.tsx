@@ -11,7 +11,7 @@ import "./courseDetail.css";
 
 const CourseDetail = () => {
   const { state } = useLocation();
-  console.log(state);
+  console.log(state, "course detail");
 
   const navigate = useNavigate();
 
@@ -106,7 +106,7 @@ const CourseDetail = () => {
                       <div className="text-center">
                         <img
                           className="img-fluid h-100 "
-                          src={`/assets/${course.image}`}
+                          src={data.chapter_thumbnail}
                           alt=""
                         />
                       </div>

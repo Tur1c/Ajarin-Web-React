@@ -13,9 +13,11 @@ import {
   transfromToAccountOutput,
 } from "../../../model/Account";
 import { ApiResponse } from "../../../model/schema/base_schema";
+import { Teacher } from "../../../model/teacher/teacher-model";
 import { Sidebar } from "../../../shared";
 import HomeClass from "../components/home-class";
 import HomeDiscussion from "../components/home-discussion";
+import TeacherModalAddCourse from "../components/teacher-modal-add-course";
 import TeacherModalAddDiscussion from "../components/teacher-modal-add-discussion";
 import "./home.css";
 
@@ -42,11 +44,43 @@ function Home() {
     urlImage: "",
   });
   const [showModalAddDiscussion, setShowModalAddDiscussion] = useState(false);
+  const [showModalAddCourse, setShowModalAddCourse] = useState(false);
 
   let search = false;
+  let accountId = "";
   const [searchText, setSearchText] = useState("");
   const [key, setKey] = useState("discussion");
   const HOME_URL = "/api/account?email=" + email;
+  const TEACHER_DATA = "/api/account/inquiry/teacher/";
+  const [teacher, setTeacher] = useState<Teacher>({
+    achievement: "",
+    courses: [],
+    cv_data: "",
+    discussion: [],
+    education: "",
+    experience: "",
+    id: 0,
+    profile_description: "",
+    rating: "",
+    user: {
+      age: 0,
+      city: "",
+      coin: 0,
+      country: "",
+      education: "",
+      email: "",
+      firstName: "",
+      gender: "",
+      id: "",
+      lastName: "",
+      password: "",
+      phoneNumber: "",
+      school: "",
+      pic_name: "",
+      pic_type: "",
+      pic_url: "",
+    },
+  });
   const navigate = useNavigate();
 
   const fetchDataAccount = async () => {
@@ -59,9 +93,26 @@ function Home() {
         withCredentials: true,
       });
       console.log(response.data.outputSchema, "ABCCCCC");
+      accountId = response.data.outputSchema.id;
       setAccount(transfromToAccountOutput(response.data.outputSchema));
       // setAccountDisc(transformToAccountDiscOutput(response.data.outputSchema));
     } catch (error) {}
+  };
+
+  const fetchTeacherData = async () => {
+    try {
+      const response = await axios.get(TEACHER_DATA + accountId, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + sessionStorage.getItem("jwt"),
+        },
+        withCredentials: true,
+      });
+      if (response.data.outputSchema != null) {
+        setTeacher(response.data.outputSchema);
+        console.log(teacher);
+      }
+    } catch {}
   };
 
   const handleCloseModalAddDiscussion = () => setShowModalAddDiscussion(false);
@@ -70,9 +121,20 @@ function Home() {
     setShowModalAddDiscussion(true);
   };
 
+  const handleCloseModalAddCourse = () => setShowModalAddCourse(false);
+
+  const handleShowModalAddCourse = () => {
+    setShowModalAddCourse(true);
+  };
+
   useEffect(() => {
     if (isLogged) {
       fetchDataAccount();
+    }
+    if (userRole === "Teacher") {
+      setTimeout(() => {
+        fetchTeacherData();
+      }, 500);
     }
   }, []);
 
@@ -108,6 +170,7 @@ function Home() {
                 <button
                   className="create-course-button"
                   style={{ width: "100%" }}
+                  onClick={() => handleShowModalAddCourse()}
                 >
                   Create Course
                 </button>
@@ -128,6 +191,59 @@ function Home() {
                 >
                   Private Discussion Request
                 </button>
+              </div>
+            </div>
+            <div className="top-courses mt-5">
+              <h1 className="fw-bold">Your Top Courses</h1>
+              <div className="row d-flex justify-content-between">
+                {teacher.courses
+                  .sort((a, b) =>
+                    a.total_sold_course > b.total_sold_course ? -1 : 1
+                  )
+                  .slice(0, 5)
+                  .map((data, index) => (
+                    <div className="col-2">
+                      <div
+                        className="card"
+                        style={{
+                          width: "13rem",
+                          height: "18rem",
+                          background: "rgba(255, 255, 255, 0.1)",
+                          border: "none",
+                        }}
+                      >
+                        <div className="text-center thumbnail container-class-header">
+                          <img
+                            className="img-fluid"
+                            src={data.course_image}
+                            alt=""
+                            style={{ width: "100%", height: "100%" }}
+                          />
+                          <div
+                            className="bottom-left p-0"
+                            style={{ backgroundColor: "rgba(0, 0, 0, 0.0)" }}
+                          >
+                            <h5
+                              style={{ backgroundColor: "rgba(0, 0, 0, 0.8)" }}
+                            >
+                              #{index + 1}
+                            </h5>
+                          </div>
+                        </div>
+                        <div className="card-body h-50 p-2 text-white">
+                          <div className="card-title">{data.course_title}</div>
+                          <div className="card-text" style={{ height: "3rem" }}>
+                            {data.total_sold_course} Purchased
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+              <div className="w-100 d-flex justify-content-center mt-3">
+                <div className="filter-btn" style={{ width: "50%" }}>
+                  See All
+                </div>
               </div>
             </div>
           </div>
@@ -286,6 +402,10 @@ function Home() {
         show={showModalAddDiscussion}
         onHide={handleCloseModalAddDiscussion}
       ></TeacherModalAddDiscussion>
+      <TeacherModalAddCourse
+        show={showModalAddCourse}
+        onHide={handleCloseModalAddCourse}
+      ></TeacherModalAddCourse>
     </div>
     // </body>
   );

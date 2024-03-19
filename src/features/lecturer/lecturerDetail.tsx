@@ -1,4 +1,5 @@
 import { useWindowWidth } from "@wojtekmaj/react-hooks";
+import { Key } from "react";
 import { FaStar } from "react-icons/fa";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { Document, Page, pdfjs } from "react-pdf";
@@ -6,6 +7,7 @@ import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
+import { CourseList } from "../../model/course/course-list";
 import "./lecturerDetail.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
@@ -72,10 +74,10 @@ const LecturerDetail = () => {
             >
               <div className="d-flex">
                 <img
-                  className="img-fluid rounded-circle mb-4"
+                  className="img-fluid mb-4"
                   src={state.data.account.urlImage || `assets/coin.png`}
                   alt=""
-                  style={{ height: "10rem" }}
+                  style={{ width: "20rem" }}
                 />
                 <div className="d-block ms-3">
                   <h3>{state.data.account.fullName}</h3>
@@ -186,18 +188,86 @@ const LecturerDetail = () => {
               </li>
               <li
                 className="card text-white"
-                style={{ background: "rgba(255, 255, 255, 0.1)" }}
+                style={{
+                  background: "rgba(255, 255, 255, 0.1)",
+                  width: "100rem",
+                }}
               >
                 <div>
                   <div className="" style={{ height: "30rem" }}>
-                    <h2 className="fw-bold">Education & Experience</h2>
+                    <h2 className="fw-bold">Top Courses</h2>
                     <div className="card-body h-50">
-                      <div className="card-text" style={{ height: "3rem" }}>
-                        {state.data.education}
-                      </div>
-                      <div className="card-text" style={{ height: "3rem" }}>
-                        {state.data.experience}
-                      </div>
+                      <ul
+                        className="cards"
+                        style={{
+                          height: "32rem",
+                          gridAutoColumns: "calc(25% - 290px",
+                        }}
+                      >
+                        {state.data.courses
+                          .sort((a: { sold: number }, b: { sold: number }) =>
+                            a.sold > b.sold ? -1 : 1
+                          )
+                          .slice(0, 5)
+                          .map(
+                            (
+                              course: CourseList,
+                              index: any
+                            ) => (
+                              <li
+                                className="card"
+                                key={index}
+                                style={{ width: "20rem", height: "28rem" }}
+                              >
+                                <div className="text-center thumbnail container-class-header">
+                                  <img
+                                    className="img-fluid"
+                                    src={`/assets/${course.image}`}
+                                    alt=""
+                                    style={{width: "20rem"}}
+                                  />
+                                  <div className="bottom-left p-0" style={{backgroundColor: "rgba(0, 0, 0, 0.0)"}}>
+                                    <h2 style={{backgroundColor: "rgba(0, 0, 0, 0.8)"}}>#{index+1}</h2>
+                                  </div>
+                                </div>
+                                <div className="card-body h-50 mt-5">
+                                  <div className="card-title">
+                                    {course.title}
+                                  </div>
+                                  <div
+                                    className="card-text"
+                                    style={{ height: "3rem" }}
+                                  >
+                                    {course.sold} Purchased
+                                  </div>
+                                </div>
+                              </li>
+                            )
+                          )}
+                        {/* <div className="row d-flex">
+                        {state.data.courses
+                          .sort((a: { sold: number }, b: { sold: number }) =>
+                            a.sold > b.sold ? 1 : -1
+                          )
+                          .slice(0, 5)
+                          .map((course: CourseList) => (
+                            <div
+                              className="card ms-5"
+                              style={{ height: "25rem", width: "15rem" }}
+                            >
+                              <div className="card-body">
+                                <img
+                                  className="img-fluid"
+                                  src={`assets/${course.image}`}
+                                  alt=""
+                                  style={{ height: "10rem" }}
+                                />
+                              </div>
+                            </div>
+                          ))}
+                      </div> */}
+                      </ul>
+                      <button>See All</button>
                     </div>
                   </div>
                 </div>

@@ -134,7 +134,9 @@ function TeacherModalAddDiscussion(props: any) {
 
   useEffect(() => {
     setPage(1);
-  }, []);
+    setSelectedStartDate(null);
+    setSelectedEndDate(null);
+  }, [props.onHide]);
 
   return (
     <Modal

@@ -118,6 +118,7 @@ export interface Course {
   course_description: string;
   course_level: string;
   course_image: string;
+  total_sold_course: number;
   category: {
     category_id: string;
     category_name: string;
@@ -135,6 +136,23 @@ export interface CourseDetailSchema {
   chapter_thumbnail: string;
 }
 
+export interface AddCourseSchema {
+  title: string;
+  category: string;
+  education_level: string;
+  description: string;
+  chapter: string;
+  price: string;
+  user_id: number;
+  image_link: string;
+}
+
+export interface AddCourseDetailSchema {
+  title: string;
+  video: string;
+  thumbnail: string;
+}
+
 export interface CourseListOutput {
   courseList: CourseList[];
 }
@@ -148,6 +166,7 @@ export interface CourseList {
   level: string;
   category: string;
   image: string;
+  sold?: number;
   teacher?: TeacherOutput;
   course_detail: CourseDetailOutput[];
 }
@@ -162,6 +181,8 @@ export interface CourseDetailOutput {
 export function transfromToCourseListOutput(
   response: CourseListSchema
 ): CourseListOutput {
+  console.log(response.courses[0].total_sold_course, "total_sold");
+  
   const result: CourseListOutput = {
     courseList: response.courses.map((data) => {
       return {
@@ -174,6 +195,7 @@ export function transfromToCourseListOutput(
         category: data.category.category_name,
         image: data.course_image,
         teacher: transformToTeacherOutput(data.teacher),
+        sold: data.total_sold_course,
         course_detail: data.course_details?.map((course) => {
           return {
             course_detail_chapter: course.course_detail_chapter,

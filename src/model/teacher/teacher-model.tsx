@@ -1,8 +1,10 @@
+import moment from "moment";
 import {
   AccountNoROutput,
   AccountRegisterSchema,
   transformToAccountNoROutput,
 } from "../Account";
+import { Class, ClassList, Course, CourseList, CourseListOutput, CourseListSchema, DiscussionListOutput, DiscussionListSchema, transfromToCourseListOutput, transfromToDiscussionListOutput } from "../course/course-list";
 
 export interface InquiryTeacherSchema {
   teachers: Teacher[];
@@ -16,9 +18,9 @@ export interface Teacher {
   education: string;
   cv_data: string;
   rating: string;
-  // teacher_image: string;
-  // teacher_name: string;
   user: AccountRegisterSchema;
+  discussion: Class[];
+  courses: Course[];
 }
 
 export interface TeacherListOutput {
@@ -36,6 +38,9 @@ export interface TeacherOutput {
   // image: string;
   // name: string;
   account: AccountNoROutput;
+  discussion?: ClassList[];
+  courses?: CourseList[];
+  courseSold?: number;
 }
 
 export function transfromToTeacherListOutput(
@@ -52,6 +57,19 @@ export function transfromToTeacherListOutput(
   return result;
 }
 
+function changeDate(date: string) {
+  const newDate = moment(date).format("MMMM Do YYYY");
+  return newDate;
+} 
+
+function countCourseSold(courses: Course[]) {
+  let count = 0;
+  courses?.map((data) => {
+    count += data.total_sold_course;
+  });
+  return count;
+}
+
 export function transformToTeacherOutput(response: Teacher): TeacherOutput {
   console.log("masuk sini", response);
   const result: TeacherOutput = {
@@ -65,6 +83,44 @@ export function transformToTeacherOutput(response: Teacher): TeacherOutput {
     // image: response.teacher_image,
     // name: response.teacher_name,
     account: transformToAccountNoROutput(response.user),
+    discussion: response.discussion?.map((data) => {
+      return {
+        id: data.disc_id,
+        title: data.disc_title,
+        maxPeople: data.disc_participant,
+        price: data.disc_price,
+        date: changeDate(data.disc_date.toString()),
+        starttime: data.disc_starttime,
+        endtime: data.disc_endtime,
+        description: data.disc_description,
+        level: data.disc_level,
+        category: data.category.category_name,
+        image: data.disc_image,
+        url: data.disc_url,
+      }
+    }),
+    courses: response.courses?.map((data) => {
+      return {
+        id: data.course_id,
+        price: data.course_price,
+        chapter: data.course_chapter,
+        title: data.course_title,
+        description: data.course_description,
+        level: data.course_level,
+        category: data.category.category_name,
+        image: data.course_image,
+        sold: data.total_sold_course,
+        course_detail: data.course_details?.map((course) => {
+          return {
+            course_detail_chapter: course.course_detail_chapter,
+            chapter_title: course.chapter_title,
+            chapter_video: course.chapter_video,
+            chapter_thumbnail: course.chapter_thumbnail,
+          };
+        }),
+      }
+    }),
+    courseSold: countCourseSold(response.courses),
   };
   console.log(result, "lewat teacher");
   return result;

@@ -222,7 +222,7 @@ body {
 .right-home .statistic {
   display: flex;
   flex-direction: column;
-  height: 60%;
+  height: 59%;
   margin-top: 0.5rem;
   border-radius: 0.5rem;
   background-color: var(--blue);

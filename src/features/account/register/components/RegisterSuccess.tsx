@@ -20,7 +20,7 @@ const RegSuccess = () => {
             <p>Your account has been created! Enjoy Your Learning Journey</p>
             <div className="button mt-5">
               <button style={{ backgroundColor: "#F6ECA9" }} >
-                <NavLink to={"/"} style={{ color: "#000" }}>
+                <NavLink to={"/login"} style={{ color: "#000" }}>
                   Start
                 </NavLink>
               </button>

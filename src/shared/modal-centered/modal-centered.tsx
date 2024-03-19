@@ -53,26 +53,26 @@ function ModalCentered(props: any) {
           className="container-class-header d-flex justify-content-around"
           style={{ height: "2rem" }}
         >
-          <div className="p-1" style={{ backgroundColor: "#000" }}>
+          <div className="p-1">
             <IoIosCloseCircleOutline
               onClick={props.onHide}
-              style={{ color: "#fff" }}
+              style={{ color: "#fff", fontSize: "30px" }}
             />
           </div>
           <div
-            className=""
-            style={{ backgroundColor: "#596FB7", width: "450px" }}
+            className="mt-2"
+            style={{ width: "450px" }}
           >
             <span>
               {props.data.date} {props.data.starttime.toString()} -{" "}
               {props.data.endtime.toString()}
             </span>
           </div>
-          <div className="p-1" style={{ backgroundColor: "#000" }}>
-            <IoIosCloseCircleOutline
+          <div className="p-1">
+            {/* <IoIosCloseCircleOutline
               onClick={props.onHide}
               style={{ color: "#fff" }}
-            />
+            /> */}
           </div>
         </div>
         <div className="container-class-header pt-3">
@@ -151,7 +151,7 @@ function ModalCentered(props: any) {
                 {props.data.price}
               </button>
             ) : (
-              <b>Log In</b>
+              <b onClick={() => navigate("/login")}>Log In</b>
             )}
           </p>
         </div>

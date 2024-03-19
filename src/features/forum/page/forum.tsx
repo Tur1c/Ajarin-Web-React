@@ -257,7 +257,7 @@ const Forum = () => {
                                 <div className="left d-flex">
                                   <img
                                     className="img-fluid"
-                                    src={`assets/coin.png`}
+                                    src={data.questionUser.urlImage}
                                     alt=""
                                     style={{ height: "50px" }}
                                   />
@@ -345,12 +345,8 @@ const Forum = () => {
             </div>
             <div
               className="col-2"
-              style={{
-                overflow: "scroll",
-                overflowX: "hidden",
-              }}
             >
-              <div className="card mb-3" style={{ height: "100vh" }}>
+              <div className="card mb-3" style={{ height: "97vh" }}>
                 <div
                   className="card-body"
                   style={{

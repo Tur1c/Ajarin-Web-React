@@ -268,7 +268,7 @@ const Lecturer = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {teachers.teachers.slice(0, 10).map((data, index) => (
+                      {tempTeachers.teachers.slice(0, 10).map((data, index) => (
                         <TableRow
                           key={index}
                           sx={{
@@ -455,7 +455,7 @@ const Lecturer = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {teachers.teachers.slice(0, 10).map((data, index) => (
+                  {tempTeachers.teachers.slice(0, 10).map((data, index) => (
                     <TableRow
                       key={index}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -480,7 +480,7 @@ const Lecturer = () => {
                         />
                         <span> {data.account.fullName}</span>
                       </TableCell>
-                      <TableCell className="text-white">100 solds</TableCell>
+                      <TableCell className="text-white">{data.courseSold} solds</TableCell>
                       <TableCell className="text-white">
                         200 Participants
                       </TableCell>
@@ -578,7 +578,7 @@ const Lecturer = () => {
             <Pagination
               totalClass={teachers.teachers.length}
               classPerPage={classPerPage}
-              onPageChange={handlePageChange}
+              onPageChange={handlePageTeacherChange}
               currentPage={currentPage}
             />
           </div>

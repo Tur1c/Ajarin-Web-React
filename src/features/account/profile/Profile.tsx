@@ -102,7 +102,9 @@ const Profile = () => {
         },
         withCredentials: true,
       });
-      isAlreadyTeacher = response.data;
+      if(response.data.outputSchema != null) {
+        isAlreadyTeacher = true;
+      }
       console.log(response.data);
     } catch {}
   };
