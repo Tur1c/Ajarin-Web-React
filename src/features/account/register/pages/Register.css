@@ -1,14 +1,30 @@
+:root {
+  --purple: #0a122b;
+  --blue: #11235a;
+  --yelo: #f6eca9;
+  --black: #000;
+  --white: #fff;
+  --grey: #6e6e6e;
+  --lightgrey: #aeaeae;
+  --lightblue: #273a72;
+  --whitedark: #eeeeee;
+  --yelodark: #ada677;
+}
+
 .wrapper {
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  align-items: start;
   width: 100%;
-  margin-left: 3rem;
-  margin-top: 3rem;
+  /* margin-left: 3rem;
+  margin-top: 3rem; */
+  /* background-color: red; */
   color: white;
 }
 
 .wrapper h1 {
   font-size: 60px;
+  cursor: default;
 }
 
 .wrapper div {
@@ -21,13 +37,72 @@
   margin-top: 1.5rem;
 }
 
+.wrapper .input-box-name {
+  height: 50px;
+  margin-bottom: 30px;
+  margin-top: 1.5rem;
+}
+
+.wrapper .register-link {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.wrapper p {
+  cursor: default;
+}
+
+.wrapper b:hover {
+  color: var(--yelodark);
+}
+
+.wrapper .naming {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  gap: 1rem;
+}
+
+.wrapper .input-box-name {
+  position: relative;
+  width: 100%;
+}
+
+.wrapper .input-box-name input {
+  width: 100%;
+  height: 120%;
+  background: #fff;
+  border: none;
+  outline: none;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 40px;
+  display: inline;
+  padding: 20px 45px 20px 24px;
+}
+
+.wrapper .input-box-name label {
+  position: absolute;
+  top: 60%;
+  left: 20px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #000;
+  padding: 0 5px;
+  pointer-events: none;
+  transition: 0.2s ease;
+}
+
+/* Kepake di Register Page Two */
+
 .input-box {
   position: relative;
   margin: 20px 0;
+  width: 100%;
 }
 
 .input-box input {
-  width: 70%;
+  width: 100%;
   height: 120%;
   background: #fff;
   border: none;
@@ -57,11 +132,22 @@
 
 .wrapper button {
   width: 30%;
-  background-color: #f6eca9;
+  background-color: var(--yelo);
   border: none;
   outline: none;
   border-radius: 50px;
   color: #11235a;
+  cursor: pointer;
+}
+
+.wrapper button:hover {
+  background-color: var(--yelodark);
+}
+
+.input-box-name input:focus ~ label,
+.input-box-name input:valid ~ label {
+  top: 20%;
+  font-size: 10px;
 }
 
 .input-box input:focus ~ label,
@@ -70,17 +156,31 @@
   font-size: 10px;
 }
 
+.create-btn {
+  position: fixed;
+  bottom: 12rem;
+  left: 6rem;
+  width: 40%;
+}
+
+.create-btn button {
+  height: 4rem;
+
+  /* padding-top: 1rem;
+  padding-bottom: 1rem; */
+}
+
 .offscreen {
   position: absolute;
   left: -9999px;
 }
 
 .instructions {
-    font-size: 0.75rem;
-    border-radius: 0.5rem;
-    background: #000;
-    color: #fff;
-    padding: 0.25rem;
-    position: relative;
-    bottom: -10px;
+  font-size: 0.75rem;
+  border-radius: 0.5rem;
+  background: #000;
+  color: #fff;
+  padding: 0.25rem;
+  position: relative;
+  width: 100%;
 }

@@ -3,6 +3,7 @@ import { Button, ButtonGroup, Dropdown } from "react-bootstrap";
 import { BiComment } from "react-icons/bi";
 import { IoSearch } from "react-icons/io5";
 import { useLocation } from "react-router";
+import { Link } from "react-router-dom";
 import axios from "../../../api/axios";
 import { AccountOutput } from "../../../model/Account";
 import {
@@ -36,6 +37,7 @@ const Forum = () => {
   });
 
   const { state } = useLocation();
+  console.log("state juga coba", state);
 
   const account: AccountOutput = !state?.firstName ? undefined : state;
   console.log(account);
@@ -67,15 +69,14 @@ const Forum = () => {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
+
       setForumList(transfromToForumListOutput(response.data.outputSchema));
+
+      console.log("munculll", response.data.outputSchema);
+
       setTempForumList(transfromToForumListOutput(response.data.outputSchema));
     } catch (error) {}
   };
-
-  // const setForumList = (output: ForumListOutput) => {
-  //   setForumList(output);
-  //   console.log(forumList);
-  // };
 
   useEffect(() => {
     fetchCategoryData();
@@ -151,109 +152,149 @@ const Forum = () => {
         <Sidebar account={account}></Sidebar>
       </div>
       <div className="forum-content">
-        <div className="container-fluid p-2">
-          <div className="row">
-            <div className="col-10">
-              <div
-                className="card"
-                style={{
-                  height: "97vh",
-                  backgroundColor: "#11235A",
-                  border: "none",
-                }}
-              >
-                <div className="card-header" style={{ border: "none" }}>
-                  <div className="card-title d-flex justify-content-between pt-4">
-                    <h3 className="text-white fw-bold">Forum Discussions</h3>
-                    <button className="px-3">+ Add new Forum</button>
+        <div className="h-100">
+          <div
+            className="forum-container"
+            style={{
+              height: "100%",
+              backgroundColor: "#11235A",
+              border: "none",
+            }}
+          >
+            <div className="" style={{ border: "none" }}>
+              <div className="forum-top d-flex justify-content-between">
+                <h3 className="text-white fw-bold">Forum Discussions</h3>
+                <button className="new-forum-btn">+ Add New Forum</button>
+              </div>
+            </div>
+            <div className="d-flex row">
+              <div className="forum-search-wrapper">
+                <div className="d-flex col" style={{ background: "white" }}>
+                  <div className="search-left ms-3">
+                    <input
+                      type="search"
+                      name=""
+                      id="search-input"
+                      placeholder="Search"
+                      style={{ width: "100%" }}
+                      value={searchText}
+                      onChange={(e) => {
+                        setSearchText(e.target.value);
+                        setForumList(tempForumList);
+                      }}
+                    />
+                  </div>
+                  <div className="search-right p-3">
+                    <button className="search-button" id="search">
+                      <IoSearch
+                        color="#6E6E6E"
+                        font-size={"24"}
+                        onClick={handleClickSearch}
+                      />
+                    </button>
                   </div>
                 </div>
-                <div className="card-body">
-                  <div className="search-wrapper">
-                    <div
-                      className="search-container w-100 p-0"
-                      style={{ background: "none" }}
-                    >
-                      <div
-                        className="d-flex me-5"
-                        style={{ background: "white", width: "100%" }}
-                      >
-                        <div className="search-left ms-3">
-                          <input
-                            type="search"
-                            name=""
-                            id="search-input"
-                            placeholder="Search"
-                            style={{ width: "100%" }}
-                            value={searchText}
-                            onChange={(e) => {
-                              setSearchText(e.target.value);
-                              setForumList(tempForumList);
-                            }}
-                          />
-                        </div>
-                        <div className="search-right p-3">
-                          <button className="search-button" id="search">
-                            <IoSearch
-                              color="#6E6E6E"
-                              font-size={"24"}
-                              onClick={handleClickSearch}
-                            />
-                          </button>
-                        </div>
-                      </div>
-                      <div
-                        className="search-dropdown-forum"
-                        style={{ width: "30%", float: "right" }}
-                      >
-                        <Dropdown as={ButtonGroup}>
-                          <Button variant="success">
-                            Sort By: {sortCategory}
-                          </Button>
+                <div
+                  className="search-dropdown-forum d-flex row"
+                  // style={{
+                  //   float: "right",
+                  //   alignContent: "end",
+                  // }}
+                >
+                  <Dropdown as={ButtonGroup}>
+                    <Button variant="success">Sort By : {sortCategory}</Button>
 
-                          <Dropdown.Toggle
-                            split
-                            variant="success"
-                            id="dropdown-split-basic"
-                          />
+                    <Dropdown.Toggle
+                      split
+                      variant="success"
+                      id="dropdown-split-basic"
+                    />
 
-                          <Dropdown.Menu>
-                            <Dropdown.Item
-                              href="#/action-1"
-                              onClick={() => {
-                                setSortCategory("Latest Activity");
-                                handleSortCategory("Latest Activity");
-                              }}
-                            >
-                              Latest Activity
-                            </Dropdown.Item>
-                            <Dropdown.Item
-                              href="#/action-2"
-                              onClick={() => {
-                                setSortCategory("Most Comment");
-                                handleSortCategory("Most Comment");
-                              }}
-                            >
-                              Most Comment
-                            </Dropdown.Item>
-                          </Dropdown.Menu>
-                        </Dropdown>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="forum-content-wrapper mt-3 p-3">
-                    <div
-                      className="card"
-                      style={{ backgroundColor: "rgba(255, 255, 255, 0.3)" }}
-                    >
-                      {categoryChosen === "All Discussions" ? (
-                        <>
-                          <div
-                            className="card-body"
-                            style={{ height: "520px" }}
+                    <Dropdown.Menu>
+                      <Dropdown.Item
+                        href="#/action-1"
+                        onClick={() => {
+                          setSortCategory("Latest Activity");
+                          handleSortCategory("Latest Activity");
+                        }}
+                      >
+                        Latest Activity
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        href="#/action-2"
+                        onClick={() => {
+                          setSortCategory("Most Comment");
+                          handleSortCategory("Most Comment");
+                        }}
+                      >
+                        Most Comment
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+              </div>
+
+              <div className="forum-content-wrapper">
+                <div
+                  className="forum-content-list card"
+                  style={{ backgroundColor: "rgba(255, 255, 255, 0.3)" }}
+                >
+                  {categoryChosen === "All Discussions" ? (
+                    <>
+                      <div className="forum-content-list d-flex row">
+                        {currentForum.map((data) => (
+                          <Link
+                            to={"/forum/" + data.title}
+                            state={{ data, account }}
                           >
-                            {currentForum.map((data, index) => (
-                              <div className="forum-list-container" key={index}>
+                            <div className="forum-list-container">
+                              <div className="left d-flex">
+                                <img
+                                  className="img-fluid"
+                                  src={`assets/coin.png`}
+                                  alt=""
+                                  style={{ height: "50px" }}
+                                />
+                                <div className="forum-list-title ms-4">
+                                  <p
+                                    className="m-0"
+                                    style={{ fontWeight: "600" }}
+                                  >
+                                    {data.title}
+                                  </p>
+                                  <span>{data.createdDate.toString()}</span>
+                                </div>
+                              </div>
+                              <div className="right">
+                                <span className="badge badge-outlined text-white me-2">
+                                  {data.questionCategory}
+                                </span>
+                                <span className="badge badge-outlined text-white me-2">
+                                  {data.questionLevel}
+                                </span>
+                                <BiComment />
+                                <span>{data.totalComment}</span>
+                              </div>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                      <div className="pagination-container">
+                        <Pagination
+                          totalClass={forumList.forum_list.length}
+                          classPerPage={classPerPage}
+                          onPageChange={handlePageChange}
+                          currentPage={currentPage}
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="card-body">
+                        {currentForum.map((data) => {
+                          if (data.questionCategory === categoryChosen) {
+                            return (
+                              <div className="forum-list-container">
                                 <div className="left d-flex">
                                   <img
                                     className="img-fluid"
@@ -277,88 +318,63 @@ const Forum = () => {
                                   <span>{data.totalComment}</span>
                                 </div>
                               </div>
-                            ))}
-                          </div>
-                          <Pagination
-                            totalClass={forumList.forum_list.length}
-                            classPerPage={classPerPage}
-                            onPageChange={handlePageChange}
-                            currentPage={currentPage}
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <div
-                            className="card-body"
-                            style={{ height: "520px" }}
-                          >
-                            {currentForum.map((data, index) => {
-                              if (data.questionCategory === categoryChosen) {
-                                return (
-                                  <div
-                                    className="forum-list-container"
-                                    key={index}
-                                  >
-                                    <div className="left d-flex">
-                                      <img
-                                        className="img-fluid"
-                                        src={`assets/coin.png`}
-                                        alt=""
-                                        style={{ height: "50px" }}
-                                      />
-                                      <div className="forum-list-title ms-4">
-                                        <p className="m-0">{data.title}</p>
-                                        <span>
-                                          {data.createdDate.toString()}
-                                        </span>
-                                      </div>
-                                    </div>
-                                    <div className="right">
-                                      <span className="badge badge-outlined text-white me-2">
-                                        {data.questionCategory}
-                                      </span>
-                                      <span className="badge badge-outlined text-white me-2">
-                                        {data.questionLevel}
-                                      </span>
-                                      <BiComment />
-                                      <span>{data.totalComment}</span>
-                                    </div>
-                                  </div>
-                                );
-                              }
-                            })}
-                          </div>
-                          <Pagination
-                            totalClass={handleCategoryChosenForum(
-                              categoryChosen
-                            )}
-                            classPerPage={classPerPage}
-                            onPageChange={handlePageChange}
-                            currentPage={currentPage}
-                          />
-                        </>
-                      )}
-                    </div>
-                  </div>
+                            );
+                          }
+                        })}
+                      </div>
+                      <Pagination
+                        totalClass={handleCategoryChosenForum(categoryChosen)}
+                        classPerPage={classPerPage}
+                        onPageChange={handlePageChange}
+                        currentPage={currentPage}
+                      />
+                    </>
+                  )}
                 </div>
               </div>
             </div>
-            <div
-              className="col-2"
-            >
-              <div className="card mb-3" style={{ height: "97vh" }}>
-                <div
-                  className="card-body"
+          </div>
+        </div>
+      </div>
+      <div
+        className="forum-categories-content"
+        style={{
+          overflow: "hidden",
+        }}
+      >
+        <div className="card mb-3" style={{ height: "100vh" }}>
+          <div
+            className="card-body"
+            style={{
+              backgroundColor: "#11235A",
+              borderRadius: "0.375rem",
+            }}
+          >
+            <div className="card-text p-2" style={{ color: "#fff" }}>
+              <p>
+                <button
+                  className={
+                    categoryChosen === "All Discussions"
+                      ? "active-category"
+                      : ""
+                  }
                   style={{
-                    backgroundColor: "#11235A",
-                    borderRadius: "0.375rem",
+                    backgroundColor: "transparent",
+                    border: "none",
+                    color: "white",
                   }}
+                  onClick={() => setCategoryChosen("All Discussions")}
                 >
-                  <div className="card-text p-2" style={{ color: "#fff" }}>
+                  All Discussions
+                </button>
+              </p>
+              {categories.categories.map((category, index) => {
+                if (index === categories.categories.length - 1) {
+                  return (
                     <p>
                       <button
                         className={
-                          categoryChosen === "All Discussions"
+                          categoryChosen === `${category.categoryName}`
                             ? "active-category"
                             : ""
                         }
@@ -367,63 +383,36 @@ const Forum = () => {
                           border: "none",
                           color: "white",
                         }}
-                        onClick={() => setCategoryChosen("All Discussions")}
+                        key={index}
+                        onClick={() => setCategoryChosen(category.categoryName)}
                       >
-                        All Discussions
+                        {category.categoryName}
                       </button>
                     </p>
-                    {categories.categories.map((category, index) => {
-                      if (index === categories.categories.length - 1) {
-                        return (
-                          <p>
-                            <button
-                              className={
-                                categoryChosen === `${category.categoryName}`
-                                  ? "active-category"
-                                  : ""
-                              }
-                              style={{
-                                backgroundColor: "transparent",
-                                border: "none",
-                                color: "white",
-                              }}
-                              key={index}
-                              onClick={() =>
-                                setCategoryChosen(category.categoryName)
-                              }
-                            >
-                              {category.categoryName}
-                            </button>
-                          </p>
-                        );
-                      } else {
-                        return (
-                          <p>
-                            <button
-                              className={
-                                categoryChosen === `${category.categoryName}`
-                                  ? "active-category"
-                                  : ""
-                              }
-                              style={{
-                                backgroundColor: "transparent",
-                                border: "none",
-                                color: "white",
-                              }}
-                              key={index}
-                              onClick={() =>
-                                setCategoryChosen(category.categoryName)
-                              }
-                            >
-                              {category.categoryName}
-                            </button>
-                          </p>
-                        );
-                      }
-                    })}
-                  </div>
-                </div>
-              </div>
+                  );
+                } else {
+                  return (
+                    <p>
+                      <button
+                        className={
+                          categoryChosen === `${category.categoryName}`
+                            ? "active-category"
+                            : ""
+                        }
+                        style={{
+                          backgroundColor: "transparent",
+                          border: "none",
+                          color: "white",
+                        }}
+                        key={index}
+                        onClick={() => setCategoryChosen(category.categoryName)}
+                      >
+                        {category.categoryName}
+                      </button>
+                    </p>
+                  );
+                }
+              })}
             </div>
           </div>
         </div>

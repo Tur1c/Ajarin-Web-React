@@ -1,8 +1,11 @@
-import { Teacher, TeacherOutput, transformToTeacherOutput } from "../teacher/teacher-model";
+import {
+  Teacher,
+  TeacherOutput,
+  transformToTeacherOutput,
+} from "../teacher/teacher-model";
 
-import Moment from 'react-moment';
-import moment from 'moment';
-import 'moment-timezone';
+import moment from "moment";
+import "moment-timezone";
 
 export interface DiscussionListSchema {
   discussions: Class[];
@@ -73,13 +76,12 @@ export interface AddDiscussionSchema {
 function changeDate(date: string) {
   const newDate = moment(date).format("MMMM Do YYYY");
   return newDate;
-} 
-
-
+}
 
 export function transfromToDiscussionListOutput(
   response: DiscussionListSchema
 ): DiscussionListOutput {
+  console.log(response, "masuk");
   console.log(response, "masuk");
   const result: DiscussionListOutput = {
     classList: response.discussions.map((data) => {
@@ -100,7 +102,7 @@ export function transfromToDiscussionListOutput(
       };
     }),
   };
-  console.log(result,"berhasil ga");
+  console.log(result, "berhasil ga");
   return result;
 }
 
@@ -182,7 +184,7 @@ export function transfromToCourseListOutput(
   response: CourseListSchema
 ): CourseListOutput {
   console.log(response.courses[0].total_sold_course, "total_sold");
-  
+
   const result: CourseListOutput = {
     courseList: response.courses.map((data) => {
       return {
@@ -207,6 +209,7 @@ export function transfromToCourseListOutput(
       };
     }),
   };
+
   console.log(result, "model class");
 
   return result;

@@ -11,6 +11,7 @@ import CourseDetail from "./features/course_detail/courseDetail";
 import Coin from "./features/dashboard/pages/coin";
 import Home from "./features/dashboard/pages/home";
 import Forum from "./features/forum/page/forum";
+import ForumDetail from "./features/forum/page/forumDetail";
 import Lecturer from "./features/lecturer/lecturer";
 import LecturerDetail from "./features/lecturer/lecturerDetail";
 import { ErrorPage } from "./shared";
@@ -32,6 +33,10 @@ function App() {
         <Route
           path="/lecturer/:lecturer_name"
           element={<LecturerDetail></LecturerDetail>}
+        ></Route>
+        <Route
+          path="/forum/:forum_title"
+          element={<ForumDetail></ForumDetail>}
         ></Route>
         <Route
           path="/profile"

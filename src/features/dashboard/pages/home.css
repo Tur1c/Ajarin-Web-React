@@ -8,39 +8,27 @@
   --lightgrey: #aeaeae;
   --lightblue: #273a72;
   --whitedark: #eeeeee;
+  --yelodark: #ada677;
 }
 
 body {
-  /* height: 100%; */
-  /* margin: 0rem; */
-  /* overflow: hidden; */
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  color: white;
+  color: white; */
   background-color: var(--purple);
-  /* flex: 1; */
 }
 
 /* Note: All page ini terapin aja di semua css */
 .all-page {
   display: flex;
-  height: 98vh;
+  height: 100vh;
   background-color: var(--purple);
-  /* overflow: auto; */
-  /* padding: 0.5rem; */
-  /* padding-bottom: 0.5rem; */
-  margin: 0.5rem;
+  color: white;
+  overflow: hidden;
+  /* margin: 0.5rem; */
+  padding: 0.5rem;
   flex: 1;
 }
-
-/* .container {
-  width: 100%;
-  display: flex;
-  flex-direction: col;
-  overflow: hidden;
-  background-color: yellow;
-  padding: 0.5rem;
-} */
 
 .sidebar-content {
   position: relative;
@@ -50,16 +38,14 @@ body {
 }
 
 .home-content {
-  /* position: relative; */
-  /* width: 70%; */
   flex: 0.725;
   display: flex;
   flex-direction: column;
   background-color: var(--blue);
   margin-right: 0.5rem;
   border-radius: 0.5rem;
-  /* margin-left: 0rem; */
-  /* width: 100%; */
+  /* flex-grow: 1; */
+  /* height: 100%; */
 }
 
 .greetings, .add-courses {
@@ -98,11 +84,6 @@ body {
   width: 100%;
 }
 
-/* search-input { */
-  /* border: none; */
-  /* background-color: rebeccapurple; */
-/* } */
-
 .search-button {
   background-color: white;
   border: 0;
@@ -121,8 +102,10 @@ body {
 .search-container input {
   background-color: transparent;
   border: none;
-  height: 100%;
+  width: 98%;
+  height: auto;
   font-size: 1.25rem;
+  padding: 0.2rem;
 }
 
 .coin-wrapper {
@@ -143,20 +126,7 @@ body {
   height: fit-content;
 }
 
-/* .home-list {
-  /* background-color: black; */
-  /* flex: 1 1 auto; */
-  /* height: 5rem; */
-/* }  */
-
-/* .home-tab {
-  color: white;
-  background-color: yellow;
-} */
-
 .disc-container {
-  /* background-color: green; */
-  /* padding-left: 1rem; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -168,11 +138,18 @@ body {
   flex-direction: row;
 }
 
+.card-container {
+  align-items: center;
+}
+
 /* Bagian Kanan */
 
 .right-home {
   flex: 0.2;
-  /* height: 100%; */
+  height: 100%;
+  display: flex;
+  /* background-color: yellow; */
+  flex-direction: column;
 }
 
 /* Upcoming Discussion */
@@ -181,8 +158,8 @@ body {
   background-color: var(--blue);
   display: flex;
   flex-direction: column;
-  height: 40%;
-  /* margin-bottom: 0.5rem; */
+  height: 50%;
+  margin-bottom: 0.5rem;
   border-radius: 0.5rem;
   cursor: default;
 }
@@ -203,14 +180,13 @@ body {
   font-size: 9px;
 }
 
-.right-disc{
+.right-disc {
   cursor: pointer;
 }
 
-.right-disc .right-disc-active{
+.right-disc .right-disc-active {
   background-color: whitesmoke;
 }
-
 
 .right-home .view-all:hover {
   background-color: var(--lightblue);
@@ -222,13 +198,15 @@ body {
 .right-home .statistic {
   display: flex;
   flex-direction: column;
-  height: 59%;
-  margin-top: 0.5rem;
+  /* max-height: 100vh; */
+  /* margin-top: 0.5rem; */
   border-radius: 0.5rem;
   background-color: var(--blue);
-  padding-top: 56px;
+  padding-top: 3rem;
   padding-left: 2rem;
   cursor: default;
+  height: max-content;
+  flex-grow: 1;
 }
 
 .right-home .statistic h2 {
@@ -243,7 +221,7 @@ body {
 
 /* Class Discussion */
 
-.class-content {
+.disc-content {
   /* display: flex;
   flex-direction: column; */
   /* background-color: red; */
@@ -271,13 +249,13 @@ body {
   font-weight: 600;
 }
 
-.class .lecturer-discussion{
+.class .lecturer-discussion {
   text-decoration: none;
   color: var(--lightgrey);
   font-size: 10px;
 }
 
-.class .lecturer-discussion:hover{
+.class .lecturer-discussion:hover {
   color: var(--white);
 }
 
@@ -304,7 +282,6 @@ body {
 
 .disc-detail {
   width: 100%;
-  
 }
 
 .badge.badge-outlined {
@@ -318,14 +295,14 @@ body {
   cursor: pointer;
 }
 
-.container-class-header {
+.container-disc-header {
   position: relative;
   text-align: center;
   color: white;
   height: 10rem;
 }
 
-.container-class-header .disc-image {
+.container-disc-header .disc-image {
   height: 10rem;
   width: 100%;
 }
@@ -372,15 +349,6 @@ body {
   padding: 0rem 0.25rem;
 }
 
-/* .pagination {
-  margin-top: 0.5rem;
-  justify-content: center;
-} */
-
-/* .home-list .nav-tabs {
-  border-bottom: none;
-} */
-
 .grouping {
   display: flex;
   flex-direction: row;
@@ -397,10 +365,6 @@ body {
   font-weight: light;
   color: var(--white);
 }
-
-/* .home-list .nav-item {
-  background-color: var(--blue);
-} */
 
 .home-list .nav-tabs .nav-link:hover {
   opacity: 1;
@@ -438,9 +402,8 @@ body {
 .filter {
   display: flex;
   flex-direction: row;
-  /* background-color: black; */
-  /* margin: 0.5rem; */
   justify-content: flex-end;
+  margin-bottom: 0.25rem;
 }
 
 .filter-btn {
@@ -464,32 +427,36 @@ body {
   color: var(--whitedark);
 }
 
-.create-course-button {
-  background: linear-gradient(rgba(255,255,255,.1), rgba(255,255,255,.1)), url("../../../../public/assets/create_course.png");
-  height: 4rem;
-  font-size: 20px;
-  color: white;
-  font-weight: 700;
+/* Class */
+
+.card-body {
+  height: 9rem;
+  display: flex;
+  align-items: center;
 }
 
-.set-discussion-button {
-  background: linear-gradient(rgba(255,255,255,.1), rgba(255,255,255,.1)), url("../../../../public/assets/set_discussion.png");
-  height: 4rem;
-  font-size: 20px;
+.container-class-header {
+  position: relative;
+  text-align: center;
   color: white;
-  font-weight: 700;
+  background-color: red;
+  /* width: 100%; */
 }
 
-.private-discussion-button {
-  background: linear-gradient(rgba(255,255,255,.05), rgba(255,255,255,.05)), url("../../../../public/assets/private_discussion.png");
-  height: 4rem;
-  font-size: 20px;
-  color: white;
-  font-weight: 700;
+.container-disc-header .class-thumbnail .class-image {
+  /* height: 15rem; */
+  /* width: 100%; */
+}
+
+.container-class-header .class-thumbnail img {
+  height: 20rem;
+  width: fit-content;
 }
 
 /* Pagination */
 
 .pagination {
   cursor: default;
+  position: fixed;
+  bottom: 1.5rem;
 }

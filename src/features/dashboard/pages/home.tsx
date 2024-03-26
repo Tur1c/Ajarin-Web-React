@@ -257,30 +257,27 @@ function Home() {
             </h4>
           </div>
 
-          <div className="search-wrapper">
-            <div className="search-container">
-              <div className="search-left">
-                <input
-                  type="search"
-                  name=""
-                  id="search-input"
-                  placeholder="Search"
+        <div className="search-wrapper">
+          <div className="search-container">
+            <div className="search-left">
+              <input
+                type="search"
+                name=""
+                id="search-input"
+                placeholder="Search"
                   onChange={(e) => {
                     setSearchText(e.target.value);
                   }}
-                />
-              </div>
-              <div className="search-right">
-                <button className="search-button" id="search">
-                  <IoSearch
-                    color="#6E6E6E"
-                    fontSize={"24"}
-                    onClick={() => (search = true)}
-                  />
-                </button>
-              </div>
+                className="search-left-bar"
+              />
+            </div>
+            <div className="search-right">
+              <button className="search-button" id="search">
+                <IoSearch color="#6E6E6E" fontSize={"24"} onClick={() => search = true}/>
+              </button>
             </div>
           </div>
+        </div>
 
           <div className="coin-wrapper">
             <Link
@@ -320,7 +317,7 @@ function Home() {
                 <HomeDiscussion searchData={search ? searchText : ""} />
               </Tab>
 
-              <Tab className="" eventKey="class" title="Class">
+              <Tab className="" eventKey="class" title="Course">
                 <HomeClass account={account} />
               </Tab>
             </Tabs>

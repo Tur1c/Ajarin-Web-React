@@ -1,24 +1,23 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 import axios from "../../../api/axios";
+import { AccountOutput } from "../../../model/Account";
 import {
-  CourseList,
   CourseListOutput,
   CourseListSchema,
   transfromToCourseListOutput,
 } from "../../../model/course/course-list";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import { Pagination } from "../../../shared";
-import { Navigate, useNavigate } from "react-router";
-import { Link } from "react-router-dom";
-import { AccountOutput } from "../../../model/Account";
 
 const COURSE_URL = "/api/course";
 
-interface Props{
+interface Props {
   account: AccountOutput;
 }
 
-function HomeClass( {account}:Props ) {
+function HomeClass({ account }: Props) {
   const [courseList, setCourseList] = useState<CourseListOutput>({
     courseList: [],
   });
@@ -33,7 +32,9 @@ function HomeClass( {account}:Props ) {
   );
 
   const navigate = useNavigate();
-  const acc:AccountOutput|undefined = !account.fullName ? undefined : account;
+  const acc: AccountOutput | undefined = !account.fullName
+    ? undefined
+    : account;
 
   function handlePageChangeCourse(value: any) {
     if (value === "&laquo;" || value === "... ") {
@@ -76,46 +77,53 @@ function HomeClass( {account}:Props ) {
     fetchDataCourse();
   }, []);
 
-  console.log(courseList,"courseluist");
+  console.log(courseList, "courselist");
 
   return (
     <>
-      <div className="class-wrapper p-3">
+      <div></div>
+      <div className="m-1 d-flex row">
+        <div className="filter">
+          <div className="filter-btn">Subject</div>
+          <div className="filter-btn">Education Level</div>
+        </div>
         <div
-          className="card"
+          className="card card-container"
           style={{ backgroundColor: "#11235a", border: "none" }}
         >
-          <div className="card-body">
+          <div className="">
             <div className="row">
               {currentCourse.map((data, index) => (
+                
                 <div
-                  className="col-md-3 d-flex align-items-stretch mb-3"
+                  className="col-md-3 d-flex align-items-stretch mb-2"
                   key={index}
                 >
                   <div className="card" style={{ border: "none" }}>
-                    <Link to={'/course/'+ data.title} state={{data, acc}}>
+                    <Link to={"/course/" + data.title} state={{ data, acc }}>
                       <div className="container-class-header">
-                        <img
-                          className="disc-image img-fluid"
-                          src={data.image}
-                          alt=""
-                          style={{ height: "10rem" }}
-                        />
+                        <div className="class-thumbnail">
+                          <img
+                            className="class-image img-fluid"
+                            src={`assets/${data.image}`}
+                            alt=""
+                          />
+                        </div>
 
-                        <div className="top-left p-1">
+                        <div className="top-left">
                           <img
                             className="img-fluid"
                             src={`assets/coin.png`}
                             alt=""
-                            style={{ height: "24px" }}
+                            style={{ height: "14px" }}
                           />
-                          <span style={{ marginLeft: "5px" }}>{data.price}</span>
+                          <span style={{ marginLeft: "5px" }}>
+                            {data.price}
+                          </span>
                         </div>
-                        <div className="top-right" style={{ fontSize: "14px" }}>
-                          {data.chapter} chapter
-                        </div>
+                        <div className="top-right">{data.chapter} chapter</div>
                       </div>
-                    </Link>
+                    
                     <div className="card-body p-2">
                       <div className="card-text">
                         <div className="class-content">
@@ -177,6 +185,7 @@ function HomeClass( {account}:Props ) {
                         </div>
                       </div>
                     </div>
+                    </Link>
                   </div>
                 </div>
               ))}

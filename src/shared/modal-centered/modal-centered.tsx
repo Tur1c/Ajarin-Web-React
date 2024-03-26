@@ -48,21 +48,20 @@ function ModalCentered(props: any) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header className="p-0 d-block">
-        <div
-          className="container-class-header d-flex justify-content-around"
-          style={{ height: "2rem" }}
-        >
-          <div className="p-1">
+      <Modal.Header className="p-0">
+        <div className="container-class-header">
+          <img
+            className="disc-image img-fluid"
+            src={`assets/${props.data.image}`}
+            alt=""
+          />
+          <div className="top-left">
             <IoIosCloseCircleOutline
               onClick={props.onHide}
               style={{ color: "#fff", fontSize: "30px" }}
             />
           </div>
-          <div
-            className="mt-2"
-            style={{ width: "450px" }}
-          >
+          <div className="centered" style={{ width: "450px" }}>
             <span>
               {props.data.date} {props.data.starttime.toString()} -{" "}
               {props.data.endtime.toString()}
@@ -84,48 +83,46 @@ function ModalCentered(props: any) {
           />
         </div>
       </Modal.Header>
-      <Modal.Body className="p-5">
-        <div className="modal-body-container">
-          <div className="header d-flex justify-content-between">
-            <div className="header-title text-white">
+      <Modal.Body className="modal-body-container text-dark">
+        <div className="">
+          <div className="d-flex justify-content-between">
+            <div className="">
               <h2>
                 <b>{props.data.title}</b>
               </h2>
-              <p>Math</p>
+              <p className="disc-categories">Math</p>
             </div>
             <div
               style={{
                 textAlign: "center",
                 display: "flex",
-                alignItems: "center",
               }}
             >
               <div
                 className="badge bagde-pill bg-danger text-white"
                 style={{
-                  height: "50px",
+                  height: "64px",
                   textAlign: "center",
                   display: "flex",
                   alignItems: "center",
                 }}
               >
-                <div className="text-center" style={{ fontSize: "20px" }}>
+                <div className="text-center" style={{ fontSize: "24px" }}>
                   <FaUser /> 12 / {props.data.maxPeople}
                 </div>
               </div>
             </div>
           </div>
-          <p className="text-white">{props.data.description}</p>
+          <p className="disc-description">{props.data.description}</p>
         </div>
       </Modal.Body>
-      <Modal.Footer className="p-0">
+      <Modal.Footer className="modal-footer-container p-0">
         <div
-          className="modal-footer-center"
+          className=""
           style={{
-            backgroundColor: "#11235a",
-            fontSize: "20px",
+            fontSize: "24px",
             width: "100%",
-            height: "75px",
+            height: "4rem",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -134,7 +131,12 @@ function ModalCentered(props: any) {
           <p onClick={props.onHide} className="text-white">
             {isLogged ? (
               <button
-                style={{ background: "none", color: "white", border: "none", fontSize: "30px"}}
+                style={{
+                  background: "none",
+                  color: "white",
+                  border: "none",
+                  fontSize: "30px",
+                }}
                 type="button"
                 onClick={() => JoinDiscussion(props.data.id)}
               >

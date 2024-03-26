@@ -108,13 +108,11 @@ function HomeDiscussion(props: any) {
   };
 
   const limitTitle = (input: string): string => {
-    // Regex to match only alphabets
     const title = input;
     if (title.length >= 30) {
       return title.slice(0, 30) + "...";
     }
 
-    // Return only the first 9 characters
     return title;
   };
 
@@ -130,23 +128,23 @@ function HomeDiscussion(props: any) {
   useEffect(() => {
     fetchDataDiscussion();
   }, []);
-  console.log(classList,"discussiion");
+  console.log(classList, "discussiion");
 
   return (
     <>
       <div className="disc-container">
-        <div className="m-1 d-flex row">
+        <div className="w-100 m-1 d-flex row">
           <div className="filter">
             <div className="filter-btn">Subject</div>
             <div className="filter-btn">Education Level</div>
           </div>
           {currentClass.map((data, index) => (
             <div
-              className="aaa col-md-3 align-items-center mb-2"
+              className="col-md-3 align-items-center mb-2"
               key={index}
               onClick={() => handleShowModal(data)}
             >
-              <div className="thumbnail container-class-header">
+              <div className="container-disc-header">
                 <img
                   className="disc-image"
                   src={data.url || `assets/${data.image}`}
@@ -169,11 +167,11 @@ function HomeDiscussion(props: any) {
                 </div>
               </div>
 
-              <div className="class-content">
+              <div className="disc-content">
                 <div className="class">
                   <div className="d-flex">
                     <div className="me-2">
-                      <img src={data.teacher?.account.urlImage} alt="abc" width={"50px"} />
+                      <img src={"/assets/" + data.teacher?.account.urlImage} alt="abc" width={"50px"} />
                     </div>
 
                     <div className="disc-detail">
