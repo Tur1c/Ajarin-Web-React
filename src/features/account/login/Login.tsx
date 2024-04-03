@@ -45,7 +45,7 @@ function Login() {
       );
       const output = transfromToServiceLoginAccountOutput(response.data);
       const token = output.token;
-      await login({ accountLogin ,token });
+      await login({ accountLogin, token });
       navigate("/");
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -58,14 +58,15 @@ function Login() {
   return (
     <section>
       <Navbar>
-        <div className="wrapper d-flex">
-          <div className="flex-fill">
+        <div className="login-wrapper d-flex bg-dar">
+          <div className="login-input">
             <form onSubmit={handleSubmit}>
-              <h1 className="text fw-bold">Log In to Your Account.</h1>
-              <div className="text register-link">
-                Don't have account yet?{" "}
+              <h1 className="text fw-bold" style={{cursor:"default"}}>Log In to Your Account.</h1>
+              <div>
+                Don't have account yet ?{" "}
                 <Link
                   to="/register"
+                  className="register-link"
                   style={{ color: "#F6ECA9", textDecoration: "none" }}
                 >
                   <b>Sign Up Now.</b>
@@ -103,20 +104,20 @@ function Login() {
                     />
                     <label>Password</label>
                   </div>
-                <span
-                  ref={errRef}
-                  className={errMsg ? "fw-bold" : ""}
-                  aria-live="assertive"
-                  style={{color: "#ff3d41"}}
-                >
-                  {errMsg}
-                </span>
+                  <span
+                    ref={errRef}
+                    className={errMsg ? "fw-bold" : ""}
+                    aria-live="assertive"
+                    style={{ color: "#ff3d41" }}
+                  >
+                    {errMsg}
+                  </span>
                 </div>
                 <div
-                  className="d-flex justify-content-between align-items-center"
+                  className="w-100 d-flex justify-content-between align-items-center"
                   style={{ width: "70%" }}
                 >
-                  <div className="forgot">
+                  <div className="forgot-password">
                     <a href="#" className="fw-bold">
                       Forgot Password?
                     </a>
@@ -134,8 +135,8 @@ function Login() {
               src={learningImg}
               alt="Learning png"
               style={{
-                height: 389,
-                width: 583,
+                height: "50vh",
+                marginLeft: "6rem",
               }}
             />
           </div>

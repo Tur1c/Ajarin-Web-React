@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../../../../api/axios";
 import {
   AccountSchema,
@@ -12,7 +12,7 @@ const REGISTER_TEACHER = "/api/account/register/teacher";
 
 function RegisterTeacher() {
   const { state } = useLocation();
-  console.log(state);
+  console.log("dapet apa aja", state);
 
   const [image, setImage] = useState<File>();
   const navigate = useNavigate();
@@ -35,6 +35,7 @@ function RegisterTeacher() {
     if (image) {
       formData.append("file", image);
     }
+
     formData.append("education", accountRegister.education);
     formData.append("experience", accountRegister.experience);
     formData.append("achievement", accountRegister.achievement);
@@ -67,95 +68,103 @@ function RegisterTeacher() {
   };
 
   return (
-    <div className="wrapper">
-      <div className="flex-fill">
-        <form onSubmit={handleSubmit}>
-          <h1 className="text fw-bold">Let the Worlds know About You.</h1>
-
-          <div className="inputs" style={{ width: "100%" }}>
-            <div className="mb-5 me-5">
-              <div className="input-box" style={{ marginBottom: "0.5rem" }}>
-                <textarea
-                  className=""
-                  required
-                  style={{ width: "100%" }}
-                  id="description"
-                  onChange={(e) =>
-                    setAccountRegister({
-                      ...accountRegister,
-                      profile_description: e.target.value,
-                    })
-                  }
-                />
-                <label>Profile Description</label>
-              </div>
-              <div className="input-box" style={{ marginBottom: "0.5rem" }}>
-                <input
-                  type="text"
-                  required
-                  style={{ width: "100%" }}
-                  id="education"
-                  onChange={(e) =>
-                    setAccountRegister({
-                      ...accountRegister,
-                      education: e.target.value,
-                    })
-                  }
-                />
-                <label>Add Your Education History</label>
-              </div>
-
-              <div className="input-box">
-                <input
-                  type="text"
-                  required
-                  id="experience"
-                  onChange={(e) =>
-                    setAccountRegister({
-                      ...accountRegister,
-                      experience: e.target.value,
-                    })
-                  }
-                />
-                <label>Add Your Experience</label>
-              </div>
-              <div className="input-box">
-                <input
-                  type="text"
-                  required
-                  id="education"
-                  onChange={(e) =>
-                    setAccountRegister({
-                      ...accountRegister,
-                      achievement: e.target.value,
-                    })
-                  }
-                />
-                <label>Add Your Acheivement</label>
-              </div>
-            </div>
-
-            <div className="mb-5">
-              <div className="mb-5">
-                <div className="input-box">
-                  <input
-                    type="file"
+    <div className="register-teacher-container">
+      <div className="p-5 text-light">
+        <div className="ajarin-logo">
+          <h1 className="fw-bold" style={{ color: "#fff", fontSize: "48px",marginBottom: "3rem" }}>
+            ajar<span style={{ color: "#F6ECA9" }}>in</span>
+          </h1>
+        </div>
+        <div className="input-container">
+          <h1
+            className="text fw-bold"
+            style={{ marginBottom: "3rem", fontSize: "60px" }}
+          >
+            Let the Worlds know About You.
+          </h1>
+          <form onSubmit={handleSubmit}>
+            <div className="inputs">
+              <div className="">
+                <div className="input-box-textarea">
+                  <textarea
+                    className="scrollable"
                     required
-                    id="cv"
-                    onChange={handleImageChange}
-                    accept="application/pdf"
+                    id="description"
+                    onChange={(e) =>
+                      setAccountRegister({
+                        ...accountRegister,
+                        profile_description: e.target.value,
+                      })
+                    }
                   />
-                  <label>Upload Your CV Image</label>
+                  <label>Describe About You</label>
+                </div>
+                <div className="input-box-teach">
+                  <input
+                    type="text"
+                    required
+                    style={{ width: "100%" }}
+                    id="education"
+                    onChange={(e) =>
+                      setAccountRegister({
+                        ...accountRegister,
+                        education: e.target.value,
+                      })
+                    }
+                  />
+                  <label>Add Your Education History</label>
+                </div>
+
+                <div className="input-box-teach">
+                  <input
+                    type="text"
+                    required
+                    id="experience"
+                    onChange={(e) =>
+                      setAccountRegister({
+                        ...accountRegister,
+                        experience: e.target.value,
+                      })
+                    }
+                  />
+                  <label>Add Your Experience</label>
+                </div>
+                <div className="input-box-teach">
+                  <input
+                    type="text"
+                    required
+                    id="education"
+                    onChange={(e) =>
+                      setAccountRegister({
+                        ...accountRegister,
+                        achievement: e.target.value,
+                      })
+                    }
+                  />
+                  <label>Add Your Acheivement</label>
                 </div>
               </div>
+
+              <div className="upload-cv d-flex row">
+                <label>Upload Your CV Image</label>
+
+                <input
+                  type="file"
+                  required
+                  id="cv"
+                  onChange={handleImageChange}
+                  accept="application/pdf"
+                />
+              </div>
+
+              <div className="upload-btn d-flex justify-content-between align-items-center">
+                <button type="submit" className="fw-bold">
+                  Create Account
+                </button>
+              </div>
             </div>
-            <div className="d-flex justify-content-between align-items-center">
-              <button type="submit" className="fw-bold">
-                Create Account
-              </button>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );

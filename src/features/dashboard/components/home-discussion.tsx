@@ -8,7 +8,6 @@ import {
 } from "../../../model/course/course-list";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import { ModalCentered, Pagination } from "../../../shared";
-import TeacherModalAddDiscussion from "./teacher-modal-add-discussion";
 
 const CLASS_URL = "/api/discussion";
 
@@ -89,7 +88,7 @@ function HomeDiscussion(props: any) {
   };
 
   const handleCloseModal = () => setShowModal(false);
-  
+
   const handleShowModal = (data: ClassList) => {
     setClassData({
       ...classData,
@@ -140,7 +139,7 @@ function HomeDiscussion(props: any) {
           </div>
           {currentClass.map((data, index) => (
             <div
-              className="col-md-3 align-items-center mb-2"
+              className="itemss col-md-3 align-items-center mb-1 p-1"
               key={index}
               onClick={() => handleShowModal(data)}
             >
@@ -163,7 +162,8 @@ function HomeDiscussion(props: any) {
                 </div>
                 <div className="top-right">Top Right</div>
                 <div className="bottom-right">
-                  {data.starttime.toString()} - {data.endtime.toString()}
+                  {data.starttime.toString().slice(0, 5)} -{" "}
+                  {data.endtime.toString().slice(0, 5)}
                 </div>
               </div>
 
@@ -171,7 +171,10 @@ function HomeDiscussion(props: any) {
                 <div className="class">
                   <div className="d-flex">
                     <div className="me-2">
-                      <img src={"/assets/" + data.teacher?.account.urlImage} alt="abc" width={"50px"} />
+                      <img
+                        src={"/assets/" + data.teacher?.account.urlImage}
+                        width={"50px"}
+                      />
                     </div>
 
                     <div className="disc-detail">
@@ -179,7 +182,9 @@ function HomeDiscussion(props: any) {
                         <h3>{limitTitle(data.title)}</h3>
                         <span className="tooltip-title">{data.title}</span>
                       </div>
-                      <h4 className="lecturer-discussion">{data.teacher?.account.fullName}</h4>
+                      <h4 className="lecturer-discussion">
+                        {data.teacher?.account.fullName}
+                      </h4>
 
                       <div className="grouping">
                         <div className="chip">{data.category}</div>

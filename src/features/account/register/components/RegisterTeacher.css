@@ -1,0 +1,142 @@
+:root {
+  --purple: #0a122b;
+  --blue: #11235a;
+  --yelo: #f6eca9;
+  --black: #000;
+  --white: #fff;
+  --grey: #6e6e6e;
+  --lightgrey: #aeaeae;
+  --lightblue: #273a72;
+  --whitedark: #dddddd;
+  --yelodark: #f6e976;
+}
+
+/* RegisterTeacher */
+
+.register-teacher-container {
+  padding: 0rem 3rem;
+}
+
+.close {
+  color: var(--white);
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: var(--white);
+  opacity: 1;
+  
+}
+
+.input-box-teach {
+  position: relative;
+  width: 100%;
+  margin: 1rem 0rem;
+}
+
+.input-box-teach input {
+  width: 100%;
+  height: 120%;
+  background: #fff;
+  border: none;
+  outline: none;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 40px;
+  display: inline;
+  padding: 20px 45px 20px 24px;
+}
+
+.input-box-teach label {
+  position: absolute;
+  top: 75%;
+  left: 20px;
+  transform: translateY(-120%);
+  font-size: 16px;
+  color: #000;
+  padding: 0 5px;
+  pointer-events: none;
+  transition: 0.2s ease;
+}
+
+.input-box-teach input:focus ~ label,
+.input-box-teach input:valid ~ label {
+  top: 41%;
+  font-size: 10px;
+}
+
+.input-box-textarea {
+  position: relative;
+  width: 100%;
+}
+
+.input-box-textarea textarea {
+  width: 100%;
+  background: #fff;
+  border: none;
+  outline: none;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 40px;
+  display: inline;
+  padding: 20px 45px 20px 24px;
+}
+
+.input-box-textarea label {
+  position: absolute;
+  top: 80%;
+  left: 20px;
+  transform: translateY(-190%);
+  font-size: 16px;
+  color: #000;
+  padding: 0 5px;
+  pointer-events: none;
+  transition: 0.2s ease;
+}
+
+.input-box-textarea textarea:focus ~ label,
+.input-box-textarea textarea:valid ~ label {
+  visibility: hidden;
+  transform: 0.2s ease;
+}
+
+.scrollable {
+  overflow-y: scroll; /* Enable scrolling functionality */
+  scrollbar-width: none; /* Hide scrollbar (may not work in all browsers) */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+.scrollable::-webkit-scrollbar {
+  /* For Chrome, Safari, and Opera */
+  display: none;
+}
+
+.upload-cv {
+  margin-left: 1rem;
+  margin-bottom: 2rem;
+}
+
+.upload-btn {
+  width: 40%;
+}
+
+.upload-btn button {
+  width: 30%;
+  background-color: var(--yelo);
+  border: none;
+  outline: none;
+  border-radius: 50px;
+  color: #11235a;
+  cursor: pointer;
+  height: 4rem;
+}
+
+.upload-btn button:hover {
+  background-color: var(--yelodark);
+}
+
+ button {
+  
+
+  /* padding-top: 1rem;
+  padding-bottom: 1rem; */
+}

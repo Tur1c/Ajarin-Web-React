@@ -113,7 +113,7 @@ function RegisterPartTwo(props: any) {
   };
 
   return (
-    <div className="wrapper d-flex">
+    <div className="wrapper-part2 d-flex">
       <div className="flex-fill w-100">
         <form onSubmit={handleSubmit}>
           <h1 className="text fw-bold">One More Step.</h1>

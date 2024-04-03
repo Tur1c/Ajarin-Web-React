@@ -11,25 +11,25 @@
   --yelodark: #ada677;
 }
 
-.wrapper {
+.wrapper-part2 {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: start;
   width: 95%;
-  /* margin-left: 3rem; */
-  /* margin-top: 3rem; */
+  margin-left: 3rem;
+  margin-top: 3rem;
   color: white;
 }
 
-.wrapper h1 {
+.wrapper-part2 h1 {
   font-size: 60px;
 }
 
-.wrapper div {
+.wrapper-part2 div {
   font-size: 18px;
 }
 
-.wrapper .input-box {
+.wrapper-part2 .input-box {
   height: 50px;
 }
 
@@ -111,7 +111,7 @@
   text-decoration: none;
 }
 
-.wrapper button {
+.wrapper-part2 button {
   width: 30%;
   background-color: #f6eca9;
   border: none;

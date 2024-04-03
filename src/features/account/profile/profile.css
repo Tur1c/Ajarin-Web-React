@@ -1,3 +1,184 @@
-.container-profile {
+:root {
+  --purple: #0a122b;
+  --blue: #11235a;
+  --yelo: #f6eca9;
+  --black: #000;
+  --white: #fff;
+  --grey: #6e6e6e;
+  --lightgrey: #aeaeae;
+  --lightblue: #273a72;
+  --whitedark: #dddddd;
+  --yelodark: #ada677;
+}
+
+/* Profile */
+
+.bg-profile {
   background-image: url("../../../../public/assets/background.png");
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  /* flex-direction: col; */
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-container {
+  /* background-color: red; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* display: flex;
+  flex-direction: row; */
+  height: 80vh;
+  width: 80vw;
+}
+
+.profile-container .logo-ajarin {
+  /* background-color: yellow; */
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.profile-container .top-profile {
+  height: fit-content;
+  /* background-color: red; */
+}
+
+.profile-container .bot-profile {
+  /* background-color: yellow; */
+  display: flex;
+  /* flex-direction: row; */
+  height: 43rem;
+  gap: 1rem;
+}
+
+.profile-container .left-profile-container {
+  background-color: white;
+  /* justify-content: center; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* justify-content: flex-end; */
+  width: 35%;
+  height: 100%;
+  cursor: default;
+}
+
+.profile-container .right-profile-container {
+  background-color: var(--white);
+  flex-grow: 1;
+  height: 100%;
+}
+
+.profile-container .profile-picture {
+  border: var(--yelo);
+  border-style: solid;
+  border-width: 0.5rem;
+  /* margin-top: 3rem; */
+}
+
+.profile-container .left-body h3 {
+  color: var(--blue);
+  background-color: white;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  font-size: 32px;
+}
+
+.profile-container .left-body p {
+  color: var(--blue);
+  font-size: 18px;
+}
+
+.profile-container .left-body {
+  /* display: flex; */
+  /* flex-direction: col; */
+  /* justify-content: flex-end; */
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+}
+
+.profile-container .list-group-item {
+  height: 4rem;
+  align-items: center;
+}
+
+.profile-container .card-text {
+  margin-top: 3rem;
+}
+
+.profile-container .card-text span {
+  color: var(--blue);
+  margin: 0rem 1rem;
+}
+
+.list-group-item {
+  border: var(--lightgrey);
+  border-style: solid;
+}
+
+.list-group {
+  border: var(--lightgrey);
+  border-style: solid;
+  border-width: 1px;
+  border-left: 0px;
+  border-right: 0px;
+}
+
+.profile-container .right-profile-body {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: flex-end; */
+  /* background-color: beige; */
+  justify-content: center;
+  /* align-items: center; */
+}
+
+.profile-container .button-container {
+  margin-top: 3rem;
+}
+
+.profile-container
+  .right-profile-container
+  .nav-item
+  button:not([aria-selected="true"]) {
+  color: black;
+  opacity: 0.6;
+}
+
+.profile-container .right-profile-container .nav-item button:hover {
+  color: black;
+  opacity: 1;
+}
+
+.profile-container .edit-profile-btn button {
+  background-color: var(--blue);
+}
+
+.profile-container .edit-profile-btn button:hover {
+  background-color: var(--lightblue);
+}
+
+.profile-container .change-role-btn button {
+  background-color: var(--yelo);
+}
+
+.profile-container .change-role-btn button:hover {
+  background-color: var(--yelodark);
+}
+
+.profile-container .cancel-btn button:hover {
+  background-color: var(--blue);
+}
+
+.profile-container .logout-cancel-btn button:hover {
+  background-color: var(--whitedark);
 }

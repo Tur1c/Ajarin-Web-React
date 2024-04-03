@@ -1,3 +1,16 @@
+:root {
+  --purple: #0a122b;
+  --blue: #11235a;
+  --yelo: #f6eca9;
+  --black: #000;
+  --white: #fff;
+  --grey: #6e6e6e;
+  --lightgrey: #aeaeae;
+  --lightblue: #273a72;
+  --whitedark: #dddddd;
+  --yelodark: #f6e976;
+}
+
 .lecturer-page {
   overflow: scroll;
   overflow-x: hidden;

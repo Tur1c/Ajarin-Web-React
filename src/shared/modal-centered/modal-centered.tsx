@@ -11,7 +11,7 @@ function ModalCentered(props: any) {
   const isLogged = sessionStorage.getItem("jwt");
   const user = sessionStorage.getItem("user");
   const navigate = useNavigate();
-  console.log(props, "modalehehe");
+  console.log("modalehehe", props);
 
   const JOIN_URL = "/api/account/join";
 
@@ -44,53 +44,59 @@ function ModalCentered(props: any) {
   return (
     <Modal
       {...props}
-      size="lg"
+      size="xl"
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header className="p-0">
-        <div className="container-class-header">
-          <img
-            className="disc-image img-fluid"
-            src={`assets/${props.data.image}`}
-            alt=""
-          />
-          <div className="top-left">
+      <Modal.Header className="disc-modal-header">
+        <div className="modal-header-top">
+          <div className="modal-close">
             <IoIosCloseCircleOutline
               onClick={props.onHide}
-              style={{ color: "#fff", fontSize: "30px" }}
+              style={{ color: "#fff", fontSize: "36px" }}
             />
           </div>
-          <div className="centered" style={{ width: "450px" }}>
+          <div className="centered" style={{ width: "450px", gap: "0.75rem" }}>
+            <span>{props.data.date}</span>
+            <span>|</span>
             <span>
-              {props.data.date} {props.data.starttime.toString()} -{" "}
+              {props.data.starttime.toString()} -{" "}
               {props.data.endtime.toString()}
             </span>
           </div>
-          <div className="p-1">
-            {/* <IoIosCloseCircleOutline
-              onClick={props.onHide}
-              style={{ color: "#fff" }}
-            /> */}
+          <div className="lecturer-redirect">
+            <img
+              className="img-fluid rounded-circle"
+              style={{ height: "36px", width: "36px" }}
+              src={`assets/${props.data.image}`}
+              alt=""
+            />
           </div>
         </div>
-        <div className="container-class-header pt-3">
+        <div className="modal-header-image">
           <img
-            className=""
-            style={{ width: "80%" }}
+            className="px-2"
+            style={{
+              width: "60vw",
+              height: "40vh",
+              objectFit: "cover",
+              marginTop: "1rem",
+            }}
             src={`assets/${props.data.image}`}
             alt=""
           />
         </div>
       </Modal.Header>
-      <Modal.Body className="modal-body-container text-dark">
-        <div className="">
+      <Modal.Body className="text-light w-100 px-4">
+        <div className="modal-body-container">
           <div className="d-flex justify-content-between">
             <div className="">
               <h2>
                 <b>{props.data.title}</b>
               </h2>
-              <p className="disc-categories">Math</p>
+              <p className="disc-categories" style={{ opacity: "0.6" }}>
+                Math
+              </p>
             </div>
             <div
               style={{
@@ -113,10 +119,12 @@ function ModalCentered(props: any) {
               </div>
             </div>
           </div>
-          <p className="disc-description">{props.data.description}</p>
+          <div className="disc-description" style={{ height: "10vh" }}>
+            <p>{props.data.description}</p>
+          </div>
         </div>
       </Modal.Body>
-      <Modal.Footer className="modal-footer-container p-0">
+      <Modal.Footer className="modal-footer-container w-100 p-0">
         <div
           className=""
           style={{
@@ -128,7 +136,7 @@ function ModalCentered(props: any) {
             alignItems: "center",
           }}
         >
-          <p onClick={props.onHide} className="text-white">
+          <p onClick={props.onHide} className="text-white pt-2">
             {isLogged ? (
               <button
                 style={{
@@ -150,7 +158,7 @@ function ModalCentered(props: any) {
                   src={`assets/coin.png`}
                   alt=""
                 />
-                {props.data.price}
+                <b style={{ color: "var(--yelo)" }}> {props.data.price}</b>
               </button>
             ) : (
               <b onClick={() => navigate("/login")}>Log In</b>

@@ -24,7 +24,7 @@ const Sidebar = ({ children, account }: Props) => {
 
   return (
     <div className="sidebar">
-      <div className="logo-content">
+      <div className="logo-content" style={{cursor:"default"}}>
         <h1 className="fw-bold" style={{ color: "#fff", fontSize: "32px" }}>
           ajar<span style={{ color: "#F6ECA9" }}>in</span>
         </h1>
@@ -68,17 +68,17 @@ const Sidebar = ({ children, account }: Props) => {
             <span className="tooltip-text">Forum</span>
           </div>
         </div>
-        <div className="profile_content">
+        <div className="profile-content">
           <div className="profile">
             {isLogged ? (
-              <div className="profile_details" style={{ display: "block" }}>
+              <div className="profile-details " style={{ display: "block" }}>
                 <Link to={"/profile"} state={account}>
                   {/* <i> */}
                   <img
-                    className="img-fluid"
+                    className="img-fluid rounded-circle"
                     src={account?.urlImage || `assets/default_picture.png`}
                     alt=""
-                    style={{ height: "120%", width: "100%" }}
+                    style={{ height: "100%", width: "100%" }}
                   />
                   {/* </i> */}
                 </Link>

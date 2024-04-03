@@ -1,10 +1,14 @@
 :root {
   --purple: #0a122b;
   --blue: #11235a;
-  --yelow: #f6eca9;
+  --yelo: #f6eca9;
   --black: #000;
   --white: #fff;
+  --grey: #999999;
+  --lightgrey: #b3b3b3;
   --lightblue: #273a72;
+  --whitedark: #eeeeee;
+  --yelodark: #f6e976;
 }
 
 /* .sidebar-container {
@@ -30,7 +34,7 @@
   background-color: var(--blue);
 }
 
-.logo-content {
+.sidebar .logo-content {
   /* background-color: white; */
   font-size: 20px;
   font-weight: 400;
@@ -38,24 +42,19 @@
   padding: 1.5rem 0rem;
 }
 
-.mid-bottom {
+.sidebar .mid-bottom {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
 }
 
-.list-menu {
+.sidebar .list-menu {
   /* background-color: black; */
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.menu-list {
-  align-items: center;
-  background-color: peru;
-  justify-content: center;
+  margin-top: 1rem;
 }
 
 .sidebar .menu {
@@ -79,7 +78,7 @@
   /* display: inline-block; */
 }
 
-.tooltip-text {
+.sidebar .tooltip-text {
   visibility: hidden;
   font-size: 14px;
   /* width: 100%; */
@@ -94,25 +93,25 @@
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
-.menu:hover .tooltip-text {
+.sidebar .menu:hover .tooltip-text {
   visibility: visible;
   transition: 0.25s all ease;
   transition-delay: 0.5s;
 }
 
-.menu:hover svg {
+.sidebar .menu:hover svg {
   opacity: 1;
   transition: all 0.5s;
 }
 
-.sidebar ul {
+/* .sidebar ul {
   margin-top: 2rem;
   padding-left: 0;
   justify-content: center;
   text-align: center;
   align-items: center;
   list-style: none;
-}
+} */
 
 /* .sidebar ul li {
   height: 80px;
@@ -124,7 +123,7 @@
   justify-content: center;
 } */
 
-.sidebar li {
+/* .sidebar li {
   position: relative;
   justify-content: center;
   text-align: center;
@@ -184,7 +183,7 @@
   border-radius: 12px;
   line-height: 50px;
   text-align: center;
-}
+} */
 
 /* .sidebar .links_name {
   opacity: 0;
@@ -197,48 +196,61 @@
   pointer-events: auto;
 } */
 
-.sidebar .profile_content {
+.sidebar .profile-content {
   /* position: relative; */
+  /* background-color: red; */
   color: #fff;
-  width: 100%;
+  /* width: 100%; */
 }
 
-.sidebar .profile_content .profile {
+.sidebar .profile-content .profile {
   /* position: relative; */
-  padding: 10px 6px;
-  height: 12rem;
+  /* padding: 10px 6px; */
+  /* height: 12rem; */
   /* background: red; */
   transition: all 0.5s ease;
+  margin-bottom: 0.5rem;
 }
 
 /* .sidebar.active .profile_content .profile {
   background: #1d1b31;
 } */
 
-.profile_details {
-  height: 100px;
-  min-width: 40px;
-  border-radius: 12px;
-  line-height: 50px;
-  text-align: center;
+.profile-details img {
+  /* min-width: 5vw; */
+  /* border-radius: 5rem; */
+  /* line-height: 50px; */
+  /* text-align: center; */
+  /* background-color: white; */
+  /* padding: 1rem; */
+  opacity: 1;
 }
 
-.profile_details a {
+.profile-details img:hover {
+  opacity: 0.7;
+}
+
+.profile-details a {
   pointer-events: all;
 }
 
-.profile_content .profile .profile_details {
+.profile-content .profile .profile-details {
   display: flex;
   pointer-events: none;
   align-items: center;
   white-space: nowrap;
 }
 
-.profile_content .profile img {
-  height: 45px;
-  width: 45px;
+.profile-content .profile img {
+  /* height: 45px;
+  width: 45px; */
   object-fit: cover;
-  border-radius: 12px;
+  /* padding: 1rem; */
+  border: var(--yelo);
+  border-style: solid;
+  border-width: 0.25rem;
+
+  /* border-radius: 12px; */
 }
 
 .profile .button button {
@@ -262,7 +274,7 @@
 }
 
 .profile .button .login-btn:hover {
-  opacity: 0.8;
+  background-color: var(--yelodark);
 }
 
 .profile .button .signup-btn:hover {
@@ -306,3 +318,6 @@
 /* .active{
   background-color:#000;
  } */
+
+
+

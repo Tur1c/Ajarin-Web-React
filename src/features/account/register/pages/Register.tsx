@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AccountRegisterSchema } from "../../../../model/Account";
-import "./Register.css";
 import Navbar from "../../../../shared/navbar/Navbar";
 import createAcc from "../Create Account.png";
 import RegisterPartTwo from "../components/RegisterPartTwo";
@@ -90,14 +89,15 @@ function Register() {
           {errMsg}
         </p>
         {pageState === 0 ? (
-          <div className="wrapper d-flex">
-            <div className="flex-fill">
+          <div className="register-wrapper d-flex col">
+            <div className="d-flex">
               <form onSubmit={handleSubmit}>
                 <h1 className="text fw-bold">Create new account.</h1>
                 <div className="text register-link">
                   <p>Already Have Account ? </p>
                   <Link
                     to="/login"
+                    className="login-link"
                     style={{ color: "#F6ECA9", textDecoration: "none" }}
                   >
                     <b>Log In</b>
@@ -219,14 +219,8 @@ function Register() {
               </form>
             </div>
 
-            <div className="img-learning flex-fill m-5">
-              <img
-                src={createAcc}
-                alt="Learning png"
-                style={{
-                  height: "400px",
-                }}
-              />
+            <div className="img-learning d-flex ">
+              <img src={createAcc} alt="Learning png" />
             </div>
           </div>
         ) : (

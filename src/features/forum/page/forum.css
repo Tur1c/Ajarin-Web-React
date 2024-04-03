@@ -72,7 +72,6 @@
 .search-dropdown-forum {
   width: 30vh;
   justify-content: flex-start;
-
 }
 
 /* .search-wrapper-forum {
@@ -315,4 +314,3 @@ input:focus {
 .send-btn {
   width: 10%;
 }
-

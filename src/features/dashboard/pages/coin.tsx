@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
 import {
   AccountOutput,
-  AccountRegisterSchema,
   AccountSchema,
   transfromToAccountOutput,
 } from "../../../model/Account";
@@ -16,6 +15,8 @@ const UPDATE_URL = "/api/account/";
 function Coin() {
   const navigate = useNavigate();
   const { state } = useLocation();
+
+  console.log(state);
 
   const [coin, setCoin] = useState({
     coins: [
@@ -71,7 +72,7 @@ function Coin() {
     studentdisc_list: [],
     studentcourse_list: [],
     subscribed_lecturer: [],
-    urlImage: ""
+    urlImage: "",
   });
 
   const [test, setTest] = useState({
@@ -113,121 +114,113 @@ function Coin() {
   return (
     <>
       <div className="coin-container">
-        <div className="container p-5" style={{ height: "100vh" }}>
-          <div className="d-block">
-            <div className="row coin-header d-flex" style={{ width: "100%" }}>
-              <div className="col-6">
-                <IoIosCloseCircleOutline
-                  style={{ color: "#fff", fontSize: "54px" }}
-                  onClick={() => {
-                    setTimeout(() => {
-                      navigate("/");
-                    }, 1000);
-                  }}
-                />
-              </div>
-              <div
-                className="logo_content col-6 mt-3"
-                style={{ marginBottom: "30px" }}
+        <div className="coin-body">
+          <div className="coin-top d-flex row">
+            <div className="close">
+              <IoIosCloseCircleOutline
+                style={{ fontSize: "48px" }}
+                onClick={() => navigate(-1)}
+              />
+            </div>
+            <div className="logo-ajarin" style={{ cursor: "default" }}>
+              <h1
+                className="fw-bold"
+                style={{ color: "#fff", fontSize: "36px" }}
               >
-                <div className="logo">
-                  <div className="logo_name">
-                    <h1
-                      className="fw-bold"
-                      style={{ color: "#fff", fontSize: "22px" }}
-                    >
-                      ajar
-                      <span style={{ color: "#F6ECA9" }}>in</span>
-                    </h1>
-                  </div>
-                </div>
+                ajar
+                <span style={{ color: "#F6ECA9", fontSize: "36px" }}>in</span>
+              </h1>
+            </div>
+          </div>
+          <div className="coin-content h-100">
+            <div className="text-end d-flex justify-content-end">
+              <div
+                className="button-coin-detail d-flex justify-content-end"
+                style={{
+                  backgroundColor: "#596FB7",
+                  textAlign: "center",
+                  display: "flex",
+                  alignItems: "center",
+                  textDecoration: "none",
+                }}
+              >
+                <h3
+                  className="text-white pt-2"
+                  style={{ fontSize: "24px", textAlign: "center" }}
+                >
+                  Available Coins
+                </h3>
+                <img
+                  src={`assets/coin.png`}
+                  alt="abc"
+                  style={{ height: "36px" }}
+                />
+                <span
+                  style={{
+                    fontSize: "36px",
+                    fontWeight: "bolder",
+                    color: "var(--yelo)",
+                    letterSpacing: "1px",
+                  }}
+                >
+                  {account.coin}
+                </span>
               </div>
             </div>
-            <div className="coin-content">
-              <div className="p-3">
-                <div
-                  className="text-end d-flex justify-content-end mb-3"
-                  style={{}}
-                >
+
+            <div
+              className="d-flex  justify-content-center"
+              style={{ marginTop: "1rem" }}
+            >
+              <div className="card-list">
+                {coin.coins.map((data, index) => (
                   <div
-                    className="button-coin-detail p-2 d-flex justify-content-end"
-                    style={{
-                      backgroundColor: "#596FB7",
-                      textAlign: "center",
-                      display: "flex",
-                      alignItems: "center",
-                      textDecoration: "none",
-                    }}
+                    className=" p-3 m-0 "
+                    style={{ marginBottom: "2rem" }}
+                    key={index}
                   >
-                    <h3 className="me-3 mb-0 text-white">Available Coins</h3>{" "}
-                    <img
-                      src={`assets/coin.png`}
-                      alt="abc"
-                      style={{ height: "40px" }}
-                    />
-                    <span>{account.coin}</span>
-                  </div>
-                </div>
-                <div className="row">
-                  <div
-                    className="card"
-                    style={{ backgroundColor: "transparent", border: "none" }}
-                  >
-                    <div className="card-body p-0">
-                      <div className="row ms-0">
-                        {coin.coins.map((data, index) => (
-                          <div
-                            className="col-md-3 d-flex align-items-stretch mb-5"
-                            key={index}
-                          >
-                            <div
-                              className="card"
-                              style={{
-                                background: "rgba(255, 255, 255, 0.45)",
-                              }}
-                              onClick={() =>
-                                handleTopup(data.value, data.price)
-                              }
-                            >
-                              <div className="card-body p-2">
-                                <div className="card-text">
-                                  <div className="class-content d-block text-center">
-                                    <div
-                                      className="class"
-                                      style={{ width: "195px" }}
-                                    >
-                                      <div
-                                        className=""
-                                        style={{ width: "100%" }}
-                                      >
-                                        <img
-                                          src={`assets/coin.png`}
-                                          alt="abc"
-                                          className="my-3"
-                                          style={{ height: "60px" }}
-                                        />
-                                        <div className="d-block">
-                                          <div className="title-class mb-2">
-                                            <h1 style={{ color: "#C6CF9B" }}>
-                                              {data.value}
-                                            </h1>
-                                            <p style={{ fontSize: "24px" }}>
-                                              IDR. {data.price}
-                                            </p>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
+                    <div
+                      className="coin-card card"
+                      onClick={() => handleTopup(data.value, data.price)}
+                    >
+                      <div className="card-body">
+                        <div className="class-content  text-center">
+                          <div className="class" style={{ width: "10rem" }}>
+                            <div className="" style={{ width: "100%" }}>
+                              <img
+                                src={`assets/coin.png`}
+                                alt="abc"
+                                className=""
+                                style={{ height: "48px" }}
+                              />
+                              <div className="d-flex row">
+                                <div className="title-class">
+                                  <h1
+                                    style={{
+                                      color: "#C6CF9B",
+                                      fontWeight: "bold",
+                                    }}
+                                  >
+                                    {data.value}
+                                  </h1>
+                                  <p
+                                    style={{
+                                      fontSize: "24px",
+                                      fontWeight: "600",
+                                      color: "var(--blue)",
+                                    }}
+                                  >
+                                    IDR. {data.price}
+                                  </p>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        ))}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>

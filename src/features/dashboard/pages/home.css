@@ -7,8 +7,8 @@
   --grey: #6e6e6e;
   --lightgrey: #aeaeae;
   --lightblue: #273a72;
-  --whitedark: #eeeeee;
-  --yelodark: #ada677;
+  --whitedark: #dddddd;
+  --yelodark: #f6e976;
 }
 
 body {
@@ -48,7 +48,8 @@ body {
   /* height: 100%; */
 }
 
-.greetings, .add-courses {
+.greetings,
+.add-courses {
   margin-top: 2rem;
   margin-left: 2rem;
   margin-right: 2rem;
@@ -122,6 +123,14 @@ body {
   color: var(--yelo);
 }
 
+.coin-link {
+  opacity: 0.7;
+}
+
+.coin-link:hover {
+  opacity: 1;
+}
+
 .class-wrapper {
   height: fit-content;
 }
@@ -131,6 +140,11 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.itemss:hover {
+  background-color: var(--lightblue);
+  cursor: pointer;
 }
 
 .disc-list {
@@ -178,19 +192,47 @@ body {
   border-radius: 5rem;
   border-color: white;
   font-size: 9px;
+  border-width: 0.125rem;
 }
 
 .right-disc {
   cursor: pointer;
+  /* background-color: red; */
+  justify-content: center;
 }
 
-.right-disc .right-disc-active {
-  background-color: whitesmoke;
+.updisc-container {
+  
+}
+
+
+
+.right-disc-active {
+  background-color: var(--lightblue);
+}
+
+.right-disc:hover {
+  background-color: #6186f644;
 }
 
 .right-home .view-all:hover {
-  background-color: var(--lightblue);
+  background-color: #6186f644;
   color: var(--whitedark);
+}
+
+.disc-date {
+    width: 4vw;
+    height: 7vh;
+}
+
+.disc-title {
+  width: 11vw;
+  gap: 0.125rem;
+}
+
+.disc-time {
+  height: 7vh;
+  width: 5vw;
 }
 
 /* Statistic */
@@ -356,7 +398,7 @@ body {
 }
 
 .chip {
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
   padding: 0.25rem 0.5rem;
   background-color: var(--grey);
   font-size: 10px;

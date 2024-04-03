@@ -92,7 +92,7 @@ function Home() {
         },
         withCredentials: true,
       });
-      console.log(response.data.outputSchema, "ABCCCCC");
+      console.log("ini data account", response.data.outputSchema);
       accountId = response.data.outputSchema.id;
       setAccount(transfromToAccountOutput(response.data.outputSchema));
       // setAccountDisc(transformToAccountDiscOutput(response.data.outputSchema));
@@ -110,7 +110,7 @@ function Home() {
       });
       if (response.data.outputSchema != null) {
         setTeacher(response.data.outputSchema);
-        console.log(teacher);
+        console.log("ini data teacher", teacher);
       }
     } catch {}
   };
@@ -138,7 +138,7 @@ function Home() {
     }
   }, []);
 
-  console.log(account);
+  // console.log("dubidubidu", account);
 
   const goToDisc = (discDate: any) => {
     navigate("/calendar", {
@@ -257,27 +257,31 @@ function Home() {
             </h4>
           </div>
 
-        <div className="search-wrapper">
-          <div className="search-container">
-            <div className="search-left">
-              <input
-                type="search"
-                name=""
-                id="search-input"
-                placeholder="Search"
+          <div className="search-wrapper">
+            <div className="search-container">
+              <div className="search-left">
+                <input
+                  type="search"
+                  name=""
+                  id="search-input"
+                  placeholder="Search"
                   onChange={(e) => {
                     setSearchText(e.target.value);
                   }}
-                className="search-left-bar"
-              />
-            </div>
-            <div className="search-right">
-              <button className="search-button" id="search">
-                <IoSearch color="#6E6E6E" fontSize={"24"} onClick={() => search = true}/>
-              </button>
+                  className="search-left-bar"
+                />
+              </div>
+              <div className="search-right">
+                <button className="search-button" id="search">
+                  <IoSearch
+                    color="#6E6E6E"
+                    fontSize={"24"}
+                    onClick={() => (search = true)}
+                  />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
           <div className="coin-wrapper">
             <Link
@@ -327,63 +331,67 @@ function Home() {
 
       <div className="right-home">
         <div className="upcoming-discussion">
-          <p className="mt-3" style={{ marginLeft: "15px" }}>
+          <p style={{ marginLeft: "1rem", marginTop: "1rem" }}>
             Upcoming Discussion
           </p>
           <Link
             style={{
               textDecoration: "none",
-              marginLeft: "15px",
+              marginLeft: "1rem",
+              width: "fit-content",
+              marginBottom: "1.5rem",
             }}
             to={"/calendar"}
             state={account}
           >
-            <div className="view-all mb-3">View All</div>
+            <div className="view-all">View All</div>
           </Link>
           {account.studentdisc_list.slice(0, 3).map((disc, idx) => (
             <div
               className={
-                "card-body disc-body rounded right-disc" +
-                (idx === 0 ? " right-disc-active" : "")
+                "card-body  right-disc" +
+                (idx === 0 ? " right-disc-active" : " ")
               }
-              style={{
-                backgroundColor: idx === 0 ? "rgba(97, 134, 246, 0.3)" : "none",
-              }}
+              // style={{
+              //   backgroundColor: idx === 0 ? "rgba(97, 134, 246, 0.3)" : "none",
+              // }}
               key={idx}
               onClick={() => goToDisc(disc.disc.disc_date)}
             >
-              <h5 className="card-text d-flex h-100">
-                <div className="disc-date col-2 pe-3 ps-2 text-center my-auto border-end border-white">
-                  <h4 style={{ margin: 0, fontSize: "18px" }}>
-                    {dayjs(disc.disc.disc_date).format("DD")}
-                  </h4>
-                  <h5 style={{ fontSize: "12px" }}>
-                    {dayjs(disc.disc.disc_date).format("MMM")}
-                  </h5>
-                </div>
-                <div className="disc-title my-auto col-6 d-flex justify-content-center">
-                  <h6
-                    className=""
-                    style={{ margin: 0, fontSize: "12px", width: "80%" }}
-                  >
-                    {disc.disc.disc_title}
-                    <br />
-                    by Godwin
-                  </h6>
-                </div>
-                <div
-                  className="disc-time col-3 text-center my-auto border-start border-white text-center"
-                  style={{ height: "45px" }}
-                >
-                  <h6
-                    className="d-flex align-items-center justify-content-center ms-2"
-                    style={{ height: "100%", fontSize: "9px" }}
-                  >
-                    {disc.disc.disc_starttime.toString()}-
-                    {disc.disc.disc_endtime.toString()}
-                  </h6>
-                </div>
-              </h5>
+              <div className="updisc-container w-100 mx-2">
+                <h5 className="card-text d-flex justify-content-between">
+                  <div className="disc-date mx-auto text-center border-end border-white justify-content-center align-items-center align-items-center d-flex row">
+                    <h4
+                      style={{
+                        margin: 0,
+                        fontSize: "32px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {dayjs(disc.disc.disc_date).format("DD")}
+                    </h4>
+                    <h5 style={{ fontSize: "18px", fontWeight: "bold" }}>
+                      {dayjs(disc.disc.disc_date).format("MMM")}
+                    </h5>
+                  </div>
+                  <div className="disc-title my-auto d-flex row px-2 ">
+                    <h6 style={{ margin: 0, fontSize: "14px" }}>
+                      {disc.disc.disc_title}
+                      <br />
+                    </h6>
+                    <h6 style={{ margin: 0, fontSize: "10px", color:"var(--yelo)" }}>by Godwin</h6>
+                  </div>
+                  <div className="disc-time d-flex justify-content-center px-2 border-start border-white">
+                    <h6
+                      className="d-flex align-items-center justify-content-center"
+                      style={{ height: "100%", fontSize: "12px" }}
+                    >
+                      {disc.disc.disc_starttime.toString().slice(0, 5)} -{" "}
+                      {disc.disc.disc_endtime.toString().slice(0, 5)}
+                    </h6>
+                  </div>
+                </h5>
+              </div>
             </div>
           ))}
         </div>

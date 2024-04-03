@@ -37,7 +37,6 @@ const Forum = () => {
   });
 
   const { state } = useLocation();
-  console.log("state juga coba", state);
 
   const account: AccountOutput = !state?.firstName ? undefined : state;
   console.log(account);

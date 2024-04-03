@@ -13,19 +13,19 @@ const Navbar = ({ children }: Props) => {
         className="container-login-regis navbar p-5 d-block"
         style={{ alignItems: "start" }}
       >
-        <div className="d-flex mx-5">
+        <div className="d-flex mx-5" style={{cursor:"default"}}>
           <h1 className="fw-bold" style={{ color: "#fff", fontSize: "48px" }}>
             ajar
             <span style={{ color: "#F6ECA9" }}>in</span>
           </h1>
           <ul className="text-muted align-items-center">
-            <Link className="mx-5" to={"/"}>
+            <Link className="mx-5 text-redirect" to={"/"}>
               Home
             </Link>
-            <Link className="mx-5" to={"/login"}>
+            <Link className="mx-5 text-redirect" to={"/login"}>
               Log In
             </Link>
-            <Link className="mx-5" to={"/register"}>
+            <Link className="mx-5 text-redirect" to={"/register"}>
               Register
             </Link>
           </ul>
