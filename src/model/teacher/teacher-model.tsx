@@ -1,7 +1,12 @@
 import moment from "moment";
+
 import {
   AccountNoROutput,
   AccountRegisterSchema,
+  PrivateDiscInput,
+  PrivateDiscOut,
+  PrivateDiscSchema,
+  TransformToPrivateDiscOut,
   transformToAccountNoROutput,
 } from "../Account";
 import { Class, ClassList, Course, CourseList, CourseListOutput, CourseListSchema, DiscussionListOutput, DiscussionListSchema, transfromToCourseListOutput, transfromToDiscussionListOutput } from "../course/course-list";
@@ -21,6 +26,7 @@ export interface Teacher {
   user: AccountRegisterSchema;
   discussion: Class[];
   courses: Course[];
+  private_disc: PrivateDiscSchema[];
 }
 
 export interface TeacherListOutput {
@@ -41,18 +47,19 @@ export interface TeacherOutput {
   discussion?: ClassList[];
   courses?: CourseList[];
   courseSold?: number;
+  private_disc: PrivateDiscOut[];
 }
 
 export function transfromToTeacherListOutput(
   response: InquiryTeacherSchema
 ): TeacherListOutput {
-  console.log(response, "jueng");
+  // console.log(response, "jueng");
   const result: TeacherListOutput = {
     teachers: response.teachers.map((data) => {
       return transformToTeacherOutput(data);
     }),
   };
-  console.log(result, "teacher transform");
+  // console.log(result, "teacher transform");
 
   return result;
 }
@@ -71,7 +78,7 @@ function countCourseSold(courses: Course[]) {
 }
 
 export function transformToTeacherOutput(response: Teacher): TeacherOutput {
-  console.log("masuk sini", response);
+  // console.log("masuk sini", response);
   const result: TeacherOutput = {
     id: response.id,
     description: response.profile_description,
@@ -97,6 +104,7 @@ export function transformToTeacherOutput(response: Teacher): TeacherOutput {
         category: data.category.category_name,
         image: data.disc_image,
         url: data.disc_url,
+        participant: data.joinedParticipant
       }
     }),
     courses: response.courses?.map((data) => {
@@ -121,7 +129,8 @@ export function transformToTeacherOutput(response: Teacher): TeacherOutput {
       }
     }),
     courseSold: countCourseSold(response.courses),
+    private_disc: response.private_disc.map((data) => TransformToPrivateDiscOut(data))
   };
-  console.log(result, "lewat teacher");
+  // console.log(result, "lewat teacher");
   return result;
 }

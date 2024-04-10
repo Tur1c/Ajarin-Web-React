@@ -234,7 +234,11 @@
   pointer-events: all;
 }
 
-.profile-content .profile .profile-details {
+.profile_details button{
+  pointer-events: all;
+}
+
+.profile_content .profile .profile_details {
   display: flex;
   pointer-events: none;
   align-items: center;

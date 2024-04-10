@@ -53,6 +53,7 @@ function TeacherModalAddCourse(props: any) {
         pic_type: "",
         pic_url: "",
       },
+      private_disc: [],
     },
     total_sold_course: 0,
   });

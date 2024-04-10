@@ -15,7 +15,11 @@ function ModalCentered(props: any) {
 
   const JOIN_URL = "/api/account/join";
 
-  const JoinDiscussion = async (discId: number) => {
+  const JoinDiscussion = async (discId: number, maxParticipant: number, participant: number) => {
+    if(participant === maxParticipant){
+      alert("full");
+      return
+    }
     try {
       let schema: JoinDiscussionSchema = {
         email: user,
@@ -146,7 +150,7 @@ function ModalCentered(props: any) {
                   fontSize: "30px",
                 }}
                 type="button"
-                onClick={() => JoinDiscussion(props.data.id)}
+                onClick={() => JoinDiscussion(props.data.id, props.data.maxPeople, props.data.participant)}
               >
                 Join{" "}
                 <img

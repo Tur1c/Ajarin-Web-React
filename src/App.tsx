@@ -15,6 +15,7 @@ import ForumDetail from "./features/forum/page/forumDetail";
 import Lecturer from "./features/lecturer/lecturer";
 import LecturerDetail from "./features/lecturer/lecturerDetail";
 import { ErrorPage } from "./shared";
+import CourseChapter from "./features/course_detail/courseChapter";
 
 function App() {
   // return <RouterProvider router={router}></RouterProvider>;
@@ -29,6 +30,10 @@ function App() {
         <Route
           path="/course/:course_title"
           element={<CourseDetail></CourseDetail>}
+        ></Route>
+        <Route
+          path="/course/:course_title/:course_chapter"
+          element={<CourseChapter></CourseChapter>}
         ></Route>
         <Route
           path="/lecturer/:lecturer_name"

@@ -1,8 +1,16 @@
 .container-card-scroll {
   max-width: 1400px;
   padding: 0 15px;
+  overflow-x: auto;
+  scrollbar-color: transparent;
   margin: 0 auto;
 }
+
+.container-card-scroll::-webkit-scrollbar{
+  height: 1px;
+  background-color: transparent;
+}
+
 
 .container-card-scroll h2 {
   font-size: 32px;
@@ -16,7 +24,6 @@
   grid-auto-flow: column;
   padding: 25px 0px;
   list-style: none;
-  overflow-x: scroll;
   scroll-snap-type: x mandatory;
 }
 
@@ -57,9 +64,6 @@
   transition: background 0.2s;
 }
 
-.container-card-scroll .cards::-webkit-scrollbar {
-  height: 12px;
-}
 
 .container-card-scroll .cards::-webkit-scrollbar-thumb,
 .container-card-scroll .cards::-webkit-scrollbar-track {
@@ -80,4 +84,25 @@
     grid-auto-columns: calc(25% - 40px);
     grid-column-gap: 8rem;
   }
+}
+
+.modal-overlay {
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-box {
+  display: block;
+  background: white;
+  width: 50%;
+  height: 70%;
+  padding: 1rem;
+  border-radius: 1rem;
 }

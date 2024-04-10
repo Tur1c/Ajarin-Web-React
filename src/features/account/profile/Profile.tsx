@@ -16,16 +16,13 @@ import {
 import { ApiResponse } from "../../../model/schema/base_schema";
 import { transfromToServiceLoginAccountOutput } from "../../../service/Account/account.service";
 import "./profile.css";
+import { IoIosMail } from "react-icons/io";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const HOME_URL = "/api/account?email=" + sessionStorage.getItem("user");
 const UPDATE_URL = "/api/account/";
 const UPDATE_IMAGE = "/api/account/upload?email=";
-const STATUS_REGISTERED_TEACHER = "/api/account/inquiry/teacher/";
-const CHANGE_ACCOUNT = "/api/account/change-role?email=";
 
-interface JwtPayload {
-  roles: string;
-}
 
 const Profile = () => {
   // const { login }: any = useAuth();
@@ -52,7 +49,6 @@ const Profile = () => {
   let ongoingCourse = 0;
   let completedCourse = 0;
   let completedDiscussion = 0;
-  let isAlreadyTeacher = false;
 
   const ongoingCourseCount = () => {
     account.studentcourse_list.map((data) => {
@@ -92,49 +88,6 @@ const Profile = () => {
     } catch {}
   };
 
-  const isAlreadyRegisterTeacher = async () => {
-    try {
-      const response = await axios.get(STATUS_REGISTERED_TEACHER + account.id, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + sessionStorage.getItem("jwt"),
-        },
-        withCredentials: true,
-      });
-      if (response.data.outputSchema != null) {
-        isAlreadyTeacher = true;
-      }
-      console.log(response.data);
-    } catch {}
-  };
-
-  const changeAccount = async () => {
-    try {
-      const response = await axios.get<ApiResponse<AccountLoginSchema>>(
-        CHANGE_ACCOUNT + account.email,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + sessionStorage.getItem("jwt"),
-          },
-          withCredentials: true,
-        }
-      );
-      console.log(response.data, "change account");
-
-      const output = transfromToServiceLoginAccountOutput(response.data);
-      const token = output.token;
-
-      setUser(account.email);
-      setToken(token);
-      const decoded = jwtDecode<JwtPayload>(token);
-      console.log(decoded.roles, "role di login");
-      setRole(decoded.roles.substring(5, decoded.roles.length));
-
-      navigate("/");
-    } catch {}
-  };
-
   const uploadImage = async (file: any) => {
     let formData = new FormData();
     console.log(file[0]);
@@ -169,19 +122,6 @@ const Profile = () => {
     setEditProfile(false);
   };
 
-  const handleAlreadyRegisteredAsTeacher = () => {
-    isAlreadyRegisterTeacher();
-    setTimeout(() => {
-      if (!isAlreadyTeacher) {
-        navigate("/register/teacher", {
-          state: { account },
-        });
-        isAlreadyTeacher = false;
-      } else {
-        changeAccount();
-      }
-    }, 1000);
-  };
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files;
@@ -196,10 +136,8 @@ const Profile = () => {
     setEditProfile(false);
   };
 
-  useEffect(() => {
-    isAlreadyRegisterTeacher();
-  }, []);
 
+  console.log(account);
   return (
     // <>  </>
     <div className="bg-profile">
@@ -511,35 +449,6 @@ const Profile = () => {
                             </button>
                           )}
                         </div>
-                        <div className="change-role-btn mt-3">
-                          {!editProfile ? (
-                            <button
-                              className="btn profile-button"
-                              type="button"
-                              style={{
-                                width: "250px",
-                                borderRadius: "25px",
-                                border: "2px solid var(--yelo)",
-                                // backgroundColor: "#fff",
-                                color: "#11235A",
-                              }}
-                              onClick={() => {
-                                handleAlreadyRegisteredAsTeacher();
-                              }}
-                            >
-                              <b>
-                                Become{" "}
-                                {userRole === "Teacher" ? (
-                                  <span>Student</span>
-                                ) : (
-                                  <span>Teacher</span>
-                                )}
-                              </b>
-                            </button>
-                          ) : (
-                            ""
-                          )}
-                        </div>
                         <div className="logout-cancel-btn mt-3">
                           {editProfile ? (
                             <button
@@ -581,7 +490,15 @@ const Profile = () => {
                     </div>
                   </div>
                 </Tab>
-                <Tab eventKey="notification" title="Notification"></Tab>
+                <Tab eventKey="notification" title="Notification">
+                        {account.notification.map( (data) => (
+                          <div className="notif-content text-dark">
+                            <IoIosMail />
+                            {data.message}
+                            <FaRegTrashAlt />
+                          </div>
+                          ))}
+                </Tab>
               </Tabs>
             </div>
           </div>

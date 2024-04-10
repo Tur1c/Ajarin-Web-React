@@ -34,8 +34,9 @@ function HomeDiscussion(props: any) {
     maxPeople: "",
     price: "",
     starttime: new Date(),
-    teacher: undefined,
     url: "",
+    teacher: undefined,
+    participant: 0
   });
 
   const [searchText, setSearchText] = useState("");
@@ -102,6 +103,7 @@ function HomeDiscussion(props: any) {
       price: data.price,
       starttime: data.starttime,
       title: data.title,
+      participant: data.participant
     });
     setShowModal(true);
   };
@@ -127,8 +129,7 @@ function HomeDiscussion(props: any) {
   useEffect(() => {
     fetchDataDiscussion();
   }, []);
-  console.log(classList, "discussiion");
-
+  // console.log(classList,"discussiion");
   return (
     <>
       <div className="disc-container">
@@ -160,7 +161,7 @@ function HomeDiscussion(props: any) {
                   />
                   <span style={{ marginLeft: "5px" }}>{data.price}</span>
                 </div>
-                <div className="top-right">Top Right</div>
+                <div className="top-right">{data.participant}/{data.maxPeople}</div>
                 <div className="bottom-right">
                   {data.starttime.toString().slice(0, 5)} -{" "}
                   {data.endtime.toString().slice(0, 5)}

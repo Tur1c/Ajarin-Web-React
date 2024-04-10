@@ -12,6 +12,7 @@ import axios from "../../api/axios";
 import {
   AccountOutput,
   AccountSchema,
+  PrivateDiscOut,
   SubscribedLecturer,
   transfromToAccountOutput,
 } from "../../model/Account";
@@ -19,10 +20,14 @@ import { ApiResponse } from "../../model/schema/base_schema";
 import {
   InquiryTeacherSchema,
   TeacherListOutput,
+  TeacherOutput,
   transfromToTeacherListOutput,
 } from "../../model/teacher/teacher-model";
 import { Pagination, Sidebar } from "../../shared";
 import "./lecturer.css";
+import ReqPrivate from "./reqPrivate";
+import useModal from "../../hooks/useModal";
+import dayjs from "dayjs";
 
 const INQUIRY_TEACHER = "/api/account/inquiry/teacher";
 const UNSUBSCRIBE_LECTURER = "/api/account/unsubscribe?teacher-id=";
@@ -36,7 +41,7 @@ const Lecturer = () => {
   const [searchTeacherText, setSearchTeacherText] = useState("");
   const HOME_URL = "/api/account?email=" + emailUser;
 
-  console.log(state, "state lecturer");
+  // console.log(state, "state lecturer");
 
   const navigate = useNavigate();
 
@@ -47,6 +52,7 @@ const Lecturer = () => {
   const [tempTeachers, setTempTeacher] = useState<TeacherListOutput>({
     teachers: [],
   });
+
 
   const [account, setAccount] = useState<AccountOutput>({
     fullName: "",
@@ -65,6 +71,7 @@ const Lecturer = () => {
     studentcourse_list: [],
     subscribed_lecturer: [],
     urlImage: "",
+    notification: []
   });
 
   const [tempAccount, setTempAccount] = useState<AccountOutput>({
@@ -84,7 +91,13 @@ const Lecturer = () => {
     studentcourse_list: [],
     subscribed_lecturer: [],
     urlImage: "",
+    notification: []
   });
+
+  //modal
+  const {isOpen, toggle} = useModal();
+  const [teacherid, setTeacherId] = useState(0);
+
 
   const fetchTeacherData = async () => {
     try {
@@ -95,7 +108,7 @@ const Lecturer = () => {
           withCredentials: true,
         }
       );
-      console.log(response,"lecturer");
+      // console.log(response,"lecturer");
       setTeacher(transfromToTeacherListOutput(response.data.outputSchema));
       setTempTeacher(transfromToTeacherListOutput(response.data.outputSchema));
     } catch (error) {}
@@ -124,7 +137,7 @@ const Lecturer = () => {
   const unsubscribeLecturer = async (data: SubscribedLecturer) => {
     try {
       const response = await axios.get(
-        UNSUBSCRIBE_LECTURER + data.teacher_id + "&email=" + emailUser,
+        UNSUBSCRIBE_LECTURER + data.id + "&email=" + emailUser,
         {
           headers: {
             "Content-Type": "application/json",
@@ -144,6 +157,10 @@ const Lecturer = () => {
   const handleUnsubscribe = (data: SubscribedLecturer) => {
     unsubscribeLecturer(data);
   };
+
+  const getCurrTeacher = () => {
+   return teachers.teachers.find((teacher) => teacher.account.email === account.email);
+  }
 
   useEffect(() => {
     fetchTeacherData();
@@ -190,9 +207,9 @@ const Lecturer = () => {
         u.user.lastName.toLowerCase().includes(searchText.toLowerCase())
     );
     setAccount({ ...account, subscribed_lecturer: findSubsTeacher });
-    console.log(tempAccount.subscribed_lecturer);
+    // console.log(tempAccount.subscribed_lecturer);
     // account.subscribed_lecturer = findSubsTeacher;
-    console.log(account.subscribed_lecturer);
+    // console.log(account.subscribed_lecturer);
     currentTeacherList = account.subscribed_lecturer.slice(
       firstIndex,
       lastIndex
@@ -237,10 +254,47 @@ const Lecturer = () => {
     setTeacher({ teachers: findTeacher });
   }
 
+  let currTeacher = userRole === "Teacher" ? getCurrTeacher() : null;
+  const [role, setRole] = useState("Student");
+  const [currPrivate,setCurrPrivate] = useState<PrivateDiscOut>({
+    id:"",
+    title:"",
+    education:"",
+    subject:"",
+    difficulty:"",
+    date: "",
+    start_time: "",
+    end_time: "",
+    status:"",
+    coin:0,
+    user: {
+      fullName: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      age: 0,
+      gender: "",
+      phoneNumber: "",
+      education: "",
+      city: "",
+      country: "",
+      school: "",
+      coin: 0,
+      urlImage: "",
+    }
+  });
+  console.log(currTeacher);
+
+  console.log(teacherid,currentTeacherList);
   return (
     <div className="all-page">
+                    <ReqPrivate isOpen={isOpen} toggle={toggle} account={account.id} teacher={teacherid} currPrivate={currPrivate} role={role}/>
       <div className="sidebar-content">
+        {userRole === "Teacher" ? 
+        <Sidebar teacheracc={currTeacher} account={account}></Sidebar>
+        :
         <Sidebar account={account}></Sidebar>
+      }
       </div>
       <div className="d-block w-100 lecturer-page">
         {isLogged ? (
@@ -251,7 +305,7 @@ const Lecturer = () => {
                 <TableContainer>
                   <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
-                      <TableRow>
+                      <TableRow >
                         <TableCell className="text-white" width={"2%"}>
                           #
                         </TableCell>
@@ -260,67 +314,55 @@ const Lecturer = () => {
                         </TableCell>
                         <TableCell className="text-white">Date</TableCell>
                         <TableCell className="text-white">Category</TableCell>
-                        <TableCell className="text-white">
-                          Participant
-                        </TableCell>
                         <TableCell className="text-white">Coin</TableCell>
-                        <TableCell className="text-white">Action</TableCell>
+                        {/* <TableCell className="text-white">Action</TableCell> */}
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {tempTeachers.teachers.slice(0, 10).map((data, index) => (
+                      {currTeacher?.private_disc.map((data,idx) => (
                         <TableRow
-                          key={index}
+                          key={idx}
                           sx={{
-                            "&:last-child td, &:last-child th": { border: 0 },
+                          "&:last-child td, &:last-child th": { border: 0 },
                           }}
-                          onClick={() => handleTeacherDetail(data)}
+                          onClick={() => {toggle(); setCurrPrivate(data);setRole("Teacher")}}
                         >
                           <TableCell
                             component="th"
                             scope="row"
                             className="text-white"
                           >
-                            {index + 1}
+                            {idx + 1}
                           </TableCell>
                           <TableCell className="text-white">
                             <img
                               className="img-fluid"
                               src={
-                                data.account.urlImage ||
+                                data.user.urlImage ||
                                 `assets/default_picture.png`
                               }
                               alt=""
                               style={{ height: "10%", width: "10%" }}
                             />
-                            <span> {data.account.fullName}</span>
+                            <span> {data.user.fullName}</span>
                           </TableCell>
                           <TableCell className="text-white">
-                            100 solds
+                            <p>{dayjs(data.date).format("ddd, MMM D, YYYY")}</p>
+                            {data.start_time} - {data.end_time}
                           </TableCell>
                           <TableCell className="text-white">
-                            200 Participants
+                            {data.education}
                           </TableCell>
                           <TableCell className="text-white">
-                            96 Points
+                            {data.coin}
                           </TableCell>
-                          <TableCell className="text-white">
-                            <FaStar
-                              style={{
-                                color: "green",
-                                fontSize: "25px",
-                                marginRight: "5px",
-                              }}
-                            />{" "}
-                            {data.rating}
-                          </TableCell>
-                          <TableCell className="text-white lecturer-request-private-button">
+                          {/* <TableCell className="text-white lecturer-request-private-button">
                             <button className="request-private-btn me-3">
                               Accept
                             </button>
                             <button className="unsubscribe-btn">Decline</button>
-                          </TableCell>
-                        </TableRow>
+                          </TableCell> */}
+                      </TableRow>
                       ))}
                     </TableBody>
                   </Table>
@@ -392,7 +434,12 @@ const Lecturer = () => {
                                 {data.user.firstName} {data.user.lastName}
                               </h5>
                               <div className="d-flex flex-column lecturer-subscribed-button">
-                                <button className="request-private-btn">
+                                <button className="request-private-btn" onClick={() => {
+                                  toggle();
+                                  setTeacherId(data.id);
+                                  setRole("Student");
+                                }
+                                }>
                                   Request Private
                                 </button>
                                 <button

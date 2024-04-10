@@ -42,6 +42,7 @@ function Home() {
     studentcourse_list: [],
     subscribed_lecturer: [],
     urlImage: "",
+    notification: []
   });
   const [showModalAddDiscussion, setShowModalAddDiscussion] = useState(false);
   const [showModalAddCourse, setShowModalAddCourse] = useState(false);
@@ -62,6 +63,7 @@ function Home() {
     id: 0,
     profile_description: "",
     rating: "",
+    private_disc: [],
     user: {
       age: 0,
       city: "",
@@ -95,22 +97,25 @@ function Home() {
       console.log("ini data account", response.data.outputSchema);
       accountId = response.data.outputSchema.id;
       setAccount(transfromToAccountOutput(response.data.outputSchema));
+
       // setAccountDisc(transformToAccountDiscOutput(response.data.outputSchema));
     } catch (error) {}
   };
 
   const fetchTeacherData = async () => {
+
     try {
-      const response = await axios.get(TEACHER_DATA + accountId, {
+      const response = await axios.get(TEACHER_DATA + email, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + sessionStorage.getItem("jwt"),
         },
         withCredentials: true,
       });
+      console.log(response);
       if (response.data.outputSchema != null) {
         setTeacher(response.data.outputSchema);
-        console.log("ini data teacher", teacher);
+        console.log(teacher);
       }
     } catch {}
   };
@@ -149,6 +154,7 @@ function Home() {
     });
   };
 
+  console.log(teacher);
   return (
     // <body className="">
     <div className="all-page">
@@ -356,7 +362,7 @@ function Home() {
               //   backgroundColor: idx === 0 ? "rgba(97, 134, 246, 0.3)" : "none",
               // }}
               key={idx}
-              onClick={() => goToDisc(disc.disc.disc_date)}
+              onClick={() => goToDisc(disc.discussion.disc_date)}
             >
               <div className="updisc-container w-100 mx-2">
                 <h5 className="card-text d-flex justify-content-between">
@@ -368,15 +374,15 @@ function Home() {
                         fontWeight: "bold",
                       }}
                     >
-                      {dayjs(disc.disc.disc_date).format("DD")}
+                      {dayjs(disc.discussion.disc_date).format("DD")}
                     </h4>
                     <h5 style={{ fontSize: "18px", fontWeight: "bold" }}>
-                      {dayjs(disc.disc.disc_date).format("MMM")}
+                      {dayjs(disc.discussion.disc_date).format("MMM")}
                     </h5>
                   </div>
                   <div className="disc-title my-auto d-flex row px-2 ">
                     <h6 style={{ margin: 0, fontSize: "14px" }}>
-                      {disc.disc.disc_title}
+                      {disc.discussion.disc_title}
                       <br />
                     </h6>
                     <h6 style={{ margin: 0, fontSize: "10px", color:"var(--yelo)" }}>by Godwin</h6>
@@ -386,8 +392,8 @@ function Home() {
                       className="d-flex align-items-center justify-content-center"
                       style={{ height: "100%", fontSize: "12px" }}
                     >
-                      {disc.disc.disc_starttime.toString().slice(0, 5)} -{" "}
-                      {disc.disc.disc_endtime.toString().slice(0, 5)}
+                      {disc.discussion.disc_starttime.toString().slice(0, 5)} -{" "}
+                      {disc.discussion.disc_endtime.toString().slice(0, 5)}
                     </h6>
                   </div>
                 </h5>

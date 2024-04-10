@@ -73,6 +73,7 @@ function Coin() {
     studentcourse_list: [],
     subscribed_lecturer: [],
     urlImage: "",
+    notification: []
   });
 
   const [test, setTest] = useState({

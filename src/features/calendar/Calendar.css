@@ -50,3 +50,17 @@
   /* background-color: #f6eca9; */
     margin-right: 0.5rem;
 }
+
+.account-course-content{
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scrollbar-color: transparent;
+  user-select: none;
+}
+
+.account-course-content::-webkit-scrollbar{
+  height: 1px;
+  background-color: transparent;
+}

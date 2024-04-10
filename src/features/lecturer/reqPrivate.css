@@ -1,0 +1,26 @@
+.private-modal-overlay {
+    z-index: 9999;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .private-modal-box {
+    display: block;
+    background: white;
+    width: 50%;
+    height: 70%;
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

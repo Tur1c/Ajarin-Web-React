@@ -4,9 +4,10 @@ import {
   transformToTeacherOutput,
 } from "../teacher/teacher-model";
 
-import moment from "moment";
-import "moment-timezone";
-
+import moment from 'moment';
+import 'moment-timezone';
+import { StudentCourse, StudentCourseS } from "../Account";
+import { string } from "yargs";
 export interface DiscussionListSchema {
   discussions: Class[];
 }
@@ -28,6 +29,7 @@ export interface Class {
     category_name: string;
   };
   teacher: Teacher;
+  joinedParticipant: number;
 }
 
 export interface DiscussionListOutput {
@@ -40,8 +42,8 @@ export interface CategorySchema {
 }
 
 export interface JoinDiscussionSchema {
-  email: string | null | undefined;
-  id: number;
+  email: string|null|undefined;
+  id: number | undefined;
 }
 
 export interface ClassList {
@@ -55,9 +57,10 @@ export interface ClassList {
   description: string;
   level: string;
   category: string;
-  image?: string;
-  teacher?: TeacherOutput;
+  image: string;
   url: string;
+  teacher?: TeacherOutput;
+  participant: number;
 }
 
 export interface AddDiscussionSchema {
@@ -97,8 +100,9 @@ export function transfromToDiscussionListOutput(
         level: data.disc_level,
         category: data.category.category_name,
         image: data.disc_image,
-        teacher: transformToTeacherOutput(data.teacher),
         url: data.disc_url,
+        teacher: transformToTeacherOutput(data.teacher),
+        participant: data.joinedParticipant  
       };
     }),
   };
@@ -187,18 +191,29 @@ export function transfromToCourseListOutput(
 
   const result: CourseListOutput = {
     courseList: response.courses.map((data) => {
-      return {
-        id: data.course_id,
-        price: data.course_price,
-        chapter: data.course_chapter,
-        title: data.course_title,
-        description: data.course_description,
-        level: data.course_level,
-        category: data.category.category_name,
-        image: data.course_image,
-        teacher: transformToTeacherOutput(data.teacher),
-        sold: data.total_sold_course,
-        course_detail: data.course_details?.map((course) => {
+      return transformToCourseOutput(data);
+    }),
+  };
+  console.log(result, "model class");
+
+  return result;
+}
+
+export function transformToCourseOutput(response:Course): CourseList {
+  const result: CourseList = {
+        id: response.course_id,
+        price: response.course_price,
+        chapter: response.course_chapter,
+        title: response.course_title,
+        description: response.course_description,
+        level: response.course_level,
+        category: response.category.category_name,
+        image: response.course_image,
+        teacher: transformToTeacherOutput(response.teacher),
+        sold: response.total_sold_course,
+
+
+        course_detail:response.course_details?.map( (course) => {
           return {
             course_detail_chapter: course.course_detail_chapter,
             chapter_title: course.chapter_title,
@@ -206,11 +221,28 @@ export function transfromToCourseListOutput(
             chapter_thumbnail: course.chapter_thumbnail,
           };
         }),
-      };
-    }),
-  };
-
-  console.log(result, "model class");
-
+      }
+  console.log(result, 'model class');
+  
   return result;
 }
+
+export interface RateCourse{
+  userid: string|undefined;
+  courseid: number|undefined;
+  rating: number;
+  comment: string;
+}
+
+export interface CompleteChapter{
+  userid: number;
+  courseid: string;
+  completed: string;
+  total_chap: number;
+}
+
+
+export function transformToStudentCourseOutput(response:any){
+
+}
+

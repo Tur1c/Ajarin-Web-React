@@ -9,6 +9,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
 import { CourseList } from "../../model/course/course-list";
 import "./lecturerDetail.css";
+import { TeacherOutput } from "../../model/teacher/teacher-model";
+import { useAuth } from "../../context/AuthProvider";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
 
@@ -17,9 +19,12 @@ const SUBSCRIBE_LECTURER = "/api/account/subscribe?teacher-id=";
 const LecturerDetail = () => {
   const isLogged = sessionStorage.getItem("jwt");
   const emailUser = sessionStorage.getItem("user");
+  const userRole = sessionStorage.getItem("role");
+  const { logout, login }: any = useAuth();
   const { state } = useLocation();
   const navigate = useNavigate();
   const width = useWindowWidth();
+
 
   console.log(state, "lecturer detail");
 
@@ -47,6 +52,15 @@ const LecturerDetail = () => {
 
   const hanldeSubscribe = () => {
     subscribeLecturer();
+  };
+
+  const editProfile = () => {
+
+  }
+
+  const handleLogout = () => {
+    // setAccount({ ...account, id: account.id });
+    logout();
   };
 
   console.log(state, "lecturer detail");
@@ -95,21 +109,36 @@ const LecturerDetail = () => {
               <p>
                 {state.data.account.city}, {state.data.account.country}
               </p>
+
               <button
-                className="btn btn-primary profile-button"
-                type="button"
-                style={{
-                  width: "200px",
-                  height: "60px",
-                  borderRadius: "25px",
-                  border: "2px solid none",
-                  backgroundColor: "#11235A",
-                  color: "#fff",
-                }}
-                onClick={() => hanldeSubscribe()}
-              >
-                Subscribe
-              </button>
+                    className="btn btn-primary profile-button"
+                    type="button"
+                    style={{
+                      width: "200px",
+                      height: "60px",
+                      borderRadius: "25px",
+                      border: "2px solid none",
+                      backgroundColor: "#11235A",
+                      color: "#fff",
+                    }}
+                    onClick={userRole === "Teacher"? () => editProfile() : () => hanldeSubscribe()}
+                  >
+                    {userRole === "Teacher"? "Edit Detail" : "Subscribe"}
+                </button>
+                <button
+                  className="btn profile-button"
+                  type="button"
+                  style={{
+                    width: "250px",
+                    borderRadius: "25px",
+                    border: "2px solid #11235A",
+                    backgroundColor: "#fff",
+                    color: "#11235A",
+                  }}
+                  onClick={handleLogout}
+                >
+                  <b>Logout</b>
+                </button>
             </div>
           </div>
         </div>
