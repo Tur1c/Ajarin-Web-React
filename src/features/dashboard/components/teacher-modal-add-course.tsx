@@ -147,7 +147,7 @@ function TeacherModalAddCourse(props: any) {
         }
       );
       setPage(1);
-      navigate("/");
+      // navigate("/");
       setIsLoading(false);
       setCourse(response.data.outputSchema);
       setShowModalAddCourse(true);

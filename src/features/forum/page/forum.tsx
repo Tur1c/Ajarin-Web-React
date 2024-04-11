@@ -341,7 +341,7 @@ const Forum = () => {
           overflow: "hidden",
         }}
       >
-        <div className="card mb-3" style={{ height: "100vh" }}>
+        <div className="card mb-3" style={{ height: "100vh", border: "none" }}>
           <div
             className="card-body"
             style={{

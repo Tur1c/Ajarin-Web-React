@@ -81,7 +81,7 @@ function ModalCentered(props: any) {
           <img
             className="px-2"
             style={{
-              width: "60vw",
+              width: "50vw",
               height: "40vh",
               objectFit: "cover",
               marginTop: "1rem",

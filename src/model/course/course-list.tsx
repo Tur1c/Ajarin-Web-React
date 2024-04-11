@@ -157,6 +157,7 @@ export interface AddCourseDetailSchema {
   title: string;
   video: string;
   thumbnail: string;
+  pdf: string;
 }
 
 export interface CourseListOutput {

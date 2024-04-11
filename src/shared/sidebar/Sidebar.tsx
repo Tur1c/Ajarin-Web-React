@@ -174,7 +174,7 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
                 <Link to={"/lecturer/" + teacheracc?.account.fullName} state={{data:teacheracc}}>
                 {/* <i> */}
                 <img
-                  className="img-fluid"
+                  className="img-fluid rounded-circle"
                   src={account?.urlImage || `assets/default_picture.png`}
                   alt=""
                   style={{ height: "120%", width: "100%" }}
@@ -185,7 +185,7 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
               (<Link to={"/profile"} state={account}>
               {/* <i> */}
               <img
-                className="img-fluid"
+                className="img-fluid rounded-circle"
                 src={account?.urlImage || `assets/default_picture.png`}
                 alt=""
                 style={{ height: "120%", width: "100%" }}

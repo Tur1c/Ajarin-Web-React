@@ -56,9 +56,9 @@ export function transformToAccountNoROutput(
     country: response.country,
     school: response.school,
     coin: response.coin,
-    urlImage: response.pic_url,
+    urlImage: response.pic_name,
   };
-  // console.log(result, "abc account hehe");
+  console.log(result, "abc account hehe");
   return result;
 }
 

@@ -12,19 +12,25 @@ import "./teacher-modal-add-discussion.css";
 const ADD_COURSE = "/api/course/add/course/";
 
 function TeacherModalAddCourseDetailChapter(props: any) {
-console.log(props, "chapter detail");
+  console.log(props, "chapter detail");
 
   const [addCourseDetail, setAddCourseDetail] = useState<AddCourseDetailSchema>(
     {
       thumbnail: "",
       video: "",
       title: "",
+      pdf: "",
     }
   );
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [image, setImage] = useState<File>();
+  const [video, setVideo] = useState<File>();
+  const [pdf, setPdf] = useState<File>();
 
+  let imageUrl = "";
+  let pdfUrl = "";
+  let videoUrl = "";
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files;
@@ -34,12 +40,27 @@ console.log(props, "chapter detail");
     }
   };
 
+  const handleVideoChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.currentTarget.files;
+    console.log(file);
+    if (file) {
+      setVideo(file[0]);
+    }
+  };
+
+  const handlePdfChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.currentTarget.files;
+    console.log(file);
+    if (file) {
+      setPdf(file[0]);
+    }
+  };
+
   const handleUploadImageToCloud = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
     try {
-      let imageURL;
       const imageFormData = new FormData();
       if (image) imageFormData.append("file", image);
       imageFormData.append("cloud_name", "de3swhffe");
@@ -53,21 +74,81 @@ console.log(props, "chapter detail");
         }
       );
       const imgData = await response.json();
-      await setAddCourseDetail({ ...addCourseDetail, thumbnail: imgData.url.toString() });
+      imageUrl = imgData.url.toString();
+      await setAddCourseDetail({
+        ...addCourseDetail,
+        thumbnail: imgData.url.toString(),
+      });
+    } catch {}
+  };
+
+  const handleUploadPdfToCloud = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+    try {
+      let imageURL;
+      const pdfData = new FormData();
+      if (pdf) pdfData.append("file", pdf);
+      pdfData.append("cloud_name", "de3swhffe");
+      pdfData.append("upload_preset", "ez9c4ucn");
+
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/de3swhffe/auto/upload",
+        {
+          method: "post",
+          body: pdfData,
+        }
+      );
+      const data = await response.json();
+      pdfUrl = data.url.toString();
+      await setAddCourseDetail({
+        ...addCourseDetail,
+        pdf: data.url.toString(),
+      });
+    } catch {}
+  };
+
+  const handleUploadVideoToCloud = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+    try {
+      const videoData = new FormData();
+      if (video) videoData.append("file", video);
+      videoData.append("cloud_name", "de3swhffe");
+      videoData.append("upload_preset", "ez9c4ucn");
+
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/de3swhffe/video/upload",
+        {
+          method: "post",
+          body: videoData,
+        }
+      );
+      const data = await response.json();
+      videoUrl = data.url.toString();
+      await setAddCourseDetail({
+        ...addCourseDetail,
+        video: data.url.toString(),
+      });
     } catch {}
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     await handleUploadImageToCloud(e);
+    await handleUploadPdfToCloud(e);
+    await handleUploadVideoToCloud(e);
     e.preventDefault();
     let formData = new FormData();
     let file;
 
     formData.append("chapter", props.chapter);
     formData.append("title", addCourseDetail.title);
-    formData.append("video", "godwin_meme.mp4");
+    formData.append("video", videoUrl);
+    formData.append("pdf", pdfUrl);
+    formData.append("thumbnail", imageUrl);
     if (image) {
-      formData.append("thumbnail", addCourseDetail.thumbnail);
     }
 
     // try {
@@ -131,7 +212,7 @@ console.log(props, "chapter detail");
             />
           </div>
           <div style={{ fontSize: "30px" }}>
-            <span>Set Discussion</span>
+            <span>Add Course Detail Chapter</span>
           </div>
           <div></div>
         </div>
@@ -184,6 +265,26 @@ console.log(props, "chapter detail");
                   accept="image/*"
                 />
               </label>
+              <div className="input-box">
+                <input
+                  type="file"
+                  required
+                  id="cv"
+                  onChange={handlePdfChange}
+                  accept="application/pdf"
+                />
+                <label>Upload Course Material (PDF)</label>
+              </div>
+              <div className="input-box">
+                  <input
+                    type="file"
+                    required
+                    id="cv"
+                    onChange={handleVideoChange}
+                    accept="video/*"
+                  />
+                  <label>Upload Course Video</label>
+                </div>
               <div className="d-flex justify-content-between align-items-center mt-5">
                 <button
                   type="submit"

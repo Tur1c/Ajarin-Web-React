@@ -69,6 +69,25 @@
   border-radius: 0.5rem;
 }
 
+.forum-search-wrapper .search-left {
+  border: none;
+  width: 100%;
+  overflow-x: hidden;
+  /* background-color: red; */
+}
+
+.forum-search-wrapper #search-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  font-size: 1.25rem;
+}
+
+.forum-search-wrapper .search-button {
+  background-color: white;
+  border: 0;
+}
+
 .search-dropdown-forum {
   width: 30vh;
   justify-content: flex-start;
@@ -109,6 +128,11 @@
   gap: 1rem;
   justify-content: start;
   padding: 0.5rem 1rem;
+}
+
+.forum-content-list a {
+  text-decoration: none;
+  color:#000;
 }
 
 .forum-content .forum-list-container {

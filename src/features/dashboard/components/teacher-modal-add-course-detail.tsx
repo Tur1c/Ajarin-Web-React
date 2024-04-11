@@ -17,6 +17,7 @@ function TeacherModalAddCourseDetail(props: any) {
       thumbnail: "",
       video: "",
       title: "",
+      pdf: "",
     }
   );
   const [chapter, setChapter] = useState(0);
@@ -25,9 +26,12 @@ function TeacherModalAddCourseDetail(props: any) {
     useState(false);
   const [page, setPage] = useState(1);
   const [image, setImage] = useState<File>();
+  const [submitChapter, setSubmitChapter] = useState(0);
 
-  const handleCloseModalAddCourseChapter = () =>
+  const handleCloseModalAddCourseChapter = () => {
     setShowModalAddCourseChapter(false);
+    setSubmitChapter(submitChapter + 1);
+  };
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files;
@@ -42,61 +46,13 @@ function TeacherModalAddCourseDetail(props: any) {
     let formData = new FormData();
     let file;
 
-    // console.log(toISOLocal(addCourseDetail.start_date));
-
-    // formData.append("title", addCourseDetail.title);
-    // formData.append("category", addCourseDetail.category);
-    // formData.append("education_level", addCourseDetail.education_level);
-    // formData.append("description", addCourseDetail.description);
-    // formData.append("start_date", toISOLocal(addCourseDetail.start_date));
-    // formData.append("end_date", toISOLocal(addCourseDetail.end_date));
-    // formData.append("max_participant", addCourseDetail.max_participant);
-    // formData.append("price", addCourseDetail.price);
-    // formData.append("link", addCourseDetail.link);
+    
     formData.append("user_id", "1");
     if (image) {
       formData.append("file", image);
     }
 
-    // try {
-    //   let imageURL;
-    //   const imageFormData = new FormData();
-    //   if(image) imageFormData.append("file", image);
-    //   imageFormData.append("cloud_name", "de3swhffe");
-    //   imageFormData.append("upload_preset", "ez9c4ucn");
-
-    //   const response = await fetch(
-    //     "https://api.cloudinary.com/v1_1/de3swhffe/image/upload",
-    //     {
-    //       method: "post",
-    //       body: imageFormData
-    //     }
-    //   );
-    //   const imgData = await response.json();
-    //   alert(imgData.url.toString());
-    // } catch {
-
-    // }
-
-    // try {
-    //   const response = await axios.post<ApiResponse<AccountSchema>>(
-    //     ADD_DISCUSSION,
-    //     formData,
-    //     {
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //         Authorization: "Bearer " + sessionStorage.getItem("jwt"),
-    //       },
-    //       withCredentials: true,
-    //     }
-    //   );
-    //   setPage(1);
-    //   setSelectedStartDate(null);
-    //   setSelectedEndDate(null);
-    //   navigate("/");
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    
   };
 
   const renderListAddCourse = () => {
@@ -107,9 +63,10 @@ function TeacherModalAddCourseDetail(props: any) {
       index++
     ) {
       listCourses.push(
-        <button className="mt-3"
+        <button
+          className="mt-3"
           onClick={(e) => {
-            setChapter(index+1);
+            setChapter(index + 1);
             setShowModalAddCourseChapter(true);
           }}
         >
@@ -151,23 +108,31 @@ function TeacherModalAddCourseDetail(props: any) {
           </div>
         </Modal.Header>
         <Modal.Body className="p-5">
-          <div className="modal-body-container d-flex flex-column">{renderListAddCourse()}</div>
+          <div className="modal-body-container d-flex flex-column">
+            {renderListAddCourse()}
+          </div>
         </Modal.Body>
         <Modal.Footer className="p-0">
-          <div
-            className="modal-footer-center"
-            style={{
-              backgroundColor: "#11235a",
-              fontSize: "20px",
-              width: "100%",
-              height: "75px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <p onClick={props.onHide} className="text-white"></p>
-          </div>
+          {submitChapter == parseInt(props.course.course_chapter) ? (
+            <div
+              className="modal-footer-center"
+              style={{
+                backgroundColor: "#11235a",
+                fontSize: "20px",
+                width: "100%",
+                height: "75px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <button onClick={props.onHide} className="text-white">
+                Finish add course detail
+              </button>
+            </div>
+          ) : (
+            ""
+          )}
         </Modal.Footer>
       </Modal>
       <TeacherModalAddCourseDetailChapter

@@ -115,7 +115,7 @@ function Home() {
       console.log(response);
       if (response.data.outputSchema != null) {
         setTeacher(response.data.outputSchema);
-        console.log(teacher);
+        console.log(teacher, "teacher coin ahah ");
       }
     } catch {}
   };
@@ -153,6 +153,14 @@ function Home() {
       },
     });
   };
+
+  const handlePageChangeToCoin = () => {
+    navigate("/coin", {
+      state: {
+        teacher
+      }
+    })
+  }
 
   console.log(teacher);
   return (
@@ -197,6 +205,47 @@ function Home() {
                 >
                   Private Discussion Request
                 </button>
+              </div>
+              <div className="col-6 mt-3">
+                <button className="coin-button" style={{ width: "100%" }}
+                onClick={() => handlePageChangeToCoin()}>
+                  Coin{" "}
+                  <img
+                    className="img-fluid"
+                    style={{
+                      width: "36px",
+                      height: "36px",
+                    }}
+                    src={`assets/coin.png`}
+                    alt=""
+                  />{" "}
+                  {teacher.user.coin}
+                </button>
+                {/* <div className="coin-wrapper">
+                  <Link
+                    style={{
+                      textAlign: "center",
+                      display: "flex",
+                      alignItems: "center",
+                      textDecoration: "none",
+                    }}
+                    to={"/coin"}
+                    state={account}
+                  >
+                    <img
+                      className="img-fluid"
+                      style={{
+                        width: "36px",
+                        height: "36px",
+                      }}
+                      src={`assets/coin.png`}
+                      alt=""
+                    />
+                    <div className="coin-link">
+                      {account.coin} COIN <IoIosArrowForward />
+                    </div>
+                  </Link>
+                </div> */}
               </div>
             </div>
             <div className="top-courses mt-5">
@@ -385,7 +434,15 @@ function Home() {
                       {disc.discussion.disc_title}
                       <br />
                     </h6>
-                    <h6 style={{ margin: 0, fontSize: "10px", color:"var(--yelo)" }}>by Godwin</h6>
+                    <h6
+                      style={{
+                        margin: 0,
+                        fontSize: "10px",
+                        color: "var(--yelo)",
+                      }}
+                    >
+                      by Godwin
+                    </h6>
                   </div>
                   <div className="disc-time d-flex justify-content-center px-2 border-start border-white">
                     <h6

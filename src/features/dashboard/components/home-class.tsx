@@ -137,7 +137,7 @@ function HomeClass({ account }: Props) {
                                 }}
                               >
                                 <img
-                                  src={data.teacher?.account.urlImage}
+                                  src={"/assets/" + data.teacher?.account.urlImage}
                                   alt="abc"
                                   className="me-2"
                                   width={"50px"}

@@ -315,7 +315,7 @@ const Lecturer = () => {
                         <TableCell className="text-white">Date</TableCell>
                         <TableCell className="text-white">Category</TableCell>
                         <TableCell className="text-white">Coin</TableCell>
-                        {/* <TableCell className="text-white">Action</TableCell> */}
+                        <TableCell className="text-white">Action</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -356,12 +356,12 @@ const Lecturer = () => {
                           <TableCell className="text-white">
                             {data.coin}
                           </TableCell>
-                          {/* <TableCell className="text-white lecturer-request-private-button">
+                          <TableCell className="text-white lecturer-request-private-button">
                             <button className="request-private-btn me-3">
                               Accept
                             </button>
                             <button className="unsubscribe-btn">Decline</button>
-                          </TableCell> */}
+                          </TableCell>
                       </TableRow>
                       ))}
                     </TableBody>
@@ -519,7 +519,7 @@ const Lecturer = () => {
                         <img
                           className="img-fluid"
                           src={
-                            data.account.urlImage ||
+                            "/assets/" + data.account.urlImage ||
                             `assets/default_picture.png`
                           }
                           alt=""
@@ -604,7 +604,7 @@ const Lecturer = () => {
                         <img
                           className="img-fluid"
                           src={
-                            data.account?.urlImage ||
+                            "/assets/" + data.account?.urlImage ||
                             `assets/default_picture.png`
                           }
                           alt=""
