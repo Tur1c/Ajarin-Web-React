@@ -116,7 +116,7 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
             <span className="tooltip-text">Home</span>
           </div>
           <div className="menu">
-            <NavLink to={"/calendar"} state={account}>
+            <NavLink to={"/calendar"} state={userRole === "Teacher" ? {account:account,teacher:teacheracc} : account}>
               <i>
                 <HiOutlineBookOpen />
               </i>
@@ -125,7 +125,7 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
             <span className="tooltip-text">MySpace</span>
           </div>
           <div className="menu">
-            <NavLink to={"/lecturer"} state={account}>
+            <NavLink to={"/lecturer"} state={userRole === "Teacher" ? {account:account,teacher:teacheracc} : account}>
               <i>
                 <PiEyeglassesLight />
               </i>
@@ -134,7 +134,7 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
             <span className="tooltip-text">MyLecturer</span>
           </div>
           <div className="menu">
-            <NavLink to={"/forum"} state={account}>
+            <NavLink to={"/forum"} state={userRole === "Teacher" ? {account:account,teacher:teacheracc} : account}>
               <i>
                 <IoChatboxEllipsesOutline />
               </i>
