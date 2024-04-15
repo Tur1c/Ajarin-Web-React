@@ -34,7 +34,6 @@ function HomeDiscussion(props: any) {
     maxPeople: "",
     price: "",
     starttime: new Date(),
-    url: "",
     teacher: undefined,
     participant: 0
   });
@@ -129,7 +128,7 @@ function HomeDiscussion(props: any) {
   useEffect(() => {
     fetchDataDiscussion();
   }, []);
-  // console.log(classList,"discussiion");
+  console.log(classList,"discussiion");
   return (
     <>
       <div className="disc-container">
@@ -147,7 +146,7 @@ function HomeDiscussion(props: any) {
               <div className="container-disc-header">
                 <img
                   className="disc-image"
-                  src={data.url || `assets/${data.image}`}
+                  src={`assets/${data.image}`}
                   alt=""
                 />
 

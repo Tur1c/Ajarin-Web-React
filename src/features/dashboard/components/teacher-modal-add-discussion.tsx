@@ -23,7 +23,7 @@ function TeacherModalAddDiscussion(props: any) {
     price: "",
     start_date: new Date(),
     title: "",
-    user_id: 0,
+    teacher_id: 0,
   });
   const navigate = useNavigate();
   const [selectedStartDate, setSelectedStartDate] = useState(null);
@@ -70,10 +70,11 @@ function TeacherModalAddDiscussion(props: any) {
     return s;
   }
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e:any, teacher:any) => {
     e.preventDefault();
     let formData = new FormData();
     let file;
+    console.log(teacher);
 
     console.log(toISOLocal(addDiscussion.start_date));
 
@@ -86,7 +87,7 @@ function TeacherModalAddDiscussion(props: any) {
     formData.append("max_participant", addDiscussion.max_participant);
     formData.append("price", addDiscussion.price);
     formData.append("link", addDiscussion.link);
-    formData.append("user_id", "1");
+    formData.append("teacher_id", teacher);
     if (image) {
       formData.append("file", image);
     }
@@ -164,7 +165,7 @@ function TeacherModalAddDiscussion(props: any) {
       </Modal.Header>
       <Modal.Body className="p-5">
         <div className="modal-body-container">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={(e) => handleSubmit(e,props.teacher)}>
             {page === 1 ? (
               <div className="inputs" style={{ width: "100%" }}>
                 <div className="">

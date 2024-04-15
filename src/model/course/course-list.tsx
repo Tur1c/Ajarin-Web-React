@@ -23,7 +23,6 @@ export interface Class {
   disc_description: string;
   disc_level: string;
   disc_image: string;
-  disc_url: string;
   category: {
     category_id: string;
     category_name: string;
@@ -58,7 +57,6 @@ export interface ClassList {
   level: string;
   category: string;
   image: string;
-  url: string;
   teacher?: TeacherOutput;
   participant: number;
 }
@@ -73,7 +71,7 @@ export interface AddDiscussionSchema {
   max_participant: string;
   price: string;
   link: string;
-  user_id: number;
+  teacher_id: number;
 }
 
 function changeDate(date: string) {
@@ -100,7 +98,6 @@ export function transfromToDiscussionListOutput(
         level: data.disc_level,
         category: data.category.category_name,
         image: data.disc_image,
-        url: data.disc_url,
         teacher: transformToTeacherOutput(data.teacher),
         participant: data.joinedParticipant  
       };
@@ -173,7 +170,7 @@ export interface CourseList {
   level: string;
   category: string;
   image: string;
-  sold?: number;
+  sold: number;
   teacher?: TeacherOutput;
   course_detail: CourseDetailOutput[];
 }
@@ -201,6 +198,7 @@ export function transfromToCourseListOutput(
 }
 
 export function transformToCourseOutput(response:Course): CourseList {
+  console.log("masuk transform", response);
   const result: CourseList = {
         id: response.course_id,
         price: response.course_price,
@@ -243,7 +241,14 @@ export interface CompleteChapter{
 }
 
 
-export function transformToStudentCourseOutput(response:any){
+export function transformToStudentCourseOutput(response:StudentCourse):StudentCourseS{
+  const result:StudentCourseS = {
+    course: transformToCourseOutput(response.course),
+    status: response.status,
+    completed_chap: response.completed_chap,
+    rating: response.rating
+  }
 
+  return result;
 }
 

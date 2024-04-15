@@ -28,32 +28,33 @@ function TeacherModalAddCourseDetail(props: any) {
   const [image, setImage] = useState<File>();
   const [submitChapter, setSubmitChapter] = useState(0);
 
-  const handleCloseModalAddCourseChapter = () => {
+  const handleCloseModalAddCourseChapter = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setShowModalAddCourseChapter(false);
     setSubmitChapter(submitChapter + 1);
   };
 
-  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.currentTarget.files;
-    console.log(file);
-    if (file) {
-      setImage(file[0]);
-    }
-  };
+  // const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.currentTarget.files;
+  //   console.log(file);
+  //   if (file) {
+  //     setImage(file[0]);
+  //   }
+  // };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    let formData = new FormData();
-    let file;
-
-    
-    formData.append("user_id", "1");
-    if (image) {
-      formData.append("file", image);
-    }
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   let formData = new FormData();
+  //   let file;
 
     
-  };
+  //   formData.append("user_id", "1");
+  //   if (image) {
+  //     formData.append("file", image);
+  //   }
+
+    
+  // };
 
   const renderListAddCourse = () => {
     const listCourses = [];
@@ -65,7 +66,9 @@ function TeacherModalAddCourseDetail(props: any) {
       listCourses.push(
         <button
           className="mt-3"
+          key={index+1}
           onClick={(e) => {
+            e.preventDefault();
             setChapter(index + 1);
             setShowModalAddCourseChapter(true);
           }}

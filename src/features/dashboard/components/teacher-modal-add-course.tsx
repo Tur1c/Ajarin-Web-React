@@ -114,13 +114,16 @@ function TeacherModalAddCourse(props: any) {
     } catch {}
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    await handleUploadImageToCloud(e);
+  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
+    // await handleUploadImageToCloud(e);
     e.preventDefault();
+    console.log("a");
     let formData = new FormData();
-    let file;
+    // let file;
 
-    // console.log(toISOLocal(addCourse.start_date));
+    // console.log(props.teacher);
+
+    // // console.log(toISOLocal(addCourse.start_date));
 
     formData.append("title", addCourse.title);
     formData.append("category", addCourse.category);
@@ -129,12 +132,13 @@ function TeacherModalAddCourse(props: any) {
     formData.append("chapter", addCourse.chapter);
     formData.append("price", addCourse.price);
     formData.append("image_link", image_link);
-    formData.append("user_id", "1");
+    formData.append("teacher_id", props.teacher);
     if (image) {
       formData.append("file", image);
     }
 
     try {
+      e.preventDefault();
       const response = await axios.post<ApiResponse<Course>>(
         ADD_COURSE,
         formData,
@@ -146,12 +150,12 @@ function TeacherModalAddCourse(props: any) {
           withCredentials: true,
         }
       );
-      setPage(1);
-      // navigate("/");
-      setIsLoading(false);
-      setCourse(response.data.outputSchema);
-      setShowModalAddCourse(true);
-      props.onHide();
+        setPage(1);
+        setCourse(response.data.outputSchema);
+        setIsLoading(false);
+        setShowModalAddCourse(true);
+        props.onHide();
+    //   // navigate("/");
     } catch (err) {
       console.log(err);
     }
@@ -192,7 +196,7 @@ function TeacherModalAddCourse(props: any) {
             </Modal.Header>
             <Modal.Body className="p-5">
               <div className="modal-body-container">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={(e) => {e.preventDefault();handleSubmit(e)}}>
                   {page === 1 ? (
                     <div className="inputs" style={{ width: "100%" }}>
                       <div className="">
@@ -347,7 +351,6 @@ function TeacherModalAddCourse(props: any) {
                       </label>
                       <div className="d-flex justify-content-between align-items-center mt-5">
                         <button
-                          type="submit"
                           className="fw-bold"
                           onClick={() => {
                             setPage(1);

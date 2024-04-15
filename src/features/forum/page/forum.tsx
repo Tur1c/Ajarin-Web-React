@@ -24,6 +24,8 @@ const CATEGORY_URL = "/api/category";
 const FORUM_URL = "/api/forum";
 
 const Forum = () => {
+  const userRole = sessionStorage.getItem("role");
+
   const [categories, setCategories] = useState<CategoryListOutput>({
     categories: [],
   });
@@ -148,7 +150,11 @@ const Forum = () => {
     <div className="all-page">
       {/* <Sidebar account={undefined}> */}
       <div className="sidebar-content">
-        <Sidebar account={account}></Sidebar>
+        {userRole === "Teacher" ? 
+          <Sidebar teacheracc={state.teacher} account={account}></Sidebar>
+          :
+          <Sidebar account={account}></Sidebar>
+        }
       </div>
       <div className="forum-content">
         <div className="h-100">

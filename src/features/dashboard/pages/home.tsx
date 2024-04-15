@@ -13,7 +13,7 @@ import {
   transfromToAccountOutput,
 } from "../../../model/Account";
 import { ApiResponse } from "../../../model/schema/base_schema";
-import { Teacher } from "../../../model/teacher/teacher-model";
+import { Teacher, TeacherOutput, transformToTeacherOutput } from "../../../model/teacher/teacher-model";
 import { Sidebar } from "../../../shared";
 import HomeClass from "../components/home-class";
 import HomeDiscussion from "../components/home-discussion";
@@ -53,18 +53,18 @@ function Home() {
   const [key, setKey] = useState("discussion");
   const HOME_URL = "/api/account?email=" + email;
   const TEACHER_DATA = "/api/account/inquiry/teacher/";
-  const [teacher, setTeacher] = useState<Teacher>({
+  const [teacher, setTeacher] = useState<TeacherOutput>({
     achievement: "",
     courses: [],
-    cv_data: "",
+    cvUrl: "",
     discussion: [],
     education: "",
     experience: "",
     id: 0,
-    profile_description: "",
+    description: "",
     rating: "",
     private_disc: [],
-    user: {
+    account: {
       age: 0,
       city: "",
       coin: 0,
@@ -75,12 +75,10 @@ function Home() {
       gender: "",
       id: "",
       lastName: "",
-      password: "",
+      fullName: "",
       phoneNumber: "",
       school: "",
-      pic_name: "",
-      pic_type: "",
-      pic_url: "",
+      urlImage: ""
     },
   });
   const navigate = useNavigate();
@@ -114,7 +112,7 @@ function Home() {
       });
       console.log(response);
       if (response.data.outputSchema != null) {
-        setTeacher(response.data.outputSchema);
+        setTeacher(transformToTeacherOutput(response.data.outputSchema));
         console.log(teacher, "teacher coin ahah ");
       }
     } catch {}
@@ -146,12 +144,23 @@ function Home() {
   // console.log("dubidubidu", account);
 
   const goToDisc = (discDate: any) => {
-    navigate("/calendar", {
-      state: {
-        account: account,
-        discDate: discDate,
-      },
-    });
+    if(userRole === "Teacher"){
+      navigate("/calendar", {
+        state: {
+          account: account,
+          discDate: discDate,
+          teacher: teacher,
+        },
+      });
+    }
+    else{
+      navigate("/calendar", {
+        state: {
+          account: account,
+          discDate: discDate,
+        },
+      });
+    }
   };
 
   const handlePageChangeToCoin = () => {
@@ -167,7 +176,11 @@ function Home() {
     // <body className="">
     <div className="all-page">
       <div className="sidebar-content">
-        <Sidebar account={account}></Sidebar>
+        {userRole === "Teacher" ? 
+          <Sidebar teacheracc={teacher} account={account}></Sidebar>
+          :
+          <Sidebar account={account}></Sidebar>
+        }
       </div>
 
       {userRole === "Teacher" ? (
@@ -219,7 +232,7 @@ function Home() {
                     src={`assets/coin.png`}
                     alt=""
                   />{" "}
-                  {teacher.user.coin}
+                  {teacher.account.coin}
                 </button>
                 {/* <div className="coin-wrapper">
                   <Link
@@ -251,9 +264,9 @@ function Home() {
             <div className="top-courses mt-5">
               <h1 className="fw-bold">Your Top Courses</h1>
               <div className="row d-flex justify-content-between">
-                {teacher.courses
-                  .sort((a, b) =>
-                    a.total_sold_course > b.total_sold_course ? -1 : 1
+                {teacher.courses? 
+                  teacher.courses.sort((a, b) =>
+                    a.sold > b.sold ? -1 : 1
                   )
                   .slice(0, 5)
                   .map((data, index) => (
@@ -270,7 +283,7 @@ function Home() {
                         <div className="text-center thumbnail container-class-header">
                           <img
                             className="img-fluid"
-                            src={data.course_image}
+                            src={data.image}
                             alt=""
                             style={{ width: "100%", height: "100%" }}
                           />
@@ -286,14 +299,17 @@ function Home() {
                           </div>
                         </div>
                         <div className="card-body h-50 p-2 text-white">
-                          <div className="card-title">{data.course_title}</div>
+                          <div className="card-title">{data.title}</div>
                           <div className="card-text" style={{ height: "3rem" }}>
-                            {data.total_sold_course} Purchased
+                            {data.sold} Purchased
                           </div>
                         </div>
                       </div>
                     </div>
-                  ))}
+                  ))
+                        :
+                        null
+                }
               </div>
               <div className="w-100 d-flex justify-content-center mt-3">
                 <div className="filter-btn" style={{ width: "50%" }}>
@@ -397,66 +413,129 @@ function Home() {
               marginBottom: "1.5rem",
             }}
             to={"/calendar"}
-            state={account}
+            state={userRole === "Teacher" ? {account:account, teacher:teacher} : {account:account}}
           >
             <div className="view-all">View All</div>
           </Link>
-          {account.studentdisc_list.slice(0, 3).map((disc, idx) => (
-            <div
-              className={
-                "card-body  right-disc" +
-                (idx === 0 ? " right-disc-active" : " ")
-              }
-              // style={{
-              //   backgroundColor: idx === 0 ? "rgba(97, 134, 246, 0.3)" : "none",
-              // }}
-              key={idx}
-              onClick={() => goToDisc(disc.discussion.disc_date)}
-            >
-              <div className="updisc-container w-100 mx-2">
-                <h5 className="card-text d-flex justify-content-between">
-                  <div className="disc-date mx-auto text-center border-end border-white justify-content-center align-items-center align-items-center d-flex row">
-                    <h4
-                      style={{
-                        margin: 0,
-                        fontSize: "32px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {dayjs(disc.discussion.disc_date).format("DD")}
-                    </h4>
-                    <h5 style={{ fontSize: "18px", fontWeight: "bold" }}>
-                      {dayjs(disc.discussion.disc_date).format("MMM")}
-                    </h5>
-                  </div>
-                  <div className="disc-title my-auto d-flex row px-2 ">
-                    <h6 style={{ margin: 0, fontSize: "14px" }}>
-                      {disc.discussion.disc_title}
-                      <br />
-                    </h6>
-                    <h6
-                      style={{
-                        margin: 0,
-                        fontSize: "10px",
-                        color: "var(--yelo)",
-                      }}
-                    >
-                      by Godwin
-                    </h6>
-                  </div>
-                  <div className="disc-time d-flex justify-content-center px-2 border-start border-white">
-                    <h6
-                      className="d-flex align-items-center justify-content-center"
-                      style={{ height: "100%", fontSize: "12px" }}
-                    >
-                      {disc.discussion.disc_starttime.toString().slice(0, 5)} -{" "}
-                      {disc.discussion.disc_endtime.toString().slice(0, 5)}
-                    </h6>
-                  </div>
-                </h5>
+          {userRole === "Teacher" ?
+          (teacher.discussion &&
+            teacher.discussion.slice(0, 3).map((disc, idx) => (
+              <div
+                className={
+                  "card-body  right-disc" +
+                  (idx === 0 ? " right-disc-active" : " ")
+                }
+                // style={{
+                //   backgroundColor: idx === 0 ? "rgba(97, 134, 246, 0.3)" : "none",
+                // }}
+                key={idx}
+                onClick={() => goToDisc(disc.date)}
+              >
+                <div className="updisc-container w-100 mx-2">
+                  <h5 className="card-text d-flex justify-content-between">
+                    <div className="disc-date mx-auto text-center border-end border-white justify-content-center align-items-center align-items-center d-flex row">
+                      <h4
+                        style={{
+                          margin: 0,
+                          fontSize: "32px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {dayjs(disc.date).format("DD")}
+                      </h4>
+                      <h5 style={{ fontSize: "18px", fontWeight: "bold" }}>
+                        {dayjs(disc.date).format("MMM")}
+                      </h5>
+                    </div>
+                    <div className="disc-title my-auto d-flex row px-2 ">
+                      <h6 style={{ margin: 0, fontSize: "14px" }}>
+                        {disc.title}
+                        <br />
+                      </h6>
+                      <h6
+                        style={{
+                          margin: 0,
+                          fontSize: "10px",
+                          color: "var(--yelo)",
+                        }}
+                      >
+                        by Godwin
+                      </h6>
+                    </div>
+                    <div className="disc-time d-flex justify-content-center px-2 border-start border-white">
+                      <h6
+                        className="d-flex align-items-center justify-content-center"
+                        style={{ height: "100%", fontSize: "12px" }}
+                      >
+                        {disc.starttime.toString().slice(0, 5)} -{" "}
+                        {disc.endtime.toString().slice(0, 5)}
+                      </h6>
+                    </div>
+                  </h5>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )
+          :
+          (
+            account.studentdisc_list.slice(0, 3).map((disc, idx) => (
+              <div
+                className={
+                  "card-body  right-disc" +
+                  (idx === 0 ? " right-disc-active" : " ")
+                }
+                // style={{
+                //   backgroundColor: idx === 0 ? "rgba(97, 134, 246, 0.3)" : "none",
+                // }}
+                key={idx}
+                onClick={() => goToDisc(disc.discussion.disc_date)}
+              >
+                <div className="updisc-container w-100 mx-2">
+                  <h5 className="card-text d-flex justify-content-between">
+                    <div className="disc-date mx-auto text-center border-end border-white justify-content-center align-items-center align-items-center d-flex row">
+                      <h4
+                        style={{
+                          margin: 0,
+                          fontSize: "32px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {dayjs(disc.discussion.disc_date).format("DD")}
+                      </h4>
+                      <h5 style={{ fontSize: "18px", fontWeight: "bold" }}>
+                        {dayjs(disc.discussion.disc_date).format("MMM")}
+                      </h5>
+                    </div>
+                    <div className="disc-title my-auto d-flex row px-2 ">
+                      <h6 style={{ margin: 0, fontSize: "14px" }}>
+                        {disc.discussion.disc_title}
+                        <br />
+                      </h6>
+                      <h6
+                        style={{
+                          margin: 0,
+                          fontSize: "10px",
+                          color: "var(--yelo)",
+                        }}
+                      >
+                        by Godwin
+                      </h6>
+                    </div>
+                    <div className="disc-time d-flex justify-content-center px-2 border-start border-white">
+                      <h6
+                        className="d-flex align-items-center justify-content-center"
+                        style={{ height: "100%", fontSize: "12px" }}
+                      >
+                        {disc.discussion.disc_starttime.toString().slice(0, 5)} -{" "}
+                        {disc.discussion.disc_endtime.toString().slice(0, 5)}
+                      </h6>
+                    </div>
+                  </h5>
+                </div>
+              </div>
+            ))
+          )
+          }
         </div>
 
         <div className="statistic">
@@ -469,10 +548,12 @@ function Home() {
       <TeacherModalAddDiscussion
         show={showModalAddDiscussion}
         onHide={handleCloseModalAddDiscussion}
+        teacher={teacher.id}
       ></TeacherModalAddDiscussion>
       <TeacherModalAddCourse
         show={showModalAddCourse}
         onHide={handleCloseModalAddCourse}
+        teacher={teacher.id}
       ></TeacherModalAddCourse>
     </div>
     // </body>

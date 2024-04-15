@@ -41,13 +41,11 @@ export interface TeacherOutput {
   education: string;
   cvUrl: string;
   rating: string;
-  // image: string;
-  // name: string;
   account: AccountNoROutput;
   discussion?: ClassList[];
   courses?: CourseList[];
   courseSold?: number;
-  private_disc: PrivateDiscOut[];
+  private_disc?: PrivateDiscOut[];
 }
 
 export function transfromToTeacherListOutput(
@@ -64,10 +62,10 @@ export function transfromToTeacherListOutput(
   return result;
 }
 
-function changeDate(date: string) {
-  const newDate = moment(date).format("MMMM Do YYYY");
-  return newDate;
-} 
+// function changeDate(date: string) {
+//   const newDate = moment(date).format("MMMM Do YYYY");
+//   return newDate;
+// } 
 
 function countCourseSold(courses: Course[]) {
   let count = 0;
@@ -78,7 +76,7 @@ function countCourseSold(courses: Course[]) {
 }
 
 export function transformToTeacherOutput(response: Teacher): TeacherOutput {
-  // console.log("masuk sini", response);
+  console.log("masuk sini", response);
   const result: TeacherOutput = {
     id: response.id,
     description: response.profile_description,
@@ -87,23 +85,21 @@ export function transformToTeacherOutput(response: Teacher): TeacherOutput {
     education: response.education,
     cvUrl: response.cv_data,
     rating: response.rating,
-    // image: response.teacher_image,
-    // name: response.teacher_name,
     account: transformToAccountNoROutput(response.user),
-    discussion: response.discussion?.map((data) => {
+    discussion: response.discussion?.sort( (x,y) => x.disc_date.toString().localeCompare(y.disc_date.toString()) || x.disc_starttime.toString().localeCompare(y.disc_starttime.toString()))
+    .map((data) => {
       return {
         id: data.disc_id,
         title: data.disc_title,
         maxPeople: data.disc_participant,
         price: data.disc_price,
-        date: changeDate(data.disc_date.toString()),
+        date: data.disc_date.toString(),
         starttime: data.disc_starttime,
         endtime: data.disc_endtime,
         description: data.disc_description,
         level: data.disc_level,
         category: data.category.category_name,
         image: data.disc_image,
-        url: data.disc_url,
         participant: data.joinedParticipant
       }
     }),
@@ -129,8 +125,8 @@ export function transformToTeacherOutput(response: Teacher): TeacherOutput {
       }
     }),
     courseSold: countCourseSold(response.courses),
-    private_disc: response.private_disc.map((data) => TransformToPrivateDiscOut(data))
+    private_disc: response.private_disc?.map((data) => TransformToPrivateDiscOut(data))
   };
-  // console.log(result, "lewat teacher");
+  console.log(result, "lewat teacher");
   return result;
 }

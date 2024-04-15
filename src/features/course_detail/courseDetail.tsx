@@ -72,6 +72,7 @@ const CourseDetail = () => {
 
 
   const getStudentCourseData = async () => {
+    console.log("masuk sini aaa");
     try {
       const response = await axios.get<ApiResponse<StudentCourse>>(
         STUDENT_COURSE_URL,
@@ -84,13 +85,14 @@ const CourseDetail = () => {
         }
       );
       console.log(response);
-        // setStudentCourse(transformToStudentCourseOutput(response.data.outputSchema));
+        setStudentCourse(transformToStudentCourseOutput(response.data.outputSchema));
       // setCourseList(transfromToCourseListOutput(response.data.outputSchema));
       if(!studentCourse.rating === false){
         setisOpen(false);
       }
     } catch (error) {}
   }
+
 
   useEffect(() => {
     if(!!account.studentcourse_list.find( (course) => course.course.course_title === params.course_title)){

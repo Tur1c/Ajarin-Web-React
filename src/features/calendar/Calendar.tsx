@@ -10,10 +10,13 @@ import { getMonth } from "../../model/calendar/calendar-detail";
 import "./Calendar.css";
 import { Sidebar } from "../../shared";
 import { IoSearch } from "react-icons/io5";
+import { ClassList, CourseList } from "../../model/course/course-list";
 
 const Calendar = () => {
   const { state } = useLocation();
   console.log(state);
+
+  const userRole = sessionStorage.getItem("role");
 
   const formatDate = "YYYY-MM-DD";
 
@@ -21,11 +24,17 @@ const Calendar = () => {
   const [currMonthCalendar, setCurrMonthCalendar] = useState(getMonth());
   const [selectedDate, setSelectedDate] = useState( state.discDate ? dayjs(state.discDate).format("YYYY-MM-DD") : dayjs().format("YYYY-MM-DD"));
 
-  const account = state.discDate ? state.account : state;
-  const accountDisc: StudentDisc[] = account.studentdisc_list;
+  const account = state.discDate || state.teacher ? state.account : state;
+  const accountDisc: StudentDisc[] =  account.studentdisc_list;
   const accountCourse: StudentCourse[] = account.studentcourse_list;
+  
+  // Teacher
+  const teacher = state.teacher? state.teacher : null;
+  const teacherDisc: ClassList[] = teacher? teacher.discussion : null;
+  const teacherCourse: CourseList[] = teacher? teacher.courses : null;
 
-  console.log(accountCourse);
+  console.log(accountCourse,accountDisc,userRole);
+  console.log(teacher, teacherDisc, teacherCourse);
 
   //draggable
   const itemsRef = useRef<HTMLDivElement>(null);
@@ -35,18 +44,35 @@ const Calendar = () => {
 
   // Get Disc Data by Selected Date
   const getDiscData = (date:any) => {
+    console.log(date, "aaaaaa");
     const discData = accountDisc.filter(
         (x) => dayjs(x.discussion.disc_date.toString()).format(formatDate) === date
         )
         .sort((x,y) => (x.discussion.disc_starttime.toString().localeCompare(y.discussion.disc_starttime.toString())));
 
+        console.log(discData, "dapet broh");
         if(discData){
+            return discData;
+        }
+        return null;
+    }
+
+    const getTeacherDiscData = (date:any) => {
+      console.log("masuk sini",teacherDisc,date, dayjs(teacherDisc[0].date.toString()).format(formatDate));
+      const discData = teacherDisc.filter (
+        (x) => dayjs(x.date.toString()).format(formatDate) === date
+          )
+          .sort((x,y) => (x.starttime.toString().localeCompare(y.endtime.toString())));
+
+          console.log(discData);
+          if(discData){
             return discData;
         }
         return null;
     }
   
 const [disc, setDisc] = useState(getDiscData( state.discDate ? dayjs(state.discDate).format(formatDate) : dayjs().format(formatDate)));
+const [currTeacherDisc, setCurrTeacherDisc] = useState(teacher? getTeacherDiscData( state.discDate ? dayjs(state.discDate).format(formatDate) : dayjs().format(formatDate)) : null);
 
   useEffect(() => {
     setCurrMonthCalendar(getMonth(currMonthIdx));
@@ -67,14 +93,25 @@ const [disc, setDisc] = useState(getDiscData( state.discDate ? dayjs(state.discD
   };
 
   const findDateonDisc = (date:any) => {
+    if(teacher)
+    return teacherDisc.some(
+      (x) => dayjs(x.date).format(formatDate) === date
+    );
+
     return accountDisc.some(
         (x) => dayjs(x.discussion.disc_date).format(formatDate) === date
     )
   };
 
   const changeSelectedDate = (day: any) => {
+    console.log(day);
     setSelectedDate(day);
-    setDisc(getDiscData(day));
+    if(teacher){
+      setCurrTeacherDisc(getTeacherDiscData(day));
+    }
+    else{
+      setDisc(getDiscData(day));
+    }
   };
 
   const studentDiscDate = (day: any) => {
@@ -119,7 +156,11 @@ const [disc, setDisc] = useState(getDiscData( state.discDate ? dayjs(state.discD
       <div className="container-fluid ms-5" style={{ height: "100vh" }}>
         <div className="row align-items-center h-100">
         <div className="sidebar-content">
+        {userRole === "Teacher" ? 
+          <Sidebar teacheracc={teacher} account={account}></Sidebar>
+          :
           <Sidebar account={account}></Sidebar>
+        }
         </div>
         <div className="disc-course-content col-10">
           <div className="disc-calendar d-flex ">
@@ -185,54 +226,55 @@ const [disc, setDisc] = useState(getDiscData( state.discDate ? dayjs(state.discD
               </div>
             </div>
 
+            {/* !disc?.length ?  */}
             <div className="container mt-3 col-6 h-75 bg-white text-dark rounded" style={{ marginLeft:0 }}>
-              { !disc?.length ? 
+              {!!teacher? !currTeacherDisc?.length ? 
                   ( <p>No Discussion</p> )
                   :
                   (
                       <>
-                      {/* Carousel sliider */}
-                      {/* <div id="carouselExample" className="carousel slide">
-                          <div className="carousel-inner disc-container">
-                              {disc.map( (data, idx) => (
-                              <div className={"card carousel-item mt-5 ms-5 " + (idx === 0 ? "active" : "")} key={idx} style={{width: "45%",height:"23rem",padding:0}}>
-                                  <img className="card-image-top w-100 h-75 disc-image" src={`assets/${data.disc.disc_image}`} alt=""/>
-                                  <div className="participant-total">12/{data.disc.disc_participant}</div>
+                      
+                      <div className="disc-container d-flex">
+                          {currTeacherDisc.map( (data, idx) => (
+                              <div className="card mt-5 ms-5" key={idx} style={{width: "45%",height:"23rem",padding:0}}>
+                                  <img className="card-image-top w-100 h-75 disc-image" src={ data.image? `assets/${data.image}` : "assets/private.png"} alt=""/>
+                                  <div className="participant-total">{data.participant}/{data.maxPeople}</div>
       
                                   <div className="card-body disc-body rounded">
                                       <h5 className="card-text d-flex h-100">
                                           <div className="disc-date col-3 text-center my-auto border-end border-white" >
-                                              <h2 style={{ margin:0 }}>{dayjs(data.disc.disc_date).format("DD")}</h2>
-                                              <h5>{dayjs(data.disc.disc_date).format("MMM")}</h5>
+                                              <h2 style={{ margin:0 }}>{dayjs(data.date).format("DD")}</h2>
+                                              <h5>{dayjs(data.date).format("MMM")}</h5>
                                           </div>
                                           <div className="disc-title my-auto col-6 d-flex justify-content-center">
-                                              <h6 className=""style={{ margin:0 }}>{data.disc.disc_title} <br />by Godwin</h6>
+                                              <h6 className=""style={{ margin:0 }}>{data.title} <br />by Godwin</h6>
                                           </div>
                                           <div className="disc-time col-3 text-center my-auto border-start border-white " style={{ height:"70px" }}>
                                               <h6 className="d-flex align-items-center justify-content-center" style={{ height:"100%" }}>
-                                                  {data.disc.disc_starttime.toString()}-{data.disc.disc_endtime.toString()}
-                                                  </h6>
+                                                  {data.starttime.toString()}-{data.endtime.toString()}
+                                              </h6>
                                           </div>
                                       </h5>
                                   </div>
                               </div>
                               ))
                           }
-                          </div>
-                          <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                              <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                              <span className="visually-hidden">Previous</span>
-                          </button>
-                          <button className="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                              <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                              <span className="visually-hidden">Next</span>
-                          </button>
-                      </div> */}
-                      <div className="disc-container d-flex">
+
+                      </div>
+                      
+                      
+                      </>
+                  )
+                  :
+                  !disc?.length ?
+                  (( <p>No Discussion</p> ))
+                  :
+                  (
+                    <div className="disc-container d-flex">
                           {disc.map( (data, idx) => (
                               <div className="card mt-5 ms-5" key={idx} style={{width: "45%",height:"23rem",padding:0}}>
-                                  <img className="card-image-top w-100 h-75 disc-image" src={`assets/${data.discussion.disc_image}`} alt=""/>
-                                  <div className="participant-total">12/{data.discussion.disc_participant}</div>
+                                  <img className="card-image-top w-100 h-75 disc-image" src={ data.discussion.disc_image? `assets/${data.discussion.disc_image}` : "assets/private.png"} alt=""/>
+                                  <div className="participant-total">{data.discussion.joinedParticipant}/{data.discussion.disc_participant}</div>
       
                                   <div className="card-body disc-body rounded">
                                       <h5 className="card-text d-flex h-100">
@@ -253,11 +295,9 @@ const [disc, setDisc] = useState(getDiscData( state.discDate ? dayjs(state.discD
                               </div>
                               ))
                           }
-
                       </div>
+                  )
                       
-                      </>
-                  )    
               }   
             </div>
           </div>
@@ -290,7 +330,29 @@ const [disc, setDisc] = useState(getDiscData( state.discDate ? dayjs(state.discD
                 onMouseUp={handleMouseUp}
                 onMouseMove={handleMouseMove}
               >
-                  {accountCourse.map( (data,idx) => (
+                  {teacher?
+                    (
+                      teacherCourse.map( (data,idx) => (
+                          <div className="account-course-card card text-decoration-none"  style={{width: "18rem", height:"20rem"}}>
+                          <img src={`assets/${data.image}`} className="card-img-top w-100 h-75" alt="" />
+                          <div className="card-body">
+                            <div className="accountcourse-lecturer d-flex">
+                              <img src={teacher.account.urlImage || `assets/default_picture.png`} alt="" style={{ width:"40px" }}/>
+                              <p>{teacher.firstName} {teacher.lastName}</p>
+                            </div>
+                            <p className="card-text">{data.title}</p>
+    
+                            <div className="accountcourse-category d-flex">
+                              <span className="badge rounded-pill border border-black text-dark p-2">{data.level}</span>
+                              <span className="badge rounded-pill border border-black text-dark p-2">{data.category}</span>
+                            </div>
+                          </div>
+                          </div>
+                      )
+                      )
+                    )
+                  :
+                  accountCourse.map( (data,idx) => (
                     <Link to={"/course/" + data.course.course_title} key={idx} state={{data:data, acc:account}} style={{ textDecoration:"none" }}>
                       <div className="account-course-card card text-decoration-none"  style={{width: "18rem", height:"20rem"}}>
                       <img src={`assets/${data.course.course_image}`} className="card-img-top w-100 h-75" alt="" />

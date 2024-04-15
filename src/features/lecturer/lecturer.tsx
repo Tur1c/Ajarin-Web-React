@@ -319,7 +319,7 @@ const Lecturer = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {currTeacher?.private_disc.map((data,idx) => (
+                      {currTeacher?.private_disc?.map((data,idx) => (
                         <TableRow
                           key={idx}
                           sx={{

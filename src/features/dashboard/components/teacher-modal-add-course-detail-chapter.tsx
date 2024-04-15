@@ -56,122 +56,112 @@ function TeacherModalAddCourseDetailChapter(props: any) {
     }
   };
 
-  const handleUploadImageToCloud = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
+  // const handleUploadImageToCloud = async (
+  //   e: React.FormEvent<HTMLFormElement>
+  // ) => {
+  //   e.preventDefault();
+  //   try {
+  //     const imageFormData = new FormData();
+  //     if (image) imageFormData.append("file", image);
+  //     imageFormData.append("cloud_name", "de3swhffe");
+  //     imageFormData.append("upload_preset", "ez9c4ucn");
+
+  //     const response = await fetch(
+  //       "https://api.cloudinary.com/v1_1/de3swhffe/image/upload",
+  //       {
+  //         method: "post",
+  //         body: imageFormData,
+  //       }
+  //     );
+  //     const imgData = await response.json();
+  //     imageUrl = imgData.url.toString();
+  //     await setAddCourseDetail({
+  //       ...addCourseDetail,
+  //       thumbnail: imgData.url.toString(),
+  //     });
+  //   } catch {}
+  // };
+
+  // const handleUploadPdfToCloud = async (
+  //   e: React.FormEvent<HTMLFormElement>
+  // ) => {
+  //   e.preventDefault();
+  //   try {
+  //     let imageURL;
+  //     const pdfData = new FormData();
+  //     if (pdf) pdfData.append("file", pdf);
+  //     pdfData.append("cloud_name", "de3swhffe");
+  //     pdfData.append("upload_preset", "ez9c4ucn");
+
+  //     const response = await fetch(
+  //       "https://api.cloudinary.com/v1_1/de3swhffe/auto/upload",
+  //       {
+  //         method: "post",
+  //         body: pdfData,
+  //       }
+  //     );
+  //     const data = await response.json();
+  //     pdfUrl = data.url.toString();
+  //     await setAddCourseDetail({
+  //       ...addCourseDetail,
+  //       pdf: data.url.toString(),
+  //     });
+  //   } catch {}
+  // };
+
+  // const handleUploadVideoToCloud = async (
+  //   e: React.FormEvent<HTMLFormElement>
+  // ) => {
+  //   e.preventDefault();
+  //   try {
+  //     const videoData = new FormData();
+  //     if (video) videoData.append("file", video);
+  //     videoData.append("cloud_name", "de3swhffe");
+  //     videoData.append("upload_preset", "ez9c4ucn");
+
+  //     const response = await fetch(
+  //       "https://api.cloudinary.com/v1_1/de3swhffe/video/upload",
+  //       {
+  //         method: "post",
+  //         body: videoData,
+  //       }
+  //     );
+  //     const data = await response.json();
+  //     videoUrl = data.url.toString();
+  //     await setAddCourseDetail({
+  //       ...addCourseDetail,
+  //       video: data.url.toString(),
+  //     });
+  //   } catch {}
+  // };
+
+  const submitCourseDetail = async (e: React.FormEvent<HTMLFormElement>) => {
+    // await handleUploadImageToCloud(e);
+    // await handleUploadPdfToCloud(e);
+    // await handleUploadVideoToCloud(e);
     e.preventDefault();
-    try {
-      const imageFormData = new FormData();
-      if (image) imageFormData.append("file", image);
-      imageFormData.append("cloud_name", "de3swhffe");
-      imageFormData.append("upload_preset", "ez9c4ucn");
-
-      const response = await fetch(
-        "https://api.cloudinary.com/v1_1/de3swhffe/image/upload",
-        {
-          method: "post",
-          body: imageFormData,
-        }
-      );
-      const imgData = await response.json();
-      imageUrl = imgData.url.toString();
-      await setAddCourseDetail({
-        ...addCourseDetail,
-        thumbnail: imgData.url.toString(),
-      });
-    } catch {}
-  };
-
-  const handleUploadPdfToCloud = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault();
-    try {
-      let imageURL;
-      const pdfData = new FormData();
-      if (pdf) pdfData.append("file", pdf);
-      pdfData.append("cloud_name", "de3swhffe");
-      pdfData.append("upload_preset", "ez9c4ucn");
-
-      const response = await fetch(
-        "https://api.cloudinary.com/v1_1/de3swhffe/auto/upload",
-        {
-          method: "post",
-          body: pdfData,
-        }
-      );
-      const data = await response.json();
-      pdfUrl = data.url.toString();
-      await setAddCourseDetail({
-        ...addCourseDetail,
-        pdf: data.url.toString(),
-      });
-    } catch {}
-  };
-
-  const handleUploadVideoToCloud = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault();
-    try {
-      const videoData = new FormData();
-      if (video) videoData.append("file", video);
-      videoData.append("cloud_name", "de3swhffe");
-      videoData.append("upload_preset", "ez9c4ucn");
-
-      const response = await fetch(
-        "https://api.cloudinary.com/v1_1/de3swhffe/video/upload",
-        {
-          method: "post",
-          body: videoData,
-        }
-      );
-      const data = await response.json();
-      videoUrl = data.url.toString();
-      await setAddCourseDetail({
-        ...addCourseDetail,
-        video: data.url.toString(),
-      });
-    } catch {}
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    await handleUploadImageToCloud(e);
-    await handleUploadPdfToCloud(e);
-    await handleUploadVideoToCloud(e);
-    e.preventDefault();
+    console.log("haciu");
     let formData = new FormData();
-    let file;
+
+    // console.log(image,video,pdf);
 
     formData.append("chapter", props.chapter);
     formData.append("title", addCourseDetail.title);
-    formData.append("video", videoUrl);
-    formData.append("pdf", pdfUrl);
-    formData.append("thumbnail", imageUrl);
     if (image) {
+      formData.append("thumbnail",image);
+    }
+    if(video){
+      formData.append("video",video);
+    }
+    if(pdf){
+      formData.append("pdf",pdf);
     }
 
-    // try {
-    //   let imageURL;
-    //   const imageFormData = new FormData();
-    //   if(image) imageFormData.append("file", image);
-    //   imageFormData.append("cloud_name", "de3swhffe");
-    //   imageFormData.append("upload_preset", "ez9c4ucn");
+    console.log(formData);
 
-    //   const response = await fetch(
-    //     "https://api.cloudinary.com/v1_1/de3swhffe/image/upload",
-    //     {
-    //       method: "post",
-    //       body: imageFormData
-    //     }
-    //   );
-    //   const imgData = await response.json();
-    //   alert(imgData.url.toString());
-    // } catch {
-
-    // }
 
     try {
+      e.preventDefault();
       const response = await axios.post<ApiResponse<AccountSchema>>(
         ADD_COURSE + props.course.course_id,
         formData,
@@ -183,7 +173,8 @@ function TeacherModalAddCourseDetailChapter(props: any) {
           withCredentials: true,
         }
       );
-      props.onHide();
+
+      if(response.status === 200) props.onHide(e);
     } catch (err) {
       console.log(err);
     }
@@ -199,6 +190,7 @@ function TeacherModalAddCourseDetailChapter(props: any) {
       size="xl"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      key={props.chapter}
     >
       <Modal.Header className="p-0 d-block">
         <div
@@ -217,9 +209,9 @@ function TeacherModalAddCourseDetailChapter(props: any) {
           <div></div>
         </div>
       </Modal.Header>
-      <Modal.Body className="p-5">
+      <Modal.Body className="p-5" key={props.chapter}>
         <div className="modal-body-container">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={(e) => {e.preventDefault();submitCourseDetail(e)}}>
             <div className="inputs" style={{ width: "100%" }}>
               <div className="">
                 <div className="input-box" style={{ marginBottom: "0.5rem" }}>
@@ -260,6 +252,7 @@ function TeacherModalAddCourseDetailChapter(props: any) {
               </div>
               <label className="btn btn-default">
                 <input
+                  required
                   type="file"
                   onChange={handleImageChange}
                   accept="image/*"
@@ -268,7 +261,6 @@ function TeacherModalAddCourseDetailChapter(props: any) {
               <div className="input-box">
                 <input
                   type="file"
-                  required
                   id="cv"
                   onChange={handlePdfChange}
                   accept="application/pdf"
@@ -289,9 +281,6 @@ function TeacherModalAddCourseDetailChapter(props: any) {
                 <button
                   type="submit"
                   className="fw-bold"
-                  onClick={() => {
-                    props.onHide();
-                  }}
                 >
                   Submit
                 </button>

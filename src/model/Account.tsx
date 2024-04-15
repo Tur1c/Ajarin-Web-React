@@ -150,7 +150,9 @@ export function transfromToAccountOutput(
     school: response.school,
     coin: response.coin,
     urlImage: response.pic_url,
-    studentdisc_list: response.studentdisc_list ? response.studentdisc_list.map( (data) => {
+    studentdisc_list: response.studentdisc_list ? response.studentdisc_list
+    .sort( (x,y) => x.discussion.disc_date.toString().localeCompare(y.discussion.disc_date.toString()) || x.discussion.disc_starttime.toString().localeCompare(y.discussion.disc_starttime.toString()))
+    .map( (data) => {
       return {
         discussion: data.discussion,
         status: data.status
