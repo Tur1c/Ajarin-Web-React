@@ -1,8 +1,15 @@
 import { AxiosError } from "axios";
+import { useEffect, useRef, useState } from "react";
 import { IoCloseCircleOutline } from "react-icons/io5";
-import { useLocation, useNavigate, Link, useParams} from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Rating } from "react-simple-star-rating";
+import Swal from "sweetalert2";
 import axios from "../../api/axios";
-import { AccountOutput, StudentCourse, StudentCourseS } from "../../model/Account";
+import {
+  AccountOutput,
+  StudentCourse,
+  StudentCourseS,
+} from "../../model/Account";
 import {
   CourseList,
   JoinDiscussionSchema,
@@ -10,10 +17,8 @@ import {
   transformToCourseOutput,
   transformToStudentCourseOutput,
 } from "../../model/course/course-list";
-import "./courseDetail.css";
-import { useEffect, useRef, useState } from "react";
 import { ApiResponse } from "../../model/schema/base_schema";
-import { Rating } from 'react-simple-star-rating';
+import "./courseDetail.css";
 
 const CourseDetail = () => {
   const { state } = useLocation();
@@ -22,28 +27,30 @@ const CourseDetail = () => {
   const navigate = useNavigate();
   const params = useParams();
 
-
   const [studentCourse, setStudentCourse] = useState<StudentCourseS>({
     course: undefined,
     completed_chap: "",
     status: "",
-    rating:0
+    rating: 0,
   });
   const [isOpen, setisOpen] = useState(true);
 
-
-  console.log(state.course?.course? true : false);
+  console.log(state.course?.course ? true : false);
   const account: AccountOutput = state.acc;
-  const course: CourseList = state.course?.course? state.course.course : state.data.course?.course_id ? transformToCourseOutput(state.data.course) : state.data;
-  console.log(course,account);
-
+  const course: CourseList = state.course?.course
+    ? state.course.course
+    : state.data.course?.course_id
+    ? transformToCourseOutput(state.data.course)
+    : state.data;
+  console.log(course, account);
 
   const JOIN_URL = "/api/account/joincourse";
-  const STUDENT_COURSE_URL = "/api/account/course?account=" + account.id + "&course=" + course.id;
-  const RATE_URL = "/api/course/ratecourse"
+  const STUDENT_COURSE_URL =
+    "/api/account/course?account=" + account.id + "&course=" + course.id;
+  const RATE_URL = "/api/course/ratecourse";
   console.log(STUDENT_COURSE_URL);
 
-  const joinCourse = async (courseId: number|undefined) => {
+  const joinCourse = async (courseId: number | undefined) => {
     if (!account) {
       navigate("/login");
     } else {
@@ -66,10 +73,16 @@ const CourseDetail = () => {
         if (error instanceof AxiosError) {
           console.log(error?.response?.data.errorSchema);
         }
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Cannot Buy Your Created Course",
+        }).then(function () {
+          navigate("/");
+        });
       }
     }
   };
-
 
   const getStudentCourseData = async () => {
     console.log("masuk sini aaa");
@@ -85,66 +98,70 @@ const CourseDetail = () => {
         }
       );
       console.log(response);
-        setStudentCourse(transformToStudentCourseOutput(response.data.outputSchema));
+      setStudentCourse(
+        transformToStudentCourseOutput(response.data.outputSchema)
+      );
       // setCourseList(transfromToCourseListOutput(response.data.outputSchema));
-      if(!studentCourse.rating === false){
+      if (!studentCourse.rating === false) {
         setisOpen(false);
       }
     } catch (error) {}
-  }
-
+  };
 
   useEffect(() => {
-    if(!!account.studentcourse_list.find( (course) => course.course.course_title === params.course_title)){
+    if (
+      !!account.studentcourse_list.find(
+        (course) => course.course.course_title === params.course_title
+      )
+    ) {
       getStudentCourseData();
     }
   }, []);
 
   console.log(studentCourse);
 
-    //draggable
-    const itemsRef = useRef<HTMLDivElement>(null);
-    const [isMouseDown, setIsMouseDown] = useState(false);
-    const [startX, setStartX] = useState(0);
-    const [scrollLeft, setScrollLeft] = useState(0);
+  //draggable
+  const itemsRef = useRef<HTMLDivElement>(null);
+  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
-    // for draggable
-  const handleMouseDown = (e:any) => {
+  // for draggable
+  const handleMouseDown = (e: any) => {
     setIsMouseDown(true);
-    if(itemsRef.current !== null) {
+    if (itemsRef.current !== null) {
       setStartX(e.pageX - itemsRef.current.offsetLeft);
       setScrollLeft(itemsRef.current.scrollLeft);
     }
-  }
+  };
 
   const handleMouseLeave = () => {
     setIsMouseDown(false);
-  }
+  };
 
-  const handleMouseMove = (e:any) => {
-    if(!isMouseDown) return;
+  const handleMouseMove = (e: any) => {
+    if (!isMouseDown) return;
     e.preventDefault();
-    if(itemsRef.current !== null){
+    if (itemsRef.current !== null) {
       const x = e.pageX - itemsRef.current.offsetLeft;
-      const walk = (x-startX)*1;
+      const walk = (x - startX) * 1;
       itemsRef.current.scrollLeft = scrollLeft - walk;
     }
-  }
+  };
 
   const handleMouseUp = () => {
     setIsMouseDown(false);
-  }
+  };
   // end of draggable
 
   //Star Rating
-  const [rating, setRating] = useState(0)
-
+  const [rating, setRating] = useState(0);
 
   const handleRating = (rate: number) => {
     console.log("masuk sini");
     setRating(rate);
     console.log(rating);
-  }
+  };
 
   // modal
   const [comment, setComment] = useState("");
@@ -152,22 +169,19 @@ const CourseDetail = () => {
   const submitRating = async () => {
     try {
       let schema: RateCourse = {
-        userid:account?.id,
-        courseid:studentCourse.course?.id,
-        rating:rating,
-        comment:comment
+        userid: account?.id,
+        courseid: studentCourse.course?.id,
+        rating: rating,
+        comment: comment,
       };
 
-      const response = await axios.post(
-        RATE_URL, 
-        JSON.stringify(schema), 
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + sessionStorage.getItem("jwt"),
-          },
-          withCredentials: true,
-        });
+      const response = await axios.post(RATE_URL, JSON.stringify(schema), {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + sessionStorage.getItem("jwt"),
+        },
+        withCredentials: true,
+      });
       console.log(response, "sukses rate course");
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -175,35 +189,53 @@ const CourseDetail = () => {
       }
     }
     setisOpen(false);
-  }
+  };
 
   console.log(!studentCourse.rating);
   return (
-    
-    <div className="container-fluid p-5" style={{ height: "100vh", marginTop: "5%" }}>
+    <div
+      className="container-fluid p-5"
+      style={{ height: "100vh", marginTop: "5%" }}
+    >
       {/* {course.title} */}
-      
-      {isOpen && studentCourse.status === "Completed" && !studentCourse.rating &&
-        <div className="modal-overlay" onClick={() => setisOpen(false)}>
-          <div onClick={(e) => e.stopPropagation()} className="modal-box text-dark">
+
+      {isOpen &&
+        studentCourse.status === "Completed" &&
+        !studentCourse.rating && (
+          <div className="modal-overlay" onClick={() => setisOpen(false)}>
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="modal-box text-dark"
+            >
               <p>Rate & Comment</p>
               <p>Rate Your Experience</p>
-                <Rating
-                  onClick={handleRating}
-                  allowFraction={true}
-                  transition={true}
-                  // onPointerEnter={onPointerEnter}
-                  // onPointerLeave={onPointerLeave}
-                  // onPointerMove={onPointerMove}
-                  /* Available Props */
-                />
-                <p>Any comment?</p>
-                <textarea required name="comment-area" id="comment-area" cols={30} rows={10} onChange={(e) => setComment(e.target.value)}></textarea>
-                <button disabled={rating === 0 || !comment? true: false} onClick={() => submitRating()}>Submit</button>
+              <Rating
+                onClick={handleRating}
+                allowFraction={true}
+                transition={true}
+                // onPointerEnter={onPointerEnter}
+                // onPointerLeave={onPointerLeave}
+                // onPointerMove={onPointerMove}
+                /* Available Props */
+              />
+              <p>Any comment?</p>
+              <textarea
+                required
+                name="comment-area"
+                id="comment-area"
+                cols={30}
+                rows={10}
+                onChange={(e) => setComment(e.target.value)}
+              ></textarea>
+              <button
+                disabled={rating === 0 || !comment ? true : false}
+                onClick={() => submitRating()}
+              >
+                Submit
+              </button>
+            </div>
           </div>
-        </div>
-
-      }
+        )}
 
       {
         // !studentCourse.course ?
@@ -228,7 +260,7 @@ const CourseDetail = () => {
         //           {course.category} - {course.level}
         //         </h6>
         //         <h6>{course.description}</h6>
-                
+
         //           <button
         //             className="badge rounded-pill text-bg-danger px-5 py-2"
         //             onClick={() => joinCourse(course.id)}
@@ -260,7 +292,7 @@ const CourseDetail = () => {
         //       >
         //         <ul className="cards">
         //           {course.course_detail.map((data, index) => (
-        //             <Link to={"/course/" + studentCourse.course?.title + "/" + data.course_detail_chapter} key={index} style={{ textDecoration:"none" }} 
+        //             <Link to={"/course/" + studentCourse.course?.title + "/" + data.course_detail_chapter} key={index} style={{ textDecoration:"none" }}
         //             state={{account:account, studentCourse:studentCourse}}
         //             >
         //               <li className="card">
@@ -292,127 +324,177 @@ const CourseDetail = () => {
         //   </div>
         // )
         // :
-        (
-          <div className="row">
-            <div className="col-4">
-              <div className="left-container d-block">
-                <div className="mb-5">
-                  <button
-                    style={{
-                      background: "none",
-                      border: "none",
-                      color: "white",
-                      fontSize: "30px",
-                    }}
-                  >
-                    <IoCloseCircleOutline onClick={() => navigate(-1)} />
-                  </button>
-                </div>
-                <h2 className="fw-bold">{!studentCourse.course ? course.title : studentCourse.course?.title}</h2>
-                <h6>
-                  { !studentCourse.course ? course.category : studentCourse.course?.category} - {!studentCourse.course ? course.level : studentCourse.course?.level}
-                </h6>
-                <h6>{!studentCourse.course ? course.description : studentCourse.course?.description}</h6>
-                {!studentCourse.status ? 
-                (
-                  <button
-                    className="badge rounded-pill text-bg-danger px-5 py-2"
-                    onClick={() => joinCourse(!studentCourse.course ? course.id : studentCourse.course?.id)}
-                  >
-                    {!studentCourse.course ? course.price : studentCourse.course?.price}
-                  </button>
-                )
-                :
-                <p>{studentCourse.status}</p>  
-              }
+        <div className="row">
+          <div className="col-4">
+            <div className="left-container d-block">
+              <div className="mb-5">
+                <button
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: "white",
+                    fontSize: "30px",
+                  }}
+                >
+                  <IoCloseCircleOutline onClick={() => navigate(-1)} />
+                </button>
               </div>
-            </div>
-            <div className="col-8">
-              <div className="logo_content" style={{ marginBottom: "45px" }}>
-                <div className="logo">
-                  <div className="logo_name">
-                    <h1
-                      className="fw-bold"
-                      style={{ color: "#fff", fontSize: "35px", marginLeft: "1rem" }}
-                    >
-                      ajar
-                      <span style={{ color: "#F6ECA9" }}>in</span>
-                    </h1>
-                  </div>
-                </div>
-              </div>
-
-              <div className="container-card-scroll p-3" ref={itemsRef}
-                onMouseDown={handleMouseDown}
-                onMouseLeave={handleMouseLeave}
-                onMouseUp={handleMouseUp}
-                onMouseMove={handleMouseMove}
-              >
-                <ul className="cards">
-                  {!studentCourse.course ?
-                    (
-                      course.course_detail.map((data, index) => (
-                        <Link to={"/login"} key={index} style={{ textDecoration:"none" }}>
-                          <li className="card">
-                            <div>
-                              <div className="" style={{ height: "30rem" }}>
-                                <div className="text-center">
-                                  <img
-                                    className="img-fluid h-100 "
-                                    src={data.chapter_thumbnail}
-                                    alt=""
-                                  />
-                                </div>
-                                <div className="card-body h-50">
-                                  <div className="card-title">
-                                    Chapter {data.course_detail_chapter}
-                                  </div>
-                                  <div className="card-text" style={{ height: "3rem" }}>
-                                    {data.chapter_title}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </li>
-                        </Link>
-                      ))
-                    )
-                  :
-                    (
-                      studentCourse.course?.course_detail.map((data, index) => (
-                        <Link to={"/course/" + studentCourse.course?.title + "/" + data.course_detail_chapter} key={index} style={{ textDecoration:"none" }} 
-                        state={{account:account, studentCourse:studentCourse}}
-                        >
-                          <li className="card">
-                            <div>
-                              <div className="" style={{ height: "30rem" }}>
-                                <div className="text-center">
-                                  <img
-                                    className="img-fluid h-100 "
-                                    src={data.chapter_thumbnail}
-                                    alt=""
-                                  />
-                                </div>
-                                <div className="card-body h-50">
-                                  <div className="card-title">
-                                    Chapter {data.course_detail_chapter}
-                                  </div>
-                                  <div className="card-text" style={{ height: "3rem" }}>
-                                    {data.chapter_title}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </li>
-                        </Link>
-                      ))
+              <h2 className="fw-bold">
+                {!studentCourse.course
+                  ? course.title
+                  : studentCourse.course?.title}
+              </h2>
+              <h6>
+                {!studentCourse.course
+                  ? course.category
+                  : studentCourse.course?.category}{" "}
+                -{" "}
+                {!studentCourse.course
+                  ? course.level
+                  : studentCourse.course?.level}
+              </h6>
+              <h6>
+                {!studentCourse.course
+                  ? course.description
+                  : studentCourse.course?.description}
+              </h6>
+              {!studentCourse.status ? (
+                <button
+                  className="badge rounded-pill text-bg-danger px-5 py-2"
+                  onClick={() =>
+                    joinCourse(
+                      !studentCourse.course
+                        ? course.id
+                        : studentCourse.course?.id
                     )
                   }
-                </ul>
-              </div>
+                >
+                  {!studentCourse.course
+                    ? course.price
+                    : studentCourse.course?.price}
+                </button>
+              ) : (
+                <p>{studentCourse.status}</p>
+              )}
             </div>
           </div>
-        )
+          <div className="col-8">
+            <div className="logo_content" style={{ marginBottom: "45px" }}>
+              <div className="logo">
+                <div className="logo_name">
+                  <h1
+                    className="fw-bold"
+                    style={{
+                      color: "#fff",
+                      fontSize: "35px",
+                      marginLeft: "1rem",
+                    }}
+                  >
+                    ajar
+                    <span style={{ color: "#F6ECA9" }}>in</span>
+                  </h1>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="container-card-scroll p-3"
+              ref={itemsRef}
+              onMouseDown={handleMouseDown}
+              onMouseLeave={handleMouseLeave}
+              onMouseUp={handleMouseUp}
+              onMouseMove={handleMouseMove}
+            >
+              <ul className="cards">
+                {!studentCourse.course
+                  ? course.course_detail.map((data, index) => (
+                      <Link
+                        to={"/login"}
+                        key={index}
+                        style={{ textDecoration: "none" }}
+                      >
+                        <li className="card">
+                          <div>
+                            <div className="" style={{ height: "30rem" }}>
+                              <div className="text-center">
+                                <img
+                                  className="img-fluid h-100 "
+                                  src={data.chapter_thumbnail}
+                                  alt=""
+                                />
+                              </div>
+                              <div className="card-body h-50">
+                                <div className="card-title">
+                                  Chapter {data.course_detail_chapter}
+                                </div>
+                                <div
+                                  className="card-text"
+                                  style={{ height: "3rem" }}
+                                >
+                                  {data.chapter_title}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      </Link>
+                    ))
+                  : studentCourse.course?.course_detail.map((data, index) => (
+                      <Link
+                        to={
+                          "/course/" +
+                          studentCourse.course?.title +
+                          "/" +
+                          data.course_detail_chapter
+                        }
+                        key={index}
+                        style={{ textDecoration: "none" }}
+                        state={{
+                          account: account,
+                          studentCourse: studentCourse,
+                          courseDetail: state,
+                        }}
+                      >
+                        <li className="card">
+                          <div>
+                            <div className="" style={{ height: "30rem" }}>
+                              <div className="text-center">
+                                <img
+                                  className="img-fluid h-100 "
+                                  src={data.chapter_thumbnail}
+                                  alt=""
+                                />
+                              </div>
+                              <div className="card-body h-50">
+                                <div className="card-title">
+                                  Chapter {data.course_detail_chapter}
+                                </div>
+                                <div
+                                  className="card-text"
+                                  style={{ height: "3rem" }}
+                                >
+                                  {data.chapter_title}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      </Link>
+                    ))}
+              </ul>
+            </div>
+            <div>
+              <p>
+                <img
+                  src={"assets/" + state.data.teacher.account.urlImage}
+                  alt="abc"
+                  className="me-2"
+                  width={"50px"}
+                />
+              </p>
+            </div>
+          </div>
+        </div>
       }
     </div>
   );

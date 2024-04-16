@@ -148,7 +148,7 @@ function HomeClass({ account }: Props) {
                                     alignItems: "center",
                                   }}
                                 >
-                                  Pengajar
+                                  {data.teacher?.account.fullName}
                                 </span>
                               </div>
                               <div className="d-block p-1">

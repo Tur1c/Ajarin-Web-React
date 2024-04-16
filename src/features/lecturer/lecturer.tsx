@@ -338,8 +338,7 @@ const Lecturer = () => {
                             <img
                               className="img-fluid"
                               src={
-                                data.user.urlImage ||
-                                `assets/default_picture.png`
+                                data.user.urlImage == null ? data.user.urlImage : `assets/default_picture.png`
                               }
                               alt=""
                               style={{ height: "10%", width: "10%" }}
@@ -421,8 +420,7 @@ const Lecturer = () => {
                             <img
                               className="img-fluid"
                               src={
-                                data.user?.pic_url ||
-                                `assets/default_picture.png`
+                                "/assets/" + (data.user.pic_name !== null ? data.user.pic_name : "default_picture.png")
                               }
                               alt=""
                               style={{ width: "70%" }}
@@ -519,8 +517,7 @@ const Lecturer = () => {
                         <img
                           className="img-fluid"
                           src={
-                            "/assets/" + data.account.urlImage ||
-                            `assets/default_picture.png`
+                            "/assets/" + data.account.urlImage
                           }
                           alt=""
                           style={{ height: "10%", width: "10%" }}
@@ -529,7 +526,7 @@ const Lecturer = () => {
                       </TableCell>
                       <TableCell className="text-white">{data.courseSold} solds</TableCell>
                       <TableCell className="text-white">
-                        200 Participants
+                        {data.discussionParticipant} Participants
                       </TableCell>
                       <TableCell className="text-white">96 Points</TableCell>
                       <TableCell className="text-white">
@@ -604,8 +601,7 @@ const Lecturer = () => {
                         <img
                           className="img-fluid"
                           src={
-                            "/assets/" + data.account?.urlImage ||
-                            `assets/default_picture.png`
+                            "/assets/" + data.account.urlImage
                           }
                           alt=""
                           style={{ width: "70%" }}

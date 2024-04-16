@@ -86,6 +86,8 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
   const handleAlreadyRegisteredAsTeacher = (account:AccountOutput) => {
     isAlreadyRegisterTeacher(account.email);
     setTimeout(() => {
+      console.log(isAlreadyTeacher);
+      
       if (!isAlreadyTeacher) {
         navigate("/register/teacher", {
           state: { account },
@@ -94,7 +96,7 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
       } else {
         changeAccount(account.email);
       }
-    }, 1000);
+    }, 1500);
   };
 
   return (

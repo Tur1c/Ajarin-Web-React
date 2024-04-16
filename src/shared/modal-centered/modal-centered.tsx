@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
 import { JoinDiscussionSchema } from "../../model/course/course-list";
 import "./modal-centered.css";
+import Swal from "sweetalert2";
 
 function ModalCentered(props: any) {
   const isLogged = sessionStorage.getItem("jwt");
@@ -17,9 +18,14 @@ function ModalCentered(props: any) {
 
   const JoinDiscussion = async (discId: number, maxParticipant: number, participant: number) => {
     if(participant === maxParticipant){
-      alert("full");
-      return
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Full Participant",
+      });
+      return;
     }
+    
     try {
       let schema: JoinDiscussionSchema = {
         email: user,
@@ -38,10 +44,15 @@ function ModalCentered(props: any) {
       window.location.reload();
       // const output = transfromToServiceLoginAccountOutput(response.data);
       // const token = output.token;
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof AxiosError) {
         console.log(error?.response?.data.errorSchema);
       }
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error.response.data.errorSchema.message,
+      });
     }
   };
 
@@ -99,7 +110,7 @@ function ModalCentered(props: any) {
                 <b>{props.data.title}</b>
               </h2>
               <p className="disc-categories" style={{ opacity: "0.6" }}>
-                Math
+                {props.data.category}
               </p>
             </div>
             <div
@@ -118,7 +129,7 @@ function ModalCentered(props: any) {
                 }}
               >
                 <div className="text-center" style={{ fontSize: "24px" }}>
-                  <FaUser /> 12 / {props.data.maxPeople}
+                  <FaUser /> {props.data.participant} / {props.data.maxPeople}
                 </div>
               </div>
             </div>

@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import axios from "../../../../api/axios";
 import { AccountRegisterSchema } from "../../../../model/Account";
 import Navbar from "../../../../shared/navbar/Navbar";
 import createAcc from "../Create Account.png";
@@ -8,6 +10,8 @@ import RegisterSuccess from "../components/RegisterSuccess";
 import "./Register.css";
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+
+const EMAIL_CHECK = "/api/account/check-email/";
 
 function Register() {
   const [pageState, setPageState] = useState(0);
@@ -66,12 +70,38 @@ function Register() {
       return;
     }
 
-    setAccountRegister((accountRegister) => ({
-      ...accountRegister,
-      password: pwd,
-    }));
+    try {
+      const response = await axios.get(EMAIL_CHECK + accountRegister.email, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      setAccountRegister((accountRegister) => ({
+        ...accountRegister,
+        password: pwd,
+      }));
 
-    setPageState(1);
+      setPageState(1);
+    } catch (err: any) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: err.response.data.errorSchema.message,
+      });
+      // if (!err?.response) {
+      //   console.log("No Server Response");
+
+      // }
+      console.log(err);
+    }
+
+    // setAccountRegister((accountRegister) => ({
+    //   ...accountRegister,
+    //   password: pwd,
+    // }));
+
+    // setPageState(1);
   };
 
   function callBack(data: string) {

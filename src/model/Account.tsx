@@ -56,7 +56,7 @@ export function transformToAccountNoROutput(
     country: response.country,
     school: response.school,
     coin: response.coin,
-    urlImage: response.pic_name,
+    urlImage: response.pic_name !== null ? response.pic_name : "default_picture.png",
   };
   console.log(result, "abc account hehe");
   return result;
@@ -149,7 +149,7 @@ export function transfromToAccountOutput(
     country: response.country,
     school: response.school,
     coin: response.coin,
-    urlImage: response.pic_url,
+    urlImage: "assets/" + response.pic_name,
     studentdisc_list: response.studentdisc_list ? response.studentdisc_list
     .sort( (x,y) => x.discussion.disc_date.toString().localeCompare(y.discussion.disc_date.toString()) || x.discussion.disc_starttime.toString().localeCompare(y.discussion.disc_starttime.toString()))
     .map( (data) => {

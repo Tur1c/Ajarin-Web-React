@@ -13,7 +13,10 @@ import {
   transfromToAccountOutput,
 } from "../../../model/Account";
 import { ApiResponse } from "../../../model/schema/base_schema";
-import { Teacher, TeacherOutput, transformToTeacherOutput } from "../../../model/teacher/teacher-model";
+import {
+  TeacherOutput,
+  transformToTeacherOutput,
+} from "../../../model/teacher/teacher-model";
 import { Sidebar } from "../../../shared";
 import HomeClass from "../components/home-class";
 import HomeDiscussion from "../components/home-discussion";
@@ -42,7 +45,7 @@ function Home() {
     studentcourse_list: [],
     subscribed_lecturer: [],
     urlImage: "",
-    notification: []
+    notification: [],
   });
   const [showModalAddDiscussion, setShowModalAddDiscussion] = useState(false);
   const [showModalAddCourse, setShowModalAddCourse] = useState(false);
@@ -78,7 +81,7 @@ function Home() {
       fullName: "",
       phoneNumber: "",
       school: "",
-      urlImage: ""
+      urlImage: "",
     },
   });
   const navigate = useNavigate();
@@ -101,7 +104,6 @@ function Home() {
   };
 
   const fetchTeacherData = async () => {
-
     try {
       const response = await axios.get(TEACHER_DATA + email, {
         headers: {
@@ -136,7 +138,10 @@ function Home() {
     }
     if (userRole === "Teacher") {
       setTimeout(() => {
+        console.log("MASOKKK");
+        
         fetchTeacherData();
+        fetchDataAccount();
       }, 500);
     }
   }, []);
@@ -144,7 +149,7 @@ function Home() {
   // console.log("dubidubidu", account);
 
   const goToDisc = (discDate: any) => {
-    if(userRole === "Teacher"){
+    if (userRole === "Teacher") {
       navigate("/calendar", {
         state: {
           account: account,
@@ -152,8 +157,7 @@ function Home() {
           teacher: teacher,
         },
       });
-    }
-    else{
+    } else {
       navigate("/calendar", {
         state: {
           account: account,
@@ -166,21 +170,21 @@ function Home() {
   const handlePageChangeToCoin = () => {
     navigate("/coin", {
       state: {
-        teacher
-      }
-    })
-  }
+        teacher,
+      },
+    });
+  };
 
   console.log(teacher);
   return (
     // <body className="">
     <div className="all-page">
       <div className="sidebar-content">
-        {userRole === "Teacher" ? 
+        {userRole === "Teacher" ? (
           <Sidebar teacheracc={teacher} account={account}></Sidebar>
-          :
+        ) : (
           <Sidebar account={account}></Sidebar>
-        }
+        )}
       </div>
 
       {userRole === "Teacher" ? (
@@ -220,8 +224,11 @@ function Home() {
                 </button>
               </div>
               <div className="col-6 mt-3">
-                <button className="coin-button" style={{ width: "100%" }}
-                onClick={() => handlePageChangeToCoin()}>
+                <button
+                  className="coin-button"
+                  style={{ width: "100%" }}
+                  onClick={() => handlePageChangeToCoin()}
+                >
                   Coin{" "}
                   <img
                     className="img-fluid"
@@ -264,52 +271,56 @@ function Home() {
             <div className="top-courses mt-5">
               <h1 className="fw-bold">Your Top Courses</h1>
               <div className="row d-flex justify-content-between">
-                {teacher.courses? 
-                  teacher.courses.sort((a, b) =>
-                    a.sold > b.sold ? -1 : 1
-                  )
-                  .slice(0, 5)
-                  .map((data, index) => (
-                    <div className="col-2">
-                      <div
-                        className="card"
-                        style={{
-                          width: "13rem",
-                          height: "18rem",
-                          background: "rgba(255, 255, 255, 0.1)",
-                          border: "none",
-                        }}
-                      >
-                        <div className="text-center thumbnail container-class-header">
-                          <img
-                            className="img-fluid"
-                            src={data.image}
-                            alt=""
-                            style={{ width: "100%", height: "100%" }}
-                          />
+                {teacher.courses
+                  ? teacher.courses
+                      .sort((a, b) => (a.sold > b.sold ? -1 : 1))
+                      .slice(0, 5)
+                      .map((data, index) => (
+                        <div className="col-2">
                           <div
-                            className="bottom-left p-0"
-                            style={{ backgroundColor: "rgba(0, 0, 0, 0.0)" }}
+                            className="card"
+                            style={{
+                              width: "13rem",
+                              height: "18rem",
+                              background: "rgba(255, 255, 255, 0.1)",
+                              border: "none",
+                            }}
                           >
-                            <h5
-                              style={{ backgroundColor: "rgba(0, 0, 0, 0.8)" }}
-                            >
-                              #{index + 1}
-                            </h5>
+                            <div className="text-center thumbnail container-class-header">
+                              <img
+                                className="img-fluid"
+                                src={data.image}
+                                alt=""
+                                style={{ width: "100%", height: "100%" }}
+                              />
+                              <div
+                                className="bottom-left p-0"
+                                style={{
+                                  backgroundColor: "rgba(0, 0, 0, 0.0)",
+                                }}
+                              >
+                                <h5
+                                  style={{
+                                    backgroundColor: "rgba(0, 0, 0, 0.8)",
+                                  }}
+                                >
+                                  #{index + 1}
+                                </h5>
+                              </div>
+                            </div>
+                            <div className="card-body h-50 p-2 text-white">
+                              <div className="card-title">{data.title}</div>
+                              <div
+                                className="card-text"
+                                style={{ height: "3rem" }}
+                              >
+                                {data.sold} Purchased
+                              </div>
+                            </div>
                           </div>
                         </div>
-                        <div className="card-body h-50 p-2 text-white">
-                          <div className="card-title">{data.title}</div>
-                          <div className="card-text" style={{ height: "3rem" }}>
-                            {data.sold} Purchased
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                        :
-                        null
-                }
+                      ))
+                  : null}
               </div>
               <div className="w-100 d-flex justify-content-center mt-3">
                 <div className="filter-btn" style={{ width: "50%" }}>
@@ -413,129 +424,131 @@ function Home() {
               marginBottom: "1.5rem",
             }}
             to={"/calendar"}
-            state={userRole === "Teacher" ? {account:account, teacher:teacher} : {account:account}}
+            state={
+              userRole === "Teacher"
+                ? { account: account, teacher: teacher }
+                : { account: account }
+            }
           >
             <div className="view-all">View All</div>
           </Link>
-          {userRole === "Teacher" ?
-          (teacher.discussion &&
-            teacher.discussion.slice(0, 3).map((disc, idx) => (
-              <div
-                className={
-                  "card-body  right-disc" +
-                  (idx === 0 ? " right-disc-active" : " ")
-                }
-                // style={{
-                //   backgroundColor: idx === 0 ? "rgba(97, 134, 246, 0.3)" : "none",
-                // }}
-                key={idx}
-                onClick={() => goToDisc(disc.date)}
-              >
-                <div className="updisc-container w-100 mx-2">
-                  <h5 className="card-text d-flex justify-content-between">
-                    <div className="disc-date mx-auto text-center border-end border-white justify-content-center align-items-center align-items-center d-flex row">
-                      <h4
-                        style={{
-                          margin: 0,
-                          fontSize: "32px",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {dayjs(disc.date).format("DD")}
-                      </h4>
-                      <h5 style={{ fontSize: "18px", fontWeight: "bold" }}>
-                        {dayjs(disc.date).format("MMM")}
-                      </h5>
-                    </div>
-                    <div className="disc-title my-auto d-flex row px-2 ">
-                      <h6 style={{ margin: 0, fontSize: "14px" }}>
-                        {disc.title}
-                        <br />
-                      </h6>
-                      <h6
-                        style={{
-                          margin: 0,
-                          fontSize: "10px",
-                          color: "var(--yelo)",
-                        }}
-                      >
-                        by Godwin
-                      </h6>
-                    </div>
-                    <div className="disc-time d-flex justify-content-center px-2 border-start border-white">
-                      <h6
-                        className="d-flex align-items-center justify-content-center"
-                        style={{ height: "100%", fontSize: "12px" }}
-                      >
-                        {disc.starttime.toString().slice(0, 5)} -{" "}
-                        {disc.endtime.toString().slice(0, 5)}
-                      </h6>
-                    </div>
-                  </h5>
+          {userRole === "Teacher"
+            ? teacher.discussion &&
+              teacher.discussion.slice(0, 3).map((disc, idx) => (
+                <div
+                  className={
+                    "card-body  right-disc" +
+                    (idx === 0 ? " right-disc-active" : " ")
+                  }
+                  // style={{
+                  //   backgroundColor: idx === 0 ? "rgba(97, 134, 246, 0.3)" : "none",
+                  // }}
+                  key={idx}
+                  onClick={() => goToDisc(disc.date)}
+                >
+                  <div className="updisc-container w-100 mx-2">
+                    <h5 className="card-text d-flex justify-content-between">
+                      <div className="disc-date mx-auto text-center border-end border-white justify-content-center align-items-center align-items-center d-flex row">
+                        <h4
+                          style={{
+                            margin: 0,
+                            fontSize: "32px",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {dayjs(disc.date).format("DD")}
+                        </h4>
+                        <h5 style={{ fontSize: "18px", fontWeight: "bold" }}>
+                          {dayjs(disc.date).format("MMM")}
+                        </h5>
+                      </div>
+                      <div className="disc-title my-auto d-flex row px-2 ">
+                        <h6 style={{ margin: 0, fontSize: "14px" }}>
+                          {disc.title}
+                          <br />
+                        </h6>
+                        <h6
+                          style={{
+                            margin: 0,
+                            fontSize: "10px",
+                            color: "var(--yelo)",
+                          }}
+                        >
+                          by Godwin
+                        </h6>
+                      </div>
+                      <div className="disc-time d-flex justify-content-center px-2 border-start border-white">
+                        <h6
+                          className="d-flex align-items-center justify-content-center"
+                          style={{ height: "100%", fontSize: "12px" }}
+                        >
+                          {disc.starttime.toString().slice(0, 5)} -{" "}
+                          {disc.endtime.toString().slice(0, 5)}
+                        </h6>
+                      </div>
+                    </h5>
+                  </div>
                 </div>
-              </div>
-            ))
-          )
-          :
-          (
-            account.studentdisc_list.slice(0, 3).map((disc, idx) => (
-              <div
-                className={
-                  "card-body  right-disc" +
-                  (idx === 0 ? " right-disc-active" : " ")
-                }
-                // style={{
-                //   backgroundColor: idx === 0 ? "rgba(97, 134, 246, 0.3)" : "none",
-                // }}
-                key={idx}
-                onClick={() => goToDisc(disc.discussion.disc_date)}
-              >
-                <div className="updisc-container w-100 mx-2">
-                  <h5 className="card-text d-flex justify-content-between">
-                    <div className="disc-date mx-auto text-center border-end border-white justify-content-center align-items-center align-items-center d-flex row">
-                      <h4
-                        style={{
-                          margin: 0,
-                          fontSize: "32px",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {dayjs(disc.discussion.disc_date).format("DD")}
-                      </h4>
-                      <h5 style={{ fontSize: "18px", fontWeight: "bold" }}>
-                        {dayjs(disc.discussion.disc_date).format("MMM")}
-                      </h5>
-                    </div>
-                    <div className="disc-title my-auto d-flex row px-2 ">
-                      <h6 style={{ margin: 0, fontSize: "14px" }}>
-                        {disc.discussion.disc_title}
-                        <br />
-                      </h6>
-                      <h6
-                        style={{
-                          margin: 0,
-                          fontSize: "10px",
-                          color: "var(--yelo)",
-                        }}
-                      >
-                        by Godwin
-                      </h6>
-                    </div>
-                    <div className="disc-time d-flex justify-content-center px-2 border-start border-white">
-                      <h6
-                        className="d-flex align-items-center justify-content-center"
-                        style={{ height: "100%", fontSize: "12px" }}
-                      >
-                        {disc.discussion.disc_starttime.toString().slice(0, 5)} -{" "}
-                        {disc.discussion.disc_endtime.toString().slice(0, 5)}
-                      </h6>
-                    </div>
-                  </h5>
+              ))
+            : account.studentdisc_list.slice(0, 3).map((disc, idx) => (
+                <div
+                  className={
+                    "card-body  right-disc" +
+                    (idx === 0 ? " right-disc-active" : " ")
+                  }
+                  // style={{
+                  //   backgroundColor: idx === 0 ? "rgba(97, 134, 246, 0.3)" : "none",
+                  // }}
+                  key={idx}
+                  onClick={() => goToDisc(disc.discussion.disc_date)}
+                >
+                  <div className="updisc-container w-100 mx-2">
+                    <h5 className="card-text d-flex justify-content-between">
+                      <div className="disc-date mx-auto text-center border-end border-white justify-content-center align-items-center align-items-center d-flex row">
+                        <h4
+                          style={{
+                            margin: 0,
+                            fontSize: "32px",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {dayjs(disc.discussion.disc_date).format("DD")}
+                        </h4>
+                        <h5 style={{ fontSize: "18px", fontWeight: "bold" }}>
+                          {dayjs(disc.discussion.disc_date).format("MMM")}
+                        </h5>
+                      </div>
+                      <div className="disc-title my-auto d-flex row px-2 ">
+                        <h6 style={{ margin: 0, fontSize: "14px" }}>
+                          {disc.discussion.disc_title}
+                          <br />
+                        </h6>
+                        <h6
+                          style={{
+                            margin: 0,
+                            fontSize: "10px",
+                            color: "var(--yelo)",
+                          }}
+                        >
+                          by Godwin
+                        </h6>
+                      </div>
+                      <div className="disc-time d-flex justify-content-center px-2 border-start border-white">
+                        <h6
+                          className="d-flex align-items-center justify-content-center"
+                          style={{ height: "100%", fontSize: "12px" }}
+                        >
+                          {disc.discussion.disc_starttime
+                            .toString()
+                            .slice(0, 5)}{" "}
+                          -{" "}
+                          {disc.discussion.disc_endtime.toString().slice(0, 5)}
+                        </h6>
+                      </div>
+                    </h5>
+                  </div>
                 </div>
-              </div>
-            ))
-          )
-          }
+              ))}
         </div>
 
         <div className="statistic">

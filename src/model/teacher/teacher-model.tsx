@@ -43,6 +43,7 @@ export interface TeacherOutput {
   rating: string;
   account: AccountNoROutput;
   discussion?: ClassList[];
+  discussionParticipant?: number;
   courses?: CourseList[];
   courseSold?: number;
   private_disc?: PrivateDiscOut[];
@@ -57,7 +58,7 @@ export function transfromToTeacherListOutput(
       return transformToTeacherOutput(data);
     }),
   };
-  // console.log(result, "teacher transform");
+  console.log(result, "teacher transform");
 
   return result;
 }
@@ -71,6 +72,14 @@ function countCourseSold(courses: Course[]) {
   let count = 0;
   courses?.map((data) => {
     count += data.total_sold_course;
+  });
+  return count;
+}
+
+function countDiscussionParticipant(discussion: Class[]) {
+  let count = 0;
+  discussion?.map((data) => {
+    count += data.joinedParticipant;
   });
   return count;
 }
@@ -100,7 +109,7 @@ export function transformToTeacherOutput(response: Teacher): TeacherOutput {
         level: data.disc_level,
         category: data.category.category_name,
         image: data.disc_image,
-        participant: data.joinedParticipant
+        participant: data.joinedParticipant,
       }
     }),
     courses: response.courses?.map((data) => {
@@ -120,13 +129,17 @@ export function transformToTeacherOutput(response: Teacher): TeacherOutput {
             chapter_title: course.chapter_title,
             chapter_video: course.chapter_video,
             chapter_thumbnail: course.chapter_thumbnail,
+            chapter_pdf: course.chapter_pdf,
           };
         }),
       }
     }),
     courseSold: countCourseSold(response.courses),
+    discussionParticipant: countDiscussionParticipant(response.discussion),
     private_disc: response.private_disc?.map((data) => TransformToPrivateDiscOut(data))
   };
   console.log(result, "lewat teacher");
   return result;
 }
+
+

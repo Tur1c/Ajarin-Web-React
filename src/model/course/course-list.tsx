@@ -137,6 +137,7 @@ export interface CourseDetailSchema {
   chapter_title: string;
   chapter_video: string;
   chapter_thumbnail: string;
+  chapter_pdf: string;
 }
 
 export interface AddCourseSchema {
@@ -180,6 +181,7 @@ export interface CourseDetailOutput {
   chapter_title: string;
   chapter_video: string;
   chapter_thumbnail: string;
+  chapter_pdf: string;
 }
 
 export function transfromToCourseListOutput(
@@ -218,6 +220,7 @@ export function transformToCourseOutput(response:Course): CourseList {
             chapter_title: course.chapter_title,
             chapter_video: course.chapter_video,
             chapter_thumbnail: course.chapter_thumbnail,
+            chapter_pdf: course.chapter_pdf
           };
         }),
       }

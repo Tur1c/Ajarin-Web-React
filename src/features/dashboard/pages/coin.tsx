@@ -9,6 +9,7 @@ import {
 } from "../../../model/Account";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import "./coin.css";
+import Swal from "sweetalert2";
 
 const UPDATE_URL = "/api/account/";
 const WITHDRAW_URL = "/api/account/";
@@ -105,10 +106,17 @@ function Coin() {
 
   const withdrawCoin = async () => {
     console.log("masok");
-
+    if(state.teacher.account.coin - parseInt(coinWithdraw) <= 50) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Cannot Withdraw coin",
+      });
+      return;
+    }
     try {
       const response = await axios.put<ApiResponse<AccountSchema>>(
-        WITHDRAW_URL + state.teacher.user.id + "/" + coinWithdraw,
+        WITHDRAW_URL + state.teacher.account.id + "/" + coinWithdraw,
         null,
         {
           headers: {
@@ -118,6 +126,7 @@ function Coin() {
           withCredentials: true,
         }
       );
+      navigate("/");
     } catch {}
   };
 
@@ -219,7 +228,7 @@ function Coin() {
                           letterSpacing: "1px",
                         }}
                       >
-                        {state.teacher.user.coin}
+                        {state.teacher.account.coin}
                       </span>
                     </div>
                   </div>
@@ -252,7 +261,7 @@ function Coin() {
                         />
                         <label>
                           Withdraw Amount ( One Coin will be Converted into IDR
-                          500,00)
+                          500,00) - Min Coin on Account : 50
                         </label>
                       </div>
                     </div>
@@ -291,7 +300,7 @@ function Coin() {
                   <button
                     className="fw-bold"
                     onClick={() => {
-                      handleWithdrawCoin();
+                      withdrawCoin();
                     }}
                   >
                     Proceed
