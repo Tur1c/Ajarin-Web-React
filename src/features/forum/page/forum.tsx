@@ -18,12 +18,15 @@ import {
 } from "../../../model/forum/forum-model";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import { Pagination, Sidebar } from "../../../shared";
+import AddForumModal from "./add-forum-modal";
 import "./forum.css";
 
 const CATEGORY_URL = "/api/category";
 const FORUM_URL = "/api/forum";
 
 const Forum = () => {
+  const email = sessionStorage.getItem("user");
+  const isLogged = sessionStorage.getItem("jwt");
   const userRole = sessionStorage.getItem("role");
 
   const [categories, setCategories] = useState<CategoryListOutput>({
@@ -41,7 +44,7 @@ const Forum = () => {
   const { state } = useLocation();
 
   const account: AccountOutput = !state?.firstName ? undefined : state;
-  console.log(account);
+  // console.log(account);
 
   const [searchText, setSearchText] = useState("");
 
@@ -70,25 +73,24 @@ const Forum = () => {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-
-      setForumList(transfromToForumListOutput(response.data.outputSchema));
-
       console.log("munculll", response.data.outputSchema);
+      setForumList(
+        transfromToForumListOutput(response.data.outputSchema, email)
+      );
 
-      setTempForumList(transfromToForumListOutput(response.data.outputSchema));
+      setTempForumList(
+        transfromToForumListOutput(response.data.outputSchema, email)
+      );
     } catch (error) {}
   };
-
-  useEffect(() => {
-    fetchCategoryData();
-    fetchForumData();
-  }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [classPerPage, setClassPerPage] = useState(5);
 
   const lastIndex = currentPage * classPerPage;
   const firstIndex = lastIndex - classPerPage;
+  let allForum = forumList.forum_list;
+  const lastIndexFiltered = allForum.length;
   let currentForum = forumList.forum_list.slice(firstIndex, lastIndex);
 
   function handlePageChange(value: any) {
@@ -143,8 +145,22 @@ const Forum = () => {
       );
     }
     currentForum = forumList.forum_list.slice(firstIndex, lastIndex);
-    console.log(currentForum);
+    console.log("hem", currentForum);
   }
+
+  const [showModalAddForum, setShowModalAddForum] = useState(false);
+
+  const handleCloseModalAddForum = () => setShowModalAddForum(false);
+
+  const handleShowModalAddForum = () => {
+    setShowModalAddForum(true);
+  };
+
+  useEffect(() => {
+    fetchForumData();
+    fetchCategoryData();
+  }, []);
+  console.log("munculah forum", forumList);
 
   return (
     <div className="all-page">
@@ -169,13 +185,36 @@ const Forum = () => {
             <div className="" style={{ border: "none" }}>
               <div className="forum-top d-flex justify-content-between">
                 <h3 className="text-white fw-bold">Forum Discussions</h3>
-                <button className="new-forum-btn">+ Add New Forum</button>
+                {isLogged ? (
+                  <>
+                    <button
+                      className="new-forum-btn"
+                      onClick={() => handleShowModalAddForum()}
+                    >
+                      + Add New Forum
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button className="new-forum-btn">
+                      <Link
+                        to={"/login"}
+                        style={{ color: "var(--blue)", textDecoration: "none" }}
+                      >
+                        + Add New Forum
+                      </Link>
+                    </button>
+                  </>
+                )}
               </div>
             </div>
             <div className="d-flex row">
               <div className="forum-search-wrapper">
-                <div className="d-flex col" style={{ background: "white" }}>
-                  <div className="search-left ms-3">
+                <div
+                  className="d-flex col"
+                  style={{ background: "white", borderRadius: "0.5rem" }}
+                >
+                  <div className="search-left m-3">
                     <input
                       type="search"
                       name=""
@@ -189,6 +228,7 @@ const Forum = () => {
                       }}
                     />
                   </div>
+
                   <div className="search-right p-3">
                     <button className="search-button" id="search">
                       <IoSearch
@@ -200,15 +240,13 @@ const Forum = () => {
                   </div>
                 </div>
                 <div
-                  className="search-dropdown-forum d-flex row"
+                  className="filter-dropdown-forum d-flex row"
                   // style={{
                   //   float: "right",
-                  //   alignContent: "end",
+                  //   alignContent: "start",
                   // }}
                 >
                   <Dropdown as={ButtonGroup}>
-                    <Button variant="success">Sort By : {sortCategory}</Button>
-
                     <Dropdown.Toggle
                       split
                       variant="success"
@@ -235,6 +273,7 @@ const Forum = () => {
                         Most Comment
                       </Dropdown.Item>
                     </Dropdown.Menu>
+                    <Button variant="success">Sort By : {sortCategory}</Button>
                   </Dropdown>
                 </div>
               </div>
@@ -254,31 +293,68 @@ const Forum = () => {
                           >
                             <div className="forum-list-container">
                               <div className="left d-flex">
-                                <img
-                                  className="img-fluid"
-                                  src={`assets/coin.png`}
-                                  alt=""
-                                  style={{ height: "50px" }}
-                                />
+                                <div className="" style={{ display: "block" }}>
+                                  <img
+                                    className="img-fluid bg-light"
+                                    src={
+                                      data.questionUser.urlImage ||
+                                      `assets/default_picture.png`
+                                    }
+                                    alt=""
+                                    style={{
+                                      height: "5vh",
+                                      width: "5vh",
+                                      borderRadius: "0.5rem",
+                                    }}
+                                  />
+                                </div>
                                 <div className="forum-list-title ms-4">
-                                  <p
-                                    className="m-0"
-                                    style={{ fontWeight: "600" }}
+                                  <h5
+                                    className="m-0 text-decoration-none"
+                                    style={{
+                                      fontWeight: "600",
+                                      color: "var(--black)",
+                                    }}
                                   >
                                     {data.title}
-                                  </p>
-                                  <span>{data.createdDate.toString()}</span>
+                                  </h5>
+                                  <span
+                                    className="text-decoration-none"
+                                    style={{
+                                      fontSize: "14px",
+                                      color: "var(--grey)",
+                                      fontWeight: "bold",
+                                    }}
+                                  >
+                                    Created by {data.questionUser.fullName} at{" "}
+                                    {data.createdDate.toString()}
+                                  </span>
                                 </div>
                               </div>
-                              <div className="right">
-                                <span className="badge badge-outlined text-white me-2">
+                              <div className="right d-flex justify-content-center align-items-center">
+                                <span className="pill badge badge-outlined text-white">
                                   {data.questionCategory}
                                 </span>
-                                <span className="badge badge-outlined text-white me-2">
+                                <span className="pill badge badge-outlined text-white">
                                   {data.questionLevel}
                                 </span>
-                                <BiComment />
-                                <span>{data.totalComment}</span>
+                                <span
+                                  style={{
+                                    fontSize: "24px",
+                                    color: "var(--black)",
+                                  }}
+                                >
+                                  <BiComment />
+                                </span>
+
+                                <span
+                                  style={{
+                                    fontSize: "18px",
+                                    color: "var(--black)",
+                                  }}
+                                >
+                                  {data.totalComment}
+                                </span>
                               </div>
                             </div>
                           </Link>
@@ -301,26 +377,71 @@ const Forum = () => {
                             return (
                               <div className="forum-list-container">
                                 <div className="left d-flex">
-                                  <img
-                                    className="img-fluid"
-                                    src={data.questionUser.urlImage}
-                                    alt=""
-                                    style={{ height: "50px" }}
-                                  />
+                                  <div
+                                    className=""
+                                    style={{ display: "block" }}
+                                  >
+                                    <img
+                                      className="img-fluid bg-light"
+                                      src={
+                                        data.questionUser.urlImage ||
+                                        `assets/default_picture.png`
+                                      }
+                                      alt=""
+                                      style={{
+                                        height: "5vh",
+                                        width: "5vh",
+                                        borderRadius: "0.5rem",
+                                      }}
+                                    />
+                                  </div>
                                   <div className="forum-list-title ms-4">
-                                    <p className="m-0">{data.title}</p>
-                                    <span>{data.createdDate.toString()}</span>
+                                    <h5
+                                      className="m-0 text-decoration-none"
+                                      style={{
+                                        fontWeight: "600",
+                                        color: "var(--black)",
+                                      }}
+                                    >
+                                      {data.title}
+                                    </h5>
+                                    <span
+                                      className="text-decoration-none"
+                                      style={{
+                                        fontSize: "14px",
+                                        color: "var(--grey)",
+                                        fontWeight: "bold",
+                                      }}
+                                    >
+                                      Created by {data.questionUser.fullName} at{" "}
+                                      {data.createdDate.toString()}
+                                    </span>
                                   </div>
                                 </div>
                                 <div className="right">
                                   <span className="badge badge-outlined text-white me-2">
                                     {data.questionCategory}
                                   </span>
-                                  <span className="badge badge-outlined text-white me-2">
+                                  <span className="pill badge badge-outlined text-white">
                                     {data.questionLevel}
                                   </span>
-                                  <BiComment />
-                                  <span>{data.totalComment}</span>
+                                  <span
+                                    style={{
+                                      fontSize: "24px",
+                                      color: "var(--black)",
+                                    }}
+                                  >
+                                    <BiComment />
+                                  </span>
+
+                                  <span
+                                    style={{
+                                      fontSize: "18px",
+                                      color: "var(--black)",
+                                    }}
+                                  >
+                                    {data.totalComment}
+                                  </span>
                                 </div>
                               </div>
                             );
@@ -345,17 +466,17 @@ const Forum = () => {
         className="forum-categories-content"
         style={{
           overflow: "hidden",
+          borderRadius: "0.5rem",
         }}
       >
-        <div className="card mb-3" style={{ height: "100vh", border: "none" }}>
+        <div className="">
           <div
-            className="card-body"
+            className="d-flex align-items-center h-100"
             style={{
-              backgroundColor: "#11235A",
-              borderRadius: "0.375rem",
+              backgroundColor: "var(--blue)",
             }}
           >
-            <div className="card-text p-2" style={{ color: "#fff" }}>
+            <div className="forum-category-list card-text p-2">
               <p>
                 <button
                   className={
@@ -386,7 +507,6 @@ const Forum = () => {
                         style={{
                           backgroundColor: "transparent",
                           border: "none",
-                          color: "white",
                         }}
                         key={index}
                         onClick={() => setCategoryChosen(category.categoryName)}
@@ -407,7 +527,6 @@ const Forum = () => {
                         style={{
                           backgroundColor: "transparent",
                           border: "none",
-                          color: "white",
                         }}
                         key={index}
                         onClick={() => setCategoryChosen(category.categoryName)}
@@ -423,6 +542,10 @@ const Forum = () => {
         </div>
       </div>
       {/* </Sidebar> */}
+      <AddForumModal
+        show={showModalAddForum}
+        onHide={handleCloseModalAddForum}
+      ></AddForumModal>
     </div>
   );
 };

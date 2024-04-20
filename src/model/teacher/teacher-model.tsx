@@ -3,13 +3,12 @@ import moment from "moment";
 import {
   AccountNoROutput,
   AccountRegisterSchema,
-  PrivateDiscInput,
   PrivateDiscOut,
   PrivateDiscSchema,
   TransformToPrivateDiscOut,
   transformToAccountNoROutput,
 } from "../Account";
-import { Class, ClassList, Course, CourseList, CourseListOutput, CourseListSchema, DiscussionListOutput, DiscussionListSchema, transfromToCourseListOutput, transfromToDiscussionListOutput } from "../course/course-list";
+import { Class, ClassList, Course, CourseList } from "../course/course-list";
 
 export interface InquiryTeacherSchema {
   teachers: Teacher[];
@@ -107,7 +106,7 @@ export function transformToTeacherOutput(response: Teacher): TeacherOutput {
         endtime: data.disc_endtime,
         description: data.disc_description,
         level: data.disc_level,
-        category: data.category.category_name,
+        category: data.category.categoryName,
         image: data.disc_image,
         participant: data.joinedParticipant,
       }
@@ -132,7 +131,7 @@ export function transformToTeacherOutput(response: Teacher): TeacherOutput {
             chapter_pdf: course.chapter_pdf,
           };
         }),
-      }
+      };
     }),
     courseSold: countCourseSold(response.courses),
     discussionParticipant: countDiscussionParticipant(response.discussion),

@@ -5,14 +5,14 @@ import { HiOutlineBookOpen } from "react-icons/hi2";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import { PiEyeglassesLight } from "react-icons/pi";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import axios from "../../api/axios";
+import { useSessionStorage } from "../../context/useLocalStorage";
 import { AccountLoginSchema, AccountOutput } from "../../model/Account";
+import { ApiResponse } from "../../model/schema/base_schema";
+import { TeacherOutput } from "../../model/teacher/teacher-model";
+import { transfromToServiceLoginAccountOutput } from "../../service/Account/account.service";
 import "./Sidebar.css";
 import SidebarLoginRegister from "./SidebarLoginRegister";
-import { TeacherOutput } from "../../model/teacher/teacher-model";
-import axios from "../../api/axios";
-import { transfromToServiceLoginAccountOutput } from "../../service/Account/account.service";
-import { ApiResponse } from "../../model/schema/base_schema";
-import { useSessionStorage } from "../../context/useLocalStorage";
 
 interface Props {
   children?: ReactNode;
@@ -39,7 +39,7 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
   const [user, setUser] = useSessionStorage("user", "");
   const [role, setRole] = useSessionStorage("role", "");
 
-  const isAlreadyRegisterTeacher = async (email:string) => {
+  const isAlreadyRegisterTeacher = async (email: string) => {
     try {
       const response = await axios.get(STATUS_REGISTERED_TEACHER + email, {
         headers: {
@@ -48,14 +48,14 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
         },
         withCredentials: true,
       });
-      if(response.data.outputSchema != null) {
+      if (response.data.outputSchema != null) {
         isAlreadyTeacher = true;
       }
       console.log(response.data);
     } catch {}
   };
 
-  const changeAccount = async (email:string) => {
+  const changeAccount = async (email: string) => {
     try {
       const response = await axios.get<ApiResponse<AccountLoginSchema>>(
         CHANGE_ACCOUNT + email,
@@ -82,8 +82,7 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
     } catch {}
   };
 
-
-  const handleAlreadyRegisteredAsTeacher = (account:AccountOutput) => {
+  const handleAlreadyRegisteredAsTeacher = (account: AccountOutput) => {
     isAlreadyRegisterTeacher(account.email);
     setTimeout(() => {
       console.log(isAlreadyTeacher);
@@ -101,7 +100,7 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
 
   return (
     <div className="sidebar">
-      <div className="logo-content" style={{cursor:"default"}}>
+      <div className="logo-content" style={{ cursor: "default" }}>
         <h1 className="fw-bold" style={{ color: "#fff", fontSize: "32px" }}>
           ajar<span style={{ color: "#F6ECA9" }}>in</span>
         </h1>
@@ -148,54 +147,72 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
         <div className="profile-content">
           <div className="profile">
             {isLogged ? (
-              <div className="profile_details">
-                              <button
-                                // className="btn profile-button"
-                                type="button"
-                                style={{
-                                  width: "250px",
-                                  borderRadius: "25px",
-                                  border: "2px solid #11235A",
-                                  backgroundColor: "#fff",
-                                  color: "#11235A",
-                                }}
-                                onClick={() => handleAlreadyRegisteredAsTeacher(account)}
-                              >
-                                <b>
-                                  Become{" "}
-                                  {userRole === "Teacher" ? (
-                                    <span>Student</span>
-                                  ) : (
-                                    <span>Teacher</span>
-                                  )}
-                                </b>
-                              </button>
-                            
-                {userRole === "Teacher" ?
-                (
-                <Link to={"/lecturer/" + teacheracc?.account.fullName} state={{data:teacheracc}}>
-                {/* <i> */}
-                <img
-                  className="img-fluid rounded-circle"
-                  src={account?.urlImage || `assets/default_picture.png`}
-                  alt=""
-                  style={{ height: "120%", width: "100%" }}
-                />
-                {/* </i> */}
-              </Link>)
-              :
-              (<Link to={"/profile"} state={account}>
-              {/* <i> */}
-              <img
-                className="img-fluid rounded-circle"
-                src={account?.urlImage || `assets/default_picture.png`}
-                alt=""
-                style={{ height: "120%", width: "100%" }}
-              />
-              {/* </i> */}
-            </Link>)
-              }
-                
+              <div className="d-flex row profile-details">
+                <button
+                  // className="btn profile-button"
+                  type="button"
+                  style={{
+                    width: "6vw",
+                    borderRadius: "25px",
+                    border: "2px solid #11235A",
+                    backgroundColor: "#fff",
+                    color: "#11235A",
+                  }}
+                  onClick={() => handleAlreadyRegisteredAsTeacher(account)}
+                >
+                  <b className="text-center">
+                    Become<br></br>
+                    {userRole === "Teacher" ? (
+                      <span>Student</span>
+                    ) : (
+                      <span>Teacher</span>
+                    )}
+                  </b>
+                </button>
+
+                {userRole === "Teacher" ? (
+                  <div className="d-flex col justify-content-center">
+                    <Link
+                      to={"/lecturer/" + teacheracc?.account.fullName}
+                      state={{ data: teacheracc }}
+                    >
+                      <img
+                        className="img-fluid rounded-circle"
+                        src={account?.urlImage || `assets/default_picture.png`}
+                        alt=""
+                        style={{
+                          height: "5vw",
+                          width: "5vw",
+                          marginTop: "1rem",
+                        }}
+                      />
+
+                      {/* <i> */}
+
+                      {/* </i> */}
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="d-flex col justify-content-center">
+                    <Link to={"/profile"} state={account}>
+                      {/* <i> */}
+
+                      <img
+                        className="img-fluid rounded-circle bg-light"
+                        src={account?.urlImage || `assets/default_picture.png`}
+                        alt=""
+                        style={{
+                          height: "5vw",
+                          width: "5vw",
+                          marginTop: "1rem",
+                        }}
+                      />
+
+                      {/* </i> */}
+                    </Link>
+                  </div>
+                )}
+
                 {/* <img src="profile.jpg" alt="profile" /> */}
               </div>
             ) : (

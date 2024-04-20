@@ -10,6 +10,7 @@ import {
 } from "../../../model/course/course-list";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import { Pagination } from "../../../shared";
+import FilterList from "../../../shared/filter/FilterList";
 
 const COURSE_URL = "/api/course";
 
@@ -84,22 +85,28 @@ function HomeClass({ account }: Props) {
       <div></div>
       <div className="m-1 d-flex row">
         <div className="filter">
-          <div className="filter-btn">Subject</div>
-          <div className="filter-btn">Education Level</div>
+          {/* <div className="filter-btn">Subject</div>
+          <div className="filter-btn">Education Level</div> */}
+          <div className="d-flex col">
+            <FilterList></FilterList>
+          </div>
         </div>
         <div
-          className="card card-container"
-          style={{ backgroundColor: "#11235a", border: "none" }}
+          className="homes card card-container"
+          style={{
+            backgroundColor: "#11235a",
+            border: "none",
+            marginTop: "0.25rem",
+          }}
         >
-          <div className="">
+          <div className="w-100">
             <div className="row">
               {currentCourse.map((data, index) => (
-                
                 <div
                   className="col-md-3 d-flex align-items-stretch mb-2"
                   key={index}
                 >
-                  <div className="card" style={{ border: "none" }}>
+                  <div className="card" style={{ border: "none", width:"20vw" }}>
                     <Link to={"/course/" + data.title} state={{ data, acc }}>
                       <div className="container-class-header">
                         <div className="class-thumbnail">
@@ -107,6 +114,7 @@ function HomeClass({ account }: Props) {
                             className="class-image img-fluid"
                             src={`assets/${data.image}`}
                             alt=""
+                            style={{objectFit:"fill"}}
                           />
                         </div>
 
@@ -121,70 +129,73 @@ function HomeClass({ account }: Props) {
                             {data.price}
                           </span>
                         </div>
-                        <div className="top-right">{data.chapter} chapter</div>
+                        <div className="top-right">{data.chapter} Chapter</div>
                       </div>
-                    
-                    <div className="card-body p-2">
-                      <div className="card-text">
-                        <div className="class-content">
-                          <div className="class">
-                            <div className="d-block">
-                              <div
-                                className=""
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                }}
-                              >
-                                <img
-                                  src={"/assets/" + data.teacher?.account.urlImage}
-                                  alt="abc"
-                                  className="me-2"
-                                  width={"50px"}
-                                />
-                                <span
+
+                      <div className="card-body p-2">
+                        <div className="card-text">
+                          <div className="class-content">
+                            <div className="class">
+                              <div className="d-block">
+                                <div
+                                  className=""
                                   style={{
-                                    color: "#000",
+                                    display: "flex",
                                     alignItems: "center",
                                   }}
                                 >
-                                  {data.teacher?.account.fullName}
-                                </span>
-                              </div>
-                              <div className="d-block p-1">
-                                <div className="title-class mb-2">
-                                  <h3 style={{ color: "#000" }}>
-                                    {data.title}
-                                  </h3>
+                                  <img
+                                    src={
+                                      "/assets/" +
+                                      data.teacher?.account.urlImage
+                                    }
+                                    alt="abc"
+                                    className="me-2"
+                                    width={"50px"}
+                                  />
+                                  <span
+                                    style={{
+                                      color: "#000",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    {data.teacher?.account.fullName}
+                                  </span>
                                 </div>
-                                <span
-                                  className="badge badge-outlined me-2"
-                                  style={{
-                                    borderColor: "#000",
-                                    backgroundColor: "#fff",
-                                    color: "#000",
-                                    borderRadius: "15px",
-                                  }}
-                                >
-                                  {data.category}
-                                </span>
-                                <span
-                                  className="badge badge-outlined me-2"
-                                  style={{
-                                    borderColor: "#000",
-                                    backgroundColor: "#fff",
-                                    color: "#000",
-                                    borderRadius: "15px",
-                                  }}
-                                >
-                                  {data.level}
-                                </span>
+                                <div className="d-block p-1">
+                                  <div className="title-class mb-2">
+                                    <h3 style={{ color: "#000" }}>
+                                      {data.title}
+                                    </h3>
+                                  </div>
+                                  <span
+                                    className="badge badge-outlined me-2"
+                                    style={{
+                                      borderColor: "#000",
+                                      backgroundColor: "#fff",
+                                      color: "#000",
+                                      borderRadius: "15px",
+                                    }}
+                                  >
+                                    {data.category}
+                                  </span>
+                                  <span
+                                    className="badge badge-outlined me-2"
+                                    style={{
+                                      borderColor: "#000",
+                                      backgroundColor: "#fff",
+                                      color: "#000",
+                                      borderRadius: "15px",
+                                    }}
+                                  >
+                                    {data.level}
+                                  </span>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
                     </Link>
                   </div>
                 </div>

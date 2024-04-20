@@ -35,12 +35,12 @@ export interface AccountNoROutput {
   country: string;
   school: string;
   coin: number;
-  urlImage?: string;  
+  urlImage?: string;
 }
 
 export function transformToAccountNoROutput(
   response: AccountRegisterSchema
-) : AccountNoROutput {
+): AccountNoROutput {
   // console.log(response,"asdd");
   const result: AccountNoROutput = {
     id: response.id,
@@ -58,7 +58,7 @@ export function transformToAccountNoROutput(
     coin: response.coin,
     urlImage: response.pic_name !== null ? response.pic_name : "default_picture.png",
   };
-  console.log(result, "abc account hehe");
+  // console.log(result, "abc account hehe");
   return result;
 }
 
@@ -89,7 +89,7 @@ export interface AccountSchema {
 export interface AccountLoginSchema {
   email: string;
   password: string;
-  token?: string; 
+  token?: string;
   role?: string;
 }
 
@@ -97,8 +97,7 @@ export interface AccountLoginOutput {
   token: string;
 }
 
-
-export interface AccountOutput{
+export interface AccountOutput {
   id?: string;
   firstName: string;
   lastName: string;
@@ -123,17 +122,16 @@ export interface AccountOutput{
 export interface AccountLoginSchema {
   email: string;
   password: string;
-  token?: string; 
+  token?: string;
 }
 
 export interface AccountLoginOutput {
   token: string;
 }
 
-
 export function transfromToAccountOutput(
   response: AccountSchema
-) : AccountOutput {
+): AccountOutput {
   // console.log(response.subscribed_lecturer,"asdd");
   const result: AccountOutput = {
     id: response.id,
@@ -193,7 +191,6 @@ export interface StudentDiscOutput {
   studentdisc_list: StudentDisc[];
 }
 
-
 export interface StudentCourse {
   course: Course;
   status: string;
@@ -202,8 +199,8 @@ export interface StudentCourse {
   comment: string;
 }
 
-export interface StudentCourseS{
-  course: CourseList|undefined;
+export interface StudentCourseS {
+  course: CourseList | undefined;
   status: string;
   completed_chap: string;
   rating: number;
@@ -223,7 +220,6 @@ export interface SubscribedLecturer {
   user: AccountSchema;
 }
 
-
 export interface TeacherRegisterSchema {
   profile_description: string;
   education: string;
@@ -231,7 +227,7 @@ export interface TeacherRegisterSchema {
   achievement: string;
 }
 
-export interface PrivateDiscInput{
+export interface PrivateDiscInput {
   title: string;
   subject: string;
   education: string;
@@ -240,11 +236,11 @@ export interface PrivateDiscInput{
   start_time: string;
   end_time: string;
   coin: number;
-  user: AccountNoROutput|undefined;
-  teacher: TeacherOutput|undefined;
+  user: AccountNoROutput | undefined;
+  teacher: TeacherOutput | undefined;
 }
 
-export interface PrivateDiscSchema{
+export interface PrivateDiscSchema {
   private_id: string;
   title: string;
   subject: string;
@@ -258,7 +254,7 @@ export interface PrivateDiscSchema{
   teacher: null;
 }
 
-export interface PrivateDiscOut{
+export interface PrivateDiscOut {
   id: string;
   title: string;
   subject: string;
@@ -272,10 +268,12 @@ export interface PrivateDiscOut{
   user: AccountNoROutput;
 }
 
-export function TransformToPrivateDiscOut(response:PrivateDiscSchema) : PrivateDiscOut {
-  return{
+export function TransformToPrivateDiscOut(
+  response: PrivateDiscSchema
+): PrivateDiscOut {
+  return {
     id: response.private_id,
-    title:response.title,
+    title: response.title,
     subject: response.subject,
     education: response.education,
     difficulty: response.difficulty,
@@ -284,13 +282,11 @@ export function TransformToPrivateDiscOut(response:PrivateDiscSchema) : PrivateD
     end_time: response.end_time,
     coin: response.coin,
     status: "Ongoing",
-    user: response.user
+    user: response.user,
   };
 }
 
-export interface Notification{
+export interface Notification {
   notif_id: number;
   message: string;
 }
-
-

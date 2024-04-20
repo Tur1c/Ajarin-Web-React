@@ -4,10 +4,9 @@ import {
   transformToTeacherOutput,
 } from "../teacher/teacher-model";
 
-import moment from 'moment';
-import 'moment-timezone';
+import moment from "moment";
+import "moment-timezone";
 import { StudentCourse, StudentCourseS } from "../Account";
-import { string } from "yargs";
 export interface DiscussionListSchema {
   discussions: Class[];
 }
@@ -25,7 +24,7 @@ export interface Class {
   disc_image: string;
   category: {
     category_id: string;
-    category_name: string;
+    categoryName: string;
   };
   teacher: Teacher;
   joinedParticipant: number;
@@ -41,7 +40,7 @@ export interface CategorySchema {
 }
 
 export interface JoinDiscussionSchema {
-  email: string|null|undefined;
+  email: string | null | undefined;
   id: number | undefined;
 }
 
@@ -82,7 +81,7 @@ function changeDate(date: string) {
 export function transfromToDiscussionListOutput(
   response: DiscussionListSchema
 ): DiscussionListOutput {
-  console.log(response, "masuk");
+  console.log("masuk", response);
   console.log(response, "masuk");
   const result: DiscussionListOutput = {
     classList: response.discussions.map((data) => {
@@ -96,10 +95,10 @@ export function transfromToDiscussionListOutput(
         endtime: data.disc_endtime,
         description: data.disc_description,
         level: data.disc_level,
-        category: data.category.category_name,
+        category: data.category.categoryName,
         image: data.disc_image,
         teacher: transformToTeacherOutput(data.teacher),
-        participant: data.joinedParticipant  
+        participant: data.joinedParticipant,
       };
     }),
   };
@@ -202,16 +201,16 @@ export function transfromToCourseListOutput(
 export function transformToCourseOutput(response:Course): CourseList {
   console.log("masuk transform", response);
   const result: CourseList = {
-        id: response.course_id,
-        price: response.course_price,
-        chapter: response.course_chapter,
-        title: response.course_title,
-        description: response.course_description,
-        level: response.course_level,
-        category: response.category.category_name,
-        image: response.course_image,
-        teacher: transformToTeacherOutput(response.teacher),
-        sold: response.total_sold_course,
+    id: response.course_id,
+    price: response.course_price,
+    chapter: response.course_chapter,
+    title: response.course_title,
+    description: response.course_description,
+    level: response.course_level,
+    category: response.category.category_name,
+    image: response.course_image,
+    teacher: transformToTeacherOutput(response.teacher),
+    sold: response.total_sold_course,
 
 
         course_detail:response.course_details?.map( (course) => {
@@ -229,14 +228,14 @@ export function transformToCourseOutput(response:Course): CourseList {
   return result;
 }
 
-export interface RateCourse{
-  userid: string|undefined;
-  courseid: number|undefined;
+export interface RateCourse {
+  userid: string | undefined;
+  courseid: number | undefined;
   rating: number;
   comment: string;
 }
 
-export interface CompleteChapter{
+export interface CompleteChapter {
   userid: number;
   courseid: string;
   completed: string;

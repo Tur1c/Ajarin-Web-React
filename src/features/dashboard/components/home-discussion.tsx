@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "../../../api/axios";
+// import { CategoryListOutput } from "../../../model/category/category-model";
 import {
   ClassList,
   DiscussionListOutput,
@@ -8,11 +9,12 @@ import {
 } from "../../../model/course/course-list";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import { ModalCentered, Pagination } from "../../../shared";
+import FilterList from "../../../shared/filter/FilterList";
 
 const CLASS_URL = "/api/discussion";
 
 function HomeDiscussion(props: any) {
-  console.log(props, "discussion home");
+  console.log("discussion home", props);
 
   const [classList, setClassList] = useState<DiscussionListOutput>({
     classList: [],
@@ -21,6 +23,11 @@ function HomeDiscussion(props: any) {
   const [tempClassList, setTempClassList] = useState<DiscussionListOutput>({
     classList: [],
   });
+
+  const filteredList = classList.classList.filter((discussion) => {
+    return discussion.id < 5;
+  });
+  const currentFiltered = filteredList.slice(0, 3);
 
   const [classData, setClassData] = useState<ClassList>({
     id: 0,
@@ -35,7 +42,7 @@ function HomeDiscussion(props: any) {
     price: "",
     starttime: new Date(),
     teacher: undefined,
-    participant: 0
+    participant: 0,
   });
 
   const [searchText, setSearchText] = useState("");
@@ -102,7 +109,7 @@ function HomeDiscussion(props: any) {
       price: data.price,
       starttime: data.starttime,
       title: data.title,
-      participant: data.participant
+      participant: data.participant,
     });
     setShowModal(true);
   };
@@ -128,14 +135,19 @@ function HomeDiscussion(props: any) {
   useEffect(() => {
     fetchDataDiscussion();
   }, []);
-  console.log(classList,"discussiion");
+  console.log("discussion", classList);
+  console.log("filtered discussion", currentFiltered);
+
   return (
     <>
-      <div className="disc-container">
+      <div className="disc-container homes">
         <div className="w-100 m-1 d-flex row">
           <div className="filter">
-            <div className="filter-btn">Subject</div>
-            <div className="filter-btn">Education Level</div>
+            {/* <div className="filter-btn">Subject</div>
+            <div className="filter-btn">Education Level</div> */}
+            <div className="d-flex col">
+              <FilterList></FilterList>
+            </div>
           </div>
           {currentClass.map((data, index) => (
             <div
@@ -160,7 +172,9 @@ function HomeDiscussion(props: any) {
                   />
                   <span style={{ marginLeft: "5px" }}>{data.price}</span>
                 </div>
-                <div className="top-right">{data.participant}/{data.maxPeople}</div>
+                <div className="top-right">
+                  {data.participant}/{data.maxPeople}
+                </div>
                 <div className="bottom-right">
                   {data.starttime.toString().slice(0, 5)} -{" "}
                   {data.endtime.toString().slice(0, 5)}
@@ -170,11 +184,8 @@ function HomeDiscussion(props: any) {
               <div className="disc-content">
                 <div className="class">
                   <div className="d-flex">
-                    <div className="me-2">
-                      <img
-                        src={"/assets/" + data.teacher?.account.urlImage}
-                        width={"50px"}
-                      />
+                    <div className="lecturer-profile me-2">
+                      <img src={"/assets/" + data.teacher?.account.urlImage} />
                     </div>
 
                     <div className="disc-detail">

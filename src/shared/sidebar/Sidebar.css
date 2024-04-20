@@ -238,9 +238,9 @@
   pointer-events: all;
 }
 
-.profile_content .profile .profile_details {
-  display: flex;
-  pointer-events: none;
+.profile-details {
+  justify-content: center;
+  /* pointer-events: none; */
   align-items: center;
   white-space: nowrap;
 }

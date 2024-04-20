@@ -7,6 +7,7 @@
   --grey: #6e6e6e;
   --lightgrey: #aeaeae;
   --lightblue: #273a72;
+  --lightblue2: #596fb7;
   --whitedark: #dddddd;
   --yelodark: #f6e976;
 }
@@ -48,9 +49,64 @@ body {
   /* height: 100%; */
 }
 
-.greetings,
-.add-courses {
+.create-course-button,
+.set-discussion-button,
+.private-discussion-button {
+  height: 5rem;
+  font-size: 21px;
+  font-weight: bold;
+  border: none;
+  color: var(--white);
+}
+
+.create-course-button {
+  background: radial-gradient(#959cda, #1428da);
+  background-repeat: no-repeat;
+  filter: brightness(80%);
+  transition: all 0.5s ease-in;
+}
+
+.create-course-button:hover {
+  background: radial-gradient(#959cda, #1428da);
+  background-repeat: no-repeat;
+  filter: brightness(100%);
+}
+
+.set-discussion-button {
+  background: radial-gradient(#c6e1a4, #46691a);
+  background-repeat: no-repeat;
+  filter: brightness(80%);
+  transition: all 0.5s ease-in;
+}
+
+.set-discussion-button:hover {
+  background: radial-gradient(#c6e1a4, #46691a);
+  background-repeat: no-repeat;
+  filter: brightness(100%);
+}
+
+.private-discussion-button {
+  background: radial-gradient(#aed0bc, #63a77e);
+  background-repeat: no-repeat;
+  filter: brightness(80%);
+  transition: all 0.5s ease-in;
+}
+
+.private-discussion-button:hover {
+  background: radial-gradient(#aed0bc, #63a77e);
+  background-repeat: no-repeat;
+  filter: brightness(100%);
+}
+
+.greetings {
   margin-top: 2rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  cursor: default;
+}
+
+.add-courses {
+  margin-top: 4rem;
   margin-left: 2rem;
   margin-right: 2rem;
   cursor: default;
@@ -201,12 +257,6 @@ body {
   justify-content: center;
 }
 
-.updisc-container {
-  
-}
-
-
-
 .right-disc-active {
   background-color: var(--lightblue);
 }
@@ -221,8 +271,8 @@ body {
 }
 
 .disc-date {
-    width: 4vw;
-    height: 7vh;
+  width: 4vw;
+  height: 7vh;
 }
 
 .disc-title {
@@ -244,8 +294,8 @@ body {
   /* margin-top: 0.5rem; */
   border-radius: 0.5rem;
   background-color: var(--blue);
-  padding-top: 3rem;
-  padding-left: 2rem;
+  padding-top: 1rem;
+  padding-left: 1rem;
   cursor: default;
   height: max-content;
   flex-grow: 1;
@@ -278,6 +328,8 @@ body {
 .lecturer-profile img {
   height: 32px;
   width: 32px;
+  border-radius: 0.25rem;
+  background-color: white;
 }
 
 .class .title-class {
@@ -399,8 +451,8 @@ body {
 
 .chip {
   margin-top: 0.25rem;
-  padding: 0.25rem 0.5rem;
-  background-color: var(--grey);
+  padding: 0.25rem 0.75rem;
+  background-color: var(--lightblue2);
   font-size: 10px;
   border-radius: 5rem;
   width: fit-content;
@@ -451,9 +503,9 @@ body {
 .filter-btn {
   margin: 0.5rem;
   padding: 0.25rem 1rem;
-  border: #fff;
-  border-width: 1px;
-  border-style: solid;
+  /* border: #fff; */
+  /* border-width: 1px;
+  border-style: solid; */
   font-size: 10px;
   border-radius: 5rem;
   /* width: fit-content; */
@@ -462,10 +514,11 @@ body {
   min-width: 7rem;
   text-align: center;
   cursor: default;
+  background-color: rgba(110, 124, 163, 0.5);
 }
 
 .filter-btn:hover {
-  background-color: var(--lightblue);
+  background-color: rgba(110, 124, 163, 0.8);
   color: var(--whitedark);
 }
 
@@ -481,7 +534,7 @@ body {
   position: relative;
   text-align: center;
   color: white;
-  background-color: red;
+  /* background-color: red; */
   /* width: 100%; */
 }
 
@@ -497,21 +550,29 @@ body {
 
 /* Pagination */
 
-.pagination {
+.homes .pagination {
   cursor: default;
   position: fixed;
   bottom: 1.5rem;
 }
 
 .set-discussion-button {
-  background: linear-gradient(rgba(255,255,255,.1), rgba(255,255,255,.1)), url("../../../../public/assets/set_discussion.png");
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.1)
+    ),
+    url("../../../../public/assets/set_discussion.png");
   color: white;
   height: 4rem;
   font-size: 20px;
 }
 
 .create-course-button {
-  background: linear-gradient(rgba(255,255,255,.1), rgba(255,255,255,.1)), url("../../../../public/assets/create_course.png");
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.1)
+    ),
+    url("../../../../public/assets/create_course.png");
   height: 4rem;
   font-size: 20px;
   color: white;
@@ -519,7 +580,11 @@ body {
 }
 
 .private-discussion-button {
-  background: linear-gradient(rgba(255,255,255,.05), rgba(255,255,255,.05)), url("../../../../public/assets/private_discussion.png");
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.05)
+    ),
+    url("../../../../public/assets/private_discussion.png");
   height: 4rem;
   font-size: 20px;
   color: white;
@@ -527,7 +592,11 @@ body {
 }
 
 .coin-button {
-  background: linear-gradient(rgba(255,255,255,.05), rgba(255,255,255,.05)), url("../../../../public/assets/coin_button.png");
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.05)
+    ),
+    url("../../../../public/assets/coin_button.png");
   height: 4rem;
   font-size: 20px;
   color: white;

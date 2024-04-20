@@ -14,6 +14,7 @@ export interface CategoryOutput {
     categoryName: string;
 }
 
+
 export function transfromToCategoryListOutput(
     response: CategorySchema
   ): CategoryListOutput {

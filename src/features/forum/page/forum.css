@@ -24,15 +24,23 @@
 
 .forum-categories-content {
   flex: 0.15;
-  height: 100vh;
   display: flex;
   border: none;
-  /* background-color: yellow; */
-  flex-direction: column;
+  background-color: var(--blue);
+  flex-direction: row;
+}
+
+.forum-category-list button {
+  color: white;
+}
+
+.forum-category-list button:hover {
+  color: white;
+  opacity: 100%;
 }
 
 .forum-content .forum-container {
-  padding: 3rem 2rem;
+  padding: 2rem 2rem;
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
@@ -42,10 +50,62 @@
   font-size: 48px;
 }
 
+.forum-content .forum-top button {
+  width: 20%;
+}
+
 .forum-content .new-forum-btn {
-  padding: 0.5rem 2rem;
-  height: fit-content;
+  /* padding: 0.5rem 2rem; */
+  font-weight: bold;
   font-size: 21px;
+  background-color: var(--yelo);
+  color: var(--blue);
+  border-radius: 0.5rem;
+  border: none;
+  opacity: 1;
+}
+
+.forum-content .new-forum-btn:hover {
+  opacity: 0.8;
+}
+
+.forum-search-wrapper .search-left {
+  border: none;
+  width: 100%;
+  overflow-x: hidden;
+  /* background-color: red; */
+}
+
+.forum-container .search-left input {
+  border: none;
+}
+
+.forum-container .search-input {
+  width: 100%;
+}
+
+.forum-container .search-button {
+  background-color: white;
+  border: 0;
+}
+
+.forum-container .search-container {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  height: 3.5rem;
+  padding: 0rem 2rem;
+  justify-content: space-between;
+  border-radius: 0.5rem;
+}
+
+.forum-container .search-container input {
+  background-color: transparent;
+  border: none;
+  width: 98%;
+  height: auto;
+  font-size: 1.25rem;
+  padding: 0.2rem;
 }
 
 .forum-content .forum-search-wrapper {
@@ -69,6 +129,7 @@
   border-radius: 0.5rem;
 }
 
+<<<<<<< Updated upstream
 .forum-search-wrapper .search-left {
   border: none;
   width: 100%;
@@ -91,6 +152,18 @@
 .search-dropdown-forum {
   width: 30vh;
   justify-content: flex-start;
+}
+
+.forum-container .filter-dropdown-forum {
+  width: 21%;
+}
+
+.forum-container .dropdown-toggle {
+  width: 2rem;
+}
+
+.forum-container .dropdown-menu {
+  width: 90%;
 }
 
 /* .search-wrapper-forum {
@@ -145,6 +218,15 @@
   background-color: #fff;
   margin: 0rem 0rem;
   border-radius: 0.5rem;
+}
+
+.forum-content .pill {
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+}
+
+.forum-content .right {
+  gap: 0.25rem;
 }
 
 .pagination-container {
@@ -232,10 +314,16 @@
   margin-bottom: 0.25rem;
   /* background-color: red; */
   height: 20%;
+  justify-content: center;
   align-items: center;
   text-align: center;
 
   gap: 1rem;
+}
+
+.forum-info h5 {
+  margin-bottom: 0.25rem;
+  height: 20%;
 }
 
 .subject-edu {
@@ -330,11 +418,64 @@ input:focus {
 }
 
 /* Input Reply */
-.input-reply-box {
+.forum-detail-content .input-reply-box {
   width: 100%;
   height: 10vh;
 }
 
-.send-btn {
+.forum-detail-content .send-btn {
   width: 10%;
+  font-weight: bold;
+}
+
+.btn-container button {
+  margin-bottom: 10px;
+  outline: none;
+  background: none;
+  width: 10vw;
+  border-radius: 5rem;
+  border: #fff 1px solid;
+  color: #fff;
+  font-size: 14px;
+  height: 4vh;
+}
+
+.btn-container button a {
+  text-decoration: none;
+}
+
+.btn-container .login-btn {
+  background-color: var(--yelo);
+}
+
+.btn-container .login-btn:hover {
+  background-color: var(--yelodark);
+}
+
+.edit-and-delete {
+  /* background-color: red; */
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 0.25rem;
+
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.cancel-btn button {
+  background-color: var(--lightblue);
+  border: none;
+  outline: none;
+  border-radius: 50px;
+  padding: 0.25rem 0.5rem;
+  color: var(--white);
+  cursor: pointer;
+  min-width: 15vh;
+  font-weight: bold;
+  border: solid 2px white;
+}
+
+.cancel-btn button:hover {
+  background-color: var(--blue);
 }

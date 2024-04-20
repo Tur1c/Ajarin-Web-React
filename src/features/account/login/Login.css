@@ -25,7 +25,7 @@
   font-size: 18px;
 }
 
-.login-wrapper .register-link{
+.login-wrapper .register-link {
   opacity: 0.7;
 }
 
@@ -39,12 +39,12 @@
   margin-top: 1.5rem;
 }
 
-.input-box {
+/* .input-box {
   position: relative;
   margin: 20px 0;
-}
+} */
 
-.input-box input {
+/* .input-box input {
   width: 100%;
   height: 120%;
   background: #fff;
@@ -54,9 +54,9 @@
   border-radius: 40px;
   display: inline;
   padding: 20px 45px 20px 24px;
-}
+} */
 
-.input-box label {
+/* .input-box label {
   position: absolute;
   top: 60%;
   left: 20px;
@@ -66,15 +66,15 @@
   padding: 0 5px;
   pointer-events: none;
   transition: 0.2s ease;
-}
+} */
 
-.forgot-password a {
+.login-wrapper .forgot-password a {
   color: #fff;
   text-decoration: none;
   opacity: 0.7;
 }
 
-.forgot-password a:hover {
+.login-wrapper .forgot-password a:hover {
   opacity: 1;
 }
 
@@ -92,8 +92,8 @@
   background-color: var(--yelodark);
 }
 
-.input-box input:focus ~ label,
-.input-box input:valid ~ label {
+.login-wrapper .input-box input:focus ~ label,
+.login-wrapper .input-box input:valid ~ label {
   top: 20%;
   font-size: 10px;
 }

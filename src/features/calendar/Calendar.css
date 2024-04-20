@@ -1,3 +1,62 @@
+:root {
+  --purple: #0a122b;
+  --blue: #11235a;
+  --yelo: #f6eca9;
+  --black: #000;
+  --white: #fff;
+  --grey: #6e6e6e;
+  --lightgrey: #aeaeae;
+  --lightblue: #273a72;
+  --lightblue2: #596fb7;
+  --whitedark: #dddddd;
+  --yelodark: #f6e976;
+}
+
+.all-page-calendar {
+  display: flex;
+  height: 100vh;
+  background-color: var(--purple);
+  color: white;
+  overflow: hidden;
+  /* margin: 0.5rem; */
+  padding: 0.5rem;
+  flex: 1;
+}
+
+.sidebar-content-calendar {
+  position: relative;
+  flex: 0.075;
+  /* background-color: #f6eca9; */
+  margin-right: 0.5rem;
+}
+
+.disc-course-content {
+  flex: 0.925;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--blue);
+  border-radius: 0.5rem;
+}
+
+.disc-calendar {
+  display: flex;
+  height: 60vh;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  padding: 0rem 2rem;
+  width: 100%;
+}
+
+.disc-item {
+  display: flex;
+}
+
+.disc-item img {
+  width: 100%;
+  aspect-ratio: 20/10;
+}
+
 .calendar-prevbutton,
 .calendar-nextbutton {
   border: none;
@@ -14,44 +73,44 @@
   display: inline-block;
 }
 
-.disc-image{
-    position: relative;
+.disc-image {
+  position: relative;
 }
 
-.participant-total{
-    position: absolute;
-    left: 1rem;
-    top: 0.8rem;
-    background-color: grey;
-    color: white;
-    padding-left: 0.8rem;
-    padding-right: 0.8rem;
+.participant-total {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  cursor: default;
 }
 
-.card{
-    --bs-card-spacer-y: 0; 
-    --bs-card-spacer-x: 0; 
+.card {
+  --bs-card-spacer-y: 0;
+  --bs-card-spacer-x: 0;
 }
 
-.disc-body{
-    background-color: #11235A;
-    color: white;
+.disc-body {
+  background-color: #11235a;
+  color: white;
 }
 
-.right-container{
-    width: 50%;
-    overflow: hidden;
+.right-container {
+  width: 50%;
+  overflow: hidden;
 }
 
-
-.sidebar-content{
-    position: relative;
-    flex: 0.075;
+.sidebar-content {
+  position: relative;
+  flex: 0.075;
   /* background-color: #f6eca9; */
-    margin-right: 0.5rem;
+  margin-right: 0.5rem;
 }
 
-.account-course-content{
+.account-course-content {
   width: 100%;
   display: flex;
   gap: 20px;
@@ -60,7 +119,7 @@
   user-select: none;
 }
 
-.account-course-content::-webkit-scrollbar{
+.account-course-content::-webkit-scrollbar {
   height: 1px;
   background-color: transparent;
 }

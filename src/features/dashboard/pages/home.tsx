@@ -139,7 +139,7 @@ function Home() {
     if (userRole === "Teacher") {
       setTimeout(() => {
         console.log("MASOKKK");
-        
+
         fetchTeacherData();
         fetchDataAccount();
       }, 500);
@@ -215,10 +215,10 @@ function Home() {
                   Set Discussion
                 </button>
               </div>
-              <div className="col-6 mt-3">
+              <div className="col-6">
                 <button
                   className="private-discussion-button"
-                  style={{ width: "100%" }}
+                  style={{ width: "100%", marginTop: "2rem" }}
                 >
                   Private Discussion Request
                 </button>
@@ -518,6 +518,7 @@ function Home() {
                           {dayjs(disc.discussion.disc_date).format("MMM")}
                         </h5>
                       </div>
+
                       <div className="disc-title my-auto d-flex row px-2 ">
                         <h6 style={{ margin: 0, fontSize: "14px" }}>
                           {disc.discussion.disc_title}
@@ -533,6 +534,7 @@ function Home() {
                           by Godwin
                         </h6>
                       </div>
+                      
                       <div className="disc-time d-flex justify-content-center px-2 border-start border-white">
                         <h6
                           className="d-flex align-items-center justify-content-center"

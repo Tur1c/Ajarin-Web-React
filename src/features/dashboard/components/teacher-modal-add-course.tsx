@@ -8,6 +8,8 @@ import { AddCourseSchema, Course } from "../../../model/course/course-list";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import TeacherModalAddCourseDetail from "./teacher-modal-add-course-detail";
 
+import "./teacher-modal-add-course.css";
+
 const ADD_COURSE = "/api/course/add";
 
 function TeacherModalAddCourse(props: any) {
@@ -174,36 +176,46 @@ function TeacherModalAddCourse(props: any) {
         aria-labelledby="contained-modal-title-vcenter"
         backdrop="static"
         centered
+        className="h-100"
       >
         {!isLoading ? (
           <>
-            <Modal.Header className="p-0 d-block">
-              <div
-                className="container-class-header d-flex justify-content-around mt-3"
-                style={{ height: "2rem" }}
-              >
-                <div>
+            <Modal.Header className="d-flex w-100" style={{ border: "none" }}>
+              <div className="add-course-header container-class-header d-flex col justify-content-between mt-3">
+                <div className="close-btn">
                   <IoIosCloseCircleOutline
                     style={{ color: "#fff", fontSize: "54px" }}
                     onClick={props.onHide}
                   />
                 </div>
-                <div style={{ fontSize: "30px" }}>
+                <div
+                  className="d-flex pe-4"
+                  style={{
+                    fontSize: "32px",
+                    fontWeight: "bold",
+                    cursor: "default",
+                  }}
+                >
                   <span>Create Course</span>
                 </div>
                 <div></div>
               </div>
             </Modal.Header>
-            <Modal.Body className="p-5">
-              <div className="modal-body-container">
+            <Modal.Body
+              className="add-course-body h-100"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <div className="modal-body-container w-100 h-100">
                 <form onSubmit={(e) => {e.preventDefault();handleSubmit(e)}}>
                   {page === 1 ? (
-                    <div className="inputs" style={{ width: "100%" }}>
+                    <div className="add-course-inputs ">
                       <div className="">
-                        <div
-                          className="input-box"
-                          style={{ marginBottom: "0.5rem" }}
-                        >
+                        <div className="input-boxx">
                           <input
                             type="text"
                             required
@@ -218,49 +230,47 @@ function TeacherModalAddCourse(props: any) {
                           />
                           <label>Discussion Title</label>
                         </div>
-                        <div
-                          className="input-box"
-                          style={{ marginBottom: "0.5rem" }}
-                        >
-                          <input
-                            type="text"
-                            required
-                            style={{ width: "100%" }}
-                            id="subject"
-                            onChange={(e) =>
-                              setAddCourse({
-                                ...addCourse,
-                                category: e.target.value,
-                              })
-                            }
-                          />
-                          <label>Subject</label>
+
+                        <div className="d-flex col" style={{ gap: "1rem" }}>
+                          <div className="input-boxx">
+                            <input
+                              type="text"
+                              required
+                              style={{ width: "" }}
+                              id="subject"
+                              onChange={(e) =>
+                                setAddCourse({
+                                  ...addCourse,
+                                  category: e.target.value,
+                                })
+                              }
+                            />
+                            <label>Subject</label>
+                          </div>
+
+                          <div className="input-boxx">
+                            <input
+                              type="text"
+                              required
+                              style={{ width: "" }}
+                              id="education-level"
+                              onChange={(e) =>
+                                setAddCourse({
+                                  ...addCourse,
+                                  education_level: e.target.value,
+                                })
+                              }
+                            />
+                            <label>Education Level</label>
+                          </div>
                         </div>
 
-                        <div
-                          className="input-box"
-                          style={{ marginBottom: "0.5rem" }}
-                        >
-                          <input
-                            type="text"
-                            required
-                            style={{ width: "100%" }}
-                            id="education-level"
-                            onChange={(e) =>
-                              setAddCourse({
-                                ...addCourse,
-                                education_level: e.target.value,
-                              })
-                            }
-                          />
-                          <label>Education Level</label>
-                        </div>
-
-                        <div className="input-box">
+                        <div className="input-boxx">
                           <textarea
                             className=""
                             required
-                            style={{ width: "100%" }}
+                            placeholder="Description"
+                            style={{ width: "100%", height: "35vh" }}
                             id="description"
                             onChange={(e) =>
                               setAddCourse({
@@ -269,50 +279,53 @@ function TeacherModalAddCourse(props: any) {
                               })
                             }
                           />
-                          <label>Description</label>
                         </div>
-                        <div className="input-box">
-                          <input
-                            type="text"
-                            required
-                            id="chapter"
-                            onChange={(e) =>
-                              setAddCourse({
-                                ...addCourse,
-                                chapter: e.target.value,
-                              })
-                            }
-                          />
-                          <label>Chapter</label>
-                        </div>
-                        <div className="input-box">
-                          <input
-                            type="text"
-                            required
-                            id="price"
-                            onChange={(e) =>
-                              setAddCourse({
-                                ...addCourse,
-                                price: e.target.value,
-                              })
-                            }
-                          />
-                          <label>
-                            <img
-                              className="img-fluid"
-                              style={{
-                                width: "36px",
-                                height: "36px",
-                              }}
-                              src={`assets/coin.png`}
-                              alt=""
+
+                        <div className="d-flex col" style={{ gap: "1rem" }}>
+                          <div className="input-boxx">
+                            <input
+                              type="number"
+                              required
+                              id="chapter"
+                              onChange={(e) =>
+                                setAddCourse({
+                                  ...addCourse,
+                                  chapter: e.target.value,
+                                })
+                              }
                             />
-                            Coin Price
-                          </label>
+                            <label>Chapter</label>
+                          </div>
+                          <div className="input-boxx">
+                            <input
+                              type="number"
+                              required
+                              id="price"
+                              onChange={(e) =>
+                                setAddCourse({
+                                  ...addCourse,
+                                  price: e.target.value,
+                                })
+                              }
+                            />
+                            <label>
+                              <img
+                                className="img-fluid"
+                                style={{
+                                  width: "24px",
+                                  height: "24px",
+                                  marginRight: "0.25rem",
+                                }}
+                                src={`assets/coin.png`}
+                                alt=""
+                              />
+                              Coin Price
+                            </label>
+                          </div>
                         </div>
                       </div>
 
-                      <div className="d-flex justify-content-between align-items-center">
+                      <div className="next-btn d-flex justify-content-center align-items-center">
                         <button
                           className="fw-bold"
                           onClick={() => handleAddCourseFile()}
@@ -322,7 +335,7 @@ function TeacherModalAddCourse(props: any) {
                       </div>
                     </div>
                   ) : (
-                    <div className="inputs" style={{ width: "100%" }}>
+                    <div className="inputs d-flex row justify-content-center align-items-center">
                       <div className="">
                         {image ? (
                           <div className="text-center">
@@ -342,23 +355,27 @@ function TeacherModalAddCourse(props: any) {
                           ></div>
                         )}
                       </div>
-                      <label className="btn btn-default">
+                      <label
+                        className="mt-4 btn btn-default text-light d-flex justify-content-center w-50"
+                        style={{ backgroundColor: "var(--lightblue2" }}
+                      >
                         <input
                           type="file"
                           onChange={handleImageChange}
                           accept="image/*"
                         />
                       </label>
-                      <div className="d-flex justify-content-between align-items-center mt-5">
+                      <div className="buttons">
                         <button
-                          className="fw-bold"
+                          type="submit"
+                          className="back-btn fw-bold"
                           onClick={() => {
                             setPage(1);
                           }}
                         >
                           Back
                         </button>
-                        <button type="submit" className="fw-bold">
+                        <button type="submit" className="submit-btn fw-bold">
                           Submit
                         </button>
                       </div>
@@ -367,22 +384,6 @@ function TeacherModalAddCourse(props: any) {
                 </form>
               </div>
             </Modal.Body>
-            <Modal.Footer className="p-0">
-              <div
-                className="modal-footer-center"
-                style={{
-                  backgroundColor: "#11235a",
-                  fontSize: "20px",
-                  width: "100%",
-                  height: "75px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <p onClick={props.onHide} className="text-white"></p>
-              </div>
-            </Modal.Footer>
           </>
         ) : (
           <div className="loader-wrapper">

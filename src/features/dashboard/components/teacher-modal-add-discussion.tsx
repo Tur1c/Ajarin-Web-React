@@ -146,45 +146,62 @@ function TeacherModalAddDiscussion(props: any) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header className="p-0 d-block">
+      <Modal.Header className="d-flex w-100" style={{ border: "none" }}>
         <div
-          className="container-class-header d-flex justify-content-around mt-3"
+          className="container-class-header d-flex col justify-content-between mt-3"
           style={{ height: "2rem" }}
         >
-          <div>
+          <div className="close-btn">
             <IoIosCloseCircleOutline
               style={{ color: "#fff", fontSize: "54px" }}
               onClick={props.onHide}
             />
           </div>
-          <div style={{ fontSize: "30px" }}>
+          <div
+            className="d-flex pe-4"
+            style={{
+              fontSize: "32px",
+              fontWeight: "bold",
+              cursor: "default",
+            }}
+          >
             <span>Set Discussion</span>
           </div>
           <div></div>
         </div>
       </Modal.Header>
-      <Modal.Body className="p-5">
-        <div className="modal-body-container">
+      <Modal.Body
+        className="h-100"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          marginTop: "1rem",
+        }}
+      >
+        <div className="modal-body-container w-100 h-100">
           <form onSubmit={(e) => handleSubmit(e,props.teacher)}>
             {page === 1 ? (
-              <div className="inputs" style={{ width: "100%" }}>
-                <div className="">
-                  <div className="input-box" style={{ marginBottom: "0.5rem" }}>
-                    <input
-                      type="text"
-                      required
-                      style={{ width: "100%" }}
-                      id="discussion-title"
-                      onChange={(e) =>
-                        setAddDiscussion({
-                          ...addDiscussion,
-                          title: e.target.value,
-                        })
-                      }
-                    />
-                    <label>Discussion Title</label>
-                  </div>
-                  <div className="input-box" style={{ marginBottom: "0.5rem" }}>
+              <div className="inputs">
+                <div className="input-boxx">
+                  <input
+                    type="text"
+                    required
+                    style={{ width: "100%" }}
+                    id="discussion-title"
+                    onChange={(e) =>
+                      setAddDiscussion({
+                        ...addDiscussion,
+                        title: e.target.value,
+                      })
+                    }
+                  />
+                  <label>Discussion Title</label>
+                </div>
+
+                <div className="d-flex col" style={{ gap: "1rem" }}>
+                  <div className="input-boxx">
                     <input
                       type="text"
                       required
@@ -200,7 +217,7 @@ function TeacherModalAddDiscussion(props: any) {
                     <label>Subject</label>
                   </div>
 
-                  <div className="input-box" style={{ marginBottom: "0.5rem" }}>
+                  <div className="input-boxx">
                     <input
                       type="text"
                       required
@@ -215,42 +232,50 @@ function TeacherModalAddDiscussion(props: any) {
                     />
                     <label>Education Level</label>
                   </div>
+                </div>
 
-                  <div className="input-box">
-                    <textarea
-                      className=""
-                      required
-                      style={{ width: "100%" }}
-                      id="description"
-                      onChange={(e) =>
-                        setAddDiscussion({
-                          ...addDiscussion,
-                          description: e.target.value,
-                        })
-                      }
-                    />
-                    <label>Description</label>
-                  </div>
-                  <div className="input-box">
+                <div className="input-boxx">
+                  <textarea
+                    className=""
+                    required
+                    style={{ width: "100%", height: "25vh" }}
+                    placeholder="Description"
+                    id="description"
+                    onChange={(e) =>
+                      setAddDiscussion({
+                        ...addDiscussion,
+                        description: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="d-flex col" style={{ gap: "1rem" }}>
+                  <div className="input-boxx">
                     <DatePicker
                       selected={selectedStartDate}
+                      placeholderText="Start Date"
                       onChange={handleStartDateChange}
                       showTimeSelect
                       dateFormat="yyyy-MM-dd hh:mm a"
                     ></DatePicker>
                   </div>
-                  <div className="input-box">
+                  <div className="input-boxx">
                     {/* <input type="text" required id="end-date" /> */}
                     <DatePicker
                       selected={selectedEndDate}
+                      placeholderText="End Date"
                       onChange={handleEndDateChange}
                       showTimeSelect
                       dateFormat="yyyy-MM-dd hh:mm a"
                     ></DatePicker>
                   </div>
-                  <div className="input-box">
+                </div>
+
+                <div className="d-flex col" style={{ gap: "1rem" }}>
+                  <div className="input-boxx">
                     <input
-                      type="text"
+                      type="number"
                       required
                       id="max-participant"
                       onChange={(e) =>
@@ -262,9 +287,9 @@ function TeacherModalAddDiscussion(props: any) {
                     />
                     <label>Max Participant</label>
                   </div>
-                  <div className="input-box">
+                  <div className="input-boxx">
                     <input
-                      type="text"
+                      type="number"
                       required
                       id="price"
                       onChange={(e) =>
@@ -278,8 +303,9 @@ function TeacherModalAddDiscussion(props: any) {
                       <img
                         className="img-fluid"
                         style={{
-                          width: "36px",
-                          height: "36px",
+                          width: "24px",
+                          height: "24px",
+                          marginRight: "0.25rem",
                         }}
                         src={`assets/coin.png`}
                         alt=""
@@ -289,7 +315,7 @@ function TeacherModalAddDiscussion(props: any) {
                   </div>
                 </div>
 
-                <div className="d-flex justify-content-between align-items-center">
+                <div className="next-btn d-flex justify-content-center align-items-center">
                   <button
                     className="fw-bold"
                     onClick={() => handleAddDiscussionFile()}
@@ -299,8 +325,8 @@ function TeacherModalAddDiscussion(props: any) {
                 </div>
               </div>
             ) : (
-              <div className="inputs" style={{ width: "100%" }}>
-                <div className="input-box" style={{ marginBottom: "0.5rem" }}>
+              <div className="inputs d-flex row justify-content-center align-items-center">
+                <div className="input-boxx" style={{ marginBottom: "1rem" }}>
                   <input
                     type="text"
                     required
@@ -313,16 +339,20 @@ function TeacherModalAddDiscussion(props: any) {
                       })
                     }
                   />
-                  <label>Subject</label>
+                  <label>Teams Link</label>
                 </div>
-                <div className="">
+                <div className="d-flex justify-content-center align-items-center">
                   {image ? (
                     <div className="text-center">
                       <img
-                        className="img-fluid mb-4"
+                        className="img-fluid"
                         src={URL.createObjectURL(image)}
                         alt=""
-                        style={{ height: "20rem" }}
+                        style={{
+                          height: "20rem",
+                          aspectRatio: "16 / 9",
+                          objectFit: "cover",
+                        }}
                       />
                     </div>
                   ) : (
@@ -330,25 +360,38 @@ function TeacherModalAddDiscussion(props: any) {
                       style={{
                         height: "20rem",
                         background: "rgba(0, 0, 0, 0.2)",
+                        aspectRatio: "16 / 9",
                       }}
                     ></div>
                   )}
                 </div>
-                <label className="btn btn-default">
+                <label
+                  className="btn btn-default text-light d-flex justify-content-center w-50 fw-bold"
+                  style={{
+                    backgroundColor: "var(--lightblue2)",
+                    marginTop: "1rem",
+                  }}
+                >
                   <input
                     type="file"
                     onChange={handleImageChange}
                     accept="image/*"
+                    className="inputfile"
                   />
+                  Upload Thumbnail
                 </label>
-                <div className="d-flex justify-content-between align-items-center mt-5">
+
+                <div className="buttons">
                   <button
                     type="submit"
-                    className="fw-bold"
+                    className="back-btn fw-bold"
                     onClick={() => {
-                      props.onHide();
+                      setPage(1);
                     }}
                   >
+                    Back
+                  </button>
+                  <button type="submit" className="submit-btn fw-bold">
                     Submit
                   </button>
                 </div>
@@ -357,22 +400,6 @@ function TeacherModalAddDiscussion(props: any) {
           </form>
         </div>
       </Modal.Body>
-      <Modal.Footer className="p-0">
-        <div
-          className="modal-footer-center"
-          style={{
-            backgroundColor: "#11235a",
-            fontSize: "20px",
-            width: "100%",
-            height: "75px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <p onClick={props.onHide} className="text-white"></p>
-        </div>
-      </Modal.Footer>
     </Modal>
   );
 }
