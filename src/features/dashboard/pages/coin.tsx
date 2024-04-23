@@ -106,7 +106,7 @@ function Coin() {
 
   const withdrawCoin = async () => {
     console.log("masok");
-    if(state.teacher.account.coin - parseInt(coinWithdraw) <= 50) {
+    if(state.teacher.user.coin - parseInt(coinWithdraw) <= 50) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -116,7 +116,7 @@ function Coin() {
     }
     try {
       const response = await axios.put<ApiResponse<AccountSchema>>(
-        WITHDRAW_URL + state.teacher.account.id + "/" + coinWithdraw,
+        WITHDRAW_URL + state.teacher.user.id + "/" + coinWithdraw,
         null,
         {
           headers: {
@@ -228,7 +228,7 @@ function Coin() {
                           letterSpacing: "1px",
                         }}
                       >
-                        {state.teacher.account.coin}
+                        {state.teacher.user.coin}
                       </span>
                     </div>
                   </div>

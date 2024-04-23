@@ -18,6 +18,8 @@ interface Props {
   children?: ReactNode;
   account: AccountOutput;
   teacheracc?: TeacherOutput | null | undefined;
+  onLoadingTrue?: any;
+  onLoadingFalse?: any;
 }
 
 interface JwtPayload {
@@ -27,7 +29,13 @@ interface JwtPayload {
 const STATUS_REGISTERED_TEACHER = "/api/account/inquiry/teacher/";
 const CHANGE_ACCOUNT = "/api/account/change-role?email=";
 
-const Sidebar = ({ children, account, teacheracc }: Props) => {
+const Sidebar = ({
+  children,
+  account,
+  teacheracc,
+  onLoadingTrue,
+  onLoadingFalse,
+}: Props) => {
   const isLogged = sessionStorage.getItem("jwt");
   const userRole = sessionStorage.getItem("role");
   const navigate = useNavigate();
@@ -56,6 +64,7 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
   };
 
   const changeAccount = async (email: string) => {
+    // onLoadingTrue();
     try {
       const response = await axios.get<ApiResponse<AccountLoginSchema>>(
         CHANGE_ACCOUNT + email,
@@ -79,6 +88,7 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
       setRole(decoded.roles.substring(5, decoded.roles.length));
 
       navigate("/");
+      onLoadingFalse();
     } catch {}
   };
 
@@ -86,7 +96,7 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
     isAlreadyRegisterTeacher(account.email);
     setTimeout(() => {
       console.log(isAlreadyTeacher);
-      
+
       if (!isAlreadyTeacher) {
         navigate("/register/teacher", {
           state: { account },
@@ -117,7 +127,14 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
             <span className="tooltip-text">Home</span>
           </div>
           <div className="menu">
-            <NavLink to={"/calendar"} state={userRole === "Teacher" ? {account:account,teacher:teacheracc} : account}>
+            <NavLink
+              to={"/calendar"}
+              state={
+                userRole === "Teacher"
+                  ? { account: account, teacher: teacheracc }
+                  : account
+              }
+            >
               <i>
                 <HiOutlineBookOpen />
               </i>
@@ -126,7 +143,14 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
             <span className="tooltip-text">MySpace</span>
           </div>
           <div className="menu">
-            <NavLink to={"/lecturer"} state={userRole === "Teacher" ? {account:account,teacher:teacheracc} : account}>
+            <NavLink
+              to={"/lecturer"}
+              state={
+                userRole === "Teacher"
+                  ? { account: account, teacher: teacheracc }
+                  : account
+              }
+            >
               <i>
                 <PiEyeglassesLight />
               </i>
@@ -135,7 +159,14 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
             <span className="tooltip-text">MyLecturer</span>
           </div>
           <div className="menu">
-            <NavLink to={"/forum"} state={userRole === "Teacher" ? {account:account,teacher:teacheracc} : account}>
+            <NavLink
+              to={"/forum"}
+              state={
+                userRole === "Teacher"
+                  ? { account: account, teacher: teacheracc }
+                  : account
+              }
+            >
               <i>
                 <IoChatboxEllipsesOutline />
               </i>
@@ -147,7 +178,7 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
         <div className="profile-content">
           <div className="profile">
             {isLogged ? (
-              <div className="d-flex row profile-details">
+              <div className="d-flex row profile-details" onClick={onLoadingTrue}>
                 <button
                   // className="btn profile-button"
                   type="button"
@@ -158,7 +189,9 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
                     backgroundColor: "#fff",
                     color: "#11235A",
                   }}
-                  onClick={() => handleAlreadyRegisteredAsTeacher(account)}
+                  onClick={() => {
+                    handleAlreadyRegisteredAsTeacher(account);
+                  }}
                 >
                   <b className="text-center">
                     Become<br></br>
@@ -173,12 +206,12 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
                 {userRole === "Teacher" ? (
                   <div className="d-flex col justify-content-center">
                     <Link
-                      to={"/lecturer/" + teacheracc?.account.fullName}
+                      to={"/lecturer/" + teacheracc?.user.fullName}
                       state={{ data: teacheracc }}
                     >
                       <img
                         className="img-fluid rounded-circle"
-                        src={account?.urlImage || `assets/default_picture.png`}
+                        src={"/" + account?.urlImage || `/assets/default_picture.png`}
                         alt=""
                         style={{
                           height: "5vw",
@@ -199,7 +232,7 @@ const Sidebar = ({ children, account, teacheracc }: Props) => {
 
                       <img
                         className="img-fluid rounded-circle bg-light"
-                        src={account?.urlImage || `assets/default_picture.png`}
+                        src={"/" + account?.urlImage || `/assets/default_picture.png`}
                         alt=""
                         style={{
                           height: "5vw",

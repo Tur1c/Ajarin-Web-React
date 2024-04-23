@@ -24,11 +24,17 @@ function Login() {
     token: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [errMsg, setErrMsg] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     userRef.current?.focus();
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
   }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -57,91 +63,145 @@ function Login() {
 
   return (
     <section>
-      <Navbar>
-        <div className="login-wrapper d-flex bg-dar">
-          <div className="login-input">
-            <form onSubmit={handleSubmit}>
-              <h1 className="text fw-bold" style={{cursor:"default"}}>Log In to Your Account.</h1>
-              <div>
-                Don't have account yet ?{" "}
-                <Link
-                  to="/register"
-                  className="register-link"
-                  style={{ color: "#F6ECA9", textDecoration: "none" }}
-                >
-                  <b>Sign Up Now.</b>
-                </Link>
-              </div>
-              <div className="inputs">
-                <div className="mb-4">
-                  <div className="input-box">
-                    <input
-                      type="text"
-                      required
-                      ref={userRef}
-                      autoComplete="off"
-                      onChange={(e) =>
-                        setAccountLogin({
-                          ...accountLogin,
-                          email: e.target.value,
-                        })
-                      }
-                      value={accountLogin.email}
-                    />
-                    <label>Email Address</label>
-                  </div>
-                  <div className="input-box">
-                    <input
-                      type="password"
-                      required
-                      onChange={(e) =>
-                        setAccountLogin({
-                          ...accountLogin,
-                          password: e.target.value,
-                        })
-                      }
-                      value={accountLogin.password}
-                    />
-                    <label>Password</label>
-                  </div>
-                  <span
-                    ref={errRef}
-                    className={errMsg ? "fw-bold" : ""}
-                    aria-live="assertive"
-                    style={{ color: "#ff3d41" }}
+      {!isLoading ? (
+        <Navbar>
+          <div className="login-wrapper d-flex bg-dar">
+            <div className="login-input">
+              <form onSubmit={handleSubmit}>
+                <h1 className="text fw-bold" style={{ cursor: "default" }}>
+                  Log In to Your Account.
+                </h1>
+                <div>
+                  Don't have account yet ?{" "}
+                  <Link
+                    to="/register"
+                    className="register-link"
+                    style={{ color: "#F6ECA9", textDecoration: "none" }}
                   >
-                    {errMsg}
-                  </span>
+                    <b>Sign Up Now.</b>
+                  </Link>
                 </div>
-                <div
-                  className="w-100 d-flex justify-content-between align-items-center"
-                  style={{ width: "70%" }}
-                >
-                  <div className="forgot-password">
-                    <a href="#" className="fw-bold">
-                      Forgot Password?
-                    </a>
+                <div className="inputs">
+                  <div className="mb-4">
+                    <div className="input-box">
+                      <input
+                        type="text"
+                        required
+                        ref={userRef}
+                        autoComplete="off"
+                        onChange={(e) =>
+                          setAccountLogin({
+                            ...accountLogin,
+                            email: e.target.value,
+                          })
+                        }
+                        value={accountLogin.email}
+                      />
+                      <label>Email Address</label>
+                    </div>
+                    <div className="input-box">
+                      <input
+                        type="password"
+                        required
+                        onChange={(e) =>
+                          setAccountLogin({
+                            ...accountLogin,
+                            password: e.target.value,
+                          })
+                        }
+                        value={accountLogin.password}
+                      />
+                      <label>Password</label>
+                    </div>
+                    <span
+                      ref={errRef}
+                      className={errMsg ? "fw-bold" : ""}
+                      aria-live="assertive"
+                      style={{ color: "#ff3d41" }}
+                    >
+                      {errMsg}
+                    </span>
                   </div>
+                  <div
+                    className="w-100 d-flex justify-content-between align-items-center"
+                    style={{ width: "70%" }}
+                  >
+                    <div className="forgot-password">
+                      <a href="#" className="fw-bold">
+                        Forgot Password?
+                      </a>
+                    </div>
 
-                  <button type="submit" className="fw-bold">
-                    Log In
-                  </button>
+                    <button type="submit" className="fw-bold">
+                      Log In
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
+            <div className="img-learning flex-fill">
+              <img
+                src={learningImg}
+                alt="Learning png"
+                style={{
+                  height: "50vh",
+                  marginLeft: "6rem",
+                }}
+              />
+            </div>
           </div>
-          <div className="img-learning flex-fill">
-            <img
-              src={learningImg}
-              alt="Learning png"
-              style={{
-                height: "50vh",
-                marginLeft: "6rem",
-              }}
-            />
-          </div>
+        </Navbar>
+      ) : (
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={{ height: "100vh" }}
+        >
+          <svg
+            width="80"
+            height="80"
+            stroke="#fff"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g>
+              <circle
+                cx="12"
+                cy="12"
+                r="9.5"
+                fill="none"
+                stroke-width="3"
+                stroke-linecap="round"
+              >
+                <animate
+                  attributeName="stroke-dasharray"
+                  dur="1.5s"
+                  calcMode="spline"
+                  values="0 150;42 150;42 150;42 150"
+                  keyTimes="0;0.475;0.95;1"
+                  keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="stroke-dashoffset"
+                  dur="1.5s"
+                  calcMode="spline"
+                  values="0;-16;-59;-59"
+                  keyTimes="0;0.475;0.95;1"
+                  keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1"
+                  repeatCount="indefinite"
+                />
+              </circle>
+              <animateTransform
+                attributeName="transform"
+                type="rotate"
+                dur="2s"
+                values="0 12 12;360 12 12"
+                repeatCount="indefinite"
+              />
+            </g>
+          </svg>
         </div>
-      </Navbar>
+      )}
     </section>
   );
 }

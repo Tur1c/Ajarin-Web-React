@@ -18,7 +18,7 @@ export interface Forum {
   created_date: Date;
   category_id: {
     category_id: number;
-    categoryName: string;
+    category_name: string;
   };
   user_id: AccountRegisterSchema;
   forum_replies: ForumReply[];
@@ -144,7 +144,7 @@ export function transfromToForumListOutput(
         createdDate: data.created_date,
         title: data.question_title,
         totalComment: data.total_comment,
-        questionCategory: data.category_id.categoryName,
+        questionCategory: data.category_id.category_name,
         questionLevel: data.question_level,
         questionUser: transformToAccountNoROutput(data.user_id),
         forum_replies: data.forum_replies.map((data) => {

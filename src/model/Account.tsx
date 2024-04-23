@@ -36,6 +36,7 @@ export interface AccountNoROutput {
   school: string;
   coin: number;
   urlImage?: string;
+  profile_pic?: string;
 }
 
 export function transformToAccountNoROutput(
@@ -147,7 +148,7 @@ export function transfromToAccountOutput(
     country: response.country,
     school: response.school,
     coin: response.coin,
-    urlImage: "assets/" + response.pic_name,
+    urlImage: "assets/" + response.pic_name !== undefined? "assets/" + response.pic_name : "default_picture.png",
     studentdisc_list: response.studentdisc_list ? response.studentdisc_list
     .sort( (x,y) => x.discussion.disc_date.toString().localeCompare(y.discussion.disc_date.toString()) || x.discussion.disc_starttime.toString().localeCompare(y.discussion.disc_starttime.toString()))
     .map( (data) => {

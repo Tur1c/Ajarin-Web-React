@@ -37,6 +37,7 @@ function TeacherModalAddCourse(props: any) {
       id: 0,
       profile_description: "",
       rating: "",
+      points: 0,
       user: {
         age: 0,
         city: "",
@@ -116,7 +117,7 @@ function TeacherModalAddCourse(props: any) {
     } catch {}
   };
 
-  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     // await handleUploadImageToCloud(e);
     e.preventDefault();
     console.log("a");
@@ -152,12 +153,12 @@ function TeacherModalAddCourse(props: any) {
           withCredentials: true,
         }
       );
-        setPage(1);
-        setCourse(response.data.outputSchema);
-        setIsLoading(false);
-        setShowModalAddCourse(true);
-        props.onHide();
-    //   // navigate("/");
+      setPage(1);
+      setCourse(response.data.outputSchema);
+      setIsLoading(false);
+      setShowModalAddCourse(true);
+      props.onHide();
+      //   // navigate("/");
     } catch (err) {
       console.log(err);
     }
@@ -211,7 +212,12 @@ function TeacherModalAddCourse(props: any) {
               }}
             >
               <div className="modal-body-container w-100 h-100">
-                <form onSubmit={(e) => {e.preventDefault();handleSubmit(e)}}>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSubmit(e);
+                  }}
+                >
                   {page === 1 ? (
                     <div className="add-course-inputs ">
                       <div className="">
@@ -386,10 +392,54 @@ function TeacherModalAddCourse(props: any) {
             </Modal.Body>
           </>
         ) : (
-          <div className="loader-wrapper">
-            <span className="loader">
-              <span className="loader-inner"></span>
-            </span>
+          <div
+            className="d-flex justify-content-center align-items-center"
+            style={{ height: "60vh" }}
+          >
+            <svg
+              width="80"
+              height="80"
+              stroke="#fff"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g>
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="9.5"
+                  fill="none"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                >
+                  <animate
+                    attributeName="stroke-dasharray"
+                    dur="1.5s"
+                    calcMode="spline"
+                    values="0 150;42 150;42 150;42 150"
+                    keyTimes="0;0.475;0.95;1"
+                    keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1"
+                    repeatCount="indefinite"
+                  />
+                  <animate
+                    attributeName="stroke-dashoffset"
+                    dur="1.5s"
+                    calcMode="spline"
+                    values="0;-16;-59;-59"
+                    keyTimes="0;0.475;0.95;1"
+                    keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1"
+                    repeatCount="indefinite"
+                  />
+                </circle>
+                <animateTransform
+                  attributeName="transform"
+                  type="rotate"
+                  dur="2s"
+                  values="0 12 12;360 12 12"
+                  repeatCount="indefinite"
+                />
+              </g>
+            </svg>
           </div>
         )}
       </Modal>

@@ -93,6 +93,14 @@
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
+.sidebar .menu {
+  opacity: 0.3;
+}
+
+.sidebar .menu .active svg {
+  opacity: 1;
+}
+
 .sidebar .menu:hover .tooltip-text {
   visibility: visible;
   transition: 0.25s all ease;

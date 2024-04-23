@@ -41,6 +41,11 @@ function ModalCentered(props: any) {
       });
 
       console.log(response, "asd");
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Success Join Discussion",
+      })
       window.location.reload();
       // const output = transfromToServiceLoginAccountOutput(response.data);
       // const token = output.token;

@@ -10,18 +10,27 @@ import {
 } from "../../../model/course/course-list";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import { Pagination } from "../../../shared";
-import FilterList from "../../../shared/filter/FilterList";
 
 const COURSE_URL = "/api/course";
 
 interface Props {
   account: AccountOutput;
+  searchData: string;
 }
 
-function HomeClass({ account }: Props) {
+function HomeClass({ account, searchData }: Props) {
   const [courseList, setCourseList] = useState<CourseListOutput>({
     courseList: [],
   });
+  const [tempCourseList, setTempCourseList] = useState<CourseListOutput>({
+    courseList: [],
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchTextFromHome, setSearchTextFromHome] = useState("");
+  const [statusSortSubject, setStatusSortSubject] = useState(false);
+  const [statusSortEducation, setStatusSortEducation] = useState(false);
+
   const [currentPageCourse, setCurrentPageCourse] = useState(1);
   const [classPerPageCourse, setClassPerPageCourse] = useState(4);
 
@@ -61,6 +70,7 @@ function HomeClass({ account }: Props) {
   }
 
   const fetchDataCourse = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.get<ApiResponse<CourseListSchema>>(
         COURSE_URL,
@@ -71,145 +81,310 @@ function HomeClass({ account }: Props) {
       );
       console.log(response, "course");
       setCourseList(transfromToCourseListOutput(response.data.outputSchema));
+      setTempCourseList(
+        transfromToCourseListOutput(response.data.outputSchema)
+      );
     } catch (error) {}
+    setIsLoading(false);
   };
+
+  function handleSearch() {
+    setCurrentPageCourse(1);
+    console.log(searchData, "he");
+
+    if (searchData || searchTextFromHome) {
+      if (searchData != "default") {
+        setSearchTextFromHome(searchData);
+      } else {
+        setCourseList(tempCourseList);
+        return;
+      }
+      const findCourse = tempCourseList.courseList.filter((u) =>
+        u.title.toLowerCase().includes(searchData.toLowerCase())
+      );
+      setCourseList({ courseList: findCourse });
+    } else {
+      setCourseList(tempCourseList);
+    }
+  }
+
+  useEffect(() => {
+    handleSearch();
+  }, [searchData, searchTextFromHome]);
 
   useEffect(() => {
     fetchDataCourse();
   }, []);
 
-  console.log(courseList, "courselist");
+  const sortBySubject = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get<ApiResponse<CourseListSchema>>(
+        COURSE_URL,
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      console.log(response, "course");
+      setCourseList(transfromToCourseListOutput(response.data.outputSchema));
+      setTempCourseList(
+        transfromToCourseListOutput(response.data.outputSchema)
+      );
+      if (!statusSortSubject) {
+        tempCourseList.courseList.sort((a, b) =>
+          a.category < b.category ? -1 : 1
+        );
+        setCourseList({ courseList: tempCourseList.courseList });
+        setStatusSortSubject(!statusSortSubject);
+      } else {
+        tempCourseList.courseList.sort((a, b) =>
+          a.category > b.category ? -1 : 1
+        );
+        setCourseList({ courseList: tempCourseList.courseList });
+        setStatusSortSubject(!statusSortSubject);
+      }
+    } catch (error) {}
+    setIsLoading(false);
+  };
+
+  const sortByEducation = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get<ApiResponse<CourseListSchema>>(
+        COURSE_URL,
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      console.log(response, "course");
+      setCourseList(transfromToCourseListOutput(response.data.outputSchema));
+      setTempCourseList(
+        transfromToCourseListOutput(response.data.outputSchema)
+      );
+      if (!statusSortEducation) {
+        tempCourseList.courseList.sort((a, b) => (a.level < b.level ? -1 : 1));
+        setCourseList({ courseList: tempCourseList.courseList });
+        setStatusSortEducation(!statusSortEducation);
+      } else {
+        tempCourseList.courseList.sort((a, b) => (a.level > b.level ? -1 : 1));
+        setCourseList({ courseList: tempCourseList.courseList });
+        setStatusSortEducation(!statusSortEducation);
+      }
+    } catch (error) {}
+    setIsLoading(false);
+  };
 
   return (
     <>
-      <div></div>
-      <div className="m-1 d-flex row">
-        <div className="filter">
-          {/* <div className="filter-btn">Subject</div>
+      {!isLoading ? (
+        <div className="m-1 d-flex row">
+          <div className="filter">
+            {/* <div className="filter-btn">Subject</div>
           <div className="filter-btn">Education Level</div> */}
-          <div className="d-flex col">
-            <FilterList></FilterList>
+            {/* <div className="d-flex col"> */}
+            {/* <FilterList></FilterList> */}
+            <div className="filter-btn" onClick={() => sortBySubject()}>
+              Subject
+            </div>
+            <div className="filter-btn" onClick={() => sortByEducation()}>
+              Education Level
+              {/* </div> */}
+            </div>
           </div>
-        </div>
-        <div
-          className="homes card card-container"
-          style={{
-            backgroundColor: "#11235a",
-            border: "none",
-            marginTop: "0.25rem",
-          }}
-        >
-          <div className="w-100">
-            <div className="row">
-              {currentCourse.map((data, index) => (
-                <div
-                  className="col-md-3 d-flex align-items-stretch mb-2"
-                  key={index}
-                >
-                  <div className="card" style={{ border: "none", width:"20vw" }}>
-                    <Link to={"/course/" + data.title} state={{ data, acc }}>
-                      <div className="container-class-header">
-                        <div className="class-thumbnail">
-                          <img
-                            className="class-image img-fluid"
-                            src={`assets/${data.image}`}
-                            alt=""
-                            style={{objectFit:"fill"}}
-                          />
-                        </div>
+          <div
+            className="homes card card-container"
+            style={{
+              backgroundColor: "#11235a",
+              border: "none",
+              marginTop: "0.25rem",
+            }}
+          >
+            <div className="w-100">
+              <div className="row">
+                {currentCourse.length > 0 ? (
+                  <>
+                    {currentCourse.map((data, index) => (
+                      <div
+                        className="col-md-3 d-flex align-items-stretch mb-2"
+                        key={index}
+                      >
+                        <div className="card" style={{ border: "none" }}>
+                          <Link
+                            to={"/course/" + data.title}
+                            state={{
+                              data: data,
+                              acc: account,
+                              teacher: data.teacher,
+                            }}
+                            style={{ textDecoration: "none" }}
+                          >
+                            <div className="container-class-header">
+                              <div className="class-thumbnail">
+                                <img
+                                  className="class-image img-fluid"
+                                  src={`assets/${data.image}`}
+                                  alt=""
+                                  style={{ objectFit: "fill" }}
+                                />
+                              </div>
 
-                        <div className="top-left">
-                          <img
-                            className="img-fluid"
-                            src={`assets/coin.png`}
-                            alt=""
-                            style={{ height: "14px" }}
-                          />
-                          <span style={{ marginLeft: "5px" }}>
-                            {data.price}
-                          </span>
-                        </div>
-                        <div className="top-right">{data.chapter} Chapter</div>
-                      </div>
+                              <div className="top-left">
+                                <img
+                                  className="img-fluid"
+                                  src={`assets/coin.png`}
+                                  alt=""
+                                  style={{ height: "14px" }}
+                                />
+                                <span style={{ marginLeft: "5px" }}>
+                                  {data.price}
+                                </span>
+                              </div>
+                              <div className="top-right">
+                                {data.chapter} Chapter
+                              </div>
+                            </div>
 
-                      <div className="card-body p-2">
-                        <div className="card-text">
-                          <div className="class-content">
-                            <div className="class">
-                              <div className="d-block">
-                                <div
-                                  className=""
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <img
-                                    src={
-                                      "/assets/" +
-                                      data.teacher?.account.urlImage
-                                    }
-                                    alt="abc"
-                                    className="me-2"
-                                    width={"50px"}
-                                  />
-                                  <span
-                                    style={{
-                                      color: "#000",
-                                      alignItems: "center",
-                                    }}
-                                  >
-                                    {data.teacher?.account.fullName}
-                                  </span>
-                                </div>
-                                <div className="d-block p-1">
-                                  <div className="title-class mb-2">
-                                    <h3 style={{ color: "#000" }}>
-                                      {data.title}
-                                    </h3>
+                            <div className="card-body p-2">
+                              <div className="card-text">
+                                <div className="class-content">
+                                  <div className="class">
+                                    <div className="d-block">
+                                      <div
+                                        className=""
+                                        style={{
+                                          display: "flex",
+                                          alignItems: "center",
+                                        }}
+                                      >
+                                        <img
+                                          src={
+                                            "/assets/" +
+                                            data.teacher?.user.urlImage
+                                          }
+                                          alt="abc"
+                                          className="me-2"
+                                          width={"50px"}
+                                        />
+                                        <span
+                                          style={{
+                                            color: "#000",
+                                            alignItems: "center",
+                                            outline: "none",
+                                          }}
+                                        >
+                                          {data.teacher?.user.fullName}
+                                        </span>
+                                      </div>
+                                      <div className="d-block p-1">
+                                        <div className="title-class mb-2">
+                                          <h3 style={{ color: "#000" }}>
+                                            {data.title}
+                                          </h3>
+                                        </div>
+                                        <span
+                                          className="badge badge-outlined me-2"
+                                          style={{
+                                            borderColor: "#000",
+                                            backgroundColor: "#fff",
+                                            color: "#000",
+                                            borderRadius: "15px",
+                                          }}
+                                        >
+                                          {data.category}
+                                        </span>
+                                        <span
+                                          className="badge badge-outlined me-2"
+                                          style={{
+                                            borderColor: "#000",
+                                            backgroundColor: "#fff",
+                                            color: "#000",
+                                            borderRadius: "15px",
+                                          }}
+                                        >
+                                          {data.level}
+                                        </span>
+                                      </div>
+                                    </div>
                                   </div>
-                                  <span
-                                    className="badge badge-outlined me-2"
-                                    style={{
-                                      borderColor: "#000",
-                                      backgroundColor: "#fff",
-                                      color: "#000",
-                                      borderRadius: "15px",
-                                    }}
-                                  >
-                                    {data.category}
-                                  </span>
-                                  <span
-                                    className="badge badge-outlined me-2"
-                                    style={{
-                                      borderColor: "#000",
-                                      backgroundColor: "#fff",
-                                      color: "#000",
-                                      borderRadius: "15px",
-                                    }}
-                                  >
-                                    {data.level}
-                                  </span>
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </Link>
                         </div>
                       </div>
-                    </Link>
+                    ))}
+                  </>
+                ) : (
+                  <div
+                    className="d-flex justify-content-center align-items-center text-white"
+                    style={{ height: "25rem" }}
+                  >
+                    No Course Found
                   </div>
-                </div>
-              ))}
+                )}
+              </div>
             </div>
+            <Pagination
+              totalClass={courseList.courseList.length}
+              classPerPage={classPerPageCourse}
+              onPageChange={handlePageChangeCourse}
+              currentPage={currentPageCourse}
+            />
           </div>
-          <Pagination
-            totalClass={courseList.courseList.length}
-            classPerPage={classPerPageCourse}
-            onPageChange={handlePageChangeCourse}
-            currentPage={currentPageCourse}
-          />
         </div>
-      </div>
+      ) : (
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={{ height: "60vh" }}
+        >
+          <svg
+            width="80"
+            height="80"
+            stroke="#fff"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g>
+              <circle
+                cx="12"
+                cy="12"
+                r="9.5"
+                fill="none"
+                stroke-width="3"
+                stroke-linecap="round"
+              >
+                <animate
+                  attributeName="stroke-dasharray"
+                  dur="1.5s"
+                  calcMode="spline"
+                  values="0 150;42 150;42 150;42 150"
+                  keyTimes="0;0.475;0.95;1"
+                  keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="stroke-dashoffset"
+                  dur="1.5s"
+                  calcMode="spline"
+                  values="0;-16;-59;-59"
+                  keyTimes="0;0.475;0.95;1"
+                  keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1"
+                  repeatCount="indefinite"
+                />
+              </circle>
+              <animateTransform
+                attributeName="transform"
+                type="rotate"
+                dur="2s"
+                values="0 12 12;360 12 12"
+                repeatCount="indefinite"
+              />
+            </g>
+          </svg>
+        </div>
+      )}
     </>
   );
 }

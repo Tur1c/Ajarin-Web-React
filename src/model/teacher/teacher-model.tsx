@@ -26,6 +26,7 @@ export interface Teacher {
   discussion: Class[];
   courses: Course[];
   private_disc: PrivateDiscSchema[];
+  points: number;
 }
 
 export interface TeacherListOutput {
@@ -40,12 +41,13 @@ export interface TeacherOutput {
   education: string;
   cvUrl: string;
   rating: string;
-  account: AccountNoROutput;
+  user: AccountNoROutput;
   discussion?: ClassList[];
-  discussionParticipant?: number;
+  discussionParticipant: number;
   courses?: CourseList[];
-  courseSold?: number;
+  courseSold: number;
   private_disc?: PrivateDiscOut[];
+  forumPoints: number;
 }
 
 export function transfromToTeacherListOutput(
@@ -58,7 +60,7 @@ export function transfromToTeacherListOutput(
     }),
   };
   console.log(result, "teacher transform");
-
+  result.teachers.sort((a,b) => b.courseSold - a.courseSold || b.discussionParticipant - a.discussionParticipant || b.forumPoints - a.forumPoints);
   return result;
 }
 
@@ -93,7 +95,7 @@ export function transformToTeacherOutput(response: Teacher): TeacherOutput {
     education: response.education,
     cvUrl: response.cv_data,
     rating: response.rating,
-    account: transformToAccountNoROutput(response.user),
+    user: transformToAccountNoROutput(response.user),
     discussion: response.discussion?.sort( (x,y) => x.disc_date.toString().localeCompare(y.disc_date.toString()) || x.disc_starttime.toString().localeCompare(y.disc_starttime.toString()))
     .map((data) => {
       return {
@@ -106,7 +108,7 @@ export function transformToTeacherOutput(response: Teacher): TeacherOutput {
         endtime: data.disc_endtime,
         description: data.disc_description,
         level: data.disc_level,
-        category: data.category.categoryName,
+        category: data.category.category_name,
         image: data.disc_image,
         participant: data.joinedParticipant,
       }
@@ -135,6 +137,7 @@ export function transformToTeacherOutput(response: Teacher): TeacherOutput {
     }),
     courseSold: countCourseSold(response.courses),
     discussionParticipant: countDiscussionParticipant(response.discussion),
+    forumPoints: response.points,
     private_disc: response.private_disc?.map((data) => TransformToPrivateDiscOut(data))
   };
   console.log(result, "lewat teacher");

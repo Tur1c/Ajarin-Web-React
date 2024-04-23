@@ -483,15 +483,43 @@ const CourseDetail = () => {
                     ))}
               </ul>
             </div>
-            <div>
-              <p>
-                <img
-                  src={"assets/" + state.data.teacher.account.urlImage}
-                  alt="abc"
-                  className="me-2"
-                  width={"50px"}
-                />
-              </p>
+            <div
+              onClick={() =>
+                navigate(
+                  "/lecturer/" +
+                    (state.teacher.user.fullName
+                      ? state.teacher.user.fullName
+                      : state.teacher.user.firstName +
+                        " " +
+                        state.teacher.user.lastName),
+                  {
+                    state: { data: state.teacher, account: account },
+                  }
+                )
+              }
+            >
+              <div className="d-flex">
+                <div className="bg-white d-flex">
+                  <img
+                    src={
+                      // state.teacher.user?.urlImage
+                      //   ? "/assets/" + state.teacher.user.urlImage
+                      //   : state.acc.urlImage
+                      "/assets/" + course.teacher?.user.urlImage
+                    }
+                    alt="abc"
+                    className="m-3"
+                    width={"150px"}
+                  />
+                  <p className="m-3 fs-4">
+                    {state.teacher.user.fullName
+                      ? state.teacher.user.fullName
+                      : state.teacher.user.firstName +
+                        " " +
+                        state.teacher.user.lastName}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

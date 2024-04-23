@@ -23,6 +23,12 @@
   flex: 1;
 }
 
+.disc-course-content {
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
 .sidebar-content-calendar {
   position: relative;
   flex: 0.075;

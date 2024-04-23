@@ -24,7 +24,7 @@ export interface Class {
   disc_image: string;
   category: {
     category_id: string;
-    categoryName: string;
+    category_name: string;
   };
   teacher: Teacher;
   joinedParticipant: number;
@@ -95,7 +95,7 @@ export function transfromToDiscussionListOutput(
         endtime: data.disc_endtime,
         description: data.disc_description,
         level: data.disc_level,
-        category: data.category.categoryName,
+        category: data.category.category_name,
         image: data.disc_image,
         teacher: transformToTeacherOutput(data.teacher),
         participant: data.joinedParticipant,
