@@ -181,13 +181,22 @@ const LecturerDetail = () => {
                       state.data.user.firstName +
                         " " +
                         state.data.user.lastName) ? (
-                    <button
-                      className="subs-edit-btn"
-                      type="button"
-                      onClick={() => editProfile()}
-                    >
-                      <b>Edit Detail</b>
-                    </button>
+                    <>
+                      <button
+                        className="subs-edit-btn"
+                        type="button"
+                        onClick={() => editProfile()}
+                      >
+                        <b>Edit Detail</b>
+                      </button>
+                      <button
+                        className="logout-btn"
+                        type="button"
+                        onClick={handleLogout}
+                      >
+                        <b>Logout</b>
+                      </button>
+                    </>
                   ) : (
                     <>
                       {userRole === "Student" &&
@@ -206,17 +215,6 @@ const LecturerDetail = () => {
                         <></>
                       )}
                     </>
-                  )}
-                  {userRole === "Teacher" ? (
-                    <button
-                      className="logout-btn"
-                      type="button"
-                      onClick={handleLogout}
-                    >
-                      <b>Logout</b>
-                    </button>
-                  ) : (
-                    <></>
                   )}
                 </div>
               </div>
