@@ -194,11 +194,9 @@ const CourseDetail = () => {
   console.log(!studentCourse.rating);
   return (
     <div
-      className="container-fluid p-5"
-      style={{ height: "100vh", marginTop: "5%" }}
+      className="container-fluid"
+      style={{ height: "100vh", padding: "2rem 4rem" }}
     >
-      {/* {course.title} */}
-
       {isOpen &&
         studentCourse.status === "Completed" &&
         !studentCourse.rating && (
@@ -324,27 +322,53 @@ const CourseDetail = () => {
         //   </div>
         // )
         // :
-        <div className="row">
-          <div className="col-4">
-            <div className="left-container d-block">
-              <div className="mb-5">
+
+        <div className="h-100 row d-flex align-content-between">
+          <div style={{ height: "8vh" }}>
+            <div className="d-flex justify-content-between align-items-center">
+              <div>
                 <button
                   style={{
+                    position: "relative",
                     background: "none",
                     border: "none",
                     color: "white",
-                    fontSize: "30px",
+                    fontSize: "50px",
                   }}
                 >
                   <IoCloseCircleOutline onClick={() => navigate(-1)} />
                 </button>
               </div>
-              <h2 className="fw-bold">
+              <div className="logo_content" style={{ cursor: "default" }}>
+                <div className="logo">
+                  <div className="logo_name">
+                    <h1
+                      className="fw-bold"
+                      style={{
+                        color: "#fff",
+                        fontSize: "36px",
+                      }}
+                    >
+                      ajar
+                      <span style={{ color: "#F6ECA9" }}>in</span>
+                    </h1>
+                  </div>
+                </div>
+              </div>
+              <div></div>
+            </div>
+          </div>
+          <div className="row d-flex p-0 m-0 justify-content-center align-items-center">
+            <div className="col-5 text-white d-flex row">
+              <h2
+                className="fw-bold"
+                style={{ fontSize: "48px", marginBottom: "1rem" }}
+              >
                 {!studentCourse.course
                   ? course.title
                   : studentCourse.course?.title}
               </h2>
-              <h6>
+              <h6 style={{ fontSize: "18px", opacity: "0.7" }}>
                 {!studentCourse.course
                   ? course.category
                   : studentCourse.course?.category}{" "}
@@ -353,137 +377,134 @@ const CourseDetail = () => {
                   ? course.level
                   : studentCourse.course?.level}
               </h6>
-              <h6>
+              <h6 style={{ fontSize: "18px", marginTop: "1rem" }}>
                 {!studentCourse.course
                   ? course.description
                   : studentCourse.course?.description}
               </h6>
-              {!studentCourse.status ? (
-                <button
-                  className="badge rounded-pill text-bg-danger px-5 py-2"
-                  onClick={() =>
-                    joinCourse(
-                      !studentCourse.course
-                        ? course.id
-                        : studentCourse.course?.id
-                    )
-                  }
-                >
-                  {!studentCourse.course
-                    ? course.price
-                    : studentCourse.course?.price}
-                </button>
-              ) : (
-                <p>{studentCourse.status}</p>
-              )}
-            </div>
-          </div>
-          <div className="col-8">
-            <div className="logo_content" style={{ marginBottom: "45px" }}>
-              <div className="logo">
-                <div className="logo_name">
-                  <h1
-                    className="fw-bold"
-                    style={{
-                      color: "#fff",
-                      fontSize: "35px",
-                      marginLeft: "1rem",
-                    }}
+              <div className="w-auto">
+                {!studentCourse.status ? (
+                  <button
+                    className="buy-course-btn"
+                    onClick={() =>
+                      joinCourse(
+                        !studentCourse.course
+                          ? course.id
+                          : studentCourse.course?.id
+                      )
+                    }
                   >
-                    ajar
-                    <span style={{ color: "#F6ECA9" }}>in</span>
-                  </h1>
-                </div>
+                    <img
+                      className="img-fluid"
+                      style={{
+                        width: "2vw",
+                        height: "2vw",
+                        marginRight: "0.25rem",
+                      }}
+                      src={`/assets/coin.png`}
+                      alt=""
+                    />
+                    {!studentCourse.course
+                      ? course.price
+                      : studentCourse.course?.price}
+                  </button>
+                ) : (
+                  <p>{studentCourse.status}</p>
+                )}
               </div>
             </div>
-
-            <div
-              className="container-card-scroll p-3"
-              ref={itemsRef}
-              onMouseDown={handleMouseDown}
-              onMouseLeave={handleMouseLeave}
-              onMouseUp={handleMouseUp}
-              onMouseMove={handleMouseMove}
-            >
-              <ul className="cards">
-                {!studentCourse.course
-                  ? course.course_detail.map((data, index) => (
-                      <Link
-                        to={"/login"}
-                        key={index}
-                        style={{ textDecoration: "none" }}
-                      >
-                        <li className="card">
-                          <div>
-                            <div className="" style={{ height: "30rem" }}>
-                              <div className="text-center">
-                                <img
-                                  className="img-fluid h-100 "
-                                  src={data.chapter_thumbnail}
-                                  alt=""
-                                />
-                              </div>
-                              <div className="card-body h-50">
-                                <div className="card-title">
-                                  Chapter {data.course_detail_chapter}
+            <div className="col-7">
+              <div
+                className="container-card-scroll p-3"
+                ref={itemsRef}
+                onMouseDown={handleMouseDown}
+                onMouseLeave={handleMouseLeave}
+                onMouseUp={handleMouseUp}
+                onMouseMove={handleMouseMove}
+              >
+                <ul className="cards">
+                  {!studentCourse.course
+                    ? course.course_detail.map((data, index) => (
+                        <Link
+                          to={"/login"}
+                          key={index}
+                          style={{ textDecoration: "none" }}
+                        >
+                          <li className="card">
+                            <div>
+                              <div className="" style={{ height: "30rem" }}>
+                                <div className="text-center">
+                                  <img
+                                    className="img-fluid h-100 "
+                                    src={data.chapter_thumbnail}
+                                    alt=""
+                                  />
                                 </div>
-                                <div
-                                  className="card-text"
-                                  style={{ height: "3rem" }}
-                                >
-                                  {data.chapter_title}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                      </Link>
-                    ))
-                  : studentCourse.course?.course_detail.map((data, index) => (
-                      <Link
-                        to={
-                          "/course/" +
-                          studentCourse.course?.title +
-                          "/" +
-                          data.course_detail_chapter
-                        }
-                        key={index}
-                        style={{ textDecoration: "none" }}
-                        state={{
-                          account: account,
-                          studentCourse: studentCourse,
-                          courseDetail: state,
-                        }}
-                      >
-                        <li className="card">
-                          <div>
-                            <div className="" style={{ height: "30rem" }}>
-                              <div className="text-center">
-                                <img
-                                  className="img-fluid h-100 "
-                                  src={data.chapter_thumbnail}
-                                  alt=""
-                                />
-                              </div>
-                              <div className="card-body h-50">
-                                <div className="card-title">
-                                  Chapter {data.course_detail_chapter}
-                                </div>
-                                <div
-                                  className="card-text"
-                                  style={{ height: "3rem" }}
-                                >
-                                  {data.chapter_title}
+                                <div className="card-body h-50">
+                                  <div className="card-title">
+                                    Chapter {data.course_detail_chapter}
+                                  </div>
+                                  <div
+                                    className="card-text"
+                                    style={{ height: "3rem" }}
+                                  >
+                                    {data.chapter_title}
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        </li>
-                      </Link>
-                    ))}
-              </ul>
+                          </li>
+                        </Link>
+                      ))
+                    : studentCourse.course?.course_detail.map((data, index) => (
+                        <Link
+                          to={
+                            "/course/" +
+                            studentCourse.course?.title +
+                            "/" +
+                            data.course_detail_chapter
+                          }
+                          key={index}
+                          style={{ textDecoration: "none" }}
+                          state={{
+                            account: account,
+                            studentCourse: studentCourse,
+                            courseDetail: state,
+                          }}
+                        >
+                          <li className="card">
+                            <div>
+                              <div className="" style={{ height: "30rem" }}>
+                                <div className="text-center">
+                                  <img
+                                    className="img-fluid h-100 "
+                                    src={data.chapter_thumbnail}
+                                    alt=""
+                                  />
+                                </div>
+                                <div className="card-body h-50">
+                                  <div className="card-title">
+                                    Chapter {data.course_detail_chapter}
+                                  </div>
+                                  <div
+                                    className="card-text"
+                                    style={{ height: "3rem" }}
+                                  >
+                                    {data.chapter_title}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                        </Link>
+                      ))}
+                </ul>
+              </div>
             </div>
+          </div>
+          <div className="d-flex" style={{ height: "10vh" }}>
             <div
+              className="w-100 d-flex justify-content-center align-items-center"
               onClick={() =>
                 navigate(
                   "/lecturer/" +
@@ -498,8 +519,11 @@ const CourseDetail = () => {
                 )
               }
             >
-              <div className="d-flex">
-                <div className="bg-white d-flex">
+              <div className="h-100">
+                <div
+                  className="bg-white d-flex align-items-center h-100"
+                  style={{ width: "15vw", borderRadius: "1rem" }}
+                >
                   <img
                     src={
                       // state.teacher.user?.urlImage
@@ -508,10 +532,17 @@ const CourseDetail = () => {
                       "/assets/" + course.teacher?.user.urlImage
                     }
                     alt="abc"
-                    className="m-3"
-                    width={"150px"}
+                    style={{
+                      width: "3vw",
+                      height: "3vw",
+                      margin: "0.75rem",
+                      borderRadius: "0.5rem",
+                    }}
                   />
-                  <p className="m-3 fs-4">
+                  <p
+                    className="d-flex p-0 m-"
+                    style={{ fontSize: "18px", fontWeight: "bold" }}
+                  >
                     {state.teacher.user.fullName
                       ? state.teacher.user.fullName
                       : state.teacher.user.firstName +

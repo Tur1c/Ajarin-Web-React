@@ -77,12 +77,12 @@ const Calendar = () => {
   };
 
   const getTeacherDiscData = (date: any) => {
-    console.log(
-      "masuk sini",
-      teacherDisc,
-      date,
-      dayjs(teacherDisc[0].date.toString()).format(formatDate)
-    );
+    // console.log(
+    //   "masuk sini",
+    //   teacherDisc,
+    //   date,
+    //   dayjs(teacherDisc[0].date.toString()).format(formatDate)
+    // );
     const discData = teacherDisc
       .filter((x) => dayjs(x.date.toString()).format(formatDate) === date)
       .sort((x, y) =>
@@ -103,6 +103,15 @@ const Calendar = () => {
         : dayjs().format(formatDate)
     )
   );
+
+  console.log(
+    "tshoot",
+    teacher,
+    state.discDate,
+    dayjs(state.discDate).format(formatDate),
+    dayjs().format(formatDate)
+  );
+
   const [currTeacherDisc, setCurrTeacherDisc] = useState(
     teacher
       ? getTeacherDiscData(
@@ -445,77 +454,72 @@ const Calendar = () => {
                               </h6>
                             </div>
                           </h5> */}
-                                <div className="updisc-container w-100 mx-2">
-                                  <h5 className="card-text d-flex justify-content-between">
-                                    <div className="disc-date mx-auto text-center border-end border-white justify-content-center align-items-center align-items-center d-flex row">
-                                      <h4
-                                        style={{
-                                          margin: 0,
-                                          fontSize: "32px",
-                                          fontWeight: "bold",
-                                        }}
-                                      >
-                                        {dayjs(
-                                          data.discussion.disc_date
-                                        ).format("DD")}
-                                      </h4>
-                                      <h5
-                                        style={{
-                                          fontSize: "18px",
-                                          fontWeight: "bold",
-                                        }}
-                                      >
-                                        {dayjs(
-                                          data.discussion.disc_date
-                                        ).format("MMM")}
-                                      </h5>
-                                    </div>
-
-                                    <div className="disc-title my-auto d-flex row px-2 ">
-                                      <h6
-                                        style={{ margin: 0, fontSize: "14px" }}
-                                      >
-                                        {data.discussion.disc_title}
-                                        <br />
-                                      </h6>
-                                      <h6
-                                        style={{
-                                          margin: 0,
-                                          fontSize: "10px",
-                                          color: "var(--yelo)",
-                                        }}
-                                      >
-                                        by Godwin
-                                      </h6>
-                                    </div>
-
-                                    <div className="disc-time d-flex justify-content-center px-2 border-start border-white">
-                                      <h6
-                                        className="d-flex align-items-center justify-content-center"
-                                        style={{
-                                          height: "100%",
-                                          fontSize: "12px",
-                                        }}
-                                      >
-                                        {data.discussion.disc_starttime
-                                          .toString()
-                                          .slice(0, 5)}{" "}
-                                        -{" "}
-                                        {data.discussion.disc_endtime
-                                          .toString()
-                                          .slice(0, 5)}
-                                      </h6>
-                                    </div>
-                                  </h5>
-                                </div>
+                          <div className="updisc-container w-100 mx-2">
+                            <h5 className="card-text d-flex justify-content-between">
+                              <div className="text-center border-end border-white justify-content-center align-items-center d-flex row">
+                                <h4
+                                  style={{
+                                    margin: 0,
+                                    fontSize: "32px",
+                                    fontWeight: "bold",
+                                  }}
+                                >
+                                  {dayjs(data.discussion.disc_date).format(
+                                    "DD"
+                                  )}
+                                </h4>
+                                <h5
+                                  style={{
+                                    fontSize: "18px",
+                                    fontWeight: "bold",
+                                  }}
+                                >
+                                  {dayjs(data.discussion.disc_date).format(
+                                    "MMM"
+                                  )}
+                                </h5>
                               </div>
-                            </div>
-                          ))}
+
+                              <div className="my-auto d-flex row">
+                                <h6 style={{ margin: 0, fontSize: "14px" }}>
+                                  {data.discussion.disc_title}
+                                  <br />
+                                </h6>
+                                <h6
+                                  style={{
+                                    margin: 0,
+                                    fontSize: "10px",
+                                    color: "var(--yelo)",
+                                  }}
+                                >
+                                  by Godwin
+                                </h6>
+                              </div>
+
+                              <div className="justify-content-center px-2 border-start border-white">
+                                <h6
+                                  className="d-flex align-items-center justify-content-center pe-2"
+                                  style={{ height: "100%", fontSize: "12px" }}
+                                >
+                                  {data.discussion.disc_starttime
+                                    .toString()
+                                    .slice(0, 5)}{" "}
+                                  -{" "}
+                                  {data.discussion.disc_endtime
+                                    .toString()
+                                    .slice(0, 5)}
+                                </h6>
+                              </div>
+                            </h5>
+                          </div>
                         </div>
-                      </>
-                    )}
+                      </div>
+                    ))}
                   </div>
-                </div>
+                </>
+              )}
+            </div>
+          </div>
 
                 <h1
                   style={{

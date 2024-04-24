@@ -92,6 +92,8 @@ function Home() {
   });
   const navigate = useNavigate();
 
+  console.log("ini data courses", teacher);
+
   const fetchDataAccount = async () => {
     setIsLoadingHome(true);
     try {
@@ -147,7 +149,7 @@ function Home() {
       fetchDataAccount();
     } else {
       fetchTeacherData();
-        fetchDataAccount();
+      fetchDataAccount();
     }
     // if (userRole === "Teacher") {
     //   setTimeout(() => {
@@ -182,6 +184,14 @@ function Home() {
 
   const handlePageChangeToCoin = () => {
     navigate("/coin", {
+      state: {
+        teacher,
+      },
+    });
+  };
+
+  const handlePageChangePrivateDiscussion = () => {
+    navigate("/lecturer", {
       state: {
         teacher,
       },
@@ -249,13 +259,33 @@ function Home() {
                       <button
                         className="private-discussion-button"
                         style={{ width: "100%", marginTop: "2rem" }}
+                        onClick={() => handlePageChangePrivateDiscussion()}
                       >
                         Private Discussion Request
                       </button>
                     </div>
+                    {/* <div className="col-6">
+                <button
+                  className="coin-button"
+                  style={{ width: "100%" }}
+                  onClick={() => handlePageChangeToCoin()}
+                >
+                  Coin{" "}
+                  <img
+                    className="img-fluid"
+                    style={{
+                      width: "36px",
+                      height: "36px",
+                    }}
+                    src={`assets/coin.png`}
+                    alt=""
+                  />{" "}
+                  {teacher.account.coin}
+                </button>
+              </div> */}
                     <div className="col-6">
                       <button
-                        className="coin-button"
+                        className="coin-withdraw-button"
                         style={{ width: "100%", marginTop: "2rem" }}
                         onClick={() => handlePageChangeToCoin()}
                       >
@@ -263,68 +293,49 @@ function Home() {
                         <img
                           className="img-fluid"
                           style={{
-                            width: "36px",
-                            height: "36px",
+                            width: "2vw",
+                            height: "2vw",
                           }}
                           src={`assets/coin.png`}
                           alt=""
-                        />{" "}
+                        />
                         {teacher.user.coin}
                       </button>
-                      {/* <div className="coin-wrapper">
-                  <Link
-                    style={{
-                      textAlign: "center",
-                      display: "flex",
-                      alignItems: "center",
-                      textDecoration: "none",
-                    }}
-                    to={"/coin"}
-                    state={account}
-                  >
-                    <img
-                      className="img-fluid"
-                      style={{
-                        width: "36px",
-                        height: "36px",
-                      }}
-                      src={`assets/coin.png`}
-                      alt=""
-                    />
-                    <div className="coin-link">
-                      {account.coin} COIN <IoIosArrowForward />
-                    </div>
-                  </Link>
-                </div> */}
                     </div>
                   </div>
-                  <div className="top-courses mt-5">
+                  <div className="top-courses">
                     <h1 className="fw-bold">Your Top Courses</h1>
-                    <div className="row d-flex justify-content-between">
+                    <div className="row d-flex m-0 justify-content-around">
                       {teacher.courses
                         ? teacher.courses
                             .sort((a, b) => (a.sold > b.sold ? -1 : 1))
                             .slice(0, 5)
                             .map((data, index) => (
-                              <div className="col-2">
+                              <div className="course-item w-auto d-flex  p-0">
                                 <div
-                                  className="card"
                                   style={{
-                                    width: "13rem",
-                                    height: "18rem",
+                                    width: "12vw",
+                                    height: "18vw",
                                     background: "rgba(255, 255, 255, 0.1)",
-                                    border: "none",
+                                    borderRadius: "0.5rem",
                                   }}
                                 >
-                                  <div className="text-center thumbnail container-class-header">
+                                  <div className="thumbnail container-class-header">
                                     <img
-                                      className="img-fluid"
-                                      src={"assets/" + data.image}
+                                      className="img-flui"
+                                      // src={data.image}
+                                      src={"/assets/" + data.image}
                                       alt=""
-                                      style={{ width: "100%", height: "100%" }}
+                                      style={{
+                                        width: "12vw",
+                                        height: "12vw",
+                                        objectFit: "fill",
+                                        padding: "0.5rem",
+                                        borderRadius: "0.5rem",
+                                      }}
                                     />
                                     <div
-                                      className="bottom-left p-0"
+                                      className="bottom-left-courses"
                                       style={{
                                         backgroundColor: "rgba(0, 0, 0, 0.0)",
                                       }}
@@ -332,21 +343,30 @@ function Home() {
                                       <h5
                                         style={{
                                           backgroundColor: "rgba(0, 0, 0, 0.8)",
+                                          padding: "0.25rem",
+                                          fontWeight: "600",
+                                          letterSpacing: "2px",
+                                          borderRadius: "0.25rem",
                                         }}
                                       >
                                         #{index + 1}
                                       </h5>
                                     </div>
                                   </div>
-                                  <div className="card-body h-50 p-2 text-white">
-                                    <div className="card-title">
+                                  <div
+                                    className="d-flex row m-0 text-white align-content-between"
+                                    style={{ minHeight: "6vw" }}
+                                  >
+                                    <div
+                                      style={{
+                                        fontWeight: "600",
+                                        fontSize: "18px",
+                                      }}
+                                    >
                                       {data.title}
                                     </div>
-                                    <div
-                                      className="card-text"
-                                      style={{ height: "3rem" }}
-                                    >
-                                      {data.sold} Purchased
+                                    <div className="purchased-course">
+                                      <p>{data.sold} Purchased</p>
                                     </div>
                                   </div>
                                 </div>
@@ -355,9 +375,7 @@ function Home() {
                         : null}
                     </div>
                     <div className="w-100 d-flex justify-content-center mt-3">
-                      <div className="filter-btn" style={{ width: "50%" }}>
-                        See All
-                      </div>
+                      <button className="see-all-btn">See All</button>
                     </div>
                   </div>
                 </div>
@@ -465,8 +483,8 @@ function Home() {
                   <img
                     className="img-fluid"
                     style={{
-                      width: "36px",
-                      height: "36px",
+                      width: "32px",
+                      height: "32px",
                     }}
                     src={`assets/coin.png`}
                     alt=""

@@ -50,9 +50,10 @@ body {
 }
 
 .create-course-button,
+.coin-withdraw-button,
 .set-discussion-button,
 .private-discussion-button {
-  height: 5rem;
+  height: 4rem;
   font-size: 21px;
   font-weight: bold;
   border: none;
@@ -86,14 +87,27 @@ body {
 }
 
 .private-discussion-button {
-  background: radial-gradient(#aed0bc, #63a77e);
+  background: radial-gradient(#63a77e, #aed0bc);
   background-repeat: no-repeat;
   filter: brightness(80%);
   transition: all 0.5s ease-in;
 }
 
 .private-discussion-button:hover {
-  background: radial-gradient(#aed0bc, #63a77e);
+  background: radial-gradient(#63a77e, #aed0bc);
+  background-repeat: no-repeat;
+  filter: brightness(95%);
+}
+
+.coin-withdraw-button {
+  background: radial-gradient(#90928f, #bab8cc);
+  background-repeat: no-repeat;
+  filter: brightness(80%);
+  transition: all 0.5s ease-in;
+}
+
+.coin-withdraw-button:hover {
+  background: radial-gradient(#90928f, #bab8cc);
   background-repeat: no-repeat;
   filter: brightness(100%);
 }
@@ -564,7 +578,7 @@ body {
     url("../../../../public/assets/set_discussion.png");
   color: white;
   height: 4rem;
-  font-size: 20px;
+  font-size: 21px;
 }
 
 .create-course-button {
@@ -574,7 +588,7 @@ body {
     ),
     url("../../../../public/assets/create_course.png");
   height: 4rem;
-  font-size: 20px;
+  font-size: 21px;
   color: white;
   font-weight: 700;
 }
@@ -586,19 +600,62 @@ body {
     ),
     url("../../../../public/assets/private_discussion.png");
   height: 4rem;
-  font-size: 20px;
+  font-size: 21px;
   color: white;
   font-weight: 700;
 }
 
-.coin-button {
+.coin-withdraw-button {
   background: linear-gradient(
       rgba(255, 255, 255, 0.05),
       rgba(255, 255, 255, 0.05)
     ),
     url("../../../../public/assets/coin_button.png");
   height: 4rem;
-  font-size: 20px;
+  font-size: 21px;
   color: white;
   font-weight: 700;
+}
+
+/* Home Teacher */
+
+.top-courses {
+  margin-top: 4rem;
+}
+
+.top-courses h1 {
+  margin-bottom: 1rem;
+  font-size: 48px;
+}
+
+.top-courses .course-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.top-courses .bottom-left-courses {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 1rem;
+  /* font-size: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 0rem 0.25rem; */
+}
+
+.top-courses .purchased-course {
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+.top-courses .see-all-btn {
+  background-color: var(--blue);
+  border: 2px white solid;
+  outline: none;
+  border-radius: 50px;
+  color: var(--white);
+  width: 5vw;
+  height: 2vw;
+}
+
+.top-courses .see-all-btn:hover {
+  background-color: rgba(255, 255, 255, 15%);
 }

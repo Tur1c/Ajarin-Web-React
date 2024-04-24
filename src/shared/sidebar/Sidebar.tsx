@@ -39,6 +39,7 @@ const Sidebar = ({
   const isLogged = sessionStorage.getItem("jwt");
   const userRole = sessionStorage.getItem("role");
   const navigate = useNavigate();
+  console.log(teacheracc);
 
   let isAlreadyTeacher = false;
   // console.log(account);

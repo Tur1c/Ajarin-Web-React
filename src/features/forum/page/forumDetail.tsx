@@ -626,11 +626,14 @@ const ForumDetail = () => {
                                 <div
                                   key={data.fr_id}
                                   onClick={() => handleUnlikeClick(data.fr_id)}
-                                  className="like-btn d-flex "
+                                  className="unlike-btn d-flex "
                                 >
-                                  <button className="fw-bold">
+                                  <button className="fw-bold" color="#ff1111">
                                     {data.fr_likes}{" "}
-                                    <FaHeart color="white" font-size={"1rem"} />
+                                    <FaHeart
+                                      color="#ff1111"
+                                      font-size={"1rem"}
+                                    />
                                   </button>
                                 </div>
                               ) : (

@@ -88,7 +88,7 @@ const Forum = () => {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-      console.log("munculll", response.data.outputSchema);
+      // console.log("munculll", response.data.outputSchema);
       setForumList(
         transfromToForumListOutput(response.data.outputSchema, email)
       );

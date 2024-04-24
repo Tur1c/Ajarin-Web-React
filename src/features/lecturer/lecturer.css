@@ -91,6 +91,15 @@
   padding: 0;
 }
 
+.all-lecturer-container {
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+.all-lecturer-container:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
 .lecturer-leaderboard-table:hover {
   background-color: rgba(255, 255, 255, 0.2);
   cursor: pointer;

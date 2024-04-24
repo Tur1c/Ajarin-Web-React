@@ -135,7 +135,7 @@ export function transfromToForumListOutput(
   response: ForumSchema,
   email: string | null
 ): ForumListOutput {
-  console.log("di forum", response);
+  // console.log("di forum", response);
   const result: ForumListOutput = {
     forum_list: response.forums.map((data) => {
       return {

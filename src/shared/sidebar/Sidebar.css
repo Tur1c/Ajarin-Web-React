@@ -94,7 +94,7 @@
 }
 
 .sidebar .menu {
-  opacity: 0.3;
+  opacity: 1;
 }
 
 .sidebar .menu .active svg {

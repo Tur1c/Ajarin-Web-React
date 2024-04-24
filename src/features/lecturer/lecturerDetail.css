@@ -87,7 +87,7 @@
   background: var(--pruple);
 }
 
-.subs-edit-btn {
+.lecturer-detail-page .subs-edit-btn {
   background-color: #f6eca9;
   border: none;
   outline: none;
@@ -97,11 +97,11 @@
   height: 3vw;
 }
 
-.subs-edit-btn:hover {
+.lecturer-detail-page .subs-edit-btn:hover {
   background-color: var(--yelodark);
 }
 
-.logout-btn {
+.lecturer-detail-page .logout-btn {
   background-color: var(--purple);
   border: 1px solid white;
   outline: none;
@@ -111,11 +111,11 @@
   height: 3vw;
 }
 
-.logout-btn:hover {
+.lecturer-detail-page .logout-btn:hover {
   background-color: rgba(255, 255, 255, 15%);
 }
 
-.bottom-left-rank {
+.lecturer-detail-page .bottom-left-rank {
   /* float: left; */
   position: absolute;
   z-index: 1000;
@@ -144,7 +144,7 @@
   border-width: 0.125rem;
 } */
 
-.see-all-btn {
+.lecturer-detail-page .see-all-btn {
   background-color: var(--purple);
   border: 2px white solid;
   outline: none;
@@ -154,6 +154,6 @@
   height: 2vw;
 }
 
-.see-all-btn:hover {
+.lecturer-detail-page .see-all-btn:hover {
   background-color: rgba(255, 255, 255, 15%);
 }

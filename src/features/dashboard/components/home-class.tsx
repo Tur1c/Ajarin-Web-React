@@ -210,7 +210,10 @@ function HomeClass({ account, searchData }: Props) {
                         className="col-md-3 d-flex align-items-stretch mb-2"
                         key={index}
                       >
-                        <div className="card" style={{ border: "none" }}>
+                        <div
+                          className="card"
+                          style={{ border: "none", width: "20vw" }}
+                        >
                           <Link
                             to={"/course/" + data.title}
                             state={{
@@ -246,67 +249,56 @@ function HomeClass({ account, searchData }: Props) {
                               </div>
                             </div>
 
-                            <div className="card-body p-2">
-                              <div className="card-text">
-                                <div className="class-content">
-                                  <div className="class">
-                                    <div className="d-block">
-                                      <div
-                                        className=""
-                                        style={{
-                                          display: "flex",
-                                          alignItems: "center",
-                                        }}
-                                      >
-                                        <img
-                                          src={
-                                            "/assets/" +
-                                            data.teacher?.user.urlImage
-                                          }
-                                          alt="abc"
-                                          className="me-2"
-                                          width={"50px"}
-                                        />
-                                        <span
-                                          style={{
-                                            color: "#000",
-                                            alignItems: "center",
-                                            outline: "none",
-                                          }}
-                                        >
-                                          {data.teacher?.user.fullName}
-                                        </span>
-                                      </div>
-                                      <div className="d-block p-1">
-                                        <div className="title-class mb-2">
-                                          <h3 style={{ color: "#000" }}>
-                                            {data.title}
-                                          </h3>
-                                        </div>
-                                        <span
-                                          className="badge badge-outlined me-2"
-                                          style={{
-                                            borderColor: "#000",
-                                            backgroundColor: "#fff",
-                                            color: "#000",
-                                            borderRadius: "15px",
-                                          }}
-                                        >
-                                          {data.category}
-                                        </span>
-                                        <span
-                                          className="badge badge-outlined me-2"
-                                          style={{
-                                            borderColor: "#000",
-                                            backgroundColor: "#fff",
-                                            color: "#000",
-                                            borderRadius: "15px",
-                                          }}
-                                        >
-                                          {data.level}
-                                        </span>
-                                      </div>
-                                    </div>
+                            <div className="card-body p-2 text-decoration-none">
+                              <div className="class w-100 h-100 align-content-between">
+                                <div
+                                  className="h-25"
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <img
+                                    src={
+                                      "/assets/" + data.teacher?.user.urlImage
+                                    }
+                                    alt="abc"
+                                    className="me-2"
+                                    style={{
+                                      width: "3vh",
+                                      height: "3vh",
+                                      borderRadius: "0.25rem",
+                                    }}
+                                  />
+                                  <span
+                                    style={{
+                                      color: "#000",
+                                      alignItems: "center",
+                                      fontSize: "10px",
+                                      fontWeight: "bold",
+                                    }}
+                                  >
+                                    {data.teacher?.user.fullName}
+                                  </span>
+                                </div>
+                                <div className="d-block h-75 justify-content-between align-content-between d-flex row m-0">
+                                  <div className="title-class m-0 p-0">
+                                    <h3
+                                      style={{
+                                        color: "#000",
+                                        fontSize: "18px",
+                                        marginTop: "0.5rem",
+                                      }}
+                                    >
+                                      {data.title}
+                                    </h3>
+                                  </div>
+                                  <div
+                                    className="row"
+                                    style={{ gap: "0.5rem" }}
+                                  >
+                                    <div className="chip">{data.category}</div>
+                                    <div className="chip">{data.level}</div>
                                   </div>
                                 </div>
                               </div>

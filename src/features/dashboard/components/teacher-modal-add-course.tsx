@@ -78,6 +78,24 @@ function TeacherModalAddCourse(props: any) {
   const [page, setPage] = useState(1);
   const [image, setImage] = useState<File>();
 
+  const [selectedEdu, setSelectedEdu] = useState<string>("");
+
+  interface eduOption {
+    eduLevel: string;
+    label: string;
+  }
+
+  const eduOptions: eduOption[] = [
+    { eduLevel: "General", label: "General" },
+    { eduLevel: "Highschool", label: "Highschool" },
+    { eduLevel: "University", label: "University" },
+  ];
+
+  const handleChangeEdu = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedEdu(event.target.value);
+    setAddCourse({ ...addCourse, education_level: event.target.value });
+  };
+
   const handleAddCourseFile = () => {
     setPage(2);
   };

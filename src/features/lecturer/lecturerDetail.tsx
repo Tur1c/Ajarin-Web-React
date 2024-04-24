@@ -136,13 +136,17 @@ const LecturerDetail = () => {
                 <div className="d-flex col w-100">
                   <div>
                     <img
-                      className="img-fluid bg-black"
+                      className="bg-light"
                       src={
                         "/assets/" + state.data.user.urlImage ||
                         `assets/coin.png`
                       }
                       alt=""
-                      style={{ width: "25vh", height: "25vh" }}
+                      style={{
+                        width: "25vh",
+                        height: "25vh",
+                        objectFit: "fill",
+                      }}
                     />
                   </div>
 

@@ -766,10 +766,10 @@ const Lecturer = () => {
                               style={{ fontFamily: "Montserrat" }}
                             >
                               <img
-                                className="img-fluid"
+                                className="img-fluid bg-light"
                                 src={"/assets/" + data.user.urlImage}
                                 alt=""
-                                style={{ height: "5vh", width: "5vh" }}
+                                style={{ height: "5vh", width: "5vh", borderRadius:"0.25rem" }}
                               />
                               <span> {data.user.fullName}</span>
                             </TableCell>
@@ -909,11 +909,12 @@ const Lecturer = () => {
                         onClick={() => handleTeacherDetail(data)}
                       >
                         <div
-                          className="d-flex col"
+                          className="d-flex col all-lecturer-container"
                           style={{
                             height: "10vh",
-                            background: "rgba(255, 255, 255, 0.2)",
-                            padding: "0rem 1rem",
+                            // background: "rgba(255, 255, 255, 0.1)",
+                      padding: "0rem 0.75rem",
+                      borderRadius:"0.25rem"
                           }}
                         >
                           <div
