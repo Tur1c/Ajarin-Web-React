@@ -36,7 +36,7 @@ const CourseDetail = () => {
   const [isOpen, setisOpen] = useState(true);
 
   console.log(state.course?.course ? true : false);
-  const account: AccountOutput = state.acc;
+  const account: AccountOutput = state.acc.firstName !== "" ? state.acc : null;
   const course: CourseList = state.course?.course
     ? state.course.course
     : state.data.course?.course_id
@@ -46,11 +46,13 @@ const CourseDetail = () => {
 
   const JOIN_URL = "/api/account/joincourse";
   const STUDENT_COURSE_URL =
-    "/api/account/course?account=" + account.id + "&course=" + course.id;
+    "/api/account/course?account=" + account?.id + "&course=" + course.id;
   const RATE_URL = "/api/course/ratecourse";
   console.log(STUDENT_COURSE_URL);
 
   const joinCourse = async (courseId: number | undefined) => {
+    console.log(account);
+
     if (!account) {
       navigate("/login");
     } else {
@@ -68,7 +70,17 @@ const CourseDetail = () => {
           withCredentials: true,
         });
         console.log(response, "sukses join course");
-        navigate("/");
+        Swal.fire({
+          icon: "success",
+          title: "Success Buy the Course",
+          background: "#11235a",
+          color: "#fff",
+          confirmButtonColor: "#f6e976",
+          confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+        }).then(function () {
+          navigate("/");
+        });
+        // navigate("/");
       } catch (error) {
         if (error instanceof AxiosError) {
           console.log(error?.response?.data.errorSchema);
@@ -77,6 +89,10 @@ const CourseDetail = () => {
           icon: "error",
           title: "Oops...",
           text: "Cannot Buy Your Created Course",
+          background: "#11235a",
+          color: "#fff",
+          confirmButtonColor: "#f6e976",
+          confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
         }).then(function () {
           navigate("/");
         });
@@ -110,7 +126,7 @@ const CourseDetail = () => {
 
   useEffect(() => {
     if (
-      !!account.studentcourse_list.find(
+      !!account?.studentcourse_list?.find(
         (course) => course.course.course_title === params.course_title
       )
     ) {
@@ -336,7 +352,15 @@ const CourseDetail = () => {
                     fontSize: "50px",
                   }}
                 >
-                  <IoCloseCircleOutline onClick={() => navigate(-1)} />
+                  <IoCloseCircleOutline
+                    onClick={() => {
+                      if (state.link !== "/") {
+                        navigate(state.link, { state: state.acc });
+                      } else {
+                        navigate(state.link);
+                      }
+                    }}
+                  />
                 </button>
               </div>
               <div className="logo_content" style={{ cursor: "default" }}>
@@ -425,10 +449,8 @@ const CourseDetail = () => {
                 <ul className="cards">
                   {!studentCourse.course
                     ? course.course_detail.map((data, index) => (
-                        <Link
-                          to={"/login"}
-                          key={index}
-                          style={{ textDecoration: "none" }}
+                        <
+                          // to={"/login"}
                         >
                           <li className="card">
                             <div>
@@ -436,7 +458,7 @@ const CourseDetail = () => {
                                 <div className="text-center">
                                   <img
                                     className="img-fluid h-100 "
-                                    src={data.chapter_thumbnail}
+                                    src={"/assets/" + data.chapter_thumbnail}
                                     alt=""
                                   />
                                 </div>
@@ -454,7 +476,7 @@ const CourseDetail = () => {
                               </div>
                             </div>
                           </li>
-                        </Link>
+                        </>
                       ))
                     : studentCourse.course?.course_detail.map((data, index) => (
                         <Link
@@ -478,7 +500,7 @@ const CourseDetail = () => {
                                 <div className="text-center">
                                   <img
                                     className="img-fluid h-100 "
-                                    src={data.chapter_thumbnail}
+                                    src={"/assets/" + data.chapter_thumbnail}
                                     alt=""
                                   />
                                 </div>

@@ -97,6 +97,10 @@ function Register() {
         icon: "error",
         title: "Oops...",
         text: err.response.data.errorSchema.message,
+        background: "#11235a",
+        color: "#fff",
+        confirmButtonColor: "#f6e976",
+        confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
       });
       // if (!err?.response) {
       //   console.log("No Server Response");

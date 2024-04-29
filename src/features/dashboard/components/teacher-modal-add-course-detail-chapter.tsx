@@ -3,6 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import "react-datepicker/dist/react-datepicker.css";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import axios from "../../../api/axios";
 import { AccountSchema } from "../../../model/Account";
 import { AddCourseDetailSchema } from "../../../model/course/course-list";
@@ -148,17 +149,16 @@ function TeacherModalAddCourseDetailChapter(props: any) {
     formData.append("chapter", props.chapter);
     formData.append("title", addCourseDetail.title);
     if (image) {
-      formData.append("thumbnail",image);
+      formData.append("thumbnail", image);
     }
-    if(video){
-      formData.append("video",video);
+    if (video) {
+      formData.append("video", video);
     }
-    if(pdf){
-      formData.append("pdf",pdf);
+    if (pdf) {
+      formData.append("pdf", pdf);
     }
 
     console.log(formData);
-
 
     try {
       e.preventDefault();
@@ -174,7 +174,18 @@ function TeacherModalAddCourseDetailChapter(props: any) {
         }
       );
 
-      if(response.status === 200) props.onHide(e);
+      if (response.status === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "Success add chapter " + props.chapter,
+          background: "#11235a",
+          color: "#fff",
+          confirmButtonColor: "#f6e976",
+          confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+        }).then(function () {
+          props.onHide(e);
+        });
+      }
     } catch (err) {
       console.log(err);
     }
@@ -211,7 +222,12 @@ function TeacherModalAddCourseDetailChapter(props: any) {
       </Modal.Header>
       <Modal.Body className="p-5" key={props.chapter}>
         <div className="modal-body-container">
-          <form onSubmit={(e) => {e.preventDefault();submitCourseDetail(e)}}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              submitCourseDetail(e);
+            }}
+          >
             <div className="inputs" style={{ width: "100%" }}>
               <div className="">
                 <div className="input-box" style={{ marginBottom: "0.5rem" }}>
@@ -268,20 +284,17 @@ function TeacherModalAddCourseDetailChapter(props: any) {
                 <label>Upload Course Material (PDF)</label>
               </div>
               <div className="input-box">
-                  <input
-                    type="file"
-                    required
-                    id="cv"
-                    onChange={handleVideoChange}
-                    accept="video/*"
-                  />
-                  <label>Upload Course Video</label>
-                </div>
+                <input
+                  type="file"
+                  required
+                  id="cv"
+                  onChange={handleVideoChange}
+                  accept="video/*"
+                />
+                <label>Upload Course Video</label>
+              </div>
               <div className="d-flex justify-content-between align-items-center mt-5">
-                <button
-                  type="submit"
-                  className="fw-bold"
-                >
+                <button type="submit" className="fw-bold">
                   Submit
                 </button>
               </div>

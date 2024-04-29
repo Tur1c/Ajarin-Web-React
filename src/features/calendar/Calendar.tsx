@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { useEffect, useRef, useState } from "react";
+import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useRef, useState } from "react";
 import {
   BiSolidChevronLeftSquare,
   BiSolidChevronRightSquare,
@@ -20,6 +20,7 @@ const Calendar = () => {
 
   const formatDate = "YYYY-MM-DD";
 
+  const [searchText, setSearchText] = useState("");
   const [currMonthIdx, setCurrMonthIdx] = useState(
     state.discDate ? dayjs(state.discDate).month() : dayjs().month()
   );
@@ -39,12 +40,16 @@ const Calendar = () => {
       ? state.account
       : state;
   const accountDisc: StudentDisc[] = account.studentdisc_list;
-  const accountCourse: StudentCourse[] = account.studentcourse_list;
+  const [accountCourse, setAccountCourse] = useState(account.studentcourse_list);
+  // const accountCourse: StudentCourse[] = account.studentcourse_list;
+  const accountCourseTemp: StudentCourse[] = account.studentcourse_list;
 
   // Teacher
   const teacher = state.teacher ? state.teacher : null;
   const teacherDisc: ClassList[] = teacher ? teacher.discussion : null;
-  const teacherCourse: CourseList[] = teacher ? teacher.courses : null;
+  const [teacherCourse, setTeacherCourse] = useState(teacher ? teacher.courses : null);
+  // const teacherCourse: CourseList[] = teacher ? teacher.courses : null;
+  const teacherCourseTemp: CourseList[] = teacher ? teacher.courses : null;
 
   console.log(accountCourse, accountDisc, userRole);
   console.log(teacher, teacherDisc, teacherCourse);
@@ -202,6 +207,17 @@ const Calendar = () => {
     setIsMouseDown(false);
   };
 
+  const handleSearch = () => {
+    
+    if(userRole === "Teacher") {
+      const findCourse = teacherCourseTemp.filter((u) => u.title.toLowerCase().includes(searchText));
+      setTeacherCourse(findCourse); 
+    } else {
+      const findCourse = accountCourseTemp.filter((u) => u.course.course_title.toLowerCase().includes(searchText));
+      setAccountCourse(findCourse);
+    }
+  }
+
   const handleLoadingTrue = () => setIsLoadingChangeAccount(true);
   const handleLoadingFalse = () => setIsLoadingChangeAccount(false);
 
@@ -357,7 +373,7 @@ const Calendar = () => {
                                       </h2>
                                       <h5>{dayjs(data.date).format("MMM")}</h5>
                                     </div>
-                                    <div className="disc-title my-auto col-6 d-flex justify-content-center">
+                                    <div className="disc-title my-auto col-6 d-flex justify-content-center mx-2">
                                       <h6 className="" style={{ margin: 0 }}>
                                         {data.title} <br />
                                         by Godwin
@@ -558,10 +574,14 @@ const Calendar = () => {
                           id="search-input"
                           placeholder="Search"
                           className="search-left-bar"
+                          onChange={(e) => {
+                            setSearchText(e.target.value)
+                          }}
                         />
                       </div>
                       <div className="search-right">
-                        <button className="search-button" id="search">
+                        <button className="search-button" id="search"
+                        onClick={() => handleSearch()}>
                           <IoSearch color="#6E6E6E" fontSize={"24"} />
                         </button>
                       </div>
@@ -577,7 +597,7 @@ const Calendar = () => {
                     onMouseMove={handleMouseMove}
                   >
                     {teacher
-                      ? teacherCourse.map((data, idx) => (
+                      ? teacherCourse.map((data: { image: any; title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; level: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; category: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }, idx: any) => (
                           <div
                             className="account-course-card card text-decoration-none"
                             style={{ width: "18rem", height: "20rem" }}
@@ -614,7 +634,7 @@ const Calendar = () => {
                             </div>
                           </div>
                         ))
-                      : accountCourse.map((data, idx) => (
+                      : accountCourse.map((data: { course: { course_title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined; teacher: { user: { pic_name: string; firstName: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; lastName: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }; }; course_image: any; course_level: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; category: { category_name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }; }; }, idx: Key | null | undefined) => (
                           <Link
                             to={"/course/" + data.course.course_title}
                             key={idx}
@@ -622,6 +642,7 @@ const Calendar = () => {
                               data: data,
                               acc: account,
                               teacher: data.course.teacher,
+                              link: "/calendar"
                             }}
                             style={{ textDecoration: "none" }}
                           >

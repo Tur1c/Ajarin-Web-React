@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import { IoSearch } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import axios from "../../api/axios";
 import useModal from "../../hooks/useModal";
 import {
@@ -153,11 +154,20 @@ const Lecturer = () => {
           withCredentials: true,
         }
       );
-      fetchDataAccount();
-      currentTeacherList = account.subscribed_lecturer.slice(
-        firstIndex,
-        lastIndex
-      );
+      Swal.fire({
+        title: "Success Subscribed Lecturer",
+        icon: "success",
+        background: "#11235a",
+        color: "#fff",
+        confirmButtonColor: "#f6e976",
+        confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+      }).then(function () {
+        fetchDataAccount();
+        currentTeacherList = account.subscribed_lecturer.slice(
+          firstIndex,
+          lastIndex
+        );
+      });
     } catch (error) {}
   };
 
@@ -492,7 +502,7 @@ const Lecturer = () => {
                             placeholder="Search"
                             onChange={(e) => {
                               setSearchText(e.target.value);
-                              fetchDataAccount();
+                              setAccount(tempAccount);
                             }}
                           />
                         </div>
@@ -769,7 +779,11 @@ const Lecturer = () => {
                                 className="img-fluid bg-light"
                                 src={"/assets/" + data.user.urlImage}
                                 alt=""
-                                style={{ height: "5vh", width: "5vh", borderRadius:"0.25rem" }}
+                                style={{
+                                  height: "5vh",
+                                  width: "5vh",
+                                  borderRadius: "0.25rem",
+                                }}
                               />
                               <span> {data.user.fullName}</span>
                             </TableCell>
@@ -913,8 +927,8 @@ const Lecturer = () => {
                           style={{
                             height: "10vh",
                             // background: "rgba(255, 255, 255, 0.1)",
-                      padding: "0rem 0.75rem",
-                      borderRadius:"0.25rem"
+                            padding: "0rem 0.75rem",
+                            borderRadius: "0.25rem",
                           }}
                         >
                           <div

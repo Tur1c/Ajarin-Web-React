@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import axios from "../../../api/axios";
 import {
   AccountOutput,
@@ -9,10 +10,16 @@ import {
 } from "../../../model/Account";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import "./coin.css";
-import Swal from "sweetalert2";
 
 const UPDATE_URL = "/api/account/";
 const WITHDRAW_URL = "/api/account/";
+const MIDTRANS_URL = "/api/payment";
+
+declare global {
+  interface Window {
+    snap: any;
+  }
+}
 
 function Coin() {
   const navigate = useNavigate();
@@ -32,27 +39,27 @@ function Coin() {
         value: "20",
       },
       {
-        price: "50000",
+        price: "70000",
         value: "50",
       },
       {
-        price: "100000",
+        price: "160000",
         value: "120",
       },
       {
-        price: "150000",
+        price: "240000",
         value: "180",
       },
       {
-        price: "250000",
+        price: "330000",
         value: "270",
       },
       {
-        price: "350000",
+        price: "480000",
         value: "380",
       },
       {
-        price: "500000",
+        price: "600000",
         value: "450",
       },
     ],
@@ -76,7 +83,7 @@ function Coin() {
     studentcourse_list: [],
     subscribed_lecturer: [],
     urlImage: "",
-    notification: []
+    notification: [],
   });
 
   const [test, setTest] = useState({
@@ -106,11 +113,15 @@ function Coin() {
 
   const withdrawCoin = async () => {
     console.log("masok");
-    if(state.teacher.user.coin - parseInt(coinWithdraw) <= 50) {
+    if (state.teacher.user.coin - parseInt(coinWithdraw) < 0) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Cannot Withdraw coin",
+        text: "Coin to withdraw not enough",
+        background: "#11235a",
+        color: "#fff",
+        confirmButtonColor: "#f6e976",
+        confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
       });
       return;
     }
@@ -126,7 +137,16 @@ function Coin() {
           withCredentials: true,
         }
       );
-      navigate("/");
+      Swal.fire({
+        icon: "success",
+        title: "Success Withdraw " + coinWithdraw + " coins",
+        background: "#11235a",
+        color: "#fff",
+        confirmButtonColor: "#f6e976",
+        confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+      }).then(function () {
+        navigate("/");
+      });
     } catch {}
   };
 
@@ -144,6 +164,33 @@ function Coin() {
     }, 500);
   };
 
+  const handlePayment = async (value: string, price: string) => {
+    let formData = new FormData();
+    formData.append("price", price);
+
+    try {
+      const response = await axios.post(MIDTRANS_URL, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + sessionStorage.getItem("jwt"),
+        },
+        withCredentials: true,
+      });
+      console.log(response);
+      window.snap.pay(response.data, {
+        onSuccess: () => {
+          handleTopup(value, price);
+        },
+        onError: (error: any) => {
+          console.log(error);
+        },
+        onClose: () => {
+          console.log("Kamu belum menyelesaikan pembayaran!");
+        },
+      });
+    } catch {}
+  };
+
   useEffect(() => {
     setAccount((account) => ({
       ...state,
@@ -158,7 +205,7 @@ function Coin() {
             <div className="close">
               <IoIosCloseCircleOutline
                 style={{ fontSize: "48px" }}
-                onClick={() => navigate(-1)}
+                onClick={() => navigate("/")}
               />
             </div>
             <div
@@ -261,7 +308,7 @@ function Coin() {
                         />
                         <label>
                           Withdraw Amount ( One Coin will be Converted into IDR
-                          500,00) - Min Coin on Account : 50
+                          1000,00)
                         </label>
                       </div>
                     </div>
@@ -358,7 +405,10 @@ function Coin() {
                     >
                       <div
                         className="coin-card card"
-                        onClick={() => handleTopup(data.value, data.price)}
+                        onClick={() => {
+                          // handleTopup(data.value, data.price);
+                          handlePayment(data.value, data.price);
+                        }}
                       >
                         <div className="card-body">
                           <div className="class-content  text-center">

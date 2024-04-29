@@ -115,6 +115,7 @@ function HomeDiscussion(props: any) {
       starttime: data.starttime,
       title: data.title,
       participant: data.participant,
+      level: data.level,
     });
     setShowModal(true);
   };
@@ -138,7 +139,8 @@ function HomeDiscussion(props: any) {
         return;
       }
       const findClass = tempClassList.classList.filter((u) =>
-        u.title.toLowerCase().includes(searchTextFromHome.toLowerCase())
+        u.title.toLowerCase().includes(searchTextFromHome.toLowerCase()) ||
+        u.teacher?.user.fullName.toLocaleLowerCase().includes(searchTextFromHome.toLowerCase())
       );
       setClassList({ classList: findClass });
     } else {
@@ -220,7 +222,7 @@ function HomeDiscussion(props: any) {
     <>
       {!isLoading ? (
         <div className="disc-container homes">
-          <div className="w-100 m-1 d-flex row">
+          <div className="m-1 d-flex row">
             <div className="filter">
               {/* <div className="filter-btn">Subject</div>
             <div className="filter-btn">Education Level</div> */}

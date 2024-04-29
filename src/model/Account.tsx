@@ -58,6 +58,7 @@ export function transformToAccountNoROutput(
     school: response.school,
     coin: response.coin,
     urlImage: response.pic_name !== null ? response.pic_name : "default_picture.png",
+    profile_pic: response.pic_name !== null ? response.pic_name : "default_picture.png",
   };
   // console.log(result, "abc account hehe");
   return result;
@@ -133,7 +134,7 @@ export interface AccountLoginOutput {
 export function transfromToAccountOutput(
   response: AccountSchema
 ): AccountOutput {
-  // console.log(response.subscribed_lecturer,"asdd");
+  console.log(response.pic_name === null,"account transform");
   const result: AccountOutput = {
     id: response.id,
     firstName: response.firstName,
@@ -148,7 +149,7 @@ export function transfromToAccountOutput(
     country: response.country,
     school: response.school,
     coin: response.coin,
-    urlImage: "assets/" + response.pic_name !== undefined? "assets/" + response.pic_name : "default_picture.png",
+    urlImage: response.pic_name !== null? "assets/" + response.pic_name : "assets/" + "default_picture.png",
     studentdisc_list: response.studentdisc_list ? response.studentdisc_list
     .sort( (x,y) => x.discussion.disc_date.toString().localeCompare(y.discussion.disc_date.toString()) || x.discussion.disc_starttime.toString().localeCompare(y.discussion.disc_starttime.toString()))
     .map( (data) => {

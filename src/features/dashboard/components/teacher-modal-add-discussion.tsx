@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import axios from "../../../api/axios";
 import { AccountSchema } from "../../../model/Account";
 import { AddDiscussionSchema } from "../../../model/course/course-list";
@@ -49,6 +50,7 @@ function TeacherModalAddDiscussion(props: any) {
 
   const handleAddDiscussionFile = () => {
     setPage(2);
+    addDiscussion.link = "";
   };
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +72,7 @@ function TeacherModalAddDiscussion(props: any) {
     return s;
   }
 
-  const handleSubmit = async (e:any, teacher:any) => {
+  const handleSubmit = async (e: any, teacher: any) => {
     e.preventDefault();
     let formData = new FormData();
     let file;
@@ -124,10 +126,29 @@ function TeacherModalAddDiscussion(props: any) {
           withCredentials: true,
         }
       );
-      setPage(1);
-      setSelectedStartDate(null);
-      setSelectedEndDate(null);
-      navigate("/");
+      if (response.data.errorSchema.message === "Success") {
+        Swal.fire({
+          icon: "success",
+          title: "Success Set Discussion",
+          background: "#11235a",
+          color: "#fff",
+          confirmButtonColor: "#f6e976",
+          confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+        }).then(function () {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error Created Discussion",
+          background: "#11235a",
+          color: "#fff",
+          confirmButtonColor: "#f6e976",
+          confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+        }).then(function () {
+          window.location.reload();
+        });
+      }
     } catch (err) {
       console.log(err);
     }
@@ -135,6 +156,7 @@ function TeacherModalAddDiscussion(props: any) {
 
   useEffect(() => {
     setPage(1);
+    setImage(undefined);
     setSelectedStartDate(null);
     setSelectedEndDate(null);
   }, [props.onHide]);
@@ -181,7 +203,7 @@ function TeacherModalAddDiscussion(props: any) {
         }}
       >
         <div className="modal-body-container w-100 h-100">
-          <form onSubmit={(e) => handleSubmit(e,props.teacher)}>
+          <form onSubmit={(e) => handleSubmit(e, props.teacher)}>
             {page === 1 ? (
               <div className="inputs">
                 <div className="input-boxx">
@@ -338,6 +360,7 @@ function TeacherModalAddDiscussion(props: any) {
                         link: e.target.value,
                       })
                     }
+                    value={addDiscussion.link}
                   />
                   <label>Teams Link</label>
                 </div>
@@ -392,7 +415,7 @@ function TeacherModalAddDiscussion(props: any) {
                     Back
                   </button>
                   <button type="submit" className="submit-btn fw-bold">
-                    Submit
+                    Set
                   </button>
                 </div>
               </div>

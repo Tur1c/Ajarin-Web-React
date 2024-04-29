@@ -26,7 +26,7 @@ const Navbar = ({ children }: Props) => {
               Log In
             </Link>
             <Link className="mx-5 text-redirect" to={"/register"}>
-              Register
+              Sign Up
             </Link>
           </ul>
         </div>

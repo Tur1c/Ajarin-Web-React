@@ -46,6 +46,10 @@ export interface ForumReplySchema {
   forum_replies: ForumReply[];
 }
 
+export interface ForumReplyDetailSchema {
+  replies: ForumReply[];
+}
+
 export interface ForumReply {
   fr_id: number;
   fr_reply: string;

@@ -3,6 +3,7 @@ import { Tab, Tabs } from "react-bootstrap";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { IoIosCloseCircleOutline, IoIosMail } from "react-icons/io";
 import { useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import axios from "../../../api/axios";
 import { useAuth } from "../../../context/AuthProvider";
 import { useSessionStorage } from "../../../context/useLocalStorage";
@@ -14,7 +15,6 @@ import {
 } from "../../../model/Account";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import "./profile.css";
-import Swal from "sweetalert2";
 
 const HOME_URL = "/api/account?email=" + sessionStorage.getItem("user");
 const UPDATE_URL = "/api/account/";
@@ -84,7 +84,11 @@ const Profile = () => {
       setAccount(transfromToAccountOutput(response.data.outputSchema));
       Swal.fire({
         title: "Success Edit Profile",
-        icon: "success"
+        icon: "success",
+        background: "#11235a",
+        color: "#fff",
+        confirmButtonColor: "#f6e976",
+        confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
       });
     } catch {}
   };
@@ -109,6 +113,14 @@ const Profile = () => {
         }
       );
       // setAccount(transfromToAccountOutput(response.data.outputSchema));
+      Swal.fire({
+        title: "Success Edit Profile",
+        icon: "success",
+        background: "#11235a",
+        color: "#fff",
+        confirmButtonColor: "#f6e976",
+        confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+      });
     } catch {}
   };
 

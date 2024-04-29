@@ -128,7 +128,7 @@ function Login() {
                   >
                     <div className="forgot-password">
                       <a href="#" className="fw-bold">
-                        Forgot Password?
+                        
                       </a>
                     </div>
 

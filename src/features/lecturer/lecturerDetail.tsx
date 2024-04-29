@@ -6,6 +6,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import axios from "../../api/axios";
 import { useAuth } from "../../context/AuthProvider";
 import { CourseList } from "../../model/course/course-list";
@@ -49,7 +50,29 @@ const LecturerDetail = () => {
           withCredentials: true,
         }
       );
-      navigate("/lecturer");
+      if (response.data.errorSchema.message === "Success") {
+        Swal.fire({
+          title: "Success Subscribed Lecturer",
+          icon: "success",
+          background: "#11235a",
+          color: "#fff",
+          confirmButtonColor: "#f6e976",
+          confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+        }).then(function () {
+          navigate("/lecturer");
+        });
+      } else {
+        Swal.fire({
+          title: "Already Subscribed the Lecturer",
+          icon: "error",
+          background: "#11235a",
+          color: "#fff",
+          confirmButtonColor: "#f6e976",
+          confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+        }).then(function () {
+          navigate("/lecturer");
+        });
+      }
     } catch (error) {}
   };
 
@@ -288,10 +311,11 @@ const LecturerDetail = () => {
                         style={{
                           gridAutoColumns: "calc(25% - 290px)",
                           minHeight: "30rem",
+                          listStyle: "none"
                         }}
                       >
                         {state.data.courses
-                          .sort((a: { sold: number }, b: { sold: number }) =>
+                          ?.sort((a: { sold: number }, b: { sold: number }) =>
                             a.sold > b.sold ? -1 : 1
                           )
                           .slice(0, 5)

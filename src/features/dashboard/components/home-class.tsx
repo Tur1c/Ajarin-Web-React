@@ -99,8 +99,11 @@ function HomeClass({ account, searchData }: Props) {
         setCourseList(tempCourseList);
         return;
       }
+      console.log(tempCourseList);
+      
       const findCourse = tempCourseList.courseList.filter((u) =>
-        u.title.toLowerCase().includes(searchData.toLowerCase())
+        u.title.toLowerCase().includes(searchData.toLowerCase()) ||
+        u.teacher?.user.fullName.toLocaleLowerCase().includes(searchTextFromHome.toLowerCase())
       );
       setCourseList({ courseList: findCourse });
     } else {
@@ -220,6 +223,7 @@ function HomeClass({ account, searchData }: Props) {
                               data: data,
                               acc: account,
                               teacher: data.teacher,
+                              link: "/"
                             }}
                             style={{ textDecoration: "none" }}
                           >

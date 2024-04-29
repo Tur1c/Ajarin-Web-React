@@ -12,7 +12,7 @@ import {
 const CourseChapter = () => {
   const state = useLocation();
   const navigate = useNavigate();
-  console.log(state);
+  console.log(state, "state detail");
   // status + completed chap
   const [completed, setCompleted] = useState(
     state.state.studentCourse.completed_chap === null
@@ -110,7 +110,7 @@ const CourseChapter = () => {
         </button>
       </Link>
       courseChapter
-      <video controls src={`/video/${currDetail.chapter_video}`}></video>
+      <video controls controlsList="nodownload" src={`/video/${currDetail.chapter_video}`}></video>
       {/* back */}
       {currDetail.course_detail_chapter !== 1 ? (
         <Link
@@ -121,7 +121,7 @@ const CourseChapter = () => {
             (currDetail.course_detail_chapter - 1)
           }
           style={{ textDecoration: "none" }}
-          state={{ account: account, studentCourse: state.state.studentCourse }}
+          state={{ account: account, studentCourse: state.state.studentCourse, courseDetail: state.state.courseDetail }}
         >
           <button>back</button>
         </Link>
@@ -137,7 +137,7 @@ const CourseChapter = () => {
             (currDetail.course_detail_chapter + 1)
           }
           style={{ textDecoration: "none" }}
-          state={{ account: account, studentCourse: state.state.studentCourse }}
+          state={{ account: account, studentCourse: state.state.studentCourse, courseDetail: state.state.courseDetail }}
         >
           <button>next</button>
         </Link>

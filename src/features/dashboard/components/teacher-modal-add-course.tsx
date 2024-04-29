@@ -9,6 +9,7 @@ import { ApiResponse } from "../../../model/schema/base_schema";
 import TeacherModalAddCourseDetail from "./teacher-modal-add-course-detail";
 
 import "./teacher-modal-add-course.css";
+import Swal from "sweetalert2";
 
 const ADD_COURSE = "/api/course/add";
 
@@ -171,11 +172,20 @@ function TeacherModalAddCourse(props: any) {
           withCredentials: true,
         }
       );
-      setPage(1);
-      setCourse(response.data.outputSchema);
-      setIsLoading(false);
-      setShowModalAddCourse(true);
-      props.onHide();
+      Swal.fire({
+        icon: "success",
+        title: "Success Add Course",
+        background: "#11235a",
+        color: "#fff",
+        confirmButtonColor: "#f6e976",
+        confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+      }).then(function () {
+        setPage(1);
+        setCourse(response.data.outputSchema);
+        setIsLoading(false);
+        setShowModalAddCourse(true);
+        props.onHide();
+      });
       //   // navigate("/");
     } catch (err) {
       console.log(err);

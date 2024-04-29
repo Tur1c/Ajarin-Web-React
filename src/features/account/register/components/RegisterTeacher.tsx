@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
 import {
   AccountSchema,
@@ -53,7 +54,16 @@ function RegisterTeacher() {
           withCredentials: true,
         }
       );
-      navigate("/");
+      Swal.fire({
+        title: "Success Edit Profile",
+        icon: "success",
+        background: "#11235a",
+        color: "#fff",
+        confirmButtonColor: "#f6e976",
+        confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+      }).then(function () {
+        navigate("/");
+      });
     } catch (err) {
       console.log(err);
     }
@@ -71,7 +81,10 @@ function RegisterTeacher() {
     <div className="register-teacher-container">
       <div className="p-5 text-light">
         <div className="ajarin-logo">
-          <h1 className="fw-bold" style={{ color: "#fff", fontSize: "48px",marginBottom: "3rem" }}>
+          <h1
+            className="fw-bold"
+            style={{ color: "#fff", fontSize: "48px", marginBottom: "3rem" }}
+          >
             ajar<span style={{ color: "#F6ECA9" }}>in</span>
           </h1>
         </div>

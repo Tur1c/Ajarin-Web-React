@@ -26,6 +26,10 @@ function ModalCentered(props: any) {
         icon: "error",
         title: "Oops...",
         text: "Full Participant",
+        background: "#11235a",
+        color: "#fff",
+        confirmButtonColor: "#f6e976",
+        confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
       });
       return;
     }
@@ -49,7 +53,11 @@ function ModalCentered(props: any) {
         icon: "success",
         title: "Success",
         text: "Success Join Discussion",
-      })
+        background: "#11235a",
+        color: "#fff",
+        confirmButtonColor: "#f6e976",
+        confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+      });
       window.location.reload();
       // const output = transfromToServiceLoginAccountOutput(response.data);
       // const token = output.token;
@@ -61,6 +69,10 @@ function ModalCentered(props: any) {
         icon: "error",
         title: "Oops...",
         text: error.response.data.errorSchema.message,
+        background: "#11235a",
+        color: "#fff",
+        confirmButtonColor: "#f6e976",
+        confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
       });
     }
   };
@@ -94,7 +106,7 @@ function ModalCentered(props: any) {
           <div className="lecturer-redirect">
             <img
               className="img-fluid"
-              style={{ height: "2vw", width: "2vw", borderRadius:"0.25rem" }}
+              style={{ height: "2vw", width: "2vw", borderRadius: "0.25rem" }}
               src={"/assets/" + props.data.image}
               alt=""
             />

@@ -6,6 +6,7 @@ import { FaHeart } from "react-icons/fa";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useLocation, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import axios from "../../../api/axios";
 import { AccountOutput } from "../../../model/Account";
 import {
@@ -91,7 +92,7 @@ const ForumDetail = () => {
   const handleSubmitReply = async (e: any) => {
     e.preventDefault();
     setText("");
-
+    console.log("abccc");
     let inputReplySchema: InputReplySchema = {
       reply: text,
       email: user.email,
@@ -131,6 +132,8 @@ const ForumDetail = () => {
 
       setForumReplyListData(newForumListData);
 
+      console.log(ForumReplyListData, "add input");
+
       // changeCurrent(updatedReply);
       // console.log(currentForumReply);
       // window.location.reload();
@@ -145,6 +148,8 @@ const ForumDetail = () => {
 
   const [editReplyID, setEditReplyID] = useState(0);
   const [editReply, setEditReply] = useState(false);
+  const [alreadyLike, setAlreadyLike] = useState(false);
+  const [alreadyUnlike, setAlreadyUnlike] = useState(false);
 
   const handleClickEditReply = (fr_id: number) => {
     setEditReplyID(fr_id);
@@ -182,6 +187,20 @@ const ForumDetail = () => {
           withCredentials: true,
         }
       );
+
+      let tempData: ForumReplyList[] = ForumReplyListData.forum_reply_list.map(
+        (data) => {
+          if (
+            data.fr_id ===
+            ForumReplyListData.forum_reply_list[editReplyID].fr_id
+          ) {
+            data.fr_reply = editText;
+          }
+          return data;
+        }
+      );
+      setForumReplyListData({ forum_reply_list: tempData });
+
       // console.log("muncul pls");
       // console.log("apa munculnya", response.data.outputSchema);
 
@@ -225,25 +244,28 @@ const ForumDetail = () => {
       );
       // setIsLoading(false);
 
-      console.log("delete reply response", response.data.outputSchema);
-      console.log("compare sama data ini", ForumReplyListData);
+      // console.log("delete reply response", response.data.outputSchema);
+      // console.log("compare sama data ini", ForumReplyListData);
 
-      const newReplyList: ForumReplyList[] = sortForum(
-        response.data.outputSchema.replies
-      );
-      console.log("new reply list", newReplyList);
+      // const newReplyList: ForumReplyList[] = sortForum(
+      //   response.data.outputSchema.replies
+      // );
+      // console.log("new reply list", newReplyList);
 
-      const newReplyListData: ForumReplyListOutput = {
-        forum_reply_list: [],
-      };
+      // const newReplyListData: ForumReplyListOutput = {
+      //   forum_reply_list: [],
+      // };
 
-      newReplyList.map((replies) => {
-        newReplyListData.forum_reply_list.push(
-          transformToInputReplyListOutput(replies)
-        );
-      });
+      // newReplyList.map((replies) => {
+      //   newReplyListData.forum_reply_list.push(
+      //     transformToInputReplyListOutput(replies)
+      //   );
+      // });
 
-      setForumReplyListData(newReplyListData);
+      let forumList: ForumReplyList[] =
+        ForumReplyListData.forum_reply_list.filter((x) => x.fr_id !== fr_id);
+
+      setForumReplyListData({ forum_reply_list: forumList });
     } catch (error) {
       // setIsLoading(true);
     }
@@ -256,11 +278,37 @@ const ForumDetail = () => {
   // Likes Reply
 
   const handleLikeClick = async (fr_id: number) => {
+    console.log("like ygy");  
     const newLike: newLikes = {
       question_id: forum.questionId,
       fr_id: fr_id,
       email: email,
     };
+    console.log(ForumReplyListData, "sebelum cek");
+
+    ForumReplyListData.forum_reply_list.forEach((data) => {
+      console.log(data.fr_id === fr_id, "masuk ke cek");
+
+      if (data.fr_id === fr_id) {
+        console.log(data);
+
+        data.likes.map((likes) => {
+          console.log(likes.email, "cek like");
+          console.log(email, "cek like");
+
+          if (likes.email === email) {
+            setAlreadyLike(true);
+          }
+        });
+      }
+    });
+
+    console.log(alreadyLike);
+
+    if (alreadyLike) {
+      setAlreadyLike(false);
+      handleUnlikeClick(fr_id);
+    }
 
     console.log("ini data new ygy", newLike);
 
@@ -278,33 +326,85 @@ const ForumDetail = () => {
       // console.log("hasilnya", updatedForumReplyList);
       // setForumReplyListData({ forum_reply_list: updatedForumReplyList });
 
-      const newReplyList: ForumReplyList[] = sortForum(
-        response.data.outputSchema.replies
+      // const newReplyList: ForumReplyList[] = sortForum(
+      //   response.data.outputSchema.replies
+      // );
+      // console.log("new reply list", newReplyList);
+
+      // const newReplyListData: ForumReplyListOutput = {
+      //   forum_reply_list: [],
+      // };
+
+      // newReplyList.map((replies) => {
+      //   newReplyListData.forum_reply_list.push(
+      //     transformToInputReplyListOutput(replies)
+      //   );
+      // });
+
+      // setForumReplyListData(newReplyListData);
+
+      let tempData: ForumReplyList[] = ForumReplyListData.forum_reply_list.map(
+        (data) => {
+          if (data.fr_id === fr_id) {
+            data.fr_likes = data.fr_likes + 1;
+            data.likes = response.data.outputSchema.replies.find((reply: { fr_id: number; likes: any; }) => {
+              if(reply.fr_id === fr_id) {
+                return reply;
+              }
+            }).likes;
+          }
+          return data;
+        }
       );
-      console.log("new reply list", newReplyList);
 
-      const newReplyListData: ForumReplyListOutput = {
-        forum_reply_list: [],
-      };
-
-      newReplyList.map((replies) => {
-        newReplyListData.forum_reply_list.push(
-          transformToInputReplyListOutput(replies)
-        );
-      });
-
-      setForumReplyListData(newReplyListData);
+      // let tempData: ForumReplyList[] = ForumReplyListData.forum_reply_list.map(
+      //   (data) => {
+      //     if (data.fr_id === fr_id) {
+      //       data.fr_likes = data.fr_likes + 1;
+      //       data.likes = response.data.outputSchema.replies[0].likes.map(
+      //         (responseData: { likes: any }) => {
+      //           return responseData;
+      //         }
+      //       );
+      //     }
+      //     return data;
+      //   }
+      // );
+      setForumReplyListData({ forum_reply_list: tempData });
+      console.log(ForumReplyListData, "like");
     } catch (error) {
       console.error("Error adding data: ", error);
     }
+    setAlreadyLike(false);
+
   };
 
   const handleUnlikeClick = async (fr_id: number) => {
+    console.log("unlike");
+
     const newUnlike: newLikes = {
       question_id: forum.questionId,
       fr_id: fr_id,
       email: email,
     };
+
+    ForumReplyListData.forum_reply_list.forEach((data) => {
+      if (data.fr_id === fr_id) {
+        data.likes.map((likes) => {
+          console.log(likes, "cek likes");
+
+          if (likes.email === email) {
+            setAlreadyUnlike(true);
+          }
+        });
+      }
+    });
+    console.log(alreadyUnlike  );
+
+    if (alreadyUnlike) {
+      setAlreadyUnlike(false);
+      handleLikeClick(fr_id);
+    }
     console.log("data yg mao diunlike", newUnlike);
 
     try {
@@ -316,31 +416,69 @@ const ForumDetail = () => {
         withCredentials: true,
       });
 
-      const newReplyList: ForumReplyList[] = sortForum(
-        response.data.outputSchema.replies
+      // const newReplyList: ForumReplyList[] = sortForum(
+      //   response.data.outputSchema.replies
+      // );
+      // console.log("new reply list", newReplyList);
+
+      // const newReplyListData: ForumReplyListOutput = {
+      //   forum_reply_list: [],
+      // };
+
+      // newReplyList.map((replies) => {
+      //   newReplyListData.forum_reply_list.push(
+      //     transformToInputReplyListOutput(replies)
+      //   );
+      // });
+
+      // setForumReplyListData(newReplyListData);
+
+      console.log(response, "response like");
+
+      let tempData: ForumReplyList[] = ForumReplyListData.forum_reply_list.map(
+        (data) => {
+          if (data.fr_id === fr_id) {
+            data.fr_likes = data.fr_likes - 1;
+            data.likes = response.data.outputSchema.replies.find((reply: { fr_id: number; likes: any; }) => {
+              if(reply.fr_id === fr_id) {
+                return reply;
+              }
+            }).likes;
+          }
+          return data;
+        }
       );
-      console.log("new reply list", newReplyList);
-
-      const newReplyListData: ForumReplyListOutput = {
-        forum_reply_list: [],
-      };
-
-      newReplyList.map((replies) => {
-        newReplyListData.forum_reply_list.push(
-          transformToInputReplyListOutput(replies)
-        );
-      });
-
-      setForumReplyListData(newReplyListData);
+      setForumReplyListData({ forum_reply_list: tempData });
+      console.log(ForumReplyListData, "setelah like");
     } catch (error) {
       console.error("Error adding data: ", error);
     }
+    setAlreadyUnlike(false);
   };
 
   const [isLoadingChangeAccount, setIsLoadingChangeAccount] = useState(false);
 
   const handleLoadingTrue = () => setIsLoadingChangeAccount(true);
   const handleLoadingFalse = () => setIsLoadingChangeAccount(false);
+
+  const handleDeleteReplyModal = (question_id: number, fr_id: number) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to see this again!",
+      icon: "warning",
+      background: "#11235a",
+      color: "#fff",
+      showCancelButton: true,
+      confirmButtonColor: "#f6e976",
+      cancelButtonColor: "#fff",
+      confirmButtonText: "<span style='color:#000'> <b>Delete</b> </span>",
+      cancelButtonText: "<span style='color:#000'> No </span>",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDeleteReply(question_id, fr_id);
+      }
+    });
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -493,7 +631,11 @@ const ForumDetail = () => {
                                 height: "4rem",
                                 backgroundColor: "black",
                               }}
-                              src={`assets/oracle.png`}
+                              src={
+                                `/assets/` +
+                                ForumReplyListData.forum_reply_list[editReplyID]
+                                  .fr_user.profile_pic
+                              }
                               alt=""
                             />
                             <div className="name-and-date">
@@ -571,7 +713,7 @@ const ForumDetail = () => {
                                     height: "4rem",
                                     backgroundColor: "black",
                                   }}
-                                  src={"/assets/" + data.fr_user.profile_pic}
+                                  src={data.fr_user.profile_pic !== null ? "/assets/" + data.fr_user.profile_pic : "/assets/default_picture.png"}
                                   alt=""
                                 />
                                 <div className="name-and-date">
@@ -599,7 +741,7 @@ const ForumDetail = () => {
                                     </button>
                                     <button
                                       onClick={() =>
-                                        handleDeleteReply(
+                                        handleDeleteReplyModal(
                                           forum.questionId,
                                           ForumReplyListData.forum_reply_list[
                                             index
