@@ -117,7 +117,12 @@ const LecturerDetail = () => {
   return (
     <div
       className="lecturer-detail-page"
-      style={{ height: "100vh", padding: "2rem 4rem" }}
+      style={{
+        height: "100vh",
+        padding: "2rem 4rem",
+        backgroundImage: `url(/assets/background.png)`,
+        backgroundSize: "cover",
+      }}
     >
       {!isLoading ? (
         <>
@@ -155,7 +160,7 @@ const LecturerDetail = () => {
           </div>
           <div className="row">
             <div className="d-flex col-6 justify-content-center align-items-center">
-              <div className="left-container d-flex row text-white w-100">
+              <div className="left-container d-flex row text-white w-100 lecturer-data">
                 <div className="d-flex col w-100">
                   <div>
                     <img
@@ -166,8 +171,9 @@ const LecturerDetail = () => {
                       }
                       alt=""
                       style={{
-                        width: "25vh",
-                        height: "25vh",
+                        width: "30vh",
+                        height: "30vh",
+                        borderRadius: "0.5rem",
                         objectFit: "fill",
                       }}
                     />
@@ -180,7 +186,7 @@ const LecturerDetail = () => {
                     <h3>
                       <b>{state.data.user.fullName}</b>
                     </h3>
-                    <p>{state.data.description}</p>
+                    <p className="h-75">{state.data.description}</p>
                   </div>
                 </div>
 

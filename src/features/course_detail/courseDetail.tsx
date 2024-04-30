@@ -211,7 +211,12 @@ const CourseDetail = () => {
   return (
     <div
       className="container-fluid"
-      style={{ height: "100vh", padding: "2rem 4rem" }}
+      style={{
+        height: "100vh",
+        padding: "2rem 4rem",
+        backgroundImage: `url(/assets/background.png)`,
+        backgroundSize: "cover",
+      }}
     >
       {isOpen &&
         studentCourse.status === "Completed" &&
@@ -409,7 +414,10 @@ const CourseDetail = () => {
               <div className="w-auto">
                 {!studentCourse.status ? (
                   <button
-                    className="buy-course-btn"
+                    className="course-detail-btn"
+                    style={{
+                      backgroundColor: "var(--red)",
+                    }}
                     onClick={() =>
                       joinCourse(
                         !studentCourse.course
@@ -433,7 +441,28 @@ const CourseDetail = () => {
                       : studentCourse.course?.price}
                   </button>
                 ) : (
-                  <p>{studentCourse.status}</p>
+                  <>
+                    {studentCourse.status === "Ongoing" ? (
+                      <div
+                        className="course-status-btn"
+                        style={{
+                          backgroundColor: "var(--lightblue2)",
+                        }}
+                      >
+                        <p className="p-0 m-0 d-flex">{studentCourse.status}</p>
+                      </div>
+                    ) : (
+                      <div
+                        className="course-status-btn"
+                        style={{
+                          backgroundColor: "var(--yelo)",
+                          color: "var(--blue)",
+                        }}
+                      >
+                        <p className="p-0 m-0 d-flex">{studentCourse.status}</p>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </div>
@@ -543,7 +572,7 @@ const CourseDetail = () => {
             >
               <div className="h-100">
                 <div
-                  className="bg-white d-flex align-items-center h-100"
+                  className="lecturer-redirect-container d-flex align-items-center h-100"
                   style={{ width: "15vw", borderRadius: "1rem" }}
                 >
                   <img
@@ -561,10 +590,7 @@ const CourseDetail = () => {
                       borderRadius: "0.5rem",
                     }}
                   />
-                  <p
-                    className="d-flex p-0 m-"
-                    style={{ fontSize: "18px", fontWeight: "bold" }}
-                  >
+                  <p className="d-flex p-0 m-0 fw-bold">
                     {state.teacher.user.fullName
                       ? state.teacher.user.fullName
                       : state.teacher.user.firstName +

@@ -8,10 +8,16 @@ import { AddCourseSchema, Course } from "../../../model/course/course-list";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import TeacherModalAddCourseDetail from "./teacher-modal-add-course-detail";
 
+import {
+  CategoryListOutput,
+  CategorySchema,
+  transfromToCategoryListOutput,
+} from "../../../model/category/category-model";
 import "./teacher-modal-add-course.css";
 import Swal from "sweetalert2";
 
 const ADD_COURSE = "/api/course/add";
+const CATEGORY_URL = "/api/category";
 
 function TeacherModalAddCourse(props: any) {
   let image_link = "";
@@ -71,6 +77,11 @@ function TeacherModalAddCourse(props: any) {
     image_link: "",
     user_id: 0,
   });
+  interface eduOption {
+    eduLevel: string;
+    label: string;
+  }
+
   const navigate = useNavigate();
   const [showModalAddCourse, setShowModalAddCourse] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -78,13 +89,28 @@ function TeacherModalAddCourse(props: any) {
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [page, setPage] = useState(1);
   const [image, setImage] = useState<File>();
-
   const [selectedEdu, setSelectedEdu] = useState<string>("");
+  const [categories, setCategories] = useState<CategoryListOutput>({
+    categories: [],
+  });
 
-  interface eduOption {
-    eduLevel: string;
-    label: string;
-  }
+  const handleChangeSubject = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedEdu(event.target.value);
+    setAddCourse({ ...addCourse, category: event.target.value });
+  };
+
+  const fetchCategoryData = async () => {
+    try {
+      const response = await axios.get<ApiResponse<CategorySchema>>(
+        CATEGORY_URL,
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      setCategories(transfromToCategoryListOutput(response.data.outputSchema));
+    } catch (error) {}
+  };
 
   const eduOptions: eduOption[] = [
     { eduLevel: "General", label: "General" },
@@ -139,8 +165,11 @@ function TeacherModalAddCourse(props: any) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     // await handleUploadImageToCloud(e);
     e.preventDefault();
-    console.log("a");
     let formData = new FormData();
+
+    console.log("addcoursenya", addCourse.title);
+    console.log("propsnya", props);
+
     // let file;
 
     // console.log(props.teacher);
@@ -158,6 +187,7 @@ function TeacherModalAddCourse(props: any) {
     if (image) {
       formData.append("file", image);
     }
+    console.log("ini form data after append", formData);
 
     try {
       e.preventDefault();
@@ -196,6 +226,10 @@ function TeacherModalAddCourse(props: any) {
     setPage(1);
     setIsLoading(false);
   }, [props.onHide]);
+
+  useEffect(() => {
+    fetchCategoryData();
+  }, []);
 
   return (
     <>
@@ -267,35 +301,36 @@ function TeacherModalAddCourse(props: any) {
 
                         <div className="d-flex col" style={{ gap: "1rem" }}>
                           <div className="input-boxx">
-                            <input
-                              type="text"
-                              required
-                              style={{ width: "" }}
-                              id="subject"
-                              onChange={(e) =>
-                                setAddCourse({
-                                  ...addCourse,
-                                  category: e.target.value,
-                                })
-                              }
-                            />
-                            <label>Subject</label>
+                            <select required onChange={handleChangeSubject}>
+                              <option value="Subject">Subject</option>
+                              {categories.categories.map((data) => {
+                                return (
+                                  <>
+                                    <option value={data.categoryName}>
+                                      {data.categoryName}
+                                    </option>
+                                  </>
+                                );
+                              })}
+                            </select>
                           </div>
 
                           <div className="input-boxx">
-                            <input
-                              type="text"
+                            <select
                               required
-                              style={{ width: "" }}
-                              id="education-level"
-                              onChange={(e) =>
-                                setAddCourse({
-                                  ...addCourse,
-                                  education_level: e.target.value,
-                                })
-                              }
-                            />
-                            <label>Education Level</label>
+                              value={selectedEdu}
+                              onChange={handleChangeEdu}
+                            >
+                              <option value="eduLevel">Education Level</option>
+                              {eduOptions.map((option) => (
+                                <option
+                                  key={option.eduLevel}
+                                  value={option.eduLevel}
+                                >
+                                  {option.label}
+                                </option>
+                              ))}
+                            </select>
                           </div>
                         </div>
 
@@ -370,20 +405,25 @@ function TeacherModalAddCourse(props: any) {
                     </div>
                   ) : (
                     <div className="inputs d-flex row justify-content-center align-items-center">
-                      <div className="">
+                      <div className="d-flex justify-content-center">
                         {image ? (
                           <div className="text-center">
                             <img
-                              className="img-fluid mb-4"
+                              className="img-fluid"
                               src={URL.createObjectURL(image)}
                               alt=""
-                              style={{ height: "20rem" }}
+                              style={{
+                                height: "22.5vw",
+                                width: "20vw",
+                                objectFit: "fill",
+                              }}
                             />
                           </div>
                         ) : (
                           <div
                             style={{
-                              height: "20rem",
+                              height: "22.5vw",
+                              width: "20vw",
                               background: "rgba(0, 0, 0, 0.2)",
                             }}
                           ></div>
@@ -397,7 +437,9 @@ function TeacherModalAddCourse(props: any) {
                           type="file"
                           onChange={handleImageChange}
                           accept="image/*"
+                          className="inputfile"
                         />
+                        Upload Thumbnail
                       </label>
                       <div className="buttons">
                         <button

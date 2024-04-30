@@ -261,7 +261,14 @@ function Home() {
                         style={{ width: "100%", marginTop: "2rem" }}
                         onClick={() => handlePageChangePrivateDiscussion()}
                       >
-                        Private Discussion Request
+                        Private Discussion Request{" "}
+                        {teacher.private_disc?.length === 0 ? (
+                          ""
+                        ) : (
+                          <div className="private-discussion-reminder rounded-circle">
+                            {teacher.private_disc?.length}
+                          </div>
+                        )}
                       </button>
                     </div>
                     {/* <div className="col-6">

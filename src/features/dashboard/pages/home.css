@@ -10,6 +10,8 @@
   --lightblue2: #596fb7;
   --whitedark: #dddddd;
   --yelodark: #f6e976;
+  --cream: #c6cf9b;
+  --red: #ff3333;
 }
 
 body {
@@ -91,6 +93,22 @@ body {
   background-repeat: no-repeat;
   filter: brightness(80%);
   transition: all 0.5s ease-in;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.private-discussion-reminder {
+  background-color: var(--red);
+  /* padding: 0.25rem; */
+  width: 1.5vw;
+  height: 1.5vw;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 6px var(--whitedark);
 }
 
 .private-discussion-button:hover {
@@ -470,6 +488,7 @@ body {
   font-size: 10px;
   border-radius: 5rem;
   width: fit-content;
+  height: fit-content;
   font-weight: light;
   color: var(--white);
 }
@@ -560,6 +579,10 @@ body {
 .container-class-header .class-thumbnail img {
   height: 20rem;
   width: fit-content;
+}
+
+.course-item-box:hover {
+  background-color: var(--lightblue);
 }
 
 /* Pagination */

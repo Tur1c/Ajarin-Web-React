@@ -41,6 +41,8 @@ function HomeClass({ account, searchData }: Props) {
     lastCourseIndex
   );
 
+  console.log("currentCourse -> ", currentCourse);
+
   const navigate = useNavigate();
   const acc: AccountOutput | undefined = !account.fullName
     ? undefined
@@ -210,13 +212,10 @@ function HomeClass({ account, searchData }: Props) {
                   <>
                     {currentCourse.map((data, index) => (
                       <div
-                        className="col-md-3 d-flex align-items-stretch mb-2"
+                        className="course-item-box p-2 col-md-3 d-flex align-items-stretch mb-2"
                         key={index}
                       >
-                        <div
-                          className="card"
-                          style={{ border: "none", width: "20vw" }}
-                        >
+                        <div className="card" style={{ border: "none" }}>
                           <Link
                             to={"/course/" + data.title}
                             state={{

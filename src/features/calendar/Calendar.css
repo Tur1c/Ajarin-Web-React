@@ -117,6 +117,17 @@
 }
 
 .account-course-content {
+  margin: 0rem 2rem 4rem 2rem;
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  scrollbar-color: var(--white);
+  /* user-select: none; */
+}
+
+/* .account-course-content {
   width: 100%;
   display: grid;
   grid-auto-flow: column;
@@ -124,9 +135,26 @@
   overflow-x: auto;
   scrollbar-color: transparent;
   user-select: none;
-}
+} */
 
 .account-course-content::-webkit-scrollbar {
-  height: 1px;
-  background-color: transparent;
+  padding: 2rem;
+  margin:2rem;
+  height: 1rem;
+  background-color: black;
+  scrollbar-color: var(--white);
+}
+
+.account-course-content::-webkit-scrollbar-thumb,
+.account-course-contentl::-webkit-scrollbar-track {
+  margin-top: 2rem;
+  border-radius: 92px;
+}
+
+.account-course-content::-webkit-scrollbar-thumb {
+  background: var(--lightblue2);
+}
+
+.account-course-content::-webkit-scrollbar-track {
+  background: var(--purple);
 }

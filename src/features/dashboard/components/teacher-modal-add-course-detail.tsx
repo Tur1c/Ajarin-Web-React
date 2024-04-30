@@ -1,10 +1,11 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import "react-datepicker/dist/react-datepicker.css";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { AddCourseDetailSchema } from "../../../model/course/course-list";
 import TeacherModalAddCourseDetailChapter from "./teacher-modal-add-course-detail-chapter";
+import "./teacher-modal-add-course.css";
 import "./teacher-modal-add-discussion.css";
 
 const ADD_DISCUSSION = "/api/discussion/add";
@@ -28,10 +29,13 @@ function TeacherModalAddCourseDetail(props: any) {
   const [image, setImage] = useState<File>();
   const [submitChapter, setSubmitChapter] = useState(0);
 
-  const handleCloseModalAddCourseChapter = (e:React.FormEvent<HTMLFormElement>) => {
+  const handleCloseModalAddCourseChapter = (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
     setShowModalAddCourseChapter(false);
     setSubmitChapter(submitChapter + 1);
+    console.log(submitChapter);
   };
 
   // const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -47,16 +51,16 @@ function TeacherModalAddCourseDetail(props: any) {
   //   let formData = new FormData();
   //   let file;
 
-    
   //   formData.append("user_id", "1");
   //   if (image) {
   //     formData.append("file", image);
   //   }
 
-    
   // };
 
   const renderListAddCourse = () => {
+    console.log("props detail", props);
+    console.log("submitchap", submitChapter);
     const listCourses = [];
     for (
       let index = 0;
@@ -65,15 +69,15 @@ function TeacherModalAddCourseDetail(props: any) {
     ) {
       listCourses.push(
         <button
-          className="mt-3"
-          key={index+1}
+          className="add-course-content-btn"
+          key={index + 1}
           onClick={(e) => {
             e.preventDefault();
             setChapter(index + 1);
             setShowModalAddCourseChapter(true);
           }}
         >
-          Add Course Chapter {index + 1}
+          Add Chapter {index + 1} Detail
         </button>
       );
     }
@@ -93,48 +97,52 @@ function TeacherModalAddCourseDetail(props: any) {
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
-        <Modal.Header className="p-0 d-block">
+        <Modal.Header className="d-flex w-100" style={{ border: "none" }}>
           <div
-            className="container-class-header d-flex justify-content-around mt-3"
+            className="container-class-header d-flex col justify-content-between mt-3"
             style={{ height: "2rem" }}
           >
-            <div>
+            <div className="close-btn">
               <IoIosCloseCircleOutline
                 style={{ color: "#fff", fontSize: "54px" }}
                 onClick={props.onHide}
               />
             </div>
-            <div style={{ fontSize: "30px" }}>
-              <span>Add Course Detail</span>
+            <div
+              className="d-flex pe-4"
+              style={{
+                fontSize: "32px",
+                fontWeight: "bold",
+                cursor: "default",
+              }}
+            >
+              <span>Fill Course Detail</span>
             </div>
             <div></div>
           </div>
         </Modal.Header>
-        <Modal.Body className="p-5">
-          <div className="modal-body-container d-flex flex-column">
-            {renderListAddCourse()}
-          </div>
+        <Modal.Body className="add-course-list-container w-100">
+          <div className="list-container">{renderListAddCourse()}</div>
         </Modal.Body>
-        <Modal.Footer className="p-0">
-          {submitChapter == parseInt(props.course.course_chapter) ? (
+        <Modal.Footer className="d-flex w-100">
+          {submitChapter === parseInt(props.course.course_chapter) ? (
             <div
               className="modal-footer-center"
               style={{
-                backgroundColor: "#11235a",
                 fontSize: "20px",
                 width: "100%",
-                height: "75px",
+                height: "4rem",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
               }}
             >
-              <button onClick={props.onHide} className="text-white">
-                Finish add course detail
+              <button onClick={props.onHide} className="submit-btn fw-bold">
+                Finish
               </button>
             </div>
           ) : (
-            ""
+            <div style={{ height: "4rem" }}></div>
           )}
         </Modal.Footer>
       </Modal>

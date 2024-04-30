@@ -1,8 +1,10 @@
 import { jwtDecode } from "jwt-decode";
 import { ReactNode } from "react";
+import { GiSpellBook } from "react-icons/gi";
 import { GoHome } from "react-icons/go";
 import { HiOutlineBookOpen } from "react-icons/hi2";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
+import { LiaChalkboardTeacherSolid } from "react-icons/lia";
 import { PiEyeglassesLight } from "react-icons/pi";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
@@ -179,71 +181,98 @@ const Sidebar = ({
         <div className="profile-content">
           <div className="profile">
             {isLogged ? (
-              <div className="d-flex row profile-details" onClick={onLoadingTrue}>
-                <button
-                  // className="btn profile-button"
-                  type="button"
-                  style={{
-                    width: "6vw",
-                    borderRadius: "25px",
-                    border: "2px solid #11235A",
-                    backgroundColor: "#fff",
-                    color: "#11235A",
-                  }}
-                  onClick={() => {
-                    handleAlreadyRegisteredAsTeacher(account);
-                  }}
-                >
-                  <b className="text-center">
-                    Become<br></br>
-                    {userRole === "Teacher" ? (
-                      <span>Student</span>
-                    ) : (
-                      <span>Teacher</span>
-                    )}
-                  </b>
-                </button>
-
+              <div
+                className="d-flex col profile-details"
+                onClick={onLoadingTrue}
+              >
                 {userRole === "Teacher" ? (
-                  <div className="d-flex col justify-content-center">
-                    <Link
-                      to={"/lecturer/" + teacheracc?.user.fullName}
-                      state={{ data: teacheracc }}
-                    >
-                      <img
-                        className="img-fluid rounded-circle"
-                        src={"/" + account?.urlImage || `/assets/default_picture.png`}
-                        alt=""
+                  <div className="">
+                    <div className="">
+                      <button
+                        className="rounded-circle change-role-btn"
+                        type="button"
                         style={{
                           height: "5vw",
                           width: "5vw",
-                          marginTop: "1rem",
+                          border: "3px solid var(--yelo)",
+                          color: "var(--yelo)",
                         }}
-                      />
-
-                      {/* <i> */}
-
-                      {/* </i> */}
-                    </Link>
+                        onClick={() => {
+                          handleAlreadyRegisteredAsTeacher(account);
+                        }}
+                      >
+                        <b className="text-center">
+                          <GiSpellBook style={{ fontSize: "48px" }} />
+                          <span className="tooltip-role-btn">
+                            Become Student
+                          </span>
+                        </b>
+                      </button>
+                    </div>
+                    <div>
+                      <Link
+                        to={"/lecturer/" + teacheracc?.user.fullName}
+                        state={{ data: teacheracc }}
+                      >
+                        <img
+                          className="img-fluid rounded-circle bg-light"
+                          src={
+                            "/" + account?.urlImage ||
+                            "/assets/default_picture.png"
+                          }
+                          alt=""
+                          style={{
+                            height: "5vw",
+                            width: "5vw",
+                            marginTop: "1rem",
+                          }}
+                        />
+                      </Link>
+                    </div>
                   </div>
                 ) : (
-                  <div className="d-flex col justify-content-center">
-                    <Link to={"/profile"} state={account}>
-                      {/* <i> */}
-
-                      <img
-                        className="img-fluid rounded-circle bg-light"
-                        src={"/" + account?.urlImage || `/assets/default_picture.png`}
-                        alt=""
+                  <div className="">
+                    <div className="">
+                      <button
+                        className="rounded-circle change-role-btn"
+                        type="button"
                         style={{
                           height: "5vw",
                           width: "5vw",
-                          marginTop: "1rem",
+                          border: "3px solid var(--yelo)",
+                          color: "var(--yelo)",
                         }}
-                      />
-
-                      {/* </i> */}
-                    </Link>
+                        onClick={() => {
+                          handleAlreadyRegisteredAsTeacher(account);
+                        }}
+                      >
+                        <b className="text-center">
+                          <LiaChalkboardTeacherSolid
+                            style={{ fontSize: "48px" }}
+                          />
+                          <span className="tooltip-role-btn">
+                            Become Teacher
+                          </span>
+                        </b>
+                      </button>
+                    </div>
+                    <div>
+                      <Link to={"/profile"} state={account}>
+                        <img
+                          className="img-fluid rounded-circle bg-light"
+                          src={
+                            "/" + account?.urlImage ||
+                            `/assets/default_picture.png`
+                          }
+                          alt=""
+                          style={{
+                            height: "5vw",
+                            width: "5vw",
+                            marginTop: "1rem",
+                          }}
+                        />
+                      </Link>
+                    </div>
                   </div>
                 )}
 

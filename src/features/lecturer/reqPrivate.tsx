@@ -1,8 +1,14 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 import axios from "../../api/axios";
 import { PrivateDiscInput, PrivateDiscOut } from "../../model/Account";
+import {
+  CategoryListOutput,
+  CategorySchema,
+  transfromToCategoryListOutput,
+} from "../../model/category/category-model";
 import { ApiResponse } from "../../model/schema/base_schema";
 import "./reqPrivate.css";
 
@@ -30,12 +36,44 @@ const ReqPrivate = (props: ModalType) => {
     teacher: undefined,
   });
 
+  const CATEGORY_URL = "/api/category";
   const PRIVATE_URL =
     "api/account/private?account=" +
     props.account +
     "&teacher=" +
     props.teacher;
 
+  // Subject Category
+  const [categories, setCategories] = useState<CategoryListOutput>({
+    categories: [],
+  });
+
+  const fetchCategoryData = async () => {
+    try {
+      const response = await axios.get<ApiResponse<CategorySchema>>(
+        CATEGORY_URL,
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      setCategories(transfromToCategoryListOutput(response.data.outputSchema));
+    } catch (error) {}
+  };
+
+  //   Education Level
+
+  const [selectedEdu, setSelectedEdu] = useState<string>("");
+  interface eduOption {
+    eduLevel: string;
+    label: string;
+  }
+
+  const eduOptions: eduOption[] = [
+    { eduLevel: "General", label: "General" },
+    { eduLevel: "Highschool", label: "Highschool" },
+    { eduLevel: "University", label: "University" },
+  ];
   const SubmitPrivate = async (e: any) => {
     e.preventDefault();
     console.log(privateDisc);
@@ -114,6 +152,12 @@ const ReqPrivate = (props: ModalType) => {
     }
   };
 
+  useEffect(() => {
+    fetchCategoryData();
+  }, []);
+
+  console.log("props", props);
+
   return (
     <>
       {props.role === "Student"
@@ -121,23 +165,49 @@ const ReqPrivate = (props: ModalType) => {
             <div className="private-modal-overlay" onClick={props.toggle}>
               <div
                 onClick={(e) => e.stopPropagation()}
-                className="private-modal-box text-dark"
+                className="private-modal-box text-white"
               >
-                <p>Request Private</p>
-                <p>Fill the Form First</p>
+                <div className="d-flex col justify-content-between mt-3">
+                  <div className="close-btn">
+                    <IoIosCloseCircleOutline
+                      style={{ color: "#fff", fontSize: "54px" }}
+                      onClick={props.toggle}
+                    />
+                  </div>
+                  <div
+                    className="d-flex pe-4"
+                    style={{
+                      fontSize: "32px",
+                      fontWeight: "bold",
+                      cursor: "default",
+                    }}
+                  >
+                    <span>Request Private</span>
+                  </div>
+                  <div></div>
+                </div>
+                <p
+                  style={{
+                    fontSize: "21px",
+                    fontWeight: "bold",
+                    margin: "2rem 0rem",
+                  }}
+                >
+                  Fill the Form First
+                </p>
                 <form
                   onSubmit={(e) => {
                     SubmitPrivate(e);
                     props.toggle();
                   }}
                 >
-                  <div className="form-floating mb-3">
+                  <div className="input-boxx">
                     <input
                       type="text"
                       className="form-control"
-                      id="floatingTitle"
-                      placeholder=""
                       required
+                      style={{ width: "100%" }}
+                      id="floatingTitle"
                       onChange={(e) =>
                         setPrivateDisc({
                           ...privateDisc,
@@ -146,10 +216,11 @@ const ReqPrivate = (props: ModalType) => {
                       }
                     />
                     <label htmlFor="floatingTitle">
-                      What Subject do you want to Request?
+                      What Topic do you want to Request?
                     </label>
                   </div>
-                  <div className="second-row d-flex">
+
+                  {/* <div className="second-row d-flex col">
                     <div className="form-floating">
                       <input
                         type="text"
@@ -182,8 +253,57 @@ const ReqPrivate = (props: ModalType) => {
                       />
                       <label htmlFor="floatingEducation">Education Level</label>
                     </div>
+                  </div> */}
+
+                  <div className="d-flex col" style={{ gap: "1rem" }}>
+                    <div className="input-boxx">
+                      <select
+                        className="form-control"
+                        id="floatingSubject"
+                        required
+                        onChange={(e) =>
+                          setPrivateDisc({
+                            ...privateDisc,
+                            subject: e.target.value,
+                          })
+                        }
+                      >
+                        <option value="Subject">Subject</option>
+                        {categories.categories.map((data) => {
+                          return (
+                            <>
+                              <option value={data.categoryName}>
+                                {data.categoryName}
+                              </option>
+                            </>
+                          );
+                        })}
+                      </select>
+                    </div>
+
+                    <div className="input-boxx">
+                      <select
+                        required
+                        className="form-control"
+                        id="floatingEducation"
+                        onChange={(e) =>
+                          setPrivateDisc({
+                            ...privateDisc,
+                            education: e.target.value,
+                          })
+                        }
+                      >
+                        <option value="eduLevel">Education Level</option>
+                        {eduOptions.map((option) => (
+                          <option key={option.eduLevel} value={option.eduLevel}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                  <div className="form-floating">
+
+                  {/* <div className="form-floating">
                     <textarea
                       required
                       className="form-control"
@@ -201,9 +321,26 @@ const ReqPrivate = (props: ModalType) => {
                       Can you explain your difficulty in understanding the
                       Subject?
                     </label>
+                  </div> */}
+
+                  <div className="input-boxx">
+                    <textarea
+                      className=""
+                      required
+                      placeholder="Can you explain your difficulty in understanding the Topic?"
+                      style={{ width: "100%", height: "25vh" }}
+                      id="description"
+                      onChange={(e) =>
+                        setPrivateDisc({
+                          ...privateDisc,
+                          difficulty: e.target.value,
+                        })
+                      }
+                    />
                   </div>
-                  <div className="fourth-row d-flex">
-                    <div className="form-floating">
+
+                  <div className="d-flex col" style={{ gap: "1rem" }}>
+                    {/* <div className="form-floating">
                       <input
                         type="date"
                         className="form-control"
@@ -218,8 +355,26 @@ const ReqPrivate = (props: ModalType) => {
                         }
                       />
                       <label htmlFor="floatingDate">Date</label>
+                    </div> */}
+
+                    <div className="input-box-top">
+                      <input
+                        type="date"
+                        className="form-control"
+                        required
+                        style={{ width: "100%" }}
+                        id="floatingDate"
+                        onChange={(e) =>
+                          setPrivateDisc({
+                            ...privateDisc,
+                            date: e.target.value,
+                          })
+                        }
+                      />
+                      <label htmlFor="floatingDate">Date</label>
                     </div>
-                    <div className="form-floating">
+
+                    {/* <div className="form-floating">
                       <input
                         type="time"
                         className="form-control"
@@ -234,8 +389,26 @@ const ReqPrivate = (props: ModalType) => {
                         }
                       />
                       <label htmlFor="floatingStartTime">StartTime</label>
+                    </div> */}
+
+                    <div className="input-box-top">
+                      <input
+                        type="time"
+                        className="form-control"
+                        required
+                        style={{ width: "100%" }}
+                        id="floatingStartTime"
+                        onChange={(e) =>
+                          setPrivateDisc({
+                            ...privateDisc,
+                            start_time: e.target.value,
+                          })
+                        }
+                      />
+                      <label htmlFor="floatingStartTime">Start Time</label>
                     </div>
-                    <div className="form-floating">
+
+                    {/* <div className="form-floating">
                       <input
                         type="time"
                         className="form-control"
@@ -250,9 +423,27 @@ const ReqPrivate = (props: ModalType) => {
                         }
                       />
                       <label htmlFor="floatingEndTime">EndTime</label>
+                    </div> */}
+
+                    <div className="input-box-top">
+                      <input
+                        type="time"
+                        className="form-control"
+                        required
+                        style={{ width: "100%" }}
+                        id="floatingEndTime"
+                        onChange={(e) =>
+                          setPrivateDisc({
+                            ...privateDisc,
+                            end_time: e.target.value,
+                          })
+                        }
+                      />
+                      <label htmlFor="floatingEndTime">End Time</label>
                     </div>
                   </div>
-                  <div className="form-floating mb-3">
+
+                  {/* <div className="form-floating mb-3">
                     <input
                       type="number"
                       className="form-control"
@@ -267,8 +458,27 @@ const ReqPrivate = (props: ModalType) => {
                       }
                     />
                     <label htmlFor="floatingCoin">Coin that you offer</label>
+                  </div> */}
+
+                  <div className="input-boxx">
+                    <input
+                      type="number"
+                      className="form-control"
+                      required
+                      style={{ width: "100%" }}
+                      id="floatingCoin"
+                      onChange={(e) =>
+                        setPrivateDisc({
+                          ...privateDisc,
+                          coin: parseInt(e.target.value),
+                        })
+                      }
+                    />
+                    <label htmlFor="floatingCoin">Coin that you offer</label>
                   </div>
-                  <button type="submit">Submit</button>
+                  <div className="submit-btn d-flex justify-content-center align-items-center">
+                    <button type="submit">Submit</button>
+                  </div>
                 </form>
               </div>
             </div>
@@ -277,24 +487,61 @@ const ReqPrivate = (props: ModalType) => {
             <div className="private-modal-overlay" onClick={props.toggle}>
               <div
                 onClick={(e) => e.stopPropagation()}
-                className="private-modal-box text-dark"
+                className="private-modal-box text-white"
               >
+                <div className="d-flex col justify-content-between mt-3">
+                  <div className="close-btn">
+                    <IoIosCloseCircleOutline
+                      style={{ color: "#fff", fontSize: "54px" }}
+                      onClick={props.toggle}
+                    />
+                  </div>
+                  <div
+                    className="d-flex pe-4"
+                    style={{
+                      fontSize: "32px",
+                      fontWeight: "bold",
+                      cursor: "default",
+                    }}
+                  >
+                    <span>Request Private</span>
+                  </div>
+                  <div></div>
+                </div>
+                <div
+                  style={{
+                    fontSize: "21px",
+                    margin: "1.5rem 0rem",
+                  }}
+                >
+                  <img
+                    className="img-fluid bg-light"
+                    src={"/assets/" + props.currPrivate.user.profile_pic}
+                    alt=""
+                    style={{
+                      height: "5vh",
+                      width: "5vh",
+                      borderRadius: "0.25rem",
+                      marginRight: "0.5rem",
+                    }}
+                  />
+                  {props.currPrivate.user.firstName}{" "}
+                  {props.currPrivate.user.lastName}
+                </div>
                 <form>
-                  <div className="form-floating mb-3">
+                  <div className="input-box-top">
                     <input
                       disabled
                       type="text"
                       className="form-control"
+                      style={{ width: "100%" }}
                       id="floatingTitle"
-                      placeholder=""
                       value={props.currPrivate.title}
                     />
-                    <label htmlFor="floatingTitle">
-                      What Subject do you want to Request?
-                    </label>
+                    <label htmlFor="floatingTitle">Topic Requested</label>
                   </div>
-                  <div className="second-row d-flex">
-                    <div className="form-floating">
+                  <div className="d-flex col" style={{ gap: "1rem" }}>
+                    <div className="input-box-top">
                       <input
                         disabled
                         type="text"
@@ -305,7 +552,7 @@ const ReqPrivate = (props: ModalType) => {
                       />
                       <label htmlFor="floatingSubject">Subject</label>
                     </div>
-                    <div className="form-floating">
+                    <div className="input-box-top">
                       <input
                         disabled
                         type="text"
@@ -317,22 +564,23 @@ const ReqPrivate = (props: ModalType) => {
                       <label htmlFor="floatingEducation">Education Level</label>
                     </div>
                   </div>
-                  <div className="form-floating">
+
+                  <div className="input-box-top-difficult">
                     <textarea
                       disabled
                       className="form-control"
                       id="floatingDifficulty"
                       placeholder=""
-                      style={{ height: "12rem" }}
+                      style={{ width: "100%", height: "25vh" }}
                       value={props.currPrivate.difficulty}
                     ></textarea>
                     <label htmlFor="floatingDifficulty">
-                      Can you explain your difficulty in understanding the
-                      Subject?
+                      Difficulty of the Topic
                     </label>
                   </div>
-                  <div className="fourth-row d-flex">
-                    <div className="form-floating">
+
+                  <div className="d-flex col" style={{ gap: "1rem" }}>
+                    <div className="input-box-top">
                       <input
                         type="text"
                         disabled
@@ -343,7 +591,7 @@ const ReqPrivate = (props: ModalType) => {
                       />
                       <label htmlFor="floatingDate">Date</label>
                     </div>
-                    <div className="form-floating">
+                    <div className="input-box-top">
                       <input
                         type="text"
                         disabled
@@ -359,7 +607,7 @@ const ReqPrivate = (props: ModalType) => {
                       <label htmlFor="floatingStartTime">Time</label>
                     </div>
                   </div>
-                  <div className="form-floating mb-3">
+                  <div className="input-box-top">
                     <input
                       type="number"
                       disabled
@@ -368,24 +616,28 @@ const ReqPrivate = (props: ModalType) => {
                       placeholder=""
                       value={props.currPrivate.coin}
                     />
-                    <label htmlFor="floatingCoin">Coin that you offer</label>
+                    <label htmlFor="floatingCoin">Coin Offered</label>
                   </div>
-                  <button
-                    onClick={(e) => {
-                      handlePrivateReq("Accepted", e);
-                      props.toggle();
-                    }}
-                  >
-                    Accept
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      handlePrivateReq("Rejected", e);
-                      props.toggle();
-                    }}
-                  >
-                    Decline
-                  </button>
+                  <div className="buttons">
+                    <button
+                      className="decline-btn"
+                      onClick={(e) => {
+                        handlePrivateReq("Rejected", e);
+                        props.toggle();
+                      }}
+                    >
+                      Decline
+                    </button>
+                    <button
+                      className="accept-btn"
+                      onClick={(e) => {
+                        handlePrivateReq("Accepted", e);
+                        props.toggle();
+                      }}
+                    >
+                      Accept
+                    </button>
+                  </div>
                 </form>
               </div>
             </div>

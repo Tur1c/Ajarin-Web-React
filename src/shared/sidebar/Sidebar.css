@@ -93,10 +93,6 @@
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
-.sidebar .menu {
-  opacity: 1;
-}
-
 .sidebar .menu .active svg {
   opacity: 1;
 }
@@ -107,102 +103,35 @@
   transition-delay: 0.5s;
 }
 
+.sidebar .tooltip-role-btn {
+  visibility: hidden;
+  font-size: 14px;
+  font-weight: lighter;
+  background-color: var(--lightblue);
+  color: #fff;
+  text-align: center;
+  border-radius: 0.5rem;
+  padding: 0.25rem 1rem;
+  margin-left: 2rem;
+  position: absolute;
+  z-index: 1;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar .change-role-btn {
+  background-color: var(--purple);
+}
+
+.sidebar .change-role-btn:hover .tooltip-role-btn {
+  visibility: visible;
+  transition: 0.25s all ease;
+  transition-delay: 0.5s;
+}
+
 .sidebar .menu:hover svg {
   opacity: 1;
   transition: all 0.5s;
 }
-
-/* .sidebar ul {
-  margin-top: 2rem;
-  padding-left: 0;
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-  list-style: none;
-} */
-
-/* .sidebar ul li {
-  height: 80px;
-  position: relative;
-  width: 100%;
-  list-style: none;
-  line-height: 50px;
-  align-items: center;
-  justify-content: center;
-} */
-
-/* .sidebar li {
-  position: relative;
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-}
-
-.sidebar ul li .tooltip {
-  position: absolute;
-  height: 35px;
-  top: 0;
-  left: 140px;
-  width: 122px;
-  background: #fff;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  transform: translate(-50%, -50%);
-  border-radius: 6px;
-  line-height: 35px;
-  text-align: center;
-  opacity: 0;
-  transition: 0s;
-  pointer-events: none;
-  display: block;
-}
-
-.sidebar ul li:hover .tooltip {
-  transition: all 0.5s ease;
-  top: 50%;
-  opacity: 1;
-}
-
-.sidebar ul li a {
-  border-radius: 12px;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  transition: all 0.4s ease;
-  white-space: nowrap;
-}
-
-.sidebar ul li a:hover {
-  color: #11235a;
-  background: #fff;
-}
-
-.sidebar ul li i {
-  height: 80px;
-  min-width: 50px;
-  border-radius: 12px;
-  line-height: 50px;
-  text-align: center;
-}
-
-.sidebar ul li i svg {
-  height: 80px;
-  min-width: 30px;
-  border-radius: 12px;
-  line-height: 50px;
-  text-align: center;
-} */
-
-/* .sidebar .links_name {
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.5s ease;
-}
-
-.sidebar.active .links_name {
-  opacity: 1;
-  pointer-events: auto;
-} */
 
 .sidebar .profile-content {
   /* position: relative; */
@@ -224,7 +153,7 @@
   background: #1d1b31;
 } */
 
-.profile-details img {
+.sidebar .profile-details img {
   /* min-width: 5vw; */
   /* border-radius: 5rem; */
   /* line-height: 50px; */
@@ -234,26 +163,26 @@
   opacity: 1;
 }
 
-.profile-details img:hover {
+.sidebar .profile-details img:hover {
   opacity: 0.7;
 }
 
-.profile-details a {
+.sidebar .profile-details a {
   pointer-events: all;
 }
 
-.profile_details button{
+.sidebar .profile_details button {
   pointer-events: all;
 }
 
-.profile-details {
+.sidebar .profile-details {
   justify-content: center;
   /* pointer-events: none; */
   align-items: center;
   white-space: nowrap;
 }
 
-.profile-content .profile img {
+.sidebar .profile-content .profile img {
   /* height: 45px;
   width: 45px; */
   object-fit: cover;
@@ -265,7 +194,7 @@
   /* border-radius: 12px; */
 }
 
-.profile .button button {
+.sidebar .profile .button button {
   margin-bottom: 10px;
   outline: none;
   background: none;
@@ -277,23 +206,23 @@
   height: 30px;
 }
 
-.profile .button button a {
+.sidebar .profile .button button a {
   text-decoration: none;
 }
 
-.profile .button .login-btn {
+.sidebar .profile .button .login-btn {
   background-color: var(--yelo);
 }
 
-.profile .button .login-btn:hover {
+.sidebar .profile .button .login-btn:hover {
   background-color: var(--yelodark);
 }
 
-.profile .button .signup-btn:hover {
+.sidebar .profile .button .signup-btn:hover {
   background-color: var(--lightblue);
 }
 
-.profile #logout {
+.sidebar .profile #logout {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -330,6 +259,3 @@
 /* .active{
   background-color:#000;
  } */
-
-
-

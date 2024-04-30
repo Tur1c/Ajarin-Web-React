@@ -7,11 +7,17 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "../../../api/axios";
 import { AccountSchema } from "../../../model/Account";
+import {
+  CategoryListOutput,
+  CategorySchema,
+  transfromToCategoryListOutput,
+} from "../../../model/category/category-model";
 import { AddDiscussionSchema } from "../../../model/course/course-list";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import "./teacher-modal-add-discussion.css";
 
 const ADD_DISCUSSION = "/api/discussion/add";
+const CATEGORY_URL = "/api/category";
 
 function TeacherModalAddDiscussion(props: any) {
   const [addDiscussion, setAddDiscussion] = useState<AddDiscussionSchema>({
@@ -31,6 +37,46 @@ function TeacherModalAddDiscussion(props: any) {
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [page, setPage] = useState(1);
   const [image, setImage] = useState<File>();
+
+  const [selectedEdu, setSelectedEdu] = useState<string>("");
+
+  const handleChangeSubject = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedEdu(event.target.value);
+    setAddDiscussion({ ...addDiscussion, category: event.target.value });
+  };
+
+  const [categories, setCategories] = useState<CategoryListOutput>({
+    categories: [],
+  });
+
+  const fetchCategoryData = async () => {
+    try {
+      const response = await axios.get<ApiResponse<CategorySchema>>(
+        CATEGORY_URL,
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      setCategories(transfromToCategoryListOutput(response.data.outputSchema));
+    } catch (error) {}
+  };
+
+  interface eduOption {
+    eduLevel: string;
+    label: string;
+  }
+
+  const eduOptions: eduOption[] = [
+    { eduLevel: "General", label: "General" },
+    { eduLevel: "Highschool", label: "Highschool" },
+    { eduLevel: "University", label: "University" },
+  ];
+
+  const handleChangeEdu = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedEdu(event.target.value);
+    setAddDiscussion({ ...addDiscussion, education_level: event.target.value });
+  };
 
   const handleStartDateChange = (date: any) => {
     setSelectedStartDate(date);
@@ -155,6 +201,10 @@ function TeacherModalAddDiscussion(props: any) {
   };
 
   useEffect(() => {
+    fetchCategoryData();
+  }, []);
+
+  useEffect(() => {
     setPage(1);
     setImage(undefined);
     setSelectedStartDate(null);
@@ -212,6 +262,7 @@ function TeacherModalAddDiscussion(props: any) {
                     required
                     style={{ width: "100%" }}
                     id="discussion-title"
+                    value={addDiscussion.title}
                     onChange={(e) =>
                       setAddDiscussion({
                         ...addDiscussion,
@@ -224,35 +275,33 @@ function TeacherModalAddDiscussion(props: any) {
 
                 <div className="d-flex col" style={{ gap: "1rem" }}>
                   <div className="input-boxx">
-                    <input
-                      type="text"
-                      required
-                      style={{ width: "100%" }}
-                      id="subject"
-                      onChange={(e) =>
-                        setAddDiscussion({
-                          ...addDiscussion,
-                          category: e.target.value,
-                        })
-                      }
-                    />
-                    <label>Subject</label>
+                    <select required onChange={handleChangeSubject}>
+                      <option value="Subject">Subject</option>
+                      {categories.categories.map((data) => {
+                        return (
+                          <>
+                            <option value={data.categoryName}>
+                              {data.categoryName}
+                            </option>
+                          </>
+                        );
+                      })}
+                    </select>
                   </div>
 
                   <div className="input-boxx">
-                    <input
-                      type="text"
+                    <select
                       required
-                      style={{ width: "100%" }}
-                      id="education-level"
-                      onChange={(e) =>
-                        setAddDiscussion({
-                          ...addDiscussion,
-                          education_level: e.target.value,
-                        })
-                      }
-                    />
-                    <label>Education Level</label>
+                      value={selectedEdu}
+                      onChange={handleChangeEdu}
+                    >
+                      <option value="eduLevel">Education Level</option>
+                      {eduOptions.map((option) => (
+                        <option key={option.eduLevel} value={option.eduLevel}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
@@ -354,13 +403,13 @@ function TeacherModalAddDiscussion(props: any) {
                     required
                     style={{ width: "100%" }}
                     id="url"
+                    value={addDiscussion.link}
                     onChange={(e) =>
                       setAddDiscussion({
                         ...addDiscussion,
                         link: e.target.value,
                       })
                     }
-                    value={addDiscussion.link}
                   />
                   <label>Teams Link</label>
                 </div>

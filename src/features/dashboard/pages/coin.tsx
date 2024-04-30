@@ -201,7 +201,7 @@ function Coin() {
     <>
       <div className="coin-container">
         <div className="coin-body">
-          <div className="coin-top d-flex row">
+          <div className="coin-top d-flex row" style={{ marginBottom: "1rem" }}>
             <div className="close">
               <IoIosCloseCircleOutline
                 style={{ fontSize: "48px" }}
@@ -222,19 +222,23 @@ function Coin() {
             </div>
           </div>
           {userRole === "Teacher" ? (
-            <div className="teacher-coin-container">
-              <div className="text-center mt-5">
+            <div className="teacher-coin-container coin-content h-100">
+              <div className="text-center">
                 <h1
-                  className="text-white fw-bold "
-                  style={{ fontSize: "3rem" }}
+                  className="text-white fw-bold"
+                  style={{
+                    fontSize: "48px",
+                    marginTop: "2rem",
+                    marginBottom: "4rem",
+                  }}
                 >
                   Enter Your Withdrawal Detail
                 </h1>
-                <div className="inputs">
-                  <div className="d-flex row">
+                <div className="inputs w-100">
+                  <div className="d-flex row w-100 d-flex justify-content-between">
                     <div
                       className="input-box-name col-6"
-                      style={{ marginBottom: "0.5rem", width: "50%" }}
+                      style={{ width: "40%" }}
                     >
                       <input
                         type="text"
@@ -247,103 +251,120 @@ function Coin() {
                       </label>
                     </div>
                     <div
-                      className="d-flex justify-content-end col-6"
-                      style={{
-                        backgroundColor: "#596FB7",
-                        textAlign: "center",
-                        display: "flex",
-                        alignItems: "center",
-                        textDecoration: "none",
-                      }}
+                      className="input-box-name col-6"
+                      style={{ width: "40%" }}
                     >
-                      <h3
-                        className="text-white pt-2"
-                        style={{ fontSize: "24px", textAlign: "center" }}
-                      >
-                        Available Coins
-                      </h3>
-                      <img
-                        src={`assets/coin.png`}
-                        alt="abc"
-                        style={{ height: "36px" }}
-                      />
-                      <span
+                      <div
+                        className="d-flex justify-content-center"
                         style={{
-                          fontSize: "36px",
-                          fontWeight: "bolder",
-                          color: "var(--yelo)",
-                          letterSpacing: "1px",
+                          backgroundColor: "#596FB7",
+                          textAlign: "center",
+                          // display: "flex",
+                          alignItems: "center",
+                          textDecoration: "none",
+                          height: "fit-content",
+                          borderRadius: "40px",
                         }}
                       >
-                        {state.teacher.user.coin}
-                      </span>
+                        <h3
+                          className="text-white pt-2"
+                          style={{ fontSize: "24px", textAlign: "center" }}
+                        >
+                          Available Coins
+                        </h3>
+                        <img
+                          src={`assets/coin.png`}
+                          alt="abc"
+                          style={{ height: "36px", marginLeft: "4px" }}
+                        />
+                        <span
+                          style={{
+                            fontSize: "36px",
+                            fontWeight: "bolder",
+                            color: "var(--yelo)",
+                            letterSpacing: "1px",
+                          }}
+                        >
+                          {state.teacher.user.coin}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div className="d-flex">
-                    <div className="naming">
-                      <div
-                        className="input-box-name"
-                        style={{ marginBottom: "0.5rem" }}
-                      >
-                        <input
-                          type="text"
-                          required
-                          style={{ width: "100%" }}
-                          id="accountName"
-                        />
-                        <label>Account Name</label>
-                      </div>
-                      <div
-                        className="input-box-name"
-                        style={{ marginBottom: "0.5rem" }}
-                      >
-                        <input
-                          type="text"
-                          required
-                          style={{ width: "100%" }}
-                          id="withdrawAmount"
-                          onChange={(e) => {
-                            coinWithdraw = e.target.value;
+                  <div className="d-flex row w-100 d-flex justify-content-between">
+                    <div
+                      className="input-box-name col-6 "
+                      style={{ width: "40%" }}
+                    >
+                      <input
+                        type="text"
+                        required
+                        style={{ width: "100%" }}
+                        id="accountName"
+                      />
+                      <label style={{ marginLeft: "12px" }}>Account Name</label>
+                    </div>
+
+                    <div
+                      className="input-box-name col-6"
+                      style={{ width: "40%" }}
+                    >
+                      <input
+                        type="number"
+                        required
+                        style={{ width: "100%" }}
+                        id="withdrawAmount"
+                        onChange={(e) => {
+                          coinWithdraw = e.target.value;
+                        }}
+                      />
+                      <label style={{ marginLeft: "12px" }}>
+                        Withdraw Amount
+                      </label>
+                    </div>
+                  </div>
+                  <div className="d-flex row w-100 justify-content-between">
+                    <div className="col-6" style={{ width: "40%" }}>
+                      <div className="payment-box" style={{ width: "100%" }}>
+                        <p style={{ width: "fit-content" }}>Payment Method</p>
+                        <img
+                          src={`assets/bca_logo.jpg`}
+                          alt=""
+                          className="bg-dark"
+                          style={{
+                            height: "10rem",
+                            width: "20rem",
+                            objectFit: "fill",
                           }}
                         />
-                        <label>
-                          Withdraw Amount ( One Coin will be Converted into IDR
-                          1000,00)
-                        </label>
                       </div>
                     </div>
-                  </div>
-                  <div className="d-flex">
-                    <div className="naming">
-                      <div
-                        className="input-box-name"
-                        style={{ marginBottom: "0.5rem" }}
-                      >
-                        <input
-                          type="text"
-                          required
-                          style={{ width: "100%" }}
-                          id="paymentMethod"
-                        />
 
-                        <label>Payment Method</label>
-                      </div>
-                      <div
-                        className="input-box-name"
-                        style={{ marginBottom: "0.5rem" }}
-                      >
-                        <input
-                          type="hidden"
-                          required
-                          style={{ width: "100%" }}
-                          id="firstName"
-                        />
+                    <div className="col-6" style={{ width: "40%" }}>
+                      <div className="payment-box" style={{ width: "100%" }}>
+                        <p style={{ width: "fit-content", textAlign: "start" }}>
+                          Notes:
+                          <br />
+                          1) One Coin will be converted into IDR 500,00
+                          <br />
+                          2) Minimum Withdraw : 50 Coins
+                        </p>
                       </div>
                     </div>
+                    {/* <div
+                      className="input-box-name"
+                      style={{ marginBottom: "0.5rem" }}
+                    >
+                      <input
+                        type="hidden"
+                        required
+                        style={{ width: "100%" }}
+                        id="firstName"
+                      />
+                    </div> */}
                   </div>
                 </div>
 
-                <div className="mt-5 d-flex justify-content-between align-items-center">
+                <div className="d-flex justify-content-between align-items-center">
                   <button
                     className="fw-bold"
                     onClick={() => {
@@ -356,10 +377,10 @@ function Coin() {
               </div>
             </div>
           ) : (
-            <div className="coin-content h-100">
+            <div className="coin-content h-100 ">
               <div className="text-end d-flex justify-content-end">
                 <div
-                  className="button-coin-detail d-flex justify-content-end"
+                  className="button-coin-detail d-flex"
                   style={{
                     backgroundColor: "#596FB7",
                     textAlign: "center",

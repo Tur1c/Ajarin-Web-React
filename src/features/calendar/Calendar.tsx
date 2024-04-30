@@ -132,7 +132,7 @@ const Calendar = () => {
   }, [currMonthIdx]);
 
   useEffect(() => {
-    setIsLoading(true);
+    setIsLoading(false);
     setTimeout(() => {
       setIsLoading(false);
     }, 500);
@@ -341,19 +341,23 @@ const Calendar = () => {
                         </div>
                       ) : (
                         <>
+                          <div
+                            className=" d-flex m-0 fw-bold justify-content-center"
+                            style={{ padding: "1.5rem 0rem 0rem 0rem" }}
+                          >
+                            <p style={{ fontSize: "32px" }}>
+                              Upcoming Discussion
+                            </p>
+                          </div>
                           <div className="disc-container d-flex">
                             {currTeacherDisc.map((data, idx) => (
                               <div
-                                className="card mt-5 ms-5"
+                                className="card disc-item"
                                 key={idx}
-                                style={{
-                                  width: "45%",
-                                  height: "23rem",
-                                  padding: 0,
-                                }}
+                                style={{ width: "65%", padding: 0 }}
                               >
                                 <img
-                                  className="card-image-top w-100 h-75 disc-image"
+                                  className="disc-image"
                                   src={
                                     data.image
                                       ? `assets/${data.image}`
@@ -362,36 +366,60 @@ const Calendar = () => {
                                   alt=""
                                 />
                                 <div className="participant-total">
-                                  {data.participant}/{data.maxPeople}
+                                  {data.participant} / {data.maxPeople}
                                 </div>
 
-                                <div className="card-body disc-body rounded">
-                                  <h5 className="card-text d-flex h-100">
-                                    <div className="disc-date col-3 text-center my-auto border-end border-white">
-                                      <h2 style={{ margin: 0 }}>
-                                        {dayjs(data.date).format("DD")}
-                                      </h2>
-                                      <h5>{dayjs(data.date).format("MMM")}</h5>
-                                    </div>
-                                    <div className="disc-title my-auto col-6 d-flex justify-content-center mx-2">
-                                      <h6 className="" style={{ margin: 0 }}>
-                                        {data.title} <br />
-                                        by Godwin
-                                      </h6>
-                                    </div>
-                                    <div
-                                      className="disc-time col-3 text-center my-auto border-start border-white "
-                                      style={{ height: "70px" }}
-                                    >
-                                      <h6
-                                        className="d-flex align-items-center justify-content-center"
-                                        style={{ height: "100%" }}
-                                      >
-                                        {data.starttime.toString()}-
-                                        {data.endtime.toString()}
-                                      </h6>
-                                    </div>
-                                  </h5>
+                                <div className="disc-body">
+                                  <div className="updisc-container w-100 mx-2">
+                                    <h5 className="card-text d-flex justify-content-between">
+                                      <div className="text-center border-end border-white justify-content-center align-items-center d-flex row">
+                                        <h4
+                                          style={{
+                                            margin: 0,
+                                            fontSize: "32px",
+                                            fontWeight: "bold",
+                                          }}
+                                        >
+                                          {dayjs(data.date).format("DD")}
+                                        </h4>
+                                        <h5
+                                          style={{
+                                            fontSize: "18px",
+                                            fontWeight: "bold",
+                                          }}
+                                        >
+                                          {dayjs(data.date).format("MMM")}
+                                        </h5>
+                                      </div>
+
+                                      <div className="my-auto d-flex row">
+                                        <h6
+                                          style={{
+                                            margin: 0,
+                                            fontSize: "14px",
+                                          }}
+                                        >
+                                          {data.title} <br />
+                                          by Godwin
+                                        </h6>
+                                      </div>
+                                      <div className="justify-content-center px-2 border-start border-white">
+                                        <h6
+                                          className="d-flex align-items-center justify-content-center pe-2"
+                                          style={{
+                                            height: "100%",
+                                            fontSize: "12px",
+                                          }}
+                                        >
+                                          {data.starttime
+                                            .toString()
+                                            .slice(0, 5)}{" "}
+                                          -{" "}
+                                          {data.endtime.toString().slice(0, 5)}
+                                        </h6>
+                                      </div>
+                                    </h5>
+                                  </div>
                                 </div>
                               </div>
                             ))}
@@ -438,104 +466,116 @@ const Calendar = () => {
 
                               <div className="disc-body">
                                 {/* <h5 className="card-text d-flex h-100 justify-content-between">
-                            <div className="text-center my-auto border-end border-white bg-danger w-20">
-                              <h2 style={{ margin: 0 }}>
-                                {dayjs(data.discussion.disc_date).format("DD")}
-                              </h2>
-                              <h5>
-                                {dayjs(data.discussion.disc_date).format("MMM")}
-                              </h5>
-                            </div>
-                            <div className="my-auto d-flex justify-content-center bg-warning w-100">
-                              <h6 className="" style={{ margin: 0 }}>
-                                {data.discussion.disc_title} <br />
-                                by Godwin
-                              </h6>
-                            </div>
-                            <div
-                              className="disc-time text-center my-auto border-start border-white"
-                              style={{}}
-                            >
-                              <h6
-                                className="d-flex align-items-center justify-content-center"
-                                style={{ height: "100%", fontSize: "12px" }}
-                              >
-                                {data.discussion.disc_starttime
-                                  .toString()
-                                  .slice(0, 5)}{" "}
-                                -{" "}
-                                {data.discussion.disc_endtime
-                                  .toString()
-                                  .slice(0, 5)}
-                              </h6>
-                            </div>
-                          </h5> */}
-                          <div className="updisc-container w-100 mx-2">
-                            <h5 className="card-text d-flex justify-content-between">
-                              <div className="text-center border-end border-white justify-content-center align-items-center d-flex row">
-                                <h4
-                                  style={{
-                                    margin: 0,
-                                    fontSize: "32px",
-                                    fontWeight: "bold",
-                                  }}
-                                >
-                                  {dayjs(data.discussion.disc_date).format(
-                                    "DD"
-                                  )}
-                                </h4>
-                                <h5
-                                  style={{
-                                    fontSize: "18px",
-                                    fontWeight: "bold",
-                                  }}
-                                >
-                                  {dayjs(data.discussion.disc_date).format(
-                                    "MMM"
-                                  )}
-                                </h5>
-                              </div>
+                                  <div className="text-center my-auto border-end border-white bg-danger w-20">
+                                    <h2 style={{ margin: 0 }}>
+                                      {dayjs(data.discussion.disc_date).format(
+                                        "DD"
+                                      )}
+                                    </h2>
+                                    <h5>
+                                      {dayjs(data.discussion.disc_date).format(
+                                        "MMM"
+                                      )}
+                                    </h5>
+                                  </div>
+                                  <div className="my-auto d-flex justify-content-center bg-warning w-100">
+                                    <h6 className="" style={{ margin: 0 }}>
+                                      {data.discussion.disc_title} <br />
+                                      by Godwin
+                                    </h6>
+                                  </div>
+                                  <div
+                                    className="disc-time text-center my-auto border-start border-white"
+                                    style={{}}
+                                  >
+                                    <h6
+                                      className="d-flex align-items-center justify-content-center"
+                                      style={{
+                                        height: "100%",
+                                        fontSize: "12px",
+                                      }}
+                                    >
+                                      {data.discussion.disc_starttime
+                                        .toString()
+                                        .slice(0, 5)}{" "}
+                                      -{" "}
+                                      {data.discussion.disc_endtime
+                                        .toString()
+                                        .slice(0, 5)}
+                                    </h6>
+                                  </div>
+                                </h5> */}
+                                <div className="updisc-container w-100 mx-2">
+                                  <h5 className="card-text d-flex justify-content-between">
+                                    <div className="text-center border-end border-white justify-content-center align-items-center d-flex row">
+                                      <h4
+                                        style={{
+                                          margin: 0,
+                                          fontSize: "32px",
+                                          fontWeight: "bold",
+                                        }}
+                                      >
+                                        {dayjs(
+                                          data.discussion.disc_date
+                                        ).format("DD")}
+                                      </h4>
+                                      <h5
+                                        style={{
+                                          fontSize: "18px",
+                                          fontWeight: "bold",
+                                        }}
+                                      >
+                                        {dayjs(
+                                          data.discussion.disc_date
+                                        ).format("MMM")}
+                                      </h5>
+                                    </div>
 
-                              <div className="my-auto d-flex row">
-                                <h6 style={{ margin: 0, fontSize: "14px" }}>
-                                  {data.discussion.disc_title}
-                                  <br />
-                                </h6>
-                                <h6
-                                  style={{
-                                    margin: 0,
-                                    fontSize: "10px",
-                                    color: "var(--yelo)",
-                                  }}
-                                >
-                                  by Godwin
-                                </h6>
-                              </div>
+                                    <div className="my-auto d-flex row">
+                                      <h6
+                                        style={{ margin: 0, fontSize: "14px" }}
+                                      >
+                                        {data.discussion.disc_title}
+                                        <br />
+                                      </h6>
+                                      <h6
+                                        style={{
+                                          margin: 0,
+                                          fontSize: "10px",
+                                          color: "var(--yelo)",
+                                        }}
+                                      >
+                                        by Godwin
+                                      </h6>
+                                    </div>
 
-                              <div className="justify-content-center px-2 border-start border-white">
-                                <h6
-                                  className="d-flex align-items-center justify-content-center pe-2"
-                                  style={{ height: "100%", fontSize: "12px" }}
-                                >
-                                  {data.discussion.disc_starttime
-                                    .toString()
-                                    .slice(0, 5)}{" "}
-                                  -{" "}
-                                  {data.discussion.disc_endtime
-                                    .toString()
-                                    .slice(0, 5)}
-                                </h6>
+                                    <div className="justify-content-center px-2 border-start border-white">
+                                      <h6
+                                        className="d-flex align-items-center justify-content-center pe-2"
+                                        style={{
+                                          height: "100%",
+                                          fontSize: "12px",
+                                        }}
+                                      >
+                                        {data.discussion.disc_starttime
+                                          .toString()
+                                          .slice(0, 5)}{" "}
+                                        -{" "}
+                                        {data.discussion.disc_endtime
+                                          .toString()
+                                          .slice(0, 5)}
+                                      </h6>
+                                    </div>
+                                  </h5>
+                                </div>
                               </div>
-                            </h5>
-                          </div>
+                            </div>
+                          ))}
                         </div>
-                      </div>
-                    ))}
+                      </>
+                    )}
                   </div>
-                </>
-              )}
-            </div>
-          </div>
+                </div>
 
                 <h1
                   style={{
@@ -589,7 +629,7 @@ const Calendar = () => {
                   </div>
 
                   <div
-                    className="account-course-content p-5"
+                    className="account-course-content"
                     ref={itemsRef}
                     onMouseDown={handleMouseDown}
                     onMouseLeave={handleMouseLeave}
@@ -597,94 +637,194 @@ const Calendar = () => {
                     onMouseMove={handleMouseMove}
                   >
                     {teacher
-                      ? teacherCourse.map((data: { image: any; title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; level: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; category: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }, idx: any) => (
+                      ? teacherCourse.map((data: { image: any; title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; level: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; category: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }, idx:any) => (
+                          
                           <div
-                            className="account-course-card card text-decoration-none"
-                            style={{ width: "18rem", height: "20rem" }}
+                            key={idx}
+                            className="d-flex bg-warning"
+                            style={{ width: "20rem" }}
                           >
-                            <img
-                              src={`assets/${data.image}`}
-                              className="card-img-top w-100 h-75"
-                              alt=""
-                            />
-                            <div className="card-body">
-                              <div className="accountcourse-lecturer d-flex">
-                                <img
-                                  src={
-                                    teacher.user.urlImage ||
-                                    `assets/default_picture.png`
-                                  }
-                                  alt=""
-                                  style={{ width: "40px" }}
-                                />
-                                <p>
-                                  {teacher.firstName} {teacher.lastName}
-                                </p>
-                              </div>
-                              <p className="card-text">{data.title}</p>
+                            <div
+                              className="card"
+                              style={{ border: "none", width: "20rem" }}
+                            >
+                              {/* <Link
+                                to={"/home"}
+                                key={idx}
+                                // state={{
+                                //   data: data,
+                                //   acc: account,
+                                //   teacher: data.course.teacher,
+                                // }}
+                                style={{ textDecoration: "none" }}
+                              > */}
+                                <div className="container-class-header">
+                                  <div className="class-thumbnail">
+                                    <img
+                                      src={`assets/${data.image}`}
+                                      className="img-fluid"
+                                      alt=""
+                                      style={{ objectFit: "fill" }}
+                                    />
+                                  </div>
+                                </div>
 
-                              <div className="accountcourse-category d-flex">
-                                <span className="badge rounded-pill border border-black text-dark p-2">
-                                  {data.level}
-                                </span>
-                                <span className="badge rounded-pill border border-black text-dark p-2">
-                                  {data.category}
-                                </span>
-                              </div>
+                                <div className="card-body p-2">
+                                  <div className="d-flex row w-100 h-100 justify-content-between m-0">
+                                    <div
+                                      className="p-0"
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        height: "fit-content",
+                                      }}
+                                    >
+                                      <img
+                                        src={
+                                          teacher.user.urlImage ||
+                                          `assets/default_picture.png`
+                                        }
+                                        alt=""
+                                        className="me-2"
+                                        style={{
+                                          width: "3vh",
+                                          height: "3vh",
+                                          borderRadius: "0.25rem",
+                                        }}
+                                      />
+                                      <span
+                                        style={{
+                                          color: "#000",
+                                          alignItems: "center",
+                                          fontSize: "10px",
+                                          fontWeight: "bold",
+                                        }}
+                                      >
+                                        {teacher.user.firstName}{" "}
+                                        {teacher.user.lastName}
+                                      </span>
+                                    </div>
+                                    <div className="title-class m-0 p-0 ">
+                                      <h3
+                                        style={{
+                                          color: "#000",
+                                          fontSize: "18px",
+                                          marginTop: "0.5rem",
+                                          fontWeight: "bold",
+                                        }}
+                                      >
+                                        {data.title}
+                                      </h3>
+                                    </div>
+                                    <div
+                                      className="d-flex p-0 align-content-end align-items-end"
+                                      style={{ gap: "0.5rem" }}
+                                    >
+                                      <div className="chip">
+                                        {data.category}
+                                      </div>
+                                      <div className="chip">{data.level}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              {/* </Link> */}
                             </div>
                           </div>
                         ))
-                      : accountCourse.map((data: { course: { course_title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined; teacher: { user: { pic_name: string; firstName: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; lastName: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }; }; course_image: any; course_level: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; category: { category_name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }; }; }, idx: Key | null | undefined) => (
-                          <Link
-                            to={"/course/" + data.course.course_title}
-                            key={idx}
-                            state={{
-                              data: data,
-                              acc: account,
-                              teacher: data.course.teacher,
-                              link: "/calendar"
-                            }}
-                            style={{ textDecoration: "none" }}
-                          >
+                        : accountCourse.map((data: { course: { course_title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined; teacher: { user: { pic_name: string; firstName: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; lastName: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }; }; course_image: any; course_level: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; category: { category_name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> |  null | undefined; }; }; }, idx: Key | null | undefined) => (
                             <div
-                              className="account-course-card card text-decoration-none"
-                              style={{ width: "18rem", height: "20rem" }}
-                            >
-                              <img
-                                src={`assets/${data.course.course_image}`}
-                                className="card-img-top w-100 h-75"
-                                alt=""
-                              />
-                              <div className="card-body">
-                                <div className="accountcourse-lecturer d-flex">
-                                  <img
-                                    src={
-                                      "/assets/" +
-                                      data.course.teacher.user.pic_name
-                                    }
-                                    alt=""
-                                    style={{ width: "40px" }}
-                                  />
-                                  <p>
-                                    {data.course.teacher.user.firstName}{" "}
-                                    {data.course.teacher.user.lastName}
-                                  </p>
+                            key={idx}
+                            className="d-flex"
+                            style={{ width: "20rem" }}
+                          >
+                          
+                            <div className="card" style={{ border: "none" }}>
+                              <Link
+                                to={"/course/" + data.course.course_title}
+                                key={idx}
+                                state={{
+                                  data: data,
+                                  acc: account,
+                                  teacher: data.course.teacher,
+                                  link: "/calendar"
+                                }}
+                                style={{ textDecoration: "none" }}
+                              >
+                                <div className="container-class-header">
+                                  <div className="class-thumbnail">
+                                    <img
+                                      src={`assets/${data.course.course_image}`}
+                                      className="img-fluid"
+                                      alt=""
+                                      style={{ objectFit: "fill" }}
+                                    />
+                                  </div>
                                 </div>
-                                <p className="card-text">
-                                  {data.course.course_title}
-                                </p>
 
-                                <div className="accountcourse-category d-flex">
-                                  <span className="badge rounded-pill border border-black text-dark p-2">
-                                    {data.course.course_level}
-                                  </span>
-                                  <span className="badge rounded-pill border border-black text-dark p-2">
-                                    {data.course.category.category_name}
-                                  </span>
+                                <div className="card-body p-2">
+                                  <div className="d-flex row w-100 h-100 justify-content-between m-0">
+                                    <div
+                                      className="p-0"
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        height: "fit-content",
+                                      }}
+                                    >
+                                      <img
+                                        src={
+                                          "/assets/" +
+                                          data.course.teacher.user.pic_name
+                                        }
+                                        alt=""
+                                        className="me-2"
+                                        style={{
+                                          width: "3vh",
+                                          height: "3vh",
+                                          borderRadius: "0.25rem",
+                                        }}
+                                      />
+                                      <span
+                                        style={{
+                                          color: "#000",
+                                          alignItems: "center",
+                                          fontSize: "10px",
+                                          fontWeight: "bold",
+                                        }}
+                                      >
+                                        {data.course.teacher.user.firstName}{" "}
+                                        {data.course.teacher.user.lastName}
+                                      </span>
+                                    </div>
+                                    <div className="title-class m-0 p-0 ">
+                                      <h3
+                                        style={{
+                                          color: "#000",
+                                          fontSize: "18px",
+                                          marginTop: "0.5rem",
+                                          fontWeight: "bold",
+                                        }}
+                                      >
+                                        {data.course.course_title}
+                                      </h3>
+                                    </div>
+                                    <div
+                                      className="d-flex p-0 align-content-end align-items-end"
+                                      style={{ gap: "0.5rem" }}
+                                    >
+                                      <div className="chip">
+                                        {data.course.category.category_name}
+                                      </div>
+                                      <div className="chip">
+                                        {data.course.course_level}
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
-                              </div>
+                              </Link>
                             </div>
-                          </Link>
+                            </div>
+                          
                         ))}
                   </div>
                 </div>
@@ -742,6 +882,9 @@ const Calendar = () => {
             )}
           </div>
         </div>
+
+
+        
       ) : (
         <div
           className="d-flex justify-content-center align-items-center"

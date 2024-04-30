@@ -9,6 +9,8 @@
   --lightblue: #273a72;
   --whitedark: #dddddd;
   --yelodark: #f6e976;
+  --cream: #c6cf9b;
+  --red: #ff3333;
 }
 
 .lecturer-page {
@@ -27,11 +29,11 @@
   margin-bottom: 4rem;
 }
 
-.lecturer-content {
+.lecturer-page .lecturer-content {
   flex: block;
 }
 
-.table-container {
+.lecturer-page .table-container {
   margin-bottom: 6rem;
 }
 
@@ -77,38 +79,108 @@
   border: none;
 }
 
-.unsubscribe-btn {
+.lecturer-page .unsubscribe-btn {
   font-weight: 600;
 }
 
-.unsubscribe-btn:hover {
-  background-color: var(--blue);
+.lecturer-page .unsubscribe-btn:hover {
+  background-color: var(--lightblue);
   font-weight: 600;
 }
 
-.lecturer-subscribed-content {
+.lecturer-page .lecturer-subscribed-content {
   margin: 0;
   padding: 0;
 }
 
-.all-lecturer-container {
+.lecturer-page .all-lecturer-container {
   background-color: rgba(255, 255, 255, 0.1);
   cursor: pointer;
 }
 
-.all-lecturer-container:hover {
+.lecturer-page .all-lecturer-container:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-.lecturer-leaderboard-table:hover {
+.lecturer-page .lecturer-leaderboard-table:hover {
   background-color: rgba(255, 255, 255, 0.2);
   cursor: pointer;
 }
 
-.no-subscribe-lecturer {
+.lecturer-page .no-subscribe-lecturer {
   background-color: rgba(255, 255, 255, 0.2);
   display: flex;
   justify-content: center;
   font-weight: bold;
   align-items: center;
+}
+
+.lecturer-page .chip {
+  padding: 0.25rem 0.75rem;
+  background-color: var(--lightblue2);
+  font-size: 14px;
+  border-radius: 5rem;
+  width: fit-content;
+  height: fit-content;
+  font-weight: light;
+  color: var(--white);
+  margin: 0;
+}
+
+.lecturer-page .MuiTableHead-root {
+  cursor: default;
+}
+
+.lecturer-page .MuiTableCell-root {
+  font-family: "Montserrat";
+}
+
+.lecturer-page .css-34nofg-MuiTableRow-root:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+.lecturer-page .top-lecturers:hover {
+  font-weight: bold;
+  opacity: 1;
+  text-decoration: underline;
+  font-size: 14.5px;
+}
+
+.lecturer-page .private-coin {
+  opacity: 0.7;
+}
+
+.lecturer-page .private-coin:hover {
+  font-size: 16px;
+  opacity: 1;
+}
+
+.all-lecturer-name:hover {
+  font-size: 21px;
+  text-decoration: underline;
+}
+
+.lecturer-page .chip-leaderboard {
+  padding: 0.25rem 0.75rem;
+  background-color: var(--red);
+  font-size: 14px;
+  border-radius: 5rem;
+  width: fit-content;
+  height: fit-content;
+  font-weight: light;
+  color: var(--white);
+  margin: 0;
+}
+
+.lecturer-page .chip-leaderboard-forum-points {
+  padding: 0.25rem 0.75rem;
+  background-color: var(--cream);
+  font-size: 14px;
+  border-radius: 5rem;
+  width: fit-content;
+  height: fit-content;
+  font-weight: light;
+  color: var(--purple);
+  margin: 0;
 }

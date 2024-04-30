@@ -380,6 +380,7 @@ const Lecturer = () => {
                             </TableCell>
                             <TableCell
                               className="text-white fw-bold"
+                              width={"15%"}
                               style={{
                                 fontSize: "14px",
                                 fontFamily: "Montserrat",
@@ -390,6 +391,7 @@ const Lecturer = () => {
                             </TableCell>
                             <TableCell
                               className="text-white fw-bold"
+                              width={"12.5%"}
                               style={{
                                 fontSize: "14px",
                                 fontFamily: "Montserrat",
@@ -400,6 +402,18 @@ const Lecturer = () => {
                             </TableCell>
                             <TableCell
                               className="text-white fw-bold"
+                              width={"12.5%"}
+                              style={{
+                                fontSize: "14px",
+                                fontFamily: "Montserrat",
+                                opacity: "0.6",
+                              }}
+                            >
+                              Level
+                            </TableCell>
+                            <TableCell
+                              className="text-white fw-bold"
+                              width={"10%"}
                               style={{
                                 fontSize: "14px",
                                 fontFamily: "Montserrat",
@@ -438,42 +452,94 @@ const Lecturer = () => {
                               <TableCell
                                 component="th"
                                 scope="row"
-                                className="text-white"
+                                className="text-white fw-bold"
                               >
                                 {idx + 1}
                               </TableCell>
                               <TableCell className="text-white">
-                                <img
-                                  className="img-fluid"
-                                  src={"/assets/" + data.user.profile_pic}
-                                  alt=""
-                                  style={{ height: "8vh", width: "8vh" }}
-                                />
-                                <span>{data.title}</span>
-                                <span>
-                                  {" "}
-                                  {data.user.firstName} {data.user.lastName}
+                                <div className="d-flex align-items-center">
+                                  <img
+                                    className="img-fluid"
+                                    src={"/assets/" + data.user.profile_pic}
+                                    alt=""
+                                    style={{
+                                      height: "5vh",
+                                      width: "5vh",
+                                      borderRadius: "0.25rem",
+                                    }}
+                                  />
+                                  <span className="d-flex row m-0">
+                                    <p
+                                      className="m-0"
+                                      style={{ opacity: "0.75" }}
+                                    >
+                                      {data.user.firstName} {data.user.lastName}
+                                    </p>
+                                    <p
+                                      className="m-0 fw-bold"
+                                      style={{ fontSize: "18px" }}
+                                    >
+                                      {data.title}
+                                    </p>
+                                  </span>
+                                </div>
+                              </TableCell>
+                              <TableCell className="text-white">
+                                {/* <p>
+                                  {dayjs(data.date).format("ddd, MMM D, YYYY")}
+                                </p>
+                                {data.start_time} - {data.end_time} */}
+                                <span className="d-flex row m-0">
+                                  <p
+                                    className="m-0 p-0"
+                                    style={{ opacity: "0.75" }}
+                                  >
+                                    {dayjs(data.date).format(
+                                      "ddd, MMM D, YYYY"
+                                    )}
+                                  </p>
+                                  <p
+                                    className="m-0 p-0"
+                                    style={{ opacity: "0.75" }}
+                                  >
+                                    {data.start_time.slice(0, 5)} -{" "}
+                                    {data.end_time.slice(0, 5)}
+                                  </p>
                                 </span>
                               </TableCell>
                               <TableCell className="text-white">
-                                <p>
-                                  {dayjs(data.date).format("ddd, MMM D, YYYY")}
-                                </p>
-                                {data.start_time} - {data.end_time}
+                                <div className="chip fw-bold">
+                                  {data.subject}
+                                </div>
                               </TableCell>
                               <TableCell className="text-white">
-                                {data.education}
+                                <div className="chip fw-bold">
+                                  {data.education}
+                                </div>
                               </TableCell>
                               <TableCell className="text-white">
-                                {data.coin}
+                                <div className="d-flex col align-items-center align-content-center text-center private-coin">
+                                  <img
+                                    src={`assets/coin.png`}
+                                    alt="abc"
+                                    style={{
+                                      height: "3vh",
+                                      width: "3vh",
+                                      marginRight: "0.25rem",
+                                    }}
+                                  />
+                                  <p className="m-0 fw-bold ">{data.coin}</p>
+                                </div>
                               </TableCell>
                               <TableCell className="text-white lecturer-request-private-button">
-                                <button className="request-private-btn me-3">
-                                  Accept
-                                </button>
-                                <button className="unsubscribe-btn">
-                                  Decline
-                                </button>
+                                <div className="d-flex row gap-2">
+                                  <button className="request-private-btn m-0">
+                                    Accept
+                                  </button>
+                                  <button className="unsubscribe-btn m-0">
+                                    Decline
+                                  </button>
+                                </div>
                               </TableCell>
                             </TableRow>
                           ))}
@@ -521,7 +587,11 @@ const Lecturer = () => {
                         <div
                           // List Lecturer yang di Subscribe
                           className="lecturer-subscribed-content mt-4"
-                          style={{ minHeight: "25rem", padding: "0rem 0rem" }}
+                          style={{
+                            maxHeight: "25rem",
+                            padding: "0rem 0rem",
+                            marginBottom: "2rem",
+                          }}
                         >
                           {currentTeacherList.length > 0 ? (
                             <div className="d-flex row">
@@ -531,8 +601,10 @@ const Lecturer = () => {
                                     className="d-flex"
                                     style={{
                                       height: "10vh",
-                                      background: "rgba(255, 255, 255, 0.2)",
+                                      background:
+                                        "radial-gradient(#90928f, #bab8cc)",
                                       padding: "0rem 1rem",
+                                      borderRadius: "0.25rem",
                                     }}
                                   >
                                     <div
@@ -652,6 +724,12 @@ const Lecturer = () => {
                               />
                             </g>
                           </svg>
+                          <Pagination
+                            totalClass={account.subscribed_lecturer.length}
+                            classPerPage={classPerPage}
+                            onPageChange={handlePageChange}
+                            currentPage={currentPage}
+                          />
                         </div>
                       )}
                       <Pagination
@@ -766,7 +844,7 @@ const Lecturer = () => {
                             <TableCell
                               component="th"
                               scope="row"
-                              className="text-white"
+                              className="text-white fw-bold"
                               style={{ fontFamily: "Montserrat" }}
                             >
                               {index + 1}
@@ -783,27 +861,36 @@ const Lecturer = () => {
                                   height: "5vh",
                                   width: "5vh",
                                   borderRadius: "0.25rem",
+                                  marginRight: "0.5rem",
                                 }}
                               />
-                              <span> {data.user.fullName}</span>
+                              <span className="top-lecturers">
+                                {data.user.fullName}
+                              </span>
                             </TableCell>
                             <TableCell
                               className="text-white"
                               style={{ fontFamily: "Montserrat" }}
                             >
-                              {data.courseSold} solds
+                              <div className="chip-leaderboard fw-bold">
+                                {data.courseSold} solds
+                              </div>
                             </TableCell>
                             <TableCell
                               className="text-white"
                               style={{ fontFamily: "Montserrat" }}
                             >
-                              {data.discussionParticipant} Participants
+                              <div className="chip-leaderboard fw-bold">
+                                {data.discussionParticipant} Participants
+                              </div>
                             </TableCell>
                             <TableCell
                               className="text-white"
                               style={{ fontFamily: "Montserrat" }}
                             >
-                              {data.forumPoints} Points
+                              <div className="chip-leaderboard-forum-points fw-bold">
+                                {data.forumPoints} Points
+                              </div>
                             </TableCell>
                             <TableCell
                               className="text-white"
@@ -952,7 +1039,9 @@ const Lecturer = () => {
                           </div>
                           <div className="w-100">
                             <div className="card-text text-white fw-bold d-flex justify-content-between align-items-center h-100 p-3">
-                              <h5 className="fw-bold">{data.user.fullName}</h5>
+                              <h5 className="fw-bold all-lecturer-name">
+                                {data.user.fullName}
+                              </h5>
                               <div className="d-flex flex-column lecturer-subscribed-button"></div>
                             </div>
                           </div>

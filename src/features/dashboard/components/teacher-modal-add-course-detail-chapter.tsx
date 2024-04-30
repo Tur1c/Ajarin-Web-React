@@ -8,6 +8,7 @@ import axios from "../../../api/axios";
 import { AccountSchema } from "../../../model/Account";
 import { AddCourseDetailSchema } from "../../../model/course/course-list";
 import { ApiResponse } from "../../../model/schema/base_schema";
+import "./teacher-modal-add-course.css";
 import "./teacher-modal-add-discussion.css";
 
 const ADD_COURSE = "/api/course/add/course/";
@@ -150,6 +151,7 @@ function TeacherModalAddCourseDetailChapter(props: any) {
     formData.append("title", addCourseDetail.title);
     if (image) {
       formData.append("thumbnail", image);
+      formData.append("thumbnail", image);
     }
     if (video) {
       formData.append("video", video);
@@ -203,24 +205,31 @@ function TeacherModalAddCourseDetailChapter(props: any) {
       centered
       key={props.chapter}
     >
-      <Modal.Header className="p-0 d-block">
-        <div
-          className="container-class-header d-flex justify-content-around mt-3"
-          style={{ height: "2rem" }}
-        >
-          <div>
+      <Modal.Header className="d-flex w-100" style={{ border: "none" }}>
+        <div className="add-course-header container-class-header d-flex col justify-content-between mt-3">
+          <div className="close-btn">
             <IoIosCloseCircleOutline
               style={{ color: "#fff", fontSize: "54px" }}
               onClick={props.onHide}
             />
           </div>
-          <div style={{ fontSize: "30px" }}>
-            <span>Add Course Detail Chapter</span>
+          <div
+            className="d-flex pe-4"
+            style={{
+              fontSize: "32px",
+              fontWeight: "bold",
+              cursor: "default",
+            }}
+          >
+            <span>Chapter Detail</span>
           </div>
           <div></div>
         </div>
       </Modal.Header>
-      <Modal.Body className="p-5" key={props.chapter}>
+      <Modal.Body
+        className="w-100 chapter-detail-container"
+        key={props.chapter}
+      >
         <div className="modal-body-container">
           <form
             onSubmit={(e) => {
@@ -228,73 +237,94 @@ function TeacherModalAddCourseDetailChapter(props: any) {
               submitCourseDetail(e);
             }}
           >
-            <div className="inputs" style={{ width: "100%" }}>
-              <div className="">
-                <div className="input-box" style={{ marginBottom: "0.5rem" }}>
-                  <input
-                    type="text"
-                    required
-                    style={{ width: "100%" }}
-                    id="course-title"
-                    onChange={(e) =>
-                      setAddCourseDetail({
-                        ...addCourseDetail,
-                        title: e.target.value,
-                      })
-                    }
-                  />
-                  <label>Course Title</label>
+            <div className="" style={{ width: "100%" }}>
+              <div className="input-boxx" style={{ marginBottom: "1rem" }}>
+                <input
+                  type="text"
+                  required
+                  style={{ width: "100%" }}
+                  id="course-title"
+                  onChange={(e) =>
+                    setAddCourseDetail({
+                      ...addCourseDetail,
+                      title: e.target.value,
+                    })
+                  }
+                />
+                <label>Course Title</label>
+              </div>
+
+              <div
+                className="d-flex justify-content-between"
+                style={{ gap: "1rem" }}
+              >
+                <div
+                  className="d-flex row  justify-content-center"
+                  style={{ width: "50%" }}
+                >
+                  {image ? (
+                    <div className="text-center">
+                      <img
+                        src={URL.createObjectURL(image)}
+                        alt=""
+                        style={{ height: "25rem", width: "22.5rem" }}
+                      />
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        height: "25rem",
+                        width: "22.5rem",
+                        background: "rgba(0, 0, 0, 0.2)",
+                        objectFit: "fill",
+                        borderRadius: "0.25rem",
+                      }}
+                    ></div>
+                  )}
+                  <label className="btn btn-default text-light d-flex justify-content-center w-50 fw-bold upload-thumbnail-chapter">
+                    <input
+                      className="inputfile"
+                      required
+                      type="file"
+                      onChange={handleImageChange}
+                      accept="image/*"
+                    />
+                    Upload Chapter Thumbnail
+                  </label>
+                </div>
+
+                <div className="pdf-and-video" style={{ width: "50%" }}>
+                  <div
+                    className="upload-chapter-btn"
+                    style={{ marginBottom: "1rem" }}
+                  >
+                    <input
+                      type="file"
+                      required
+                      id="cv"
+                      onChange={handleVideoChange}
+                      accept="video/*"
+                    />
+                    <label>Upload Course Video ( * )</label>
+                  </div>
+
+                  <div className="upload-chapter-btn">
+                    <input
+                      type="file"
+                      id="cv"
+                      onChange={handlePdfChange}
+                      accept="application/pdf"
+                    />
+                    <label>Upload Course Material (PDF)</label>
+                  </div>
                 </div>
               </div>
 
-              <div className="">
-                {image ? (
-                  <div className="text-center">
-                    <img
-                      className="img-fluid mb-4"
-                      src={URL.createObjectURL(image)}
-                      alt=""
-                      style={{ height: "20rem" }}
-                    />
-                  </div>
-                ) : (
-                  <div
-                    style={{
-                      height: "20rem",
-                      background: "rgba(0, 0, 0, 0.2)",
-                    }}
-                  ></div>
-                )}
-              </div>
-              <label className="btn btn-default">
-                <input
-                  required
-                  type="file"
-                  onChange={handleImageChange}
-                  accept="image/*"
-                />
-              </label>
-              <div className="input-box">
-                <input
-                  type="file"
-                  id="cv"
-                  onChange={handlePdfChange}
-                  accept="application/pdf"
-                />
-                <label>Upload Course Material (PDF)</label>
-              </div>
-              <div className="input-box">
-                <input
-                  type="file"
-                  required
-                  id="cv"
-                  onChange={handleVideoChange}
-                  accept="video/*"
-                />
-                <label>Upload Course Video</label>
-              </div>
-              <div className="d-flex justify-content-between align-items-center mt-5">
-                <button type="submit" className="fw-bold">
+              <div
+                className="d-flex justify-content-center"
+                style={{ marginTop: "4rem" }}
+              >
+                <button type="submit" className="fw-bold submit-btn">
                   Submit
                 </button>
               </div>
@@ -302,24 +332,8 @@ function TeacherModalAddCourseDetailChapter(props: any) {
           </form>
         </div>
       </Modal.Body>
-      <Modal.Footer className="p-0">
-        <div
-          className="modal-footer-center"
-          style={{
-            backgroundColor: "#11235a",
-            fontSize: "20px",
-            width: "100%",
-            height: "75px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <p onClick={props.onHide} className="text-white"></p>
-        </div>
-      </Modal.Footer>
     </Modal>
   );
-}
+};
 
 export default TeacherModalAddCourseDetailChapter;
