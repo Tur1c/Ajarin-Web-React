@@ -117,32 +117,25 @@
 }
 
 .account-course-content {
-  margin: 0rem 2rem 4rem 2rem;
+  margin: 0rem 2rem 6rem 2rem;
+  padding-bottom: 1rem;
   display: flex;
   gap: 1rem;
   list-style: none;
-  overflow-x: scroll;
-  scroll-snap-type: x mandatory;
+  overflow-x: hidden;
   scrollbar-color: var(--white);
   /* user-select: none; */
 }
 
-/* .account-course-content {
-  width: 100%;
-  display: grid;
-  grid-auto-flow: column;
-  gap: 20px;
-  overflow-x: auto;
-  scrollbar-color: transparent;
-  user-select: none;
-} */
+.account-course-content:hover {
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  transition: all 2s;
+}
 
 .account-course-content::-webkit-scrollbar {
-  padding: 2rem;
-  margin:2rem;
   height: 1rem;
-  background-color: black;
-  scrollbar-color: var(--white);
+  background-color: var(--lightblue);
 }
 
 .account-course-content::-webkit-scrollbar-thumb,
@@ -153,8 +146,4 @@
 
 .account-course-content::-webkit-scrollbar-thumb {
   background: var(--lightblue2);
-}
-
-.account-course-content::-webkit-scrollbar-track {
-  background: var(--purple);
 }

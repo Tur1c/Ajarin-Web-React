@@ -137,7 +137,7 @@ function TeacherModalAddCourseDetail(props: any) {
                 alignItems: "center",
               }}
             >
-              <button onClick={props.onHide} className="submit-btn fw-bold">
+              <button onClick={props.onHide} className="finish-btn fw-bold">
                 Finish
               </button>
             </div>

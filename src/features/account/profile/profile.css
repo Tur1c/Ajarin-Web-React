@@ -182,3 +182,34 @@
 .profile-container .logout-cancel-btn button:hover {
   background-color: var(--whitedark);
 }
+
+.socmed-list {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.fb-item,
+.ig-item,
+.gmail-item {
+  font-size: 21px;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 0.5rem 0.5rem;
+  display: flex;
+  height: fit-content;
+  width: fit-content;
+}
+
+.fb-item:hover {
+  font-size: 23px;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.ig-item:hover {
+  font-size: 23px;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.gmail-item:hover {
+  font-size: 23px;
+  background-color: rgba(255, 255, 255, 0.7);
+}

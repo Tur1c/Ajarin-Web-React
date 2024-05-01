@@ -224,10 +224,17 @@ const CourseDetail = () => {
           <div className="modal-overlay" onClick={() => setisOpen(false)}>
             <div
               onClick={(e) => e.stopPropagation()}
-              className="modal-box text-dark"
+              className="modal-box text-white"
             >
-              <p>Rate & Comment</p>
-              <p>Rate Your Experience</p>
+              <p
+                className="fw-bold d-flex justify-content-center"
+                style={{ fontSize: "24px", margin: "1rem 0rem" }}
+              >
+                Rate & Comment
+              </p>
+              <p className="fw-bold" style={{ marginTop: "3rem" }}>
+                Rate Your Experience
+              </p>
               <Rating
                 onClick={handleRating}
                 allowFraction={true}
@@ -237,8 +244,12 @@ const CourseDetail = () => {
                 // onPointerMove={onPointerMove}
                 /* Available Props */
               />
-              <p>Any comment?</p>
+              <p className="fw-bold" style={{ marginTop: "3rem" }}>
+                Any comment?
+              </p>
               <textarea
+                style={{ padding: "1rem" }}
+                placeholder="How about your Experience ?"
                 required
                 name="comment-area"
                 id="comment-area"
@@ -246,12 +257,15 @@ const CourseDetail = () => {
                 rows={10}
                 onChange={(e) => setComment(e.target.value)}
               ></textarea>
-              <button
-                disabled={rating === 0 || !comment ? true : false}
-                onClick={() => submitRating()}
-              >
-                Submit
-              </button>
+              <div className="d-flex justify-content-center">
+                <button
+                  className="submit-btn fw-bold"
+                  disabled={rating === 0 || !comment ? true : false}
+                  onClick={() => submitRating()}
+                >
+                  Submit
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -347,7 +361,7 @@ const CourseDetail = () => {
         <div className="h-100 row d-flex align-content-between">
           <div style={{ height: "8vh" }}>
             <div className="d-flex justify-content-between align-items-center">
-              <div>
+              <div className="close-btn">
                 <button
                   style={{
                     position: "relative",
@@ -388,7 +402,7 @@ const CourseDetail = () => {
             </div>
           </div>
           <div className="row d-flex p-0 m-0 justify-content-center align-items-center">
-            <div className="col-5 text-white d-flex row">
+            <div className="course-item-content col-5 text-white d-flex row">
               <h2
                 className="fw-bold"
                 style={{ fontSize: "48px", marginBottom: "1rem" }}
@@ -468,7 +482,7 @@ const CourseDetail = () => {
             </div>
             <div className="col-7">
               <div
-                className="container-card-scroll p-3"
+                className="container-card-scroll"
                 ref={itemsRef}
                 onMouseDown={handleMouseDown}
                 onMouseLeave={handleMouseLeave}
@@ -481,30 +495,30 @@ const CourseDetail = () => {
                         <
                           // to={"/login"}
                         >
-                          <li className="card">
-                            <div>
-                              <div className="" style={{ height: "30rem" }}>
-                                <div className="text-center">
-                                  <img
-                                    className="img-fluid h-100 "
-                                    src={"/assets/" + data.chapter_thumbnail}
-                                    alt=""
-                                  />
-                                </div>
-                                <div className="card-body h-50">
-                                  <div className="card-title">
-                                    Chapter {data.course_detail_chapter}
-                                  </div>
-                                  <div
-                                    className="card-text"
-                                    style={{ height: "3rem" }}
-                                  >
-                                    {data.chapter_title}
-                                  </div>
-                                </div>
+                          <div className="chapter-container bg-warnin">
+                            <div className="text-center chapter-pict">
+                              <img
+                                className="img-fluid h-100"
+                                src={"/assets/" + data.chapter_thumbnail}
+                                alt=""
+                                style={{ borderRadius: "0.5rem" }}
+                              />
+                            </div>
+                            <div
+                              className="w-100 mt-2"
+                              // style={{ height: "5rem" }}
+                            >
+                              <div className="chapter-index">
+                                Chapter {data.course_detail_chapter}
+                              </div>
+                              <div
+                                className="chapter-title"
+                                style={{ height: "3rem" }}
+                              >
+                                {data.chapter_title}
                               </div>
                             </div>
-                          </li>
+                          </div>
                         </>
                       ))
                     : studentCourse.course?.course_detail.map((data, index) => (
@@ -523,30 +537,30 @@ const CourseDetail = () => {
                             courseDetail: state,
                           }}
                         >
-                          <li className="card">
-                            <div>
-                              <div className="" style={{ height: "30rem" }}>
-                                <div className="text-center">
-                                  <img
-                                    className="img-fluid h-100 "
-                                    src={"/assets/" + data.chapter_thumbnail}
-                                    alt=""
-                                  />
-                                </div>
-                                <div className="card-body h-50">
-                                  <div className="card-title">
-                                    Chapter {data.course_detail_chapter}
-                                  </div>
-                                  <div
-                                    className="card-text"
-                                    style={{ height: "3rem" }}
-                                  >
-                                    {data.chapter_title}
-                                  </div>
-                                </div>
+                          <div className="chapter-container bg-warnin">
+                            <div className="text-center chapter-pict">
+                              <img
+                                className="img-fluid h-100"
+                                src={"/assets/" + data.chapter_thumbnail}
+                                alt=""
+                                style={{ borderRadius: "0.5rem" }}
+                              />
+                            </div>
+                            <div
+                              className="w-100 mt-2"
+                              // style={{ height: "5rem" }}
+                            >
+                              <div className="chapter-index">
+                                Chapter {data.course_detail_chapter}
+                              </div>
+                              <div
+                                className="chapter-title"
+                                style={{ height: "3rem" }}
+                              >
+                                {data.chapter_title}
                               </div>
                             </div>
-                          </li>
+                          </div>
                         </Link>
                       ))}
                 </ul>

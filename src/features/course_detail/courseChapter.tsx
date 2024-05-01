@@ -9,6 +9,8 @@ import {
   CourseDetailOutput,
 } from "../../model/course/course-list";
 
+import "./courseDetail.css";
+
 const CourseChapter = () => {
   const state = useLocation();
   const navigate = useNavigate();
@@ -95,66 +97,128 @@ const CourseChapter = () => {
   };
 
   return (
-    <div>
-      <Link to={"/course/" + state.state.studentCourse.course.title} state={state.state.courseDetail}>
-        <button
-          style={{
-            background: "none",
-            border: "none",
-            color: "white",
-            fontSize: "30px",
-          }}
-        >
-          <IoCloseCircleOutline
-          />
-        </button>
-      </Link>
-      courseChapter
-      <video controls controlsList="nodownload" src={`/video/${currDetail.chapter_video}`}></video>
-      {/* back */}
-      {currDetail.course_detail_chapter !== 1 ? (
+    <div
+      className="container-fluid course-chapter-container"
+      style={{
+        height: "100vh",
+        padding: "2rem 4rem",
+        backgroundImage: `url(/assets/background.png)`,
+        backgroundSize: "cover",
+      }}
+    >
+      <div className="d-flex justify-content-between align-items-center text-white">
         <Link
-          to={
-            "/course/" +
-            params.course_title +
-            "/" +
-            (currDetail.course_detail_chapter - 1)
-          }
-          style={{ textDecoration: "none" }}
-          state={{ account: account, studentCourse: state.state.studentCourse, courseDetail: state.state.courseDetail }}
+          to={"/course/" + state.state.studentCourse.course.title}
+          state={state.state.courseDetail}
         >
-          <button>back</button>
+          <div className="close-btn">
+            <button
+              style={{
+                background: "none",
+                border: "none",
+                color: "white",
+                fontSize: "50px",
+              }}
+            >
+              <IoCloseCircleOutline />
+            </button>
+          </div>
         </Link>
-      ) : null}
-      {/* next */}
-      {currDetail.course_detail_chapter !==
-      parseInt(state.state.studentCourse.course.chapter) ? (
-        <Link
-          to={
-            "/course/" +
-            params.course_title +
-            "/" +
-            (currDetail.course_detail_chapter + 1)
-          }
-          style={{ textDecoration: "none" }}
-          state={{ account: account, studentCourse: state.state.studentCourse, courseDetail: state.state.courseDetail }}
-        >
-          <button>next</button>
-        </Link>
-      ) : null}
-      {/* mark as completed */}
-      {currChapFinished === true ? (
-        <p>completed</p>
-      ) : (
-        <button onClick={() => handleComplete()}>mark as completed</button>
-      )}
-      {currDetail.chapter_pdf ? (
-        <a href={"/assets/" + currDetail.chapter_pdf} download="PDF">
-          Download file
-        </a>
-      ) : (
-        ""
-      )}
+        <div style={{ fontSize: "24px" }}>
+          Chapter {currDetail.course_detail_chapter} :
+          <b> {currDetail.chapter_title}</b>
+        </div>
+
+        <div></div>
+      </div>
+      <div className="justify-content-center d-flex" style={{ height: "75%" }}>
+        <video
+          controls
+          controlsList="nodownload"
+          src={`/video/${currDetail.chapter_video}`}
+          style={{ borderRadius: "0.25rem" }}
+        ></video>
+      </div>
+      <div className="d-flex row">
+        {currDetail.chapter_pdf ? (
+          <div className="pdf-download-container">
+            <div className="download-box">
+              <p>Additional Material</p>
+              <a
+                href={"/assets/" + currDetail.chapter_pdf}
+                download="PDF"
+                style={{ textDecoration: "none" }}
+              >
+                Download <b>[{currDetail.chapter_pdf}]</b>
+              </a>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+
+        <div>
+          {/* mark as completed */}
+          {currChapFinished === true ? (
+            <div className="pdf-download-container">
+              <div className="complete-btn">Completed</div>
+            </div>
+          ) : (
+            <div className="pdf-download-container">
+              <button
+                className="mark-complete-btn"
+                onClick={() => handleComplete()}
+              >
+                Mark as Completed
+              </button>
+            </div>
+          )}
+
+          <div className="w-100 d-flex justify-content-center">
+            <div className="buttons">
+              {/* back */}
+              {currDetail.course_detail_chapter !== 1 ? (
+                <Link
+                  to={
+                    "/course/" +
+                    params.course_title +
+                    "/" +
+                    (currDetail.course_detail_chapter - 1)
+                  }
+                  style={{ textDecoration: "none" }}
+                  state={{
+                    account: account,
+                    studentCourse: state.state.studentCourse,
+                    courseDetail: state.state.courseDetail,
+                  }}
+                >
+                  <button className="back-btn">Back</button>
+                </Link>
+              ) : null}
+              {/* next */}
+              {currDetail.course_detail_chapter !==
+              parseInt(state.state.studentCourse.course.chapter) ? (
+                <Link
+                  to={
+                    "/course/" +
+                    params.course_title +
+                    "/" +
+                    (currDetail.course_detail_chapter + 1)
+                  }
+                  style={{ textDecoration: "none" }}
+                  state={{
+                    account: account,
+                    studentCourse: state.state.studentCourse,
+                    courseDetail: state.state.courseDetail,
+                  }}
+                >
+                  <button className="next-btn">Next</button>
+                </Link>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -222,7 +222,7 @@ function HomeDiscussion(props: any) {
     <>
       {!isLoading ? (
         <div className="disc-container homes">
-          <div className="m-1 d-flex row">
+          <div className="d-flex row w-100" style={{margin:"0.5rem 0rem"}}>
             <div className="filter">
               {/* <div className="filter-btn">Subject</div>
             <div className="filter-btn">Education Level</div> */}

@@ -16,15 +16,31 @@
 
 .container-card-scroll {
   max-width: 1400px;
-  padding: 0 15px;
-  overflow-x: auto;
+  /* padding: 0rem 1rem; */
+  overflow-x: hidden;
+  overflow-y: hidden;
+  list-style: none;
   scrollbar-color: transparent;
   margin: 0 auto;
+  height: 55vh;
+}
+
+.container-card-scroll:hover {
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  transition: all 2s;
 }
 
 .container-card-scroll::-webkit-scrollbar {
-  height: 1px;
-  background-color: transparent;
+  height: 1rem;
+  background-color: var(--lightblue);
+  margin-top: 2rem;
+  border-radius: 92px;
+}
+
+.container-card-scroll::-webkit-scrollbar-thumb {
+  background: var(--lightblue2);
+  border-radius: 92px;
 }
 
 .container-card-scroll h2 {
@@ -37,22 +53,31 @@
   grid-auto-columns: 100%;
   grid-column-gap: 10px;
   grid-auto-flow: column;
-  padding: 25px 0px;
+  padding: 1rem 0px;
   list-style: none;
   scroll-snap-type: x mandatory;
 }
 
-.container-card-scroll .card {
+.container-card-scroll .chapter-container {
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 1rem;
   width: 20rem;
-  height: 30rem;
-  background: var(--white);
+  height: 40rem;
+  /* background: var(--black); */
   border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 15%);
+
   scroll-snap-align: start;
   transition: all 0.2s;
+  justify-content: start;
+  align-items: center;
+}
+
+.chapter-pict {
+  width: 100%;
+  height: 25rem;
+  border-radius: 1rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 55%);
 }
 
 .container-card-scroll .card:hover {
@@ -60,8 +85,16 @@
   background: var(--orange);
 }
 
-.container-card-scroll .card .card-title {
-  font-size: 20px;
+.chapter-index {
+  font-size: 14px;
+  color: white;
+  opacity: 0.6;
+}
+
+.chapter-title {
+  font-size: 18px;
+  color: white;
+  /* font-weight: bold; */
 }
 
 .container-card-scroll .card .card-content {
@@ -101,10 +134,11 @@
 
 .modal-overlay {
   z-index: 9999;
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
+  width: 100%;
+  height: 100%;
+  position: fixed;
   top: 0;
+  left: 0;
   background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
@@ -112,12 +146,15 @@
 }
 
 .modal-box {
-  display: block;
-  background: white;
+  display: flex;
+  flex-direction: column;
+  background: var(--blue);
   width: 50%;
   height: 70%;
   padding: 1rem;
-  border-radius: 1rem;
+  border-radius: 0.25rem;
+  /* justify-content: center;
+  align-items: center; */
 }
 
 .course-detail-btn {
@@ -174,4 +211,137 @@
 .lecturer-redirect-container p:hover {
   text-decoration: underline;
   font-size: 19px;
+}
+
+.course-item-content {
+  cursor: default;
+}
+
+/* Course Chapter */
+
+.course-chapter-container .buttons {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-content: end;
+  gap: 2rem;
+  width: 67.5%;
+  margin-top: 0.5rem;
+}
+
+.course-chapter-container .next-btn {
+  height: 3rem;
+  padding: 0rem 2rem;
+  width: 100%;
+  background-color: var(--yelo);
+  border: none;
+  outline: none;
+  border-radius: 0.5rem;
+  color: var(--blue);
+  font-weight: bold;
+}
+
+.course-chapter-container .back-btn {
+  height: 3rem;
+  padding: 0rem 2rem;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0);
+  border: 2px white solid;
+  outline: none;
+  border-radius: 0.5rem;
+  color: var(--white);
+  font-weight: bold;
+}
+
+.course-chapter-container .back-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.course-chapter-container .next-btn:hover {
+  background-color: var(--yelodark);
+}
+
+.pdf-download-container {
+  display: flex;
+  margin-top: 0.5rem;
+  width: 100%;
+  justify-content: center;
+  color: white;
+}
+
+.download-box {
+  width: 67.5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  height: 2rem;
+  background-color: var(--lightblue2);
+  border-radius: 0.25rem;
+}
+
+.download-box p {
+  margin: auto 0;
+  font-weight: bold;
+  cursor: default;
+}
+
+.download-box a {
+  background-color: var(--red);
+  padding: 0rem 0.5rem;
+  border-radius: 0.25rem;
+  color: var(--white);
+}
+
+.download-box a:hover {
+  filter: brightness(80%);
+}
+
+.mark-complete-btn {
+  width: 67.5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  height: 2rem;
+  background-color: var(--purple);
+  border-radius: 0.25rem;
+  border: none;
+  color: var(--white);
+  font-weight: bold;
+}
+
+.complete-btn {
+  width: 67.5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  height: 2rem;
+  background-color: var(--purple);
+  border-radius: 0.25rem;
+  border: none;
+  color: var(--white);
+  font-weight: bold;
+  cursor: default;
+  filter: brightness(50%);
+}
+
+.mark-complete-btn:hover {
+  filter: brightness(120%);
+}
+
+.submit-btn {
+  height: 3rem;
+  width: 20%;
+  background-color: var(--yelo);
+  border: none;
+  outline: none;
+  border-radius: 50px;
+  color: var(--blue);
+  margin-top: 1rem;
+}
+
+.submit-btn:hover {
+  background-color: var(--yelodark);
 }

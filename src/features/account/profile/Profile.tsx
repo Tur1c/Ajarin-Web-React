@@ -1,6 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { Tab, Tabs } from "react-bootstrap";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { BiLogoGmail } from "react-icons/bi";
+import { FaFacebookF, FaInstagram, FaRegTrashAlt } from "react-icons/fa";
 import { IoIosCloseCircleOutline, IoIosMail } from "react-icons/io";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -519,6 +520,22 @@ const Profile = () => {
                     ))}
                   </Tab>
                 </Tabs>
+              </div>
+            </div>
+          </div>
+          <div
+            className="d-flex justify-content-end"
+            style={{ marginTop: "1rem" }}
+          >
+            <div className="socmed-list">
+              <div className="fb-item rounded-circle">
+                <FaFacebookF />
+              </div>
+              <div className="ig-item rounded-circle">
+                <FaInstagram />
+              </div>
+              <div className="gmail-item rounded-circle">
+                <BiLogoGmail />
               </div>
             </div>
           </div>
