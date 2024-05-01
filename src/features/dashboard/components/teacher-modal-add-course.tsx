@@ -43,7 +43,6 @@ function TeacherModalAddCourse(props: any) {
       experience: "",
       id: 0,
       profile_description: "",
-      rating: "",
       points: 0,
       user: {
         age: 0,
@@ -59,11 +58,11 @@ function TeacherModalAddCourse(props: any) {
         password: "",
         phoneNumber: "",
         school: "",
-        pic_name: "",
-        pic_type: "",
-        pic_url: "",
+        profile_pic: ""
       },
       private_disc: [],
+      teacher_rating: 0,
+      course_list: []
     },
     total_sold_course: 0,
   });

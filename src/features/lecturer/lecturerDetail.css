@@ -15,9 +15,17 @@
 }
 
 .teacher-container-card-scroll {
-  max-width: 1800px;
-  padding: 0 1rem;
-  margin: 0;
+  width: 100%;
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  scrollbar-color: transparent;
+  user-select: none;
+}
+
+.teacher-container-card-scroll::-webkit-scrollbar{
+  height: 1px;
+  background-color: transparent;
 }
 
 .teacher-container-card-scroll h2 {
@@ -26,14 +34,15 @@
 }
 
 .teacher-container-card-scroll .cards {
-  display: grid;
-  grid-auto-columns: 100%;
-  grid-column-gap: 10px;
-  grid-auto-flow: column;
+  /* display: grid; */
+  /* grid-auto-columns: 100%; */
+  /* grid-column-gap: 10px; */
+  /* grid-auto-flow: column; */
   padding: 25px 0px;
-  list-style: none;
-  overflow-x: scroll;
-  scroll-snap-type: x mandatory;
+  /*list-style: none; */
+  /* scroll-snap-type: x mandatory; */
+  display: flex;
+  gap: 20px;
 }
 
 .teacher-container-card-scroll .card {
@@ -73,14 +82,14 @@
   transition: background 0.2s;
 }
 
-.teacher-container-card-scroll .cards::-webkit-scrollbar {
+/* .teacher-container-card-scroll .cards::-webkit-scrollbar {
   height: 12px;
-}
+} */
 
-.teacher-container-card-scroll .cards::-webkit-scrollbar-thumb,
+/* .teacher-container-card-scroll .cards::-webkit-scrollbar-thumb,
 .teacher-container-card-scroll .cards::-webkit-scrollbar-track {
   border-radius: 92px;
-}
+} */
 
 .teacher-container-card-scroll .cards::-webkit-scrollbar-thumb {
   background: var(--white);
@@ -136,8 +145,34 @@
 @media (min-width: 1100px) {
   .teacher-container-card-scroll .cards {
     grid-auto-columns: calc(30% - 1rem);
-    grid-column-gap: 18rem;
+    grid-column-gap: 5rem;
   }
+}
+
+/* .see-all-btn {
+  text-decoration: none;
+  color: white;
+  padding: 0.25rem 2rem;
+  border-style: solid;
+  width: fit-content;
+  border-radius: 5rem;
+  border-color: white;
+  font-size: 9px;
+  border-width: 0.125rem;
+} */
+
+.lecturer-detail-page .see-all-btn {
+  background-color: rgba(255, 255, 255, 15%);
+  border: 2px white solid;
+  outline: none;
+  border-radius: 50px;
+  color: var(--white);
+  width: 5vw;
+  height: 2vw;
+}
+
+.lecturer-detail-page .see-all-btn:hover {
+  background-color: var(--lightblue2);
 }
 
 /* .see-all-btn {

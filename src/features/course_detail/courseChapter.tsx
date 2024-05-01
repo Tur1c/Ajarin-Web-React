@@ -8,6 +8,7 @@ import {
   CompleteChapter,
   CourseDetailOutput,
 } from "../../model/course/course-list";
+import dayjs from "dayjs";
 
 import "./courseDetail.css";
 
@@ -22,7 +23,7 @@ const CourseChapter = () => {
       : state.state.studentCourse.completed_chap
   );
   const params = useParams();
-  const completed_chapters = completed?.split("|");
+  const completed_chapters = completed?.split("|").map( (x: string) => x.substring(0, x.indexOf(";")));
 
   const currChapFinished = completed_chapters.includes(
     params.course_chapter ? params.course_chapter : "0"
@@ -59,9 +60,9 @@ const CourseChapter = () => {
   const handleComplete = async () => {
     let string;
     if (completed === "") {
-      string = currDetail.course_detail_chapter.toString();
+      string = currDetail.course_detail_chapter.toString() + ';' + dayjs().format("YYYY-MM-DD");
     } else {
-      string = completed + "|" + currDetail.course_detail_chapter.toString();
+      string = completed + "|" + currDetail.course_detail_chapter.toString() + ';' + dayjs().format("YYYY-MM-DD");
     }
 
     try {

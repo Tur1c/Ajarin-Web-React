@@ -44,7 +44,7 @@ const Sidebar = ({
   console.log(teacheracc);
 
   let isAlreadyTeacher = false;
-  // console.log(account);
+  console.log(account);
 
   const [token, setToken] = useSessionStorage("jwt", "");
   const [user, setUser] = useSessionStorage("user", "");
@@ -211,15 +211,15 @@ const Sidebar = ({
                     </div>
                     <div>
                       <Link
-                        to={"/lecturer/" + teacheracc?.user.fullName}
+                        to={"/lecturer/" + teacheracc?.account.fullName}
                         state={{ data: teacheracc }}
                       >
                         <img
                           className="img-fluid rounded-circle bg-light"
                           src={
-                            "/" + account?.urlImage ||
+                             !account?.urlImage?
                             "/assets/default_picture.png"
-                          }
+                           : account.urlImage}
                           alt=""
                           style={{
                             height: "5vw",
@@ -271,6 +271,11 @@ const Sidebar = ({
                             marginTop: "1rem",
                           }}
                         />
+                {account.notification.filter( (x) => !x.isRead).length > 0? 
+                  <span className="position-absolute translate-middle badge rounded-pill bg-danger" style={{ top:"88%",left:"77%",fontSize:"18px" }}>
+                    {account.notification.length}
+                  </span>   
+                : ""}
                       </Link>
                     </div>
                   </div>

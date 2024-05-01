@@ -81,7 +81,7 @@ function HomeClass({ account, searchData }: Props) {
           withCredentials: true,
         }
       );
-      console.log(response, "course");
+      // console.log(response, "course");
       setCourseList(transfromToCourseListOutput(response.data.outputSchema));
       setTempCourseList(
         transfromToCourseListOutput(response.data.outputSchema)
@@ -105,7 +105,7 @@ function HomeClass({ account, searchData }: Props) {
       
       const findCourse = tempCourseList.courseList.filter((u) =>
         u.title.toLowerCase().includes(searchData.toLowerCase()) ||
-        u.teacher?.user.fullName.toLocaleLowerCase().includes(searchTextFromHome.toLowerCase())
+        u.teacher?.account.fullName.toLocaleLowerCase().includes(searchTextFromHome.toLowerCase())
       );
       setCourseList({ courseList: findCourse });
     } else {
@@ -263,7 +263,7 @@ function HomeClass({ account, searchData }: Props) {
                                 >
                                   <img
                                     src={
-                                      "/assets/" + data.teacher?.user.urlImage
+                                      "/assets/" + data.teacher?.account.urlImage
                                     }
                                     alt="abc"
                                     className="me-2"
@@ -281,7 +281,7 @@ function HomeClass({ account, searchData }: Props) {
                                       fontWeight: "bold",
                                     }}
                                   >
-                                    {data.teacher?.user.fullName}
+                                    {data.teacher?.account.fullName}
                                   </span>
                                 </div>
                                 <div className="d-block h-75 justify-content-between align-content-between d-flex row m-0">

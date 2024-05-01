@@ -123,22 +123,22 @@
   gap: 1rem;
   list-style: none;
   overflow-x: hidden;
-  scrollbar-color: var(--white);
+  /* scrollbar-color: var(--white); */
   /* user-select: none; */
 }
 
-.account-course-content:hover {
+/* .account-course-content:hover {
   overflow-x: scroll;
   scroll-snap-type: x mandatory;
   transition: all 2s;
-}
+} */
 
-.account-course-content::-webkit-scrollbar {
+/* .account-course-content::-webkit-scrollbar {
   height: 1rem;
   background-color: var(--lightblue);
-}
+} */
 
-.account-course-content::-webkit-scrollbar-thumb,
+/* .account-course-content::-webkit-scrollbar-thumb,
 .account-course-contentl::-webkit-scrollbar-track {
   margin-top: 2rem;
   border-radius: 92px;
@@ -146,4 +146,4 @@
 
 .account-course-content::-webkit-scrollbar-thumb {
   background: var(--lightblue2);
-}
+} */

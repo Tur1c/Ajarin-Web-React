@@ -102,7 +102,7 @@ export function transfromToDiscussionListOutput(
       };
     }),
   };
-  console.log(result, "berhasil ga");
+  // console.log(result, "berhasil ga");
   return result;
 }
 
@@ -186,20 +186,20 @@ export interface CourseDetailOutput {
 export function transfromToCourseListOutput(
   response: CourseListSchema
 ): CourseListOutput {
-  console.log(response.courses[0].total_sold_course, "total_sold");
+  // console.log(response.courses[0].total_sold_course, "total_sold");
 
   const result: CourseListOutput = {
     courseList: response.courses.map((data) => {
       return transformToCourseOutput(data);
     }),
   };
-  console.log(result, "model class");
+  // console.log(result, "model class");
 
   return result;
 }
 
 export function transformToCourseOutput(response:Course): CourseList {
-  console.log("masuk transform", response);
+  // console.log("masuk transform", response);
   const result: CourseList = {
     id: response.course_id,
     price: response.course_price,
@@ -223,7 +223,7 @@ export function transformToCourseOutput(response:Course): CourseList {
           };
         }),
       }
-  console.log(result, 'model class');
+  // console.log(result, 'model class');
   
   return result;
 }
@@ -248,7 +248,8 @@ export function transformToStudentCourseOutput(response:StudentCourse):StudentCo
     course: transformToCourseOutput(response.course),
     status: response.status,
     completed_chap: response.completed_chap,
-    rating: response.rating
+    rating: response.rating,
+    joined_date: response.joined_date
   }
 
   return result;

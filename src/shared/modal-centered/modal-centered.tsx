@@ -5,14 +5,21 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "../../api/axios";
-import { JoinDiscussionSchema } from "../../model/course/course-list";
+import { ClassList, JoinDiscussionSchema } from "../../model/course/course-list";
 import "./modal-centered.css";
 
-function ModalCentered(props: any) {
+interface Props{
+  show: boolean | undefined;
+  onHide: () => void;
+  data: ClassList;
+  joined: boolean;
+}
+
+function ModalCentered({show,onHide,data,joined}:Props) {
   const isLogged = sessionStorage.getItem("jwt");
   const user = sessionStorage.getItem("user");
   const navigate = useNavigate();
-  console.log("modalehehe", props);
+  // console.log("modalehehe", props);
 
   const JOIN_URL = "/api/account/join";
 
@@ -79,7 +86,9 @@ function ModalCentered(props: any) {
 
   return (
     <Modal
-      {...props}
+      show={show}
+      onHide={onHide}
+      {...data}
       size="xl"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -88,26 +97,26 @@ function ModalCentered(props: any) {
         <div className="modal-header-top">
           <div className="modal-close">
             <IoIosCloseCircleOutline
-              onClick={props.onHide}
-              style={{ color: "#fff", fontSize: "3rem" }}
+              onClick={onHide}
+              style={{ color: "#fff", fontSize: "36px" }}
             />
           </div>
           <div
             className="centered fw-bold"
             style={{ width: "auto", gap: "1rem", fontSize: "18px" }}
           >
-            <span>{props.data.date}</span>
+            <span>{data.date}</span>
             <span>|</span>
             <span>
-              {props.data.starttime.toString().slice(0, 5)} -{" "}
-              {props.data.endtime.toString().slice(0, 5)}
+              {data.starttime.toString().slice(0, 5)} -{" "}
+              {data.endtime.toString().slice(0, 5)}
             </span>
           </div>
           <div className="lecturer-redirect">
             <img
               className="img-fluid"
               style={{ height: "2vw", width: "2vw", borderRadius: "0.25rem" }}
-              src={"/assets/" + props.data.image}
+              src={"/assets/" + data.image}
               alt=""
             />
           </div>
@@ -121,7 +130,7 @@ function ModalCentered(props: any) {
               objectFit: "cover",
               borderRadius: "0.25rem",
             }}
-            src={`assets/${props.data.image}`}
+            src={`assets/${data.image}`}
             alt=""
           />
         </div>
@@ -131,10 +140,10 @@ function ModalCentered(props: any) {
           <div className="d-flex justify-content-between">
             <div>
               <h2>
-                <b>{props.data.title}</b>
+                <b>{data.title}</b>
               </h2>
               <p className="disc-categories" style={{ opacity: "0.6" }}>
-                {props.data.category} {"- "} {props.data.level}
+                {data.category} {"- "} {data.level}
               </p>
             </div>
             <div
@@ -153,17 +162,17 @@ function ModalCentered(props: any) {
                 }}
               >
                 <div className="text-center" style={{ fontSize: "24px" }}>
-                  <FaUser /> {props.data.participant} / {props.data.maxPeople}
+                  <FaUser /> {data.participant} / {data.maxPeople}
                 </div>
               </div>
             </div>
           </div>
           <div className="disc-description" style={{ height: "12vh" }}>
-            <p>{props.data.description}</p>
+            <p>{data.description}</p>
           </div>
         </div>
       </Modal.Body>
-      <Modal.Footer className="modal-footer-container w-100 p-0">
+      <Modal.Footer className={(joined? "modal-footer-container-disabled" : "modal-footer-container") + " w-100 p-0"}>
         <div
           className=""
           style={{
@@ -175,7 +184,7 @@ function ModalCentered(props: any) {
             alignItems: "center",
           }}
         >
-          <p onClick={props.onHide} className="text-white pt-2">
+          <p onClick={onHide} className="text-white pt-2">
             {isLogged ? (
               <button
                 style={{
@@ -183,27 +192,33 @@ function ModalCentered(props: any) {
                   color: "white",
                   border: "none",
                   fontSize: "30px",
+                  
                 }}
                 type="button"
-                onClick={() =>
-                  JoinDiscussion(
-                    props.data.id,
-                    props.data.maxPeople,
-                    props.data.participant
-                  )
-                }
+                disabled={joined}
+                onClick={() => JoinDiscussion(data.id, parseInt(data.maxPeople), data.participant)}
               >
-                Join{" "}
-                <img
-                  className="img-fluid"
-                  style={{
-                    width: "36px",
-                    height: "36px",
-                  }}
-                  src={`assets/coin.png`}
-                  alt=""
-                />
-                <b style={{ color: "var(--yelo)" }}> {props.data.price}</b>
+                {
+                  joined?
+                  <span>Joined</span>
+                  :
+                  (
+                    <>
+                    Join{' '}
+                    <img
+                      className="img-fluid"
+                      style={{
+                        width: "36px",
+                        height: "36px",
+                      }}
+                      src={`assets/coin.png`}
+                      alt=""
+                    />
+                    <b style={{ color: "var(--yelo)" }}> {data.price}</b>
+                    </>
+                  )
+
+                }
               </button>
             ) : (
               <b onClick={() => navigate("/login")}>Log In</b>

@@ -4,11 +4,15 @@ import {
   BiSolidChevronLeftSquare,
   BiSolidChevronRightSquare,
 } from "react-icons/bi";
+import Swal from 'sweetalert2'
 import { IoSearch } from "react-icons/io5";
-import { Link, useLocation } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { StudentCourse, StudentDisc } from "../../model/Account";
 import { getMonth } from "../../model/calendar/calendar-detail";
 import { ClassList, CourseList } from "../../model/course/course-list";
+import axios from "../../api/axios";
+import Carousel from 'react-bootstrap/Carousel';
+// import ExampleCarouselImage from 'components/ExampleCarouselImage';
 import { Sidebar } from "../../shared";
 import "./Calendar.css";
 
@@ -17,9 +21,12 @@ const Calendar = () => {
   console.log(state);
 
   const userRole = sessionStorage.getItem("role");
+  const isLogged = sessionStorage.getItem("jwt");
 
   const formatDate = "YYYY-MM-DD";
+  const navigate = useNavigate();
 
+  
   const [searchText, setSearchText] = useState("");
   const [currMonthIdx, setCurrMonthIdx] = useState(
     state.discDate ? dayjs(state.discDate).month() : dayjs().month()
@@ -39,11 +46,12 @@ const Calendar = () => {
       : state.account
       ? state.account
       : state;
-  const accountDisc: StudentDisc[] = account.studentdisc_list;
+  const [accountDisc,setAccountDisc] =  useState<StudentDisc[]>(account.studentdisc_list);
   const [accountCourse, setAccountCourse] = useState(account.studentcourse_list);
   // const accountCourse: StudentCourse[] = account.studentcourse_list;
   const accountCourseTemp: StudentCourse[] = account.studentcourse_list;
 
+  let CANCEL_URL = "/api/discussion/cancelDisc?account=" + account.id + "&disc=";
   // Teacher
   const teacher = state.teacher ? state.teacher : null;
   const teacherDisc: ClassList[] = teacher ? teacher.discussion : null;
@@ -51,7 +59,7 @@ const Calendar = () => {
   // const teacherCourse: CourseList[] = teacher ? teacher.courses : null;
   const teacherCourseTemp: CourseList[] = teacher ? teacher.courses : null;
 
-  console.log(accountCourse, accountDisc, userRole);
+  console.log(accountCourse,accountDisc,userRole,account);
   console.log(teacher, teacherDisc, teacherCourse);
 
   //draggable
@@ -180,6 +188,43 @@ const Calendar = () => {
     return "";
   };
 
+  const cancelDisc = (id:number) => {
+    Swal.fire({
+      title: "Do you want to cancel joining the discussion?",
+      icon: "warning",
+      background: "#11235a",
+      color: "#fff",
+      confirmButtonText: "<span style='color:#000'> <b>Delete</b> </span>",
+      confirmButtonColor: "#f6e976",
+      cancelButtonColor: "#fff",
+      cancelButtonText: "<span style='color:#000'> No </span>",
+      showCancelButton: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        CANCEL_URL = CANCEL_URL + id;
+        console.log(CANCEL_URL);
+        try {
+          const response = await axios.get(
+            CANCEL_URL,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + isLogged,
+              },
+              withCredentials: true,
+            }
+          );
+            console.log(response);
+            navigate("/");
+            // if(disc){
+              // setDisc(disc?.filter((x) => x.discussion.disc_id != id));
+              // setAccountDisc(accountDisc.filter((x) => x.discussion.disc_id != id));
+            // }
+        } catch (error) {}
+      }
+    });
+  }
+
   // for draggable
   const handleMouseDown = (e: any) => {
     setIsMouseDown(true);
@@ -220,6 +265,8 @@ const Calendar = () => {
 
   const handleLoadingTrue = () => setIsLoadingChangeAccount(true);
   const handleLoadingFalse = () => setIsLoadingChangeAccount(false);
+
+  console.log(currTeacherDisc);
 
   return (
     <div>
@@ -400,7 +447,7 @@ const Calendar = () => {
                                           }}
                                         >
                                           {data.title} <br />
-                                          by Godwin
+                                          by {teacher.account.fullName}
                                         </h6>
                                       </div>
                                       <div className="justify-content-center px-2 border-start border-white">
@@ -545,7 +592,7 @@ const Calendar = () => {
                                           color: "var(--yelo)",
                                         }}
                                       >
-                                        by Godwin
+                                        by {data.discussion.teacher.user.firstName}
                                       </h6>
                                     </div>
 
@@ -662,7 +709,7 @@ const Calendar = () => {
                                   <div className="class-thumbnail">
                                     <img
                                       src={`assets/${data.image}`}
-                                      className="img-fluid"
+                                      className="img-fluid card-img-top"
                                       alt=""
                                       style={{ objectFit: "fill" }}
                                     />
@@ -681,7 +728,7 @@ const Calendar = () => {
                                     >
                                       <img
                                         src={
-                                          teacher.user.urlImage ||
+                                          teacher.account.urlImage ||
                                           `assets/default_picture.png`
                                         }
                                         alt=""
@@ -700,8 +747,8 @@ const Calendar = () => {
                                           fontWeight: "bold",
                                         }}
                                       >
-                                        {teacher.user.firstName}{" "}
-                                        {teacher.user.lastName}
+                                        {teacher.account.firstName}{" "}
+                                        {teacher.account.lastName}
                                       </span>
                                     </div>
                                     <div className="title-class m-0 p-0 ">
@@ -731,14 +778,9 @@ const Calendar = () => {
                             </div>
                           </div>
                         ))
-                        : accountCourse.map((data: { course: { course_title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined; teacher: { user: { pic_name: string; firstName: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; lastName: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }; }; course_image: any; course_level: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; category: { category_name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> |  null | undefined; }; }; }, idx: Key | null | undefined) => (
-                            <div
-                            key={idx}
-                            className="d-flex"
-                            style={{ width: "20rem" }}
-                          >
+                        : accountCourse.map((data: { course: { course_title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined; teacher: { user: { profile_pic: string; firstName: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; lastName: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }; }; course_image: any; course_level: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; category: { category_name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> |  null | undefined; }; }; }, idx: Key | null | undefined) => (
                           
-                            <div className="card" style={{ border: "none" }}>
+                            <div className="card" style={{ border: "none",width:"20rem" }}>
                               <Link
                                 to={"/course/" + data.course.course_title}
                                 key={idx}
@@ -754,7 +796,7 @@ const Calendar = () => {
                                   <div className="class-thumbnail">
                                     <img
                                       src={`assets/${data.course.course_image}`}
-                                      className="img-fluid"
+                                      className="img-fluid card-img-top"
                                       alt=""
                                       style={{ objectFit: "fill" }}
                                     />
@@ -774,7 +816,7 @@ const Calendar = () => {
                                       <img
                                         src={
                                           "/assets/" +
-                                          data.course.teacher.user.pic_name
+                                          data.course.teacher.user.profile_pic
                                         }
                                         alt=""
                                         className="me-2"
@@ -822,7 +864,6 @@ const Calendar = () => {
                                   </div>
                                 </div>
                               </Link>
-                            </div>
                             </div>
                           
                         ))}

@@ -5,6 +5,7 @@ import {
   AccountRegisterSchema,
   PrivateDiscOut,
   PrivateDiscSchema,
+  StudentCourse,
   TransformToPrivateDiscOut,
   transformToAccountNoROutput,
 } from "../Account";
@@ -21,11 +22,12 @@ export interface Teacher {
   experience: string;
   education: string;
   cv_data: string;
-  rating: string;
   user: AccountRegisterSchema;
   discussion: Class[];
   courses: Course[];
   private_disc: PrivateDiscSchema[];
+  teacher_rating: number;
+  course_list: StudentCourse[];
   points: number;
 }
 
@@ -40,13 +42,14 @@ export interface TeacherOutput {
   experience: string;
   education: string;
   cvUrl: string;
-  rating: string;
-  user: AccountNoROutput;
+  account: AccountNoROutput;
   discussion?: ClassList[];
   discussionParticipant: number;
   courses?: CourseList[];
   courseSold: number;
   private_disc?: PrivateDiscOut[];
+  teacher_rating: number;
+  course_list: StudentCourse[];
   forumPoints: number;
 }
 
@@ -94,8 +97,7 @@ export function transformToTeacherOutput(response: Teacher): TeacherOutput {
     experience: response.experience,
     education: response.education,
     cvUrl: response.cv_data,
-    rating: response.rating,
-    user: transformToAccountNoROutput(response.user),
+    account: transformToAccountNoROutput(response.user),
     discussion: response.discussion?.sort( (x,y) => x.disc_date.toString().localeCompare(y.disc_date.toString()) || x.disc_starttime.toString().localeCompare(y.disc_starttime.toString()))
     .map((data) => {
       return {
@@ -138,7 +140,9 @@ export function transformToTeacherOutput(response: Teacher): TeacherOutput {
     courseSold: countCourseSold(response.courses),
     discussionParticipant: countDiscussionParticipant(response.discussion),
     forumPoints: response.points,
-    private_disc: response.private_disc?.map((data) => TransformToPrivateDiscOut(data))
+    private_disc: response.private_disc?.map((data) => TransformToPrivateDiscOut(data)),
+    teacher_rating: response.teacher_rating,
+    course_list: response.course_list,
   };
   console.log(result, "lewat teacher");
   return result;

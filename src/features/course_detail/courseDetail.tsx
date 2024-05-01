@@ -32,11 +32,12 @@ const CourseDetail = () => {
     completed_chap: "",
     status: "",
     rating: 0,
+    joined_date: new Date()
   });
   const [isOpen, setisOpen] = useState(true);
 
   console.log(state.course?.course ? true : false);
-  const account: AccountOutput = state.acc.firstName !== "" ? state.acc : null;
+  const account: AccountOutput = !state.acc ? null : state.acc.firstName !== "" ? state.acc : null;
   const course: CourseList = state.course?.course
     ? state.course.course
     : state.data.course?.course_id
@@ -45,8 +46,8 @@ const CourseDetail = () => {
   console.log(course, account);
 
   const JOIN_URL = "/api/account/joincourse";
-  const STUDENT_COURSE_URL =
-    "/api/account/course?account=" + account?.id + "&course=" + course.id;
+  const STUDENT_COURSE_URL = account?
+    ("/api/account/course?account=" + account.id + "&course=" + course.id) : "";
   const RATE_URL = "/api/course/ratecourse";
   console.log(STUDENT_COURSE_URL);
 
@@ -126,7 +127,7 @@ const CourseDetail = () => {
 
   useEffect(() => {
     if (
-      !!account?.studentcourse_list?.find(
+      account && !!account.studentcourse_list.find(
         (course) => course.course.course_title === params.course_title
       )
     ) {
@@ -573,11 +574,11 @@ const CourseDetail = () => {
               onClick={() =>
                 navigate(
                   "/lecturer/" +
-                    (state.teacher.user.fullName
-                      ? state.teacher.user.fullName
-                      : state.teacher.user.firstName +
+                    (state.teacher.account.fullName
+                      ? state.teacher.account.fullName
+                      : state.teacher.account.firstName +
                         " " +
-                        state.teacher.user.lastName),
+                        state.teacher.account.lastName),
                   {
                     state: { data: state.teacher, account: account },
                   }
@@ -591,10 +592,10 @@ const CourseDetail = () => {
                 >
                   <img
                     src={
-                      // state.teacher.user?.urlImage
-                      //   ? "/assets/" + state.teacher.user.urlImage
+                      // state.teacher.account?.urlImage
+                      //   ? "/assets/" + state.teacher.account.urlImage
                       //   : state.acc.urlImage
-                      "/assets/" + course.teacher?.user.urlImage
+                      "/assets/" + course.teacher?.account.urlImage
                     }
                     alt="abc"
                     style={{
@@ -605,11 +606,11 @@ const CourseDetail = () => {
                     }}
                   />
                   <p className="d-flex p-0 m-0 fw-bold">
-                    {state.teacher.user.fullName
-                      ? state.teacher.user.fullName
-                      : state.teacher.user.firstName +
+                    {state.teacher.account.fullName
+                      ? state.teacher.account.fullName
+                      : state.teacher.account.firstName +
                         " " +
-                        state.teacher.user.lastName}
+                        state.teacher.account.lastName}
                   </p>
                 </div>
               </div>

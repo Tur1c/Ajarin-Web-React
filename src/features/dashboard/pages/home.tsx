@@ -23,6 +23,7 @@ import HomeDiscussion from "../components/home-discussion";
 import TeacherModalAddCourse from "../components/teacher-modal-add-course";
 import TeacherModalAddDiscussion from "../components/teacher-modal-add-discussion";
 import "./home.css";
+import Statistic from "../components/statistic/statistic";
 
 function Home() {
   const isLogged = sessionStorage.getItem("jwt");
@@ -68,12 +69,13 @@ function Home() {
     experience: "",
     id: 0,
     description: "",
-    rating: "",
     private_disc: [],
+    teacher_rating: 0,
+    course_list: [],
     courseSold: 0,
     discussionParticipant: 0,
     forumPoints: 0,
-    user: {
+    account: {
       age: 0,
       city: "",
       coin: 0,
@@ -104,7 +106,7 @@ function Home() {
         },
         withCredentials: true,
       });
-      console.log("ini data account", response.data.outputSchema);
+      console.log(response, "asdasd");
       accountId = response.data.outputSchema.id;
       setAccount(transfromToAccountOutput(response.data.outputSchema));
 
@@ -153,15 +155,13 @@ function Home() {
     }
     // if (userRole === "Teacher") {
     //   setTimeout(() => {
-    //     console.log("MASOKKK");
+    //     console.log("MASOKKKs");
 
     //     fetchTeacherData();
     //     // fetchDataAccount();
-    //   }, 500);
+    //   }, 50);
     // }
   }, [userRole]);
-
-  // console.log("dubidubidu", account);
 
   const goToDisc = (discDate: any) => {
     if (userRole === "Teacher") {
@@ -306,7 +306,7 @@ function Home() {
                           src={`assets/coin.png`}
                           alt=""
                         />
-                        {teacher.user.coin}
+                        {teacher.account.coin}
                       </button>
                     </div>
                   </div>
@@ -752,7 +752,16 @@ function Home() {
             <div className="statistic">
               <div className="card-title fw-bold">
                 <h2>Statistics</h2>
-                <p>You have finished xxx courses in this Month! Keep it up!</p>
+            {isLogged?
+              (
+                <>
+                  {account && <Statistic account={account}></Statistic>}
+                </>
+              )
+              :
+                  <p>Sign in to view your statistic</p>
+              
+            }
               </div>
             </div>
           </div>

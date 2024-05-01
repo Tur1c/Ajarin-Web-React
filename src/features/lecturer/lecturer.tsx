@@ -39,6 +39,7 @@ const Lecturer = () => {
   const { state } = useLocation();
   const [searchText, setSearchText] = useState("");
   const [searchTeacherText, setSearchTeacherText] = useState("");
+
   const HOME_URL = "/api/account?email=" + emailUser;
 
   console.log(state, "state lecturer");
@@ -137,7 +138,7 @@ const Lecturer = () => {
   };
 
   const handleTeacherDetail = (data: any) => {
-    navigate("/lecturer/" + data.user.fullName, {
+    navigate("/lecturer/" + data.account.fullName, {
       state: { data, account },
     });
   };
@@ -177,7 +178,7 @@ const Lecturer = () => {
 
   const getCurrTeacher = () => {
     return teachers.teachers.find(
-      (teacher) => teacher.user.email === account.email
+      (teacher) => teacher.account.email === account.email
     );
   };
 
@@ -271,7 +272,7 @@ const Lecturer = () => {
 
   function handleClickSearchTeacher() {
     const findTeacher = tempTeachers.teachers.filter((u) =>
-      u.user.fullName.toLowerCase().includes(searchTeacherText.toLowerCase())
+      u.account.fullName.toLowerCase().includes(searchTeacherText.toLowerCase())
     );
     setTeacher({ teachers: findTeacher });
   }
@@ -305,7 +306,7 @@ const Lecturer = () => {
       urlImage: "",
     },
   });
-  console.log(currTeacher, "currTeacher");
+  console.log(currTeacher, "currTeachera");
 
   console.log(teacherid, currentTeacherList);
 
@@ -618,8 +619,8 @@ const Lecturer = () => {
                                         className="img-fluid bg-light"
                                         src={
                                           "/assets/" +
-                                          (data.user.pic_name !== null
-                                            ? data.user.pic_name
+                                          (data.user.profile_pic !== null
+                                            ? data.user.profile_pic
                                             : "default_picture.png")
                                         }
                                         alt=""
@@ -855,7 +856,7 @@ const Lecturer = () => {
                             >
                               <img
                                 className="img-fluid bg-light"
-                                src={"/assets/" + data.user.urlImage}
+                                src={"/assets/" + data.account.urlImage}
                                 alt=""
                                 style={{
                                   height: "5vh",
@@ -865,7 +866,7 @@ const Lecturer = () => {
                                 }}
                               />
                               <span className="top-lecturers">
-                                {data.user.fullName}
+                                {data.account.fullName}
                               </span>
                             </TableCell>
                             <TableCell
@@ -903,7 +904,7 @@ const Lecturer = () => {
                                   marginRight: "5px",
                                 }}
                               />{" "}
-                              {data.rating}
+                              {data.teacher_rating}
                             </TableCell>
                           </TableRow>
                         ))}
@@ -1027,7 +1028,7 @@ const Lecturer = () => {
                           >
                             <img
                               className="img-fluid bg-light"
-                              src={"/assets/" + data.user.urlImage}
+                              src={"/assets/" + data.account.urlImage}
                               alt=""
                               style={{
                                 width: "8vh",
@@ -1040,7 +1041,7 @@ const Lecturer = () => {
                           <div className="w-100">
                             <div className="card-text text-white fw-bold d-flex justify-content-between align-items-center h-100 p-3">
                               <h5 className="fw-bold all-lecturer-name">
-                                {data.user.fullName}
+                                {data.account.fullName}
                               </h5>
                               <div className="d-flex flex-column lecturer-subscribed-button"></div>
                             </div>

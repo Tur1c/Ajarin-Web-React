@@ -16,9 +16,7 @@ export interface AccountRegisterSchema {
   country: string;
   school: string;
   coin: number;
-  pic_name?: string;
-  pic_url?: string;
-  pic_type?: string;
+  profile_pic: string;
 }
 
 export interface AccountNoROutput {
@@ -57,8 +55,7 @@ export function transformToAccountNoROutput(
     country: response.country,
     school: response.school,
     coin: response.coin,
-    urlImage: response.pic_name !== null ? response.pic_name : "default_picture.png",
-    profile_pic: response.pic_name !== null ? response.pic_name : "default_picture.png",
+    urlImage: response.profile_pic !== null ? response.profile_pic : "default_picture.png",
   };
   // console.log(result, "abc account hehe");
   return result;
@@ -79,12 +76,10 @@ export interface AccountSchema {
   country: string;
   school: string;
   coin: number;
-  pic_name: string;
-  pic_url: string;
-  pic_type: string;
   studentdisc_list?: StudentDisc[];
   studentcourse_list?: StudentCourse[];
   subscribed_lecturer?: SubscribedLecturer[];
+  profile_pic: string;
   notifs: Notification[];
 }
 
@@ -133,8 +128,8 @@ export interface AccountLoginOutput {
 
 export function transfromToAccountOutput(
   response: AccountSchema
-): AccountOutput {
-  console.log(response.pic_name === null,"account transform");
+) : AccountOutput {
+  // console.log(response.subscribed_lecturer,"asddd");
   const result: AccountOutput = {
     id: response.id,
     firstName: response.firstName,
@@ -149,13 +144,14 @@ export function transfromToAccountOutput(
     country: response.country,
     school: response.school,
     coin: response.coin,
-    urlImage: response.pic_name !== null? "assets/" + response.pic_name : "assets/" + "default_picture.png",
+    urlImage: !response.profile_pic? "" : "assets/" + response.profile_pic,
     studentdisc_list: response.studentdisc_list ? response.studentdisc_list
     .sort( (x,y) => x.discussion.disc_date.toString().localeCompare(y.discussion.disc_date.toString()) || x.discussion.disc_starttime.toString().localeCompare(y.discussion.disc_starttime.toString()))
     .map( (data) => {
       return {
         discussion: data.discussion,
-        status: data.status
+        status: data.status,
+        joined_date: data.joined_date
       };
     }) : [],
     studentcourse_list: response.studentcourse_list ? response.studentcourse_list.map( (data) => {
@@ -164,7 +160,8 @@ export function transfromToAccountOutput(
         status: data.status,
         completed_chap: data.completed_chap,
         rating: data.rating,
-        comment: data.comment
+        comment: data.comment,
+        joined_date: data.joined_date
       }
     }) : [],
     subscribed_lecturer: response.subscribed_lecturer ? response.subscribed_lecturer.map((data) => {
@@ -187,6 +184,7 @@ export function transfromToAccountOutput(
 export interface StudentDisc {
   discussion: Class;
   status: string;
+  joined_date: Date;
 }
 
 export interface StudentDiscOutput {
@@ -199,6 +197,8 @@ export interface StudentCourse {
   completed_chap: string;
   rating: number;
   comment: string;
+  joined_date: Date;
+  account?: AccountRegisterSchema;
 }
 
 export interface StudentCourseS {
@@ -206,6 +206,7 @@ export interface StudentCourseS {
   status: string;
   completed_chap: string;
   rating: number;
+  joined_date: Date;
 }
 
 export interface StudentCourseOutput {
@@ -291,4 +292,5 @@ export function TransformToPrivateDiscOut(
 export interface Notification {
   notif_id: number;
   message: string;
+  isRead: boolean;
 }

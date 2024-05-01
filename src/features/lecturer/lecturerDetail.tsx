@@ -1,5 +1,5 @@
 import { useWindowWidth } from "@wojtekmaj/react-hooks";
-import { useEffect, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { Document, Page, pdfjs } from "react-pdf";
@@ -11,6 +11,8 @@ import axios from "../../api/axios";
 import { useAuth } from "../../context/AuthProvider";
 import { CourseList } from "../../model/course/course-list";
 import "./lecturerDetail.css";
+import useModal from "../../hooks/useModal";
+import LecturerCourse from "./lecturerCourse";
 import TeacherModalEditProfile from "./teacher-modal-edit-profile";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
@@ -25,6 +27,14 @@ const LecturerDetail = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const width = useWindowWidth();
+
+  const {isOpen, toggle} = useModal();
+
+    //draggable
+    const itemsRef = useRef<HTMLDivElement>(null);
+    const [isMouseDown, setIsMouseDown] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [scrollLeft, setScrollLeft] = useState(0);
 
   const [isLoading, setIsLoading] = useState(false);
   const [showModalEditProfile, setShowModalEditProfile] = useState(false);
@@ -89,6 +99,13 @@ const LecturerDetail = () => {
     logout();
   };
 
+  const openNew = () => {
+    console.log("yey");
+    navigate("/lecturer/" + state.data.account.fullName + "/rating", {
+      state: { state },
+    });
+  }
+
   const handleCloseModalEditProfile = () => setShowModalEditProfile(false);
 
   const handleFlagModalEditProfile = () =>
@@ -114,6 +131,33 @@ const LecturerDetail = () => {
 
   console.log(state, "lecturer detail");
 
+  // for draggable
+  const handleMouseDown = (e:any) => {
+    setIsMouseDown(true);
+    if(itemsRef.current !== null) {
+      setStartX(e.pageX - itemsRef.current.offsetLeft);
+      setScrollLeft(itemsRef.current.scrollLeft);
+    }
+  }
+
+  const handleMouseLeave = (e:any) => {
+    setIsMouseDown(false);
+  }
+
+  const handleMouseMove = (e:any) => {
+    if(!isMouseDown) return;
+    e.preventDefault();
+    if(itemsRef.current !== null){
+      const x = e.pageX - itemsRef.current.offsetLeft;
+      const walk = (x-startX)*1;
+      itemsRef.current.scrollLeft = scrollLeft - walk;
+    }
+  }
+
+  const handleMouseUp = (e:any) => {
+    setIsMouseDown(false);
+  }
+
   return (
     <div
       className="lecturer-detail-page"
@@ -123,7 +167,8 @@ const LecturerDetail = () => {
         backgroundImage: `url(/assets/background.png)`,
         backgroundSize: "cover",
       }}
-    >
+      >
+      <LecturerCourse isOpen={isOpen} toggle={toggle} data={state.data.courses}/>
       {!isLoading ? (
         <>
           <div className="d-flex justify-content-between align-items-center ">
@@ -166,7 +211,7 @@ const LecturerDetail = () => {
                     <img
                       className="bg-light"
                       src={
-                        "/assets/" + state.data.user.urlImage ||
+                        "/assets/" + state.data.account.urlImage ||
                         `assets/coin.png`
                       }
                       alt=""
@@ -184,13 +229,13 @@ const LecturerDetail = () => {
                     style={{ margin: "0rem 1rem" }}
                   >
                     <h3>
-                      <b>{state.data.user.fullName}</b>
+                      <b>{state.data.account.fullName}</b>
                     </h3>
                     <p className="h-75">{state.data.description}</p>
                   </div>
                 </div>
 
-                <div className="" style={{ margin: "0.5rem 0rem" }}>
+                <div className="" style={{ margin: "0.5rem 0rem" }} onClick={() => state.data.teacher_rating == 0 ? undefined : openNew()}>
                   <FaStar
                     style={{
                       color: "yellow",
@@ -198,12 +243,12 @@ const LecturerDetail = () => {
                       marginRight: "4px",
                     }}
                   />{" "}
-                  {state.data.rating}
+                  {state.data.teacher_rating}
                 </div>
 
                 <div style={{ opacity: "0.6" }}>
                   <p className="">
-                    {state.data.user.city}, {state.data.user.country}
+                    {state.data.account.city}, {state.data.account.country}
                   </p>
                 </div>
 
@@ -211,7 +256,7 @@ const LecturerDetail = () => {
                   {userRole === "Teacher" &&
                   (state.account === undefined ||
                     state.account?.email ===
-                      state.data.user.email) ? (
+                      state.data.account.email) ? (
                     <>
                       <button
                         className="subs-edit-btn"
@@ -232,7 +277,7 @@ const LecturerDetail = () => {
                     <>
                       {userRole === "Student" &&
                       state.account.email !==
-                        state.data.user.email ? (
+                        state.data.account.email ? (
                         <button
                           className="subs-edit-btn"
                           type="button"
@@ -249,7 +294,11 @@ const LecturerDetail = () => {
               </div>
             </div>
             <div className="col-6">
-              <div className="teacher-container-card-scroll">
+              <div className="teacher-container-card-scroll" ref={itemsRef}
+                    onMouseDown={handleMouseDown}
+                    onMouseLeave={handleMouseLeave}
+                    onMouseUp={handleMouseUp}
+                    onMouseMove={handleMouseMove}>
                 <ul className="cards">
                   <li
                     className="card text-white"
@@ -311,7 +360,8 @@ const LecturerDetail = () => {
                       <ul
                         className="d-flex col"
                         style={{
-                          gridAutoColumns: "calc(25% - 290px)",
+                          overflowX:"hidden",
+                          // gridAutoColumns: "calc(25% - 290px)",
                           minHeight: "30rem",
                           listStyle: "none"
                         }}
@@ -422,7 +472,7 @@ const LecturerDetail = () => {
                         className="w-100 justify-content-center d-flex"
                         style={{ marginTop: "2rem" }}
                       >
-                        <button className="see-all-btn">See All</button>
+                        <button className="see-all-btn" onClick={toggle}>See All</button>
                       </div>
                     </div>
                   </li>

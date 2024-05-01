@@ -33,9 +33,7 @@ function Register() {
       country: "",
       school: "",
       coin: 0,
-      pic_name: "",
-      pic_type: "",
-      pic_url: "",
+      profile_pic:""
     }
   );
 

@@ -12,14 +12,19 @@ import {
   AccountOutput,
   AccountRegisterSchema,
   AccountSchema,
+  Notification,
   transfromToAccountOutput,
 } from "../../../model/Account";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import "./profile.css";
+import { HiOutlineMailOpen } from "react-icons/hi";
 
 const HOME_URL = "/api/account?email=" + sessionStorage.getItem("user");
 const UPDATE_URL = "/api/account/";
 const UPDATE_IMAGE = "/api/account/upload?email=";
+let DELETE_URL = "/api/account/deleteNotif?notif=";
+let READ_URL = "/api/account/readNotif?notif=";
+
 
 const Profile = () => {
   // const { login }: any = useAuth();
@@ -32,9 +37,11 @@ const Profile = () => {
   const [role, setRole] = useSessionStorage("role", "");
 
   const userRole = sessionStorage.getItem("role");
+  const isLogged = sessionStorage.getItem("jwt");
 
   const [account, setAccount] = useState<AccountOutput>(state);
   const [editAccount, setEditAccount] = useState<AccountOutput>(state);
+  const [notif, setNotif] = useState<Notification[]>(account.notification);
   const [isLoading, setIsLoading] = useState(false);
 
   const [image, setImage] = useState<File>();
@@ -155,6 +162,70 @@ const Profile = () => {
       setIsLoading(false);
     }, 500);
   }, []);
+  const deleteNotif = (notifId:number) => {
+    Swal.fire({
+      title: "Do you want delete the notification?",
+      icon: "warning",
+      background: "#11235a",
+      color: "#fff",
+      confirmButtonText: "<span style='color:#000'> <b>Delete</b> </span>",
+      confirmButtonColor: "#f6e976",
+      cancelButtonColor: "#fff",
+      cancelButtonText: "<span style='color:#000'> Cancel </span>",
+      showCancelButton: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        DELETE_URL = DELETE_URL + notifId;
+        try {
+          const response = await axios.get(
+            DELETE_URL,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + isLogged,
+              },
+              withCredentials: true,
+            }
+          );
+            console.log(response);
+            setNotif(notif.filter((x) => x.notif_id != notifId));
+            setAccount({...account, notification:notif});
+            // navigate("/");
+            // if(disc){
+              // setDisc(disc?.filter((x) => x.discussion.disc_id != id));
+              // setAccountDisc(accountDisc.filter((x) => x.discussion.disc_id != id));
+            // }
+        } catch (error) {}
+      }
+    });
+  }
+
+  const readNotif = async (notifId:number) => {
+    READ_URL = READ_URL + notifId;
+    try {
+      const response = await axios.get(
+        READ_URL,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + isLogged,
+          },
+          withCredentials: true,
+        }
+      );
+
+        setNotif(notif => [...notif].map(
+          x => x.notif_id === notifId ? ({...x, isRead: true}) : x
+        ));
+        // setNotif(notif.filter((x) => x.notif_id != notifId));
+        // navigate("/");
+        // if(disc){
+          // setDisc(disc?.filter((x) => x.discussion.disc_id != id));
+          // setAccountDisc(accountDisc.filter((x) => x.discussion.disc_id != id));
+        // }
+    } catch (error) {}
+  }
+
 
   console.log(account);
   return (
@@ -511,11 +582,15 @@ const Profile = () => {
                     </div>
                   </Tab>
                   <Tab eventKey="notification" title="Notification">
-                    {account.notification.map((data) => (
-                      <div className="notif-content text-dark">
-                        <IoIosMail />
-                        {data.message}
-                        <FaRegTrashAlt />
+                    {notif.map((data, idx) => (
+                      <div className="notif-content text-dark border-bottom border-dark d-flex p-3" key={idx} onClick={() => data.isRead? undefined : readNotif(data.notif_id) }>
+                        {data.isRead? 
+                            <HiOutlineMailOpen style={{ marginLeft:"1cm",fontSize:"24px" }}/>
+                            :
+                            <IoIosMail style={{ marginLeft:"1cm",fontSize:"24px" }}/>
+                        }
+                            <span className="ms-4" style={{ color: data.isRead? "gray" : "black" }}>{data.message}</span>
+                        <FaRegTrashAlt onClick={() => deleteNotif(data.notif_id)} style={{ cursor:"pointer",fontSize:"24px" }} className="ms-auto me-5"/>
                       </div>
                     ))}
                   </Tab>

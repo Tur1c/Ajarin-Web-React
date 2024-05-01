@@ -16,6 +16,7 @@ import Lecturer from "./features/lecturer/lecturer";
 import LecturerDetail from "./features/lecturer/lecturerDetail";
 import { ErrorPage } from "./shared";
 import CourseChapter from "./features/course_detail/courseChapter";
+import LecturerRating from "./features/lecturer/lecturerRating";
 
 function App() {
   // return <RouterProvider router={router}></RouterProvider>;
@@ -38,6 +39,10 @@ function App() {
         <Route
           path="/lecturer/:lecturer_name"
           element={<LecturerDetail></LecturerDetail>}
+        ></Route>
+        <Route
+          path="/lecturer/:lecturer_name/rating"
+          element={<LecturerRating></LecturerRating>}
         ></Route>
         <Route
           path="/forum/:forum_title"

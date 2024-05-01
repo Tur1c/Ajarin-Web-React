@@ -9,6 +9,7 @@ import {
 } from "../../../model/course/course-list";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import { ModalCentered, Pagination } from "../../../shared";
+import { AccountOutput } from "../../../model/Account";
 
 const CLASS_URL = "/api/discussion";
 
@@ -30,6 +31,7 @@ function HomeDiscussion(props: any) {
   });
   const currentFiltered = filteredList.slice(0, 3);
   const [searchTextFromHome, setSearchTextFromHome] = useState("");
+  const account:AccountOutput = props.account;
 
   const [classData, setClassData] = useState<ClassList>({
     id: 0,
@@ -51,6 +53,7 @@ function HomeDiscussion(props: any) {
   const [currentPage, setCurrentPage] = useState(1);
   const [classPerPage, setClassPerPage] = useState(8);
   const [showModal, setShowModal] = useState(false);
+  const [joined, setJoined] = useState(false);
   const [statusSortSubject, setStatusSortSubject] = useState(false);
   const [statusSortEducation, setStatusSortEducation] = useState(false);
 
@@ -91,6 +94,7 @@ function HomeDiscussion(props: any) {
           withCredentials: true,
         }
       );
+      // console.log(response, "discussion ayo");
       setClassList(transfromToDiscussionListOutput(response.data.outputSchema));
       setTempClassList(
         transfromToDiscussionListOutput(response.data.outputSchema)
@@ -98,6 +102,18 @@ function HomeDiscussion(props: any) {
     } catch (error) {}
     setIsLoading(false);
   };
+
+  const checkJoined = (title:string) => {
+    const test = account.studentdisc_list.find(
+      (x) => x.discussion.disc_title === title
+    );
+    if(test) {
+      return true
+    }
+    else {
+      return false
+    };
+  }
 
   const handleCloseModal = () => setShowModal(false);
 
@@ -118,6 +134,7 @@ function HomeDiscussion(props: any) {
       level: data.level,
     });
     setShowModal(true);
+    setJoined(checkJoined(data.title));
   };
 
   const limitTitle = (input: string): string => {
@@ -140,7 +157,7 @@ function HomeDiscussion(props: any) {
       }
       const findClass = tempClassList.classList.filter((u) =>
         u.title.toLowerCase().includes(searchTextFromHome.toLowerCase()) ||
-        u.teacher?.user.fullName.toLocaleLowerCase().includes(searchTextFromHome.toLowerCase())
+        u.teacher?.account.fullName.toLocaleLowerCase().includes(searchTextFromHome.toLowerCase())
       );
       setClassList({ classList: findClass });
     } else {
@@ -273,7 +290,7 @@ function HomeDiscussion(props: any) {
                         <div className="d-flex">
                           <div className="lecturer-profile me-2">
                             <img
-                              src={"/assets/" + data.teacher?.user.urlImage}
+                              src={"/assets/" + data.teacher?.account.urlImage}
                             />
                           </div>
 
@@ -285,7 +302,7 @@ function HomeDiscussion(props: any) {
                               </span>
                             </div>
                             <h4 className="lecturer-discussion">
-                              {data.teacher?.user.fullName}
+                              {data.teacher?.account.fullName}
                             </h4>
 
                             <div className="grouping">
@@ -372,6 +389,7 @@ function HomeDiscussion(props: any) {
         show={showModal}
         onHide={handleCloseModal}
         data={classData}
+        joined={joined}
       />
     </>
   );
