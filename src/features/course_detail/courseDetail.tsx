@@ -381,7 +381,6 @@ const CourseDetail = () => {
                     }}
                   />
                 </button>
-                <p>{state.link}</p>
               </div>
               <div className="logo_content" style={{ cursor: "default" }}>
                 <div className="logo">
