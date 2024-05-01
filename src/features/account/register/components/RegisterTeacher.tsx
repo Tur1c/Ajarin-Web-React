@@ -55,7 +55,7 @@ function RegisterTeacher() {
         }
       );
       Swal.fire({
-        title: "Success Edit Profile",
+        title: "Success Register as Teacher",
         icon: "success",
         background: "#11235a",
         color: "#fff",

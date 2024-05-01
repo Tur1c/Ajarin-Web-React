@@ -210,10 +210,8 @@ const LecturerDetail = () => {
                 <div className="d-flex" style={{ gap: "1rem" }}>
                   {userRole === "Teacher" &&
                   (state.account === undefined ||
-                    state.account?.fullName ===
-                      state.data.user.firstName +
-                        " " +
-                        state.data.user.lastName) ? (
+                    state.account?.email ===
+                      state.data.user.email) ? (
                     <>
                       <button
                         className="subs-edit-btn"
@@ -233,10 +231,8 @@ const LecturerDetail = () => {
                   ) : (
                     <>
                       {userRole === "Student" &&
-                      state.account.fullName !==
-                        state.data.user.firstName +
-                          " " +
-                          state.data.user.lastName ? (
+                      state.account.email !==
+                        state.data.user.email ? (
                         <button
                           className="subs-edit-btn"
                           type="button"

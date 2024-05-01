@@ -86,6 +86,8 @@ const CourseChapter = () => {
           state: {
             acc: account,
             course: state.state.studentCourse,
+            teacher: state.state.studentCourse.course.teacher,
+            link: "/calendar"
           },
         });
       }
