@@ -523,6 +523,7 @@ function Home() {
                   >
                     <HomeDiscussion
                       searchData={searchText ? searchText : "default"}
+                      account={account}
                     />
                   </Tab>
 
@@ -761,11 +762,12 @@ function Home() {
               (
                 userRole === "Teacher"?
                 <>
-                  {account && <Statistic account={account}></Statistic>}
+                  <p>On Development</p>
+                  
                 </>
                 :
                 <>
-                  <p>On Development</p>
+                  {account && <Statistic account={account}></Statistic>}
                 </>
               )
               :
