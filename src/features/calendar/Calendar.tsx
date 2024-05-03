@@ -15,6 +15,11 @@ import Carousel from 'react-bootstrap/Carousel';
 // import ExampleCarouselImage from 'components/ExampleCarouselImage';
 import { Sidebar } from "../../shared";
 import "./Calendar.css";
+import { GrPrevious, GrNext } from "react-icons/gr";
+import { BsChevronLeft } from "react-icons/bs";
+
+var relativeTime = require('dayjs/plugin/relativeTime')
+dayjs.extend(relativeTime);
 
 const Calendar = () => {
   const { state } = useLocation();
@@ -266,7 +271,13 @@ const Calendar = () => {
   const handleLoadingTrue = () => setIsLoadingChangeAccount(true);
   const handleLoadingFalse = () => setIsLoadingChangeAccount(false);
 
-  console.log(currTeacherDisc);
+  console.log(accountDisc.at(0)?.discussion.disc_date.toString() + " " + accountDisc.at(0)?.discussion.disc_starttime.toString());
+  console.log(currTeacherDisc,dayjs(accountDisc.at(0)?.discussion.disc_date), dayjs(accountDisc.at(0)?.discussion.disc_date.toString() + " " + accountDisc.at(0)?.discussion.disc_starttime.toString()));
+  console.log(dayjs("15:45:00","HH:mm:ss").diff(dayjs("15:30:00","HH:mm:ss"),'minutes'));
+  console.log(dayjs(accountDisc.at(0)?.discussion.disc_starttime.toString(),"HH:mm:ss").diff(dayjs(accountDisc.at(0)?.discussion.disc_endtime.toString(),"HH:mm:ss"), 'minutes'));
+  console.log(dayjs(accountDisc.at(0)?.discussion.disc_starttime.toString(),"HH:mm:ss").diff(dayjs(),'minutes'));
+  console.log(dayjs().format("HH:mm:ss"));
+  console.log(dayjs().format("YYYY-MM-DD"),dayjs(accountDisc.at(6)?.discussion.disc_date.toString()).format("YYYY-MM-DD"), dayjs().subtract(1, 'day').format("YYYY-MM-DD") == dayjs(accountDisc.at(6)?.discussion.disc_date.toString()).format("YYYY-MM-DD"), accountDisc.at(6)?.discussion.disc_date.toString(), dayjs(accountDisc.at(6)?.discussion.disc_date.toString()).format("YYYY-MM-DD"));
 
   return (
     <div>
@@ -491,133 +502,233 @@ const Calendar = () => {
                           </p>
                         </div>
                         <div className="disc-container d-flex">
-                          {disc.map((data, idx) => (
-                            <div
-                              className="card disc-item"
-                              key={idx}
-                              style={{ width: "65%", padding: 0 }}
-                            >
-                              <img
-                                className=" disc-image"
-                                src={
-                                  data.discussion.disc_image
-                                    ? `assets/${data.discussion.disc_image}`
-                                    : "assets/private.png"
-                                }
-                                alt=""
-                              />
-                              <div className="participant-total">
-                                {data.discussion.joinedParticipant} /{" "}
-                                {data.discussion.disc_participant}
-                              </div>
-
-                              <div className="disc-body">
-                                {/* <h5 className="card-text d-flex h-100 justify-content-between">
-                                  <div className="text-center my-auto border-end border-white bg-danger w-20">
-                                    <h2 style={{ margin: 0 }}>
-                                      {dayjs(data.discussion.disc_date).format(
-                                        "DD"
-                                      )}
-                                    </h2>
-                                    <h5>
-                                      {dayjs(data.discussion.disc_date).format(
-                                        "MMM"
-                                      )}
-                                    </h5>
-                                  </div>
-                                  <div className="my-auto d-flex justify-content-center bg-warning w-100">
-                                    <h6 className="" style={{ margin: 0 }}>
-                                      {data.discussion.disc_title} <br />
-                                      by Godwin
-                                    </h6>
-                                  </div>
+                          {/* {disc.length > 1 ? ( */}
+                            <Carousel indicators={false} wrap={false} style={{ width: "65%", padding: 0 }} 
+                              prevIcon={<GrPrevious style={{ fontSize:"36px",stroke:"#11235A",fill:"white",strokeWidth:"5px",fontWeight:"bold" }}/>}
+                              nextIcon={<GrNext style={{ fontSize:"36px",stroke:"#11235A",fill:"white",strokeWidth:"5px",fontWeight:"bold" }}/>}>
+                              {disc.map((data, idx) => (
+                                <Carousel.Item>
                                   <div
-                                    className="disc-time text-center my-auto border-start border-white"
-                                    style={{}}
+                                    className="card disc-item"
+                                    key={idx}
+                                    style={{ width: "100%", padding: 0 }}
                                   >
-                                    <h6
-                                      className="d-flex align-items-center justify-content-center"
-                                      style={{
-                                        height: "100%",
-                                        fontSize: "12px",
-                                      }}
-                                    >
-                                      {data.discussion.disc_starttime
-                                        .toString()
-                                        .slice(0, 5)}{" "}
-                                      -{" "}
-                                      {data.discussion.disc_endtime
-                                        .toString()
-                                        .slice(0, 5)}
-                                    </h6>
+                                    <img
+                                      className=" disc-image"
+                                      src={
+                                        data.discussion.disc_image
+                                          ? `assets/${data.discussion.disc_image}`
+                                          : "assets/private.png"
+                                      }
+                                      alt=""
+                                    />
+                                    <div className="participant-total">
+                                      {data.discussion.joinedParticipant} /{" "}
+                                      {data.discussion.disc_participant}
+                                    </div>
+
+                                    <div className="disc-body">
+                                      <div className="updisc-container w-100 mx-2">
+                                        <h5 className="card-text d-flex justify-content-between">
+                                          <div className="text-center border-end border-white justify-content-center align-items-center d-flex row">
+                                            <h4
+                                              style={{
+                                                margin: 0,
+                                                fontSize: "32px",
+                                                fontWeight: "bold",
+                                              }}
+                                            >
+                                              {dayjs(
+                                                data.discussion.disc_date
+                                              ).format("DD")}
+                                            </h4>
+                                            <h5
+                                              style={{
+                                                fontSize: "18px",
+                                                fontWeight: "bold",
+                                              }}
+                                            >
+                                              {dayjs(
+                                                data.discussion.disc_date
+                                              ).format("MMM")}
+                                            </h5>
+                                          </div>
+
+                                          <div className="my-auto d-flex row">
+                                            <h6
+                                              style={{ margin: 0, fontSize: "14px" }}
+                                            >
+                                              {data.discussion.disc_title}
+                                              <br />
+                                            </h6>
+                                            <h6
+                                              style={{
+                                                margin: 0,
+                                                fontSize: "10px",
+                                                color: "var(--yelo)",
+                                              }}
+                                            >
+                                              by {data.discussion.teacher.user.firstName}
+                                            </h6>
+                                          </div>
+
+                                          <div className="justify-content-center px-2 border-start border-white">
+                                            <h6
+                                              className="d-flex align-items-center justify-content-center pe-2"
+                                              style={{
+                                                height: "100%",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              {data.discussion.disc_starttime
+                                                .toString()
+                                                .slice(0, 5)}{" "}
+                                              -{" "}
+                                              {data.discussion.disc_endtime
+                                                .toString()
+                                                .slice(0, 5)}
+                                            </h6>
+                                          </div>
+                                        </h5>
+                                      </div>
+                                    </div>
                                   </div>
-                                </h5> */}
-                                <div className="updisc-container w-100 mx-2">
-                                  <h5 className="card-text d-flex justify-content-between">
-                                    <div className="text-center border-end border-white justify-content-center align-items-center d-flex row">
-                                      <h4
-                                        style={{
-                                          margin: 0,
-                                          fontSize: "32px",
-                                          fontWeight: "bold",
-                                        }}
-                                      >
-                                        {dayjs(
-                                          data.discussion.disc_date
-                                        ).format("DD")}
-                                      </h4>
-                                      <h5
-                                        style={{
-                                          fontSize: "18px",
-                                          fontWeight: "bold",
-                                        }}
-                                      >
-                                        {dayjs(
-                                          data.discussion.disc_date
-                                        ).format("MMM")}
-                                      </h5>
+                                    <div className="d-flex button-disc justify-content-around">
+                                      {dayjs().subtract(1, 'day').format("YYYY-MM-DD").localeCompare(dayjs(data.discussion.disc_date.toString()).format("YYYY-MM-DD")) === 0?
+                                        (
+                                          dayjs(data.discussion.disc_starttime.toString(), "HH:mm:ss").diff(dayjs().format("HH:mm:ss"), 'minutes') <= 15 && dayjs(data.discussion.disc_endtime.toString(), "HH:mm:ss").diff(dayjs().format("HH:mm:ss"), 'minutes') != 0 ?
+                                          (
+                                            <>
+                                              <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }}>Join</button>
+                                              <button className="badge px-5 py-2" style={{ backgroundColor:"white",color:"#11235A" }} onClick={() => cancelDisc(data.discussion.disc_id)}>Cancel</button>
+                                            </>
+                                          )
+                                          :
+                                          (
+                                            dayjs(data.discussion.disc_endtime.toString(), "HH:mm:ss").diff(dayjs().format("HH:mm:ss"), 'minutes') < 0 && dayjs(data.discussion.disc_endtime.toString(), "HH:mm:ss").diff(dayjs().format("HH:mm:ss"), 'minutes') >= -5 ?
+                                            //5 menit buat mark as complete
+                                            <>
+                                              <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }}>Mark as Complete</button>
+                                            </>
+                                            :
+                                            //5 menit habis, jadi dia completed sndiri tapi status ga keset complete
+                                            <>
+                                              <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Completed</button> 
+                                            </>
+                                          )
+                                        ) 
+                                        :
+                                        (
+                                          //kurang dari hari discnya jalan
+                                          dayjs().format("YYYY-MM-DD") < data.discussion.disc_date.toString()?
+                                          <>
+                                            <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Join Disabled</button>
+                                            <button className="badge px-5 py-2" style={{ backgroundColor:"white",color:"#11235A" }} onClick={() => cancelDisc(data.discussion.disc_id)}>Cancel</button>
+                                          </>
+                                          :
+                                          //lebih dari, otomatis close
+                                          <>
+                                            <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Completed</button>
+                                          </>
+                                        )
+                                    }
+                                    </div>
+                                </Carousel.Item>
+                              ))}
+
+                            </Carousel>
+                          {/* )
+                          :
+                          (
+                              disc.map((data, idx) => (
+                                  <div
+                                    className="card disc-item"
+                                    key={idx}
+                                    style={{ width: "65%", padding: 0 }}
+                                  >
+                                    <img
+                                      className=" disc-image"
+                                      src={
+                                        data.discussion.disc_image
+                                          ? `assets/${data.discussion.disc_image}`
+                                          : "assets/private.png"
+                                      }
+                                      alt=""
+                                    />
+                                    <div className="participant-total">
+                                      {data.discussion.joinedParticipant} /{" "}
+                                      {data.discussion.disc_participant}
                                     </div>
 
-                                    <div className="my-auto d-flex row">
-                                      <h6
-                                        style={{ margin: 0, fontSize: "14px" }}
-                                      >
-                                        {data.discussion.disc_title}
-                                        <br />
-                                      </h6>
-                                      <h6
-                                        style={{
-                                          margin: 0,
-                                          fontSize: "10px",
-                                          color: "var(--yelo)",
-                                        }}
-                                      >
-                                        by {data.discussion.teacher.user.firstName}
-                                      </h6>
-                                    </div>
+                                    <div className="disc-body">
+                                      <div className="updisc-container w-100 mx-2">
+                                        <h5 className="card-text d-flex justify-content-between">
+                                          <div className="text-center border-end border-white justify-content-center align-items-center d-flex row">
+                                            <h4
+                                              style={{
+                                                margin: 0,
+                                                fontSize: "32px",
+                                                fontWeight: "bold",
+                                              }}
+                                            >
+                                              {dayjs(
+                                                data.discussion.disc_date
+                                              ).format("DD")}
+                                            </h4>
+                                            <h5
+                                              style={{
+                                                fontSize: "18px",
+                                                fontWeight: "bold",
+                                              }}
+                                            >
+                                              {dayjs(
+                                                data.discussion.disc_date
+                                              ).format("MMM")}
+                                            </h5>
+                                          </div>
 
-                                    <div className="justify-content-center px-2 border-start border-white">
-                                      <h6
-                                        className="d-flex align-items-center justify-content-center pe-2"
-                                        style={{
-                                          height: "100%",
-                                          fontSize: "12px",
-                                        }}
-                                      >
-                                        {data.discussion.disc_starttime
-                                          .toString()
-                                          .slice(0, 5)}{" "}
-                                        -{" "}
-                                        {data.discussion.disc_endtime
-                                          .toString()
-                                          .slice(0, 5)}
-                                      </h6>
+                                          <div className="my-auto d-flex row">
+                                            <h6
+                                              style={{ margin: 0, fontSize: "14px" }}
+                                            >
+                                              {data.discussion.disc_title}
+                                              <br />
+                                            </h6>
+                                            <h6
+                                              style={{
+                                                margin: 0,
+                                                fontSize: "10px",
+                                                color: "var(--yelo)",
+                                              }}
+                                            >
+                                              by {data.discussion.teacher.user.firstName}
+                                            </h6>
+                                          </div>
+
+                                          <div className="justify-content-center px-2 border-start border-white">
+                                            <h6
+                                              className="d-flex align-items-center justify-content-center pe-2"
+                                              style={{
+                                                height: "100%",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              {data.discussion.disc_starttime
+                                                .toString()
+                                                .slice(0, 5)}{" "}
+                                              -{" "}
+                                              {data.discussion.disc_endtime
+                                                .toString()
+                                                .slice(0, 5)}
+                                            </h6>
+                                          </div>
+                                        </h5>
+                                      </div>
                                     </div>
-                                  </h5>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
+                                 </div>
+                              ))
+                          )
+                        } */}
                         </div>
                       </>
                     )}

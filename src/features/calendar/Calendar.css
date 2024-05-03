@@ -147,3 +147,14 @@
 .account-course-content::-webkit-scrollbar-thumb {
   background: var(--lightblue2);
 } */
+
+
+.carousel-control-prev-icon .carousel-control-next-icon {
+
+  border-color: #fff !important;
+  stroke: #dddddd !important;
+  fill: red !important;
+  color:black !important;
+  text-shadow: #11235a !important;
+
+}

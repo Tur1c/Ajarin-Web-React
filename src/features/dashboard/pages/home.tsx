@@ -24,6 +24,8 @@ import TeacherModalAddCourse from "../components/teacher-modal-add-course";
 import TeacherModalAddDiscussion from "../components/teacher-modal-add-discussion";
 import "./home.css";
 import Statistic from "../components/statistic/statistic";
+import LecturerCourse from "../../lecturer/lecturerCourse";
+import useModal from "../../../hooks/useModal";
 
 function Home() {
   const isLogged = sessionStorage.getItem("jwt");
@@ -52,6 +54,8 @@ function Home() {
   const [showModalAddCourse, setShowModalAddCourse] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingHome, setIsLoadingHome] = useState(false);
+
+  const {isOpen, toggle} = useModal();
 
   let accountId = "";
   const [searchData, setSearchData] = useState(false);
@@ -207,6 +211,7 @@ function Home() {
     <>
       {!isLoading ? (
         <div className="all-page">
+          <LecturerCourse isOpen={isOpen} toggle={toggle} data={teacher.courses}/>
           <div className="sidebar-content">
             {userRole === "Teacher" ? (
               <Sidebar
@@ -382,7 +387,7 @@ function Home() {
                         : null}
                     </div>
                     <div className="w-100 d-flex justify-content-center mt-3">
-                      <button className="see-all-btn">See All</button>
+                      <button className="see-all-btn" onClick={toggle}>See All</button>
                     </div>
                   </div>
                 </div>
@@ -754,8 +759,13 @@ function Home() {
                 <h2>Statistics</h2>
             {isLogged?
               (
+                userRole === "Teacher"?
                 <>
                   {account && <Statistic account={account}></Statistic>}
+                </>
+                :
+                <>
+                  <p>On Development</p>
                 </>
               )
               :

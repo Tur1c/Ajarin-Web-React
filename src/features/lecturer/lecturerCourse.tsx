@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 interface ModalType{
     isOpen: boolean;
     toggle: () => void;
-    data: CourseList[];
+    data: CourseList[] | undefined;
 }
 
 const LecturerCourse = (props:ModalType) => {
@@ -17,7 +17,7 @@ const LecturerCourse = (props:ModalType) => {
             <div className="course-private-modal-overlay" onClick={props.toggle}>
             <div onClick={(e) => e.stopPropagation()} className="course-private-modal-box text-dark" style={{ overflowY:"scroll" }}>
                 <div className="d-flex row justify-content-start flex-wrap" style={{ marginLeft:"4rem" }}>
-                    {props.data.map ( (course, idx) => (
+                    { props.data? props.data.map ( (course, idx) => (
                     //     <li
                     //     className="card"
                     //     key={idx}
@@ -167,7 +167,8 @@ const LecturerCourse = (props:ModalType) => {
                 //     </div>
                 //     </Link>
                 //   </div>
-                    ))}
+                    )) :
+                    ""}
                 </div>
                 
             </div>

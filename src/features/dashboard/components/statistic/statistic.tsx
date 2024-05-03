@@ -85,10 +85,16 @@ const Statistic = ({account}:Props) => {
                   </button>
                 </div>
               </header>
-        <Bar data={barData}></Bar>
-        <Pie
-            data={pieData}
-        ></Pie>
+              <div className="bar-chart w-75">
+                  <Bar data={barData}></Bar>
+
+              </div>
+              <div className="pie-chart w-75">
+                  <Pie
+                      data={pieData}
+                  ></Pie>
+
+              </div>
     </>
   )
 }
