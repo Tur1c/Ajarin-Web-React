@@ -273,13 +273,12 @@ const Calendar = () => {
 
   console.log(accountDisc.at(0)?.discussion.disc_date.toString() + " " + accountDisc.at(0)?.discussion.disc_starttime.toString());
   console.log(currTeacherDisc,dayjs(accountDisc.at(0)?.discussion.disc_date), dayjs(accountDisc.at(0)?.discussion.disc_date.toString() + " " + accountDisc.at(0)?.discussion.disc_starttime.toString()));
-  console.log(dayjs("15:45:00","HH:mm:ss").diff(dayjs("15:30:00","HH:mm:ss"),'minutes'));
-  console.log(dayjs(accountDisc.at(0)?.discussion.disc_starttime.toString(),"HH:mm:ss").diff(dayjs(accountDisc.at(0)?.discussion.disc_endtime.toString(),"HH:mm:ss"), 'minutes'));
-  console.log(dayjs(accountDisc.at(0)?.discussion.disc_starttime.toString(),"HH:mm:ss").diff(dayjs(),'minutes'));
-  console.log(dayjs().format("HH:mm:ss"));
-  console.log(dayjs().format("YYYY-MM-DD"),dayjs(accountDisc.at(6)?.discussion.disc_date.toString()).format("YYYY-MM-DD"), dayjs().subtract(1, 'day').format("YYYY-MM-DD") == dayjs(accountDisc.at(6)?.discussion.disc_date.toString()).format("YYYY-MM-DD"), accountDisc.at(6)?.discussion.disc_date.toString(), dayjs(accountDisc.at(6)?.discussion.disc_date.toString()).format("YYYY-MM-DD"));
-  console.log(accountDisc.at(6)?.discussion.disc_date.toString().substring(0,10) + " " + accountDisc.at(6)?.discussion.disc_starttime.toString());
-  console.log(dayjs(accountDisc.at(6)?.discussion.disc_date.toString().substring(0,10) + " " + accountDisc.at(6)?.discussion.disc_starttime.toString()), dayjs(), dayjs(accountDisc.at(6)?.discussion.disc_date.toString().substring(0,10) + " " + accountDisc.at(6)?.discussion.disc_starttime.toString()).diff(dayjs(), 'minutes'))
+  
+  console.log(accountDisc.at(6));
+  console.log(dayjs(accountDisc.at(6)?.discussion.disc_date.toString().substring(0,10) + " " + accountDisc.at(6)?.discussion.disc_endtime.toString()).add(1,'day').diff(dayjs(), 'minutes'),
+  dayjs(accountDisc.at(6)?.discussion.disc_date.toString().substring(0,10) + " " + accountDisc.at(6)?.discussion.disc_endtime.toString()).add(1, 'day').diff(dayjs(), 'minutes')
+  )
+  console.log( dayjs(accountDisc.at(6)?.discussion.disc_date.toString().substring(0,10) + " " + accountDisc.at(6)?.discussion.disc_endtime.toString()).add(1, 'day').diff(dayjs(), 'minutes') < 0 && dayjs(accountDisc.at(6)?.discussion.disc_date.toString().substring(0,10) + " " + accountDisc.at(6)?.discussion.disc_endtime.toString()).add(1, 'day').diff(dayjs(), 'minutes') >= -5)
 
   return (
     <div>
@@ -599,14 +598,14 @@ const Calendar = () => {
                                       {dayjs().format("YYYY-MM-DD").localeCompare(dayjs(data.discussion.disc_date.toString()).format("YYYY-MM-DD")) === 0?
                                         (
                                           //di hari ini tapi masih belum selisih 15 menit
-                                          dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_starttime.toString()).diff(dayjs(), 'minutes') > 15?
+                                          dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_starttime.toString()).add(1, 'day').diff(dayjs(), 'minutes') > 15?
                                             <>
-                                              <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Join Disabled</button>
+                                              <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Join Disabled didalem</button>
                                               <button className="badge px-5 py-2" style={{ backgroundColor:"white",color:"#11235A" }} onClick={() => cancelDisc(data.discussion.disc_id)}>Cancel</button>
                                             </>
                                           :
                                           //di hari ini dan selisih uda 15 menit
-                                          dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_starttime.toString()).diff(dayjs(), 'minutes') <= 15 && dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_endtime.toString()).diff(dayjs(), 'minutes') != 0 ?
+                                          dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_starttime.toString()).add(1, 'day').diff(dayjs(), 'minutes') <= 15 && dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_endtime.toString()).add(1, 'day').diff(dayjs(), 'minutes') > 0 ?
                                           (
                                             <>
                                               <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }}>Join DDekat</button>
@@ -615,7 +614,7 @@ const Calendar = () => {
                                           )
                                           :
                                           (
-                                            dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_endtime.toString()).diff(dayjs(), 'minutes') < 0 && dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_endtime.toString()).diff(dayjs(), 'minutes') >= -5 ?
+                                            dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_endtime.toString()).add(1, 'day').diff(dayjs(), 'minutes') <= 0 && dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_endtime.toString()).add(1, 'day').diff(dayjs(), 'minutes') >= -5 && userRole !== "Teacher" ?
                                             //5 menit buat mark as complete
                                             <>
                                               <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }}>Mark as Complete</button>
@@ -623,7 +622,7 @@ const Calendar = () => {
                                             :
                                             //5 menit habis, jadi dia completed sndiri tapi status ga keset complete
                                             <>
-                                              <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Completed</button> 
+                                              <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Completed asd</button> 
                                             </>
                                           )
                                         ) 
