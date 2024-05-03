@@ -278,6 +278,8 @@ const Calendar = () => {
   console.log(dayjs(accountDisc.at(0)?.discussion.disc_starttime.toString(),"HH:mm:ss").diff(dayjs(),'minutes'));
   console.log(dayjs().format("HH:mm:ss"));
   console.log(dayjs().format("YYYY-MM-DD"),dayjs(accountDisc.at(6)?.discussion.disc_date.toString()).format("YYYY-MM-DD"), dayjs().subtract(1, 'day').format("YYYY-MM-DD") == dayjs(accountDisc.at(6)?.discussion.disc_date.toString()).format("YYYY-MM-DD"), accountDisc.at(6)?.discussion.disc_date.toString(), dayjs(accountDisc.at(6)?.discussion.disc_date.toString()).format("YYYY-MM-DD"));
+  console.log(accountDisc.at(6)?.discussion.disc_date.toString().substring(0,10) + " " + accountDisc.at(6)?.discussion.disc_starttime.toString());
+  console.log(dayjs(accountDisc.at(6)?.discussion.disc_date.toString().substring(0,10) + " " + accountDisc.at(6)?.discussion.disc_starttime.toString()), dayjs(), dayjs(accountDisc.at(6)?.discussion.disc_date.toString().substring(0,10) + " " + accountDisc.at(6)?.discussion.disc_starttime.toString()).diff(dayjs(), 'minutes'))
 
   return (
     <div>
@@ -594,18 +596,26 @@ const Calendar = () => {
                                     </div>
                                   </div>
                                     <div className="d-flex button-disc justify-content-around">
-                                      {dayjs().subtract(1, 'day').format("YYYY-MM-DD").localeCompare(dayjs(data.discussion.disc_date.toString()).format("YYYY-MM-DD")) === 0?
+                                      {dayjs().format("YYYY-MM-DD").localeCompare(dayjs(data.discussion.disc_date.toString()).format("YYYY-MM-DD")) === 0?
                                         (
-                                          dayjs(data.discussion.disc_starttime.toString(), "HH:mm:ss").diff(dayjs().format("HH:mm:ss"), 'minutes') <= 15 && dayjs(data.discussion.disc_endtime.toString(), "HH:mm:ss").diff(dayjs().format("HH:mm:ss"), 'minutes') != 0 ?
+                                          //di hari ini tapi masih belum selisih 15 menit
+                                          dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_starttime.toString()).diff(dayjs(), 'minutes') > 15?
+                                            <>
+                                              <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Join Disabled</button>
+                                              <button className="badge px-5 py-2" style={{ backgroundColor:"white",color:"#11235A" }} onClick={() => cancelDisc(data.discussion.disc_id)}>Cancel</button>
+                                            </>
+                                          :
+                                          //di hari ini dan selisih uda 15 menit
+                                          dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_starttime.toString()).diff(dayjs(), 'minutes') <= 15 && dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_endtime.toString()).diff(dayjs(), 'minutes') != 0 ?
                                           (
                                             <>
-                                              <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }}>Join</button>
+                                              <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }}>Join DDekat</button>
                                               <button className="badge px-5 py-2" style={{ backgroundColor:"white",color:"#11235A" }} onClick={() => cancelDisc(data.discussion.disc_id)}>Cancel</button>
                                             </>
                                           )
                                           :
                                           (
-                                            dayjs(data.discussion.disc_endtime.toString(), "HH:mm:ss").diff(dayjs().format("HH:mm:ss"), 'minutes') < 0 && dayjs(data.discussion.disc_endtime.toString(), "HH:mm:ss").diff(dayjs().format("HH:mm:ss"), 'minutes') >= -5 ?
+                                            dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_endtime.toString()).diff(dayjs(), 'minutes') < 0 && dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_endtime.toString()).diff(dayjs(), 'minutes') >= -5 ?
                                             //5 menit buat mark as complete
                                             <>
                                               <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }}>Mark as Complete</button>
