@@ -463,7 +463,7 @@ function TeacherModalAddDiscussion(props: any) {
                   >
                     Back
                   </button>
-                  <button type="submit" className="submit-btn fw-bold">
+                  <button type="submit" className="submit-btn fw-bold mt-0">
                     Set
                   </button>
                 </div>

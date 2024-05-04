@@ -145,8 +145,16 @@ const ReqPrivate = (props: ModalType) => {
           withCredentials: true,
         }
       );
-      console.log(response);
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Success " + status + " private request",
+        background: "#11235a",
+        color: "#fff",
+        confirmButtonColor: "#f6e976",
+        confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+      }).then(function () {
+        window.location.reload();
+      });
     } catch (err) {
       console.log(err);
     }
