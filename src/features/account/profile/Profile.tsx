@@ -175,10 +175,9 @@ const Profile = () => {
       showCancelButton: true,
     }).then(async (result) => {
       if (result.isConfirmed) {
-        DELETE_URL = DELETE_URL + notifId;
         try {
           const response = await axios.get(
-            DELETE_URL,
+            DELETE_URL + notifId,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -201,10 +200,9 @@ const Profile = () => {
   }
 
   const readNotif = async (notifId:number) => {
-    READ_URL = READ_URL + notifId;
     try {
       const response = await axios.get(
-        READ_URL,
+        READ_URL + notifId,
         {
           headers: {
             "Content-Type": "application/json",
@@ -591,6 +589,7 @@ const Profile = () => {
                         }
                             <span className="ms-4" style={{ color: data.isRead? "gray" : "black" }}>{data.message}</span>
                         <FaRegTrashAlt onClick={() => deleteNotif(data.notif_id)} style={{ cursor:"pointer",fontSize:"24px" }} className="ms-auto me-5"/>
+                        <p>{data.notif_id}</p>
                       </div>
                     ))}
                   </Tab>
