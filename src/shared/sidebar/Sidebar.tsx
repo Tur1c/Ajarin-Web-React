@@ -219,7 +219,7 @@ const Sidebar = ({
                           src={
                              !account?.urlImage?
                             "/assets/default_picture.png"
-                           : account.urlImage}
+                           : "/" + account.urlImage}
                           alt=""
                           style={{
                             height: "5vw",

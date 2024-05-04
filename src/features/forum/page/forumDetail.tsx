@@ -126,11 +126,9 @@ const ForumDetail = () => {
 
       console.log("updated Reply", newReplyInputted);
 
-      const newForumListData: ForumReplyListOutput = {
-        forum_reply_list: sortForum(newReplyInputted),
-      };
+      // const newForumListData = ForumReplyListData.forum_reply_list.push(newReply);
 
-      setForumReplyListData(newForumListData);
+      setForumReplyListData({ forum_reply_list: newReplyInputted });
 
       console.log(ForumReplyListData, "add input");
 
@@ -278,7 +276,7 @@ const ForumDetail = () => {
   // Likes Reply
 
   const handleLikeClick = async (fr_id: number) => {
-    console.log("like ygy");  
+    console.log("like ygy");
     const newLike: newLikes = {
       question_id: forum.questionId,
       fr_id: fr_id,
@@ -286,29 +284,29 @@ const ForumDetail = () => {
     };
     console.log(ForumReplyListData, "sebelum cek");
 
-    ForumReplyListData.forum_reply_list.forEach((data) => {
-      console.log(data.fr_id === fr_id, "masuk ke cek");
+    // ForumReplyListData.forum_reply_list.forEach((data) => {
+    //   console.log(data.fr_id === fr_id, "masuk ke cek");
 
-      if (data.fr_id === fr_id) {
-        console.log(data);
+    //   if (data.fr_id === fr_id) {
+    //     console.log(data);
 
-        data.likes.map((likes) => {
-          console.log(likes.email, "cek like");
-          console.log(email, "cek like");
+    //     data.likes.map((likes) => {
+    //       console.log(likes.email, "cek like");
+    //       console.log(email, "cek like");
 
-          if (likes.email === email) {
-            setAlreadyLike(true);
-          }
-        });
-      }
-    });
+    //       if (likes.email === email) {
+    //         setAlreadyLike(true);
+    //       }
+    //     });
+    //   }
+    // });
 
     console.log(alreadyLike);
 
-    if (alreadyLike) {
-      setAlreadyLike(false);
-      handleUnlikeClick(fr_id);
-    }
+    // if (alreadyLike) {
+    //   setAlreadyLike(false);
+    //   handleUnlikeClick(fr_id);
+    // }
 
     console.log("ini data new ygy", newLike);
 
@@ -347,11 +345,13 @@ const ForumDetail = () => {
         (data) => {
           if (data.fr_id === fr_id) {
             data.fr_likes = data.fr_likes + 1;
-            data.likes = response.data.outputSchema.replies.find((reply: { fr_id: number; likes: any; }) => {
-              if(reply.fr_id === fr_id) {
-                return reply;
+            data.likes = response.data.outputSchema.replies.find(
+              (reply: { fr_id: number; likes: any }) => {
+                if (reply.fr_id === fr_id) {
+                  return reply;
+                }
               }
-            }).likes;
+            ).likes;
           }
           return data;
         }
@@ -376,7 +376,6 @@ const ForumDetail = () => {
       console.error("Error adding data: ", error);
     }
     setAlreadyLike(false);
-
   };
 
   const handleUnlikeClick = async (fr_id: number) => {
@@ -388,23 +387,23 @@ const ForumDetail = () => {
       email: email,
     };
 
-    ForumReplyListData.forum_reply_list.forEach((data) => {
-      if (data.fr_id === fr_id) {
-        data.likes.map((likes) => {
-          console.log(likes, "cek likes");
+    // ForumReplyListData.forum_reply_list.forEach((data) => {
+    //   if (data.fr_id === fr_id) {
+    //     data.likes.map((likes) => {
+    //       console.log(likes, "cek likes");
 
-          if (likes.email === email) {
-            setAlreadyUnlike(true);
-          }
-        });
-      }
-    });
-    console.log(alreadyUnlike  );
+    //       if (likes.email === email) {
+    //         setAlreadyUnlike(true);
+    //       }
+    //     });
+    //   }
+    // });
+    // console.log(alreadyUnlike  );
 
-    if (alreadyUnlike) {
-      setAlreadyUnlike(false);
-      handleLikeClick(fr_id);
-    }
+    // if (alreadyUnlike) {
+    //   setAlreadyUnlike(false);
+    //   handleLikeClick(fr_id);
+    // }
     console.log("data yg mao diunlike", newUnlike);
 
     try {
@@ -439,11 +438,13 @@ const ForumDetail = () => {
         (data) => {
           if (data.fr_id === fr_id) {
             data.fr_likes = data.fr_likes - 1;
-            data.likes = response.data.outputSchema.replies.find((reply: { fr_id: number; likes: any; }) => {
-              if(reply.fr_id === fr_id) {
-                return reply;
+            data.likes = response.data.outputSchema.replies.find(
+              (reply: { fr_id: number; likes: any }) => {
+                if (reply.fr_id === fr_id) {
+                  return reply;
+                }
               }
-            }).likes;
+            ).likes;
           }
           return data;
         }
@@ -632,9 +633,20 @@ const ForumDetail = () => {
                                 backgroundColor: "black",
                               }}
                               src={
-                                `/assets/` +
                                 ForumReplyListData.forum_reply_list[editReplyID]
-                                  .fr_user.profile_pic
+                                  .fr_user.profile_pic !== undefined
+                                  ? "/assets/" +
+                                    ForumReplyListData.forum_reply_list[
+                                      editReplyID
+                                    ].fr_user.profile_pic
+                                  : ForumReplyListData.forum_reply_list[
+                                      editReplyID
+                                    ].fr_user.urlImage
+                                  ? "/assets/" +
+                                    ForumReplyListData.forum_reply_list[
+                                      editReplyID
+                                    ].fr_user.urlImage
+                                  : "/assets/default_picture.png"
                               }
                               alt=""
                             />
@@ -653,9 +665,12 @@ const ForumDetail = () => {
                               </h3>
                               <p>
                                 Replied on{" "}
-                                {ForumReplyListData.forum_reply_list[
-                                  editReplyID
-                                ].fr_replied_at.toString()}
+                                {format(
+                                  ForumReplyListData.forum_reply_list[
+                                    editReplyID
+                                  ].fr_replied_at,
+                                  "MMMM do yyyy, h:mm:ss a"
+                                )}
                               </p>
                             </div>
                           </div>
@@ -713,7 +728,13 @@ const ForumDetail = () => {
                                     height: "4rem",
                                     backgroundColor: "black",
                                   }}
-                                  src={data.fr_user.profile_pic !== null ? "/assets/" + data.fr_user.profile_pic : "/assets/default_picture.png"}
+                                  src={
+                                    data.fr_user.profile_pic !== undefined
+                                      ? "/assets/" + data.fr_user.profile_pic
+                                      : data.fr_user.urlImage
+                                      ? "/assets/" + data.fr_user.urlImage
+                                      : "/assets/default_picture.png"
+                                  }
                                   alt=""
                                 />
                                 <div className="name-and-date">

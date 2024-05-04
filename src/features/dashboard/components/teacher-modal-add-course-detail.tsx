@@ -103,10 +103,10 @@ function TeacherModalAddCourseDetail(props: any) {
             style={{ height: "2rem" }}
           >
             <div className="close-btn">
-              <IoIosCloseCircleOutline
+              {/* <IoIosCloseCircleOutline
                 style={{ color: "#fff", fontSize: "54px" }}
                 onClick={props.onHide}
-              />
+              /> */}
             </div>
             <div
               className="d-flex pe-4"

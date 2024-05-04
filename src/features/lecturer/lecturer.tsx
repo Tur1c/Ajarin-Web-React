@@ -156,7 +156,7 @@ const Lecturer = () => {
         }
       );
       Swal.fire({
-        title: "Success Subscribed Lecturer",
+        title: "Success Unsubscribed Lecturer",
         icon: "success",
         background: "#11235a",
         color: "#fff",
@@ -595,7 +595,7 @@ const Lecturer = () => {
                           }}
                         >
                           {currentTeacherList.length > 0 ? (
-                            <div className="d-flex row">
+                            <div className="d-flex row mb-3">
                               {currentTeacherList.map((data) => (
                                 <div className="w-50 p-2">
                                   <div
@@ -675,6 +675,12 @@ const Lecturer = () => {
                               No Subscribed Lecturer Found
                             </div>
                           )}
+                          <Pagination
+                            totalClass={account.subscribed_lecturer.length}
+                            classPerPage={classPerPage}
+                            onPageChange={handlePageChange}
+                            currentPage={currentPage}
+                          />
                         </div>
                       ) : (
                         <div
@@ -725,20 +731,8 @@ const Lecturer = () => {
                               />
                             </g>
                           </svg>
-                          <Pagination
-                            totalClass={account.subscribed_lecturer.length}
-                            classPerPage={classPerPage}
-                            onPageChange={handlePageChange}
-                            currentPage={currentPage}
-                          />
                         </div>
                       )}
-                      <Pagination
-                        totalClass={account.subscribed_lecturer.length}
-                        classPerPage={classPerPage}
-                        onPageChange={handlePageChange}
-                        currentPage={currentPage}
-                      />
                     </div>
                   </div>
                 </>

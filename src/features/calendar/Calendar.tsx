@@ -848,7 +848,7 @@ const Calendar = () => {
                                     >
                                       <img
                                         src={
-                                          teacher.account.urlImage ||
+                                          "/assets/" + teacher.account.urlImage ||
                                           `assets/default_picture.png`
                                         }
                                         alt=""

@@ -64,8 +64,9 @@ function ModalCentered({show,onHide,data,joined}:Props) {
         color: "#fff",
         confirmButtonColor: "#f6e976",
         confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+      }).then(function() {
+        window.location.reload();
       });
-      window.location.reload();
       // const output = transfromToServiceLoginAccountOutput(response.data);
       // const token = output.token;
     } catch (error: any) {

@@ -104,7 +104,7 @@ function HomeDiscussion(props: any) {
   };
 
   const checkJoined = (title:string) => {
-    const test = account.studentdisc_list.find(
+    const test = account?.studentdisc_list.find(
       (x) => x.discussion.disc_title === title
     );
     if(test) {

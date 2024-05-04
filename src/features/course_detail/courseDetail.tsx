@@ -18,6 +18,12 @@ import {
   transformToStudentCourseOutput,
 } from "../../model/course/course-list";
 import { ApiResponse } from "../../model/schema/base_schema";
+import {
+  InquiryTeacherSchema,
+  TeacherListOutput,
+  TeacherOutput,
+  transfromToTeacherListOutput,
+} from "../../model/teacher/teacher-model";
 import "./courseDetail.css";
 
 const CourseDetail = () => {
@@ -32,12 +38,21 @@ const CourseDetail = () => {
     completed_chap: "",
     status: "",
     rating: 0,
-    joined_date: new Date()
+    joined_date: new Date(),
   });
   const [isOpen, setisOpen] = useState(true);
 
   console.log(state.course?.course ? true : false);
-  const account: AccountOutput = !state.acc ? null : state.acc.firstName !== "" ? state.acc : null;
+  const account: AccountOutput = !state.acc
+    ? null
+    : state.acc.firstName !== ""
+    ? state.acc
+    : null;
+  const teacher: TeacherOutput = state.teacher.user
+    ? state.teacher.user
+    : state.teacher.account;
+  console.log(teacher, "teacher state");
+
   const course: CourseList = state.course?.course
     ? state.course.course
     : state.data.course?.course_id
@@ -46,8 +61,9 @@ const CourseDetail = () => {
   console.log(course, account);
 
   const JOIN_URL = "/api/account/joincourse";
-  const STUDENT_COURSE_URL = account?
-    ("/api/account/course?account=" + account.id + "&course=" + course.id) : "";
+  const STUDENT_COURSE_URL = account
+    ? "/api/account/course?account=" + account.id + "&course=" + course.id
+    : "";
   const RATE_URL = "/api/course/ratecourse";
   console.log(STUDENT_COURSE_URL);
 
@@ -125,14 +141,34 @@ const CourseDetail = () => {
     } catch (error) {}
   };
 
+  const [teachers, setTeacher] = useState<TeacherListOutput>({
+    teachers: [],
+  });
+
+  const fetchTeacherData = async () => {
+    try {
+      const response = await axios.get<ApiResponse<InquiryTeacherSchema>>(
+        "/api/account/inquiry/teacher",
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      setTeacher(transfromToTeacherListOutput(response.data.outputSchema));
+      setTimeout(() => {}, 2000);
+    } catch (error) {}
+  };
+
   useEffect(() => {
     if (
-      account && !!account.studentcourse_list.find(
+      account &&
+      !!account.studentcourse_list.find(
         (course) => course.course.course_title === params.course_title
       )
     ) {
       getStudentCourseData();
     }
+    fetchTeacherData();
   }, []);
 
   console.log(studentCourse);
@@ -209,6 +245,49 @@ const CourseDetail = () => {
   };
 
   console.log(!studentCourse.rating);
+  
+  function handleLecturerDetail(): void {
+
+    navigate(
+      "/lecturer/" +
+        (state.teacher.account
+          ? state.teacher.account.fullName
+            ? state.teacher.account.fullName
+            : state.teacher.account.firstName +
+              " " +
+              state.teacher.account.lastName
+          : state.teacher.user.fullName
+          ? state.teacher.user.fullName
+          : state.teacher.user.firstName +
+            " " +
+            state.teacher.user.lastName),
+      {
+        state: {
+          data: teachers.teachers.find((x) => {
+            if (
+              x.account.fullName ===
+              (state.teacher.account
+                ? state.teacher.account.fullName
+                  ? state.teacher.account.fullName
+                  : state.teacher.account.firstName +
+                    " " +
+                    state.teacher.account.lastName
+                : state.teacher.user.fullName
+                ? state.teacher.user.fullName
+                : state.teacher.user.firstName +
+                  " " +
+                  state.teacher.user.lastName)
+            ) {
+              return x;
+            }
+          }),
+          account: account,
+          detail: true,
+        },
+      }
+    );
+  }
+
   return (
     <div
       className="container-fluid"
@@ -571,19 +650,7 @@ const CourseDetail = () => {
           <div className="d-flex" style={{ height: "10vh" }}>
             <div
               className="w-100 d-flex justify-content-center align-items-center"
-              onClick={() =>
-                navigate(
-                  "/lecturer/" +
-                    (state.teacher.account.fullName
-                      ? state.teacher.account.fullName
-                      : state.teacher.account.firstName +
-                        " " +
-                        state.teacher.account.lastName),
-                  {
-                    state: { data: state.teacher, account: account },
-                  }
-                )
-              }
+              onClick={() => handleLecturerDetail()}
             >
               <div className="h-100">
                 <div
@@ -606,11 +673,17 @@ const CourseDetail = () => {
                     }}
                   />
                   <p className="d-flex p-0 m-0 fw-bold">
-                    {state.teacher.account.fullName
+                    {state.teacher.account
                       ? state.teacher.account.fullName
-                      : state.teacher.account.firstName +
+                        ? state.teacher.account.fullName
+                        : state.teacher.account.firstName +
+                          " " +
+                          state.teacher.account.lastName
+                      : state.teacher.user.fullName
+                      ? state.teacher.user.fullName
+                      : state.teacher.user.firstName +
                         " " +
-                        state.teacher.account.lastName}
+                        state.teacher.user.lastName}
                   </p>
                 </div>
               </div>
