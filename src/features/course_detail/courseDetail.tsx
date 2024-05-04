@@ -73,6 +73,23 @@ const CourseDetail = () => {
     if (!account) {
       navigate("/login");
     } else {
+      console.log(account.coin);
+      console.log(course.price);
+      
+      if(account.coin - course.price < 0) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Coin not enough",
+          background: "#11235a",
+          color: "#fff",
+          confirmButtonColor: "#f6e976",
+          confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+        }).then(function() {
+          navigate("/");
+        });
+        return;
+      }
       try {
         let schema: JoinDiscussionSchema = {
           email: account?.email,

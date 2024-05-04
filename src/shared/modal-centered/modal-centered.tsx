@@ -5,6 +5,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "../../api/axios";
+import { AccountOutput } from "../../model/Account";
 import { ClassList, JoinDiscussionSchema } from "../../model/course/course-list";
 import "./modal-centered.css";
 
@@ -13,9 +14,10 @@ interface Props{
   onHide: () => void;
   data: ClassList;
   joined: boolean;
+  account: AccountOutput;
 }
 
-function ModalCentered({show,onHide,data,joined}:Props) {
+function ModalCentered({show,onHide,data,joined,account}:Props) {
   const isLogged = sessionStorage.getItem("jwt");
   const user = sessionStorage.getItem("user");
   const navigate = useNavigate();
@@ -33,6 +35,24 @@ function ModalCentered({show,onHide,data,joined}:Props) {
         icon: "error",
         title: "Oops...",
         text: "Full Participant",
+        background: "#11235a",
+        color: "#fff",
+        confirmButtonColor: "#f6e976",
+        confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+      });
+      return;
+    }
+
+    console.log(account.coin);
+    console.log(account.coin - parseInt(data.price));
+    
+    
+
+    if ((account.coin - parseInt(data.price)) < 0) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Coin not enough",
         background: "#11235a",
         color: "#fff",
         confirmButtonColor: "#f6e976",

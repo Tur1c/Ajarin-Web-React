@@ -390,6 +390,7 @@ function HomeDiscussion(props: any) {
         onHide={handleCloseModal}
         data={classData}
         joined={joined}
+        account={account}
       />
     </>
   );
