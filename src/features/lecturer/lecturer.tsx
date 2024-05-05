@@ -138,6 +138,8 @@ const Lecturer = () => {
   };
 
   const handleTeacherDetail = (data: any) => {
+    console.log("bawa apa", data);
+    console.log("bawa apa2", account);
     navigate("/lecturer/" + data.account.fullName, {
       state: { data, account },
     });
@@ -548,6 +550,33 @@ const Lecturer = () => {
                       </Table>
                     </TableContainer>
                   </div>
+                  {currTeacher?.private_disc?.length === 0 ? (
+                    <div
+                      className="d-flex justify-content-center align-items-center w-auto"
+                      style={{
+                        margin: "0rem 1rem",
+                        backgroundColor: "rgba(255,255,255,0.2)",
+                        borderRadius: "0.25rem",
+                        height: "10vh",
+                        cursor: "default",
+                        gap: "0.25rem",
+                      }}
+                    >
+                      You dont have any{" "}
+                      <p
+                        style={{
+                          margin: "0",
+                          color: "var(--yelo)",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Private Request
+                      </p>
+                      for now
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
               ) : (
                 <>
@@ -602,10 +631,10 @@ const Lecturer = () => {
                                     className="d-flex"
                                     style={{
                                       height: "10vh",
-                                      background:
-                                        "radial-gradient(#90928f, #bab8cc)",
+                                      background: "rgba(255,255,255,0.2)",
                                       padding: "0rem 1rem",
                                       borderRadius: "0.25rem",
+                                      
                                     }}
                                   >
                                     <div
@@ -961,7 +990,11 @@ const Lecturer = () => {
 
             <div
               className=""
-              style={{ padding: "0rem 2rem", marginTop: "4rem" }}
+              style={{
+                padding: "0rem 2rem",
+                marginTop: "4rem",
+                marginBottom: "6rem",
+              }}
             >
               <h3
                 className="fw-bold"
@@ -1008,7 +1041,7 @@ const Lecturer = () => {
                           className="d-flex col all-lecturer-container"
                           style={{
                             height: "10vh",
-                            // background: "rgba(255, 255, 255, 0.1)",
+                            // background: "rgba(255, 255, 255, 0.2)",
                             padding: "0rem 0.75rem",
                             borderRadius: "0.25rem",
                           }}
@@ -1095,12 +1128,12 @@ const Lecturer = () => {
                     </svg>
                   </div>
                 )}
-                <Pagination
+                {/* <Pagination
                   totalClass={teachers.teachers.length}
                   classPerPage={classPerPageTeacher}
                   onPageChange={handlePageTeacherChange}
                   currentPage={currentPageTeacher}
-                />
+                /> */}
               </div>
             </div>
           </div>

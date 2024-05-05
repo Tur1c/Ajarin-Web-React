@@ -260,7 +260,7 @@ body {
   background-color: var(--blue);
   display: flex;
   flex-direction: column;
-  height: 50%;
+  height: 40%;
   margin-bottom: 0.5rem;
   border-radius: 0.5rem;
   cursor: default;
@@ -326,8 +326,6 @@ body {
   /* margin-top: 0.5rem; */
   border-radius: 0.5rem;
   background-color: var(--blue);
-  padding-top: 1rem;
-  padding-left: 1rem;
   cursor: default;
   height: max-content;
   flex-grow: 1;
@@ -341,6 +339,15 @@ body {
 .right-home .statistic p {
   font-size: 9px;
   font-weight: 100;
+}
+
+.bar-chart {
+  width: 50%;
+}
+
+.pie-chart {
+  height: 10rem;
+  width: 10rem;
 }
 
 /* Class Discussion */
@@ -413,7 +420,7 @@ body {
 .badge.badge-outlined {
   border: 1px solid transparent;
   border-color: #fff;
-  background-color: #11235a;
+  background-color: var(--lightblue2);
   color: #fff;
 }
 

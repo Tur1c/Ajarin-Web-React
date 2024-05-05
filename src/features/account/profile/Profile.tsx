@@ -2,6 +2,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { Tab, Tabs } from "react-bootstrap";
 import { BiLogoGmail } from "react-icons/bi";
 import { FaFacebookF, FaInstagram, FaRegTrashAlt } from "react-icons/fa";
+import { HiOutlineMailOpen } from "react-icons/hi";
 import { IoIosCloseCircleOutline, IoIosMail } from "react-icons/io";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -17,14 +18,12 @@ import {
 } from "../../../model/Account";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import "./profile.css";
-import { HiOutlineMailOpen } from "react-icons/hi";
 
 const HOME_URL = "/api/account?email=" + sessionStorage.getItem("user");
 const UPDATE_URL = "/api/account/";
 const UPDATE_IMAGE = "/api/account/upload?email=";
 let DELETE_URL = "/api/account/deleteNotif?notif=";
 let READ_URL = "/api/account/readNotif?notif=";
-
 
 const Profile = () => {
   // const { login }: any = useAuth();
@@ -162,7 +161,7 @@ const Profile = () => {
       setIsLoading(false);
     }, 500);
   }, []);
-  const deleteNotif = (notifId:number) => {
+  const deleteNotif = (notifId: number) => {
     Swal.fire({
       title: "Do you want delete the notification?",
       icon: "warning",
@@ -176,54 +175,49 @@ const Profile = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await axios.get(
-            DELETE_URL + notifId,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + isLogged,
-              },
-              withCredentials: true,
-            }
-          );
-            console.log(response);
-            setNotif(notif.filter((x) => x.notif_id != notifId));
-            setAccount({...account, notification:notif});
-            // navigate("/");
-            // if(disc){
-              // setDisc(disc?.filter((x) => x.discussion.disc_id != id));
-              // setAccountDisc(accountDisc.filter((x) => x.discussion.disc_id != id));
-            // }
+          const response = await axios.get(DELETE_URL + notifId, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + isLogged,
+            },
+            withCredentials: true,
+          });
+          console.log(response);
+          setNotif(notif.filter((x) => x.notif_id != notifId));
+          setAccount({ ...account, notification: notif });
+          // navigate("/");
+          // if(disc){
+          // setDisc(disc?.filter((x) => x.discussion.disc_id != id));
+          // setAccountDisc(accountDisc.filter((x) => x.discussion.disc_id != id));
+          // }
         } catch (error) {}
       }
     });
-  }
+  };
 
-  const readNotif = async (notifId:number) => {
+  const readNotif = async (notifId: number) => {
     try {
-      const response = await axios.get(
-        READ_URL + notifId,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + isLogged,
-          },
-          withCredentials: true,
-        }
+      const response = await axios.get(READ_URL + notifId, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + isLogged,
+        },
+        withCredentials: true,
+      });
+
+      setNotif((notif) =>
+        [...notif].map((x) =>
+          x.notif_id === notifId ? { ...x, isRead: true } : x
+        )
       );
-
-        setNotif(notif => [...notif].map(
-          x => x.notif_id === notifId ? ({...x, isRead: true}) : x
-        ));
-        // setNotif(notif.filter((x) => x.notif_id != notifId));
-        // navigate("/");
-        // if(disc){
-          // setDisc(disc?.filter((x) => x.discussion.disc_id != id));
-          // setAccountDisc(accountDisc.filter((x) => x.discussion.disc_id != id));
-        // }
+      // setNotif(notif.filter((x) => x.notif_id != notifId));
+      // navigate("/");
+      // if(disc){
+      // setDisc(disc?.filter((x) => x.discussion.disc_id != id));
+      // setAccountDisc(accountDisc.filter((x) => x.discussion.disc_id != id));
+      // }
     } catch (error) {}
-  }
-
+  };
 
   console.log(account);
   return (
@@ -414,7 +408,7 @@ const Profile = () => {
                                   phoneNumber: e.target.value,
                                 })
                               }
-                              disabled={!editProfile}
+                              disabled
                             />
                           </div>
                           <div className="col-md-6">
@@ -430,7 +424,7 @@ const Profile = () => {
                                 })
                               }
                               placeholder="Email Address"
-                              disabled={!editProfile}
+                              disabled
                             />
                           </div>
                         </div>
@@ -581,15 +575,34 @@ const Profile = () => {
                   </Tab>
                   <Tab eventKey="notification" title="Notification">
                     {notif.map((data, idx) => (
-                      <div className="notif-content text-dark border-bottom border-dark d-flex p-3" key={idx} onClick={() => data.isRead? undefined : readNotif(data.notif_id) }>
-                        {data.isRead? 
-                            <HiOutlineMailOpen style={{ marginLeft:"1cm",fontSize:"24px" }}/>
-                            :
-                            <IoIosMail style={{ marginLeft:"1cm",fontSize:"24px" }}/>
+                      <div
+                        className="notif-content text-dark border-bottom border-top d-flex p-3 bg-warningg"
+                        style={{ borderColor: "var(--grey)" }}
+                        key={idx}
+                        onClick={() =>
+                          data.isRead ? undefined : readNotif(data.notif_id)
                         }
-                            <span className="ms-4" style={{ color: data.isRead? "gray" : "black" }}>{data.message}</span>
-                        <FaRegTrashAlt onClick={() => deleteNotif(data.notif_id)} style={{ cursor:"pointer",fontSize:"24px" }} className="ms-auto me-5"/>
-                        <p>{data.notif_id}</p>
+                      >
+                        {data.isRead ? (
+                          <HiOutlineMailOpen
+                            style={{ marginLeft: "1cm", fontSize: "24px" }}
+                          />
+                        ) : (
+                          <IoIosMail
+                            style={{ marginLeft: "1cm", fontSize: "24px" }}
+                          />
+                        )}
+                        <span
+                          className="ms-4"
+                          style={{ color: data.isRead ? "gray" : "black" }}
+                        >
+                          {data.message}
+                        </span>
+                        <FaRegTrashAlt
+                          onClick={() => deleteNotif(data.notif_id)}
+                          style={{ cursor: "pointer", fontSize: "24px" }}
+                          className="trash-btn ms-auto me-5"
+                        />
                       </div>
                     ))}
                   </Tab>
@@ -601,15 +614,20 @@ const Profile = () => {
             className="d-flex justify-content-end"
             style={{ marginTop: "1rem" }}
           >
-            <div className="socmed-list">
-              <div className="fb-item rounded-circle">
-                <FaFacebookF />
-              </div>
-              <div className="ig-item rounded-circle">
-                <FaInstagram />
-              </div>
-              <div className="gmail-item rounded-circle">
-                <BiLogoGmail />
+            <div className="text-end">
+              <p className="text-white m-1">
+                <b>Contact Us</b>
+              </p>
+              <div className="socmed-list">
+                <div className="fb-item rounded-circle">
+                  <FaFacebookF />
+                </div>
+                <div className="ig-item rounded-circle">
+                  <FaInstagram />
+                </div>
+                <div className="gmail-item rounded-circle">
+                  <BiLogoGmail />
+                </div>
               </div>
             </div>
           </div>

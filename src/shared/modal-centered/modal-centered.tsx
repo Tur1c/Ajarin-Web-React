@@ -6,10 +6,13 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "../../api/axios";
 import { AccountOutput } from "../../model/Account";
-import { ClassList, JoinDiscussionSchema } from "../../model/course/course-list";
+import {
+  ClassList,
+  JoinDiscussionSchema,
+} from "../../model/course/course-list";
 import "./modal-centered.css";
 
-interface Props{
+interface Props {
   show: boolean | undefined;
   onHide: () => void;
   data: ClassList;
@@ -17,13 +20,21 @@ interface Props{
   account: AccountOutput;
 }
 
-function ModalCentered({show,onHide,data,joined,account}:Props) {
+function ModalCentered({ show, onHide, data, joined, account }: Props) {
   const isLogged = sessionStorage.getItem("jwt");
   const user = sessionStorage.getItem("user");
   const navigate = useNavigate();
   // console.log("modalehehe", props);
+  console.log("muncul apa", data);
 
   const JOIN_URL = "/api/account/join";
+
+  const handleTeacherDetail = (datas: any) => {
+    const data: any = datas.teacher;
+    navigate("/lecturer/" + datas.teacher.account.fullname, {
+      state: { data, account },
+    });
+  };
 
   const JoinDiscussion = async (
     discId: number,
@@ -43,12 +54,7 @@ function ModalCentered({show,onHide,data,joined,account}:Props) {
       return;
     }
 
-    console.log(account.coin);
-    console.log(account.coin - parseInt(data.price));
-    
-    
-
-    if ((account.coin - parseInt(data.price)) < 0) {
+    if (account.coin - parseInt(data.price) < 0) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -84,7 +90,7 @@ function ModalCentered({show,onHide,data,joined,account}:Props) {
         color: "#fff",
         confirmButtonColor: "#f6e976",
         confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
-      }).then(function() {
+      }).then(function () {
         window.location.reload();
       });
       // const output = transfromToServiceLoginAccountOutput(response.data);
@@ -133,11 +139,14 @@ function ModalCentered({show,onHide,data,joined,account}:Props) {
               {data.endtime.toString().slice(0, 5)}
             </span>
           </div>
-          <div className="lecturer-redirect">
+          <div
+            className="lecturer-redirect"
+            onClick={() => handleTeacherDetail(data)}
+          >
             <img
-              className="img-fluid"
+              className="img-fluid bg-light"
               style={{ height: "2vw", width: "2vw", borderRadius: "0.25rem" }}
-              src={"/assets/" + data.image}
+              src={"/assets/" + data.teacher?.account.urlImage}
               alt=""
             />
           </div>
@@ -193,7 +202,13 @@ function ModalCentered({show,onHide,data,joined,account}:Props) {
           </div>
         </div>
       </Modal.Body>
-      <Modal.Footer className={(joined? "modal-footer-container-disabled" : "modal-footer-container") + " w-100 p-0"}>
+      <Modal.Footer
+        className={
+          (joined
+            ? "modal-footer-container-disabled"
+            : "modal-footer-container") + " w-100 p-0"
+        }
+      >
         <div
           className=""
           style={{
@@ -213,19 +228,22 @@ function ModalCentered({show,onHide,data,joined,account}:Props) {
                   color: "white",
                   border: "none",
                   fontSize: "30px",
-                  
                 }}
                 type="button"
                 disabled={joined}
-                onClick={() => JoinDiscussion(data.id, parseInt(data.maxPeople), data.participant)}
+                onClick={() =>
+                  JoinDiscussion(
+                    data.id,
+                    parseInt(data.maxPeople),
+                    data.participant
+                  )
+                }
               >
-                {
-                  joined?
+                {joined ? (
                   <span>Joined</span>
-                  :
-                  (
-                    <>
-                    Join{' '}
+                ) : (
+                  <>
+                    Join{" "}
                     <img
                       className="img-fluid"
                       style={{
@@ -236,10 +254,8 @@ function ModalCentered({show,onHide,data,joined,account}:Props) {
                       alt=""
                     />
                     <b style={{ color: "var(--yelo)" }}> {data.price}</b>
-                    </>
-                  )
-
-                }
+                  </>
+                )}
               </button>
             ) : (
               <b onClick={() => navigate("/login")}>Log In</b>

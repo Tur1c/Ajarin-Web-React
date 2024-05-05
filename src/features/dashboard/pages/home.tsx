@@ -6,6 +6,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
+import useModal from "../../../hooks/useModal";
 import {
   AccountOutput,
   AccountSchema,
@@ -18,14 +19,13 @@ import {
   transformToTeacherOutput,
 } from "../../../model/teacher/teacher-model";
 import { Sidebar } from "../../../shared";
+import LecturerCourse from "../../lecturer/lecturerCourse";
 import HomeClass from "../components/home-class";
 import HomeDiscussion from "../components/home-discussion";
+import Statistic from "../components/statistic/statistic";
 import TeacherModalAddCourse from "../components/teacher-modal-add-course";
 import TeacherModalAddDiscussion from "../components/teacher-modal-add-discussion";
 import "./home.css";
-import Statistic from "../components/statistic/statistic";
-import LecturerCourse from "../../lecturer/lecturerCourse";
-import useModal from "../../../hooks/useModal";
 
 function Home() {
   const isLogged = sessionStorage.getItem("jwt");
@@ -55,7 +55,7 @@ function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingHome, setIsLoadingHome] = useState(false);
 
-  const {isOpen, toggle} = useModal();
+  const { isOpen, toggle } = useModal();
 
   let accountId = "";
   const [searchData, setSearchData] = useState(false);
@@ -98,7 +98,7 @@ function Home() {
   });
   const navigate = useNavigate();
 
-  console.log("ini data courses", teacher);
+  console.log("account", account);
 
   const fetchDataAccount = async () => {
     setIsLoadingHome(true);
@@ -211,7 +211,13 @@ function Home() {
     <>
       {!isLoading ? (
         <div className="all-page">
-          <LecturerCourse isOpen={isOpen} toggle={toggle} data={teacher.courses} acc={account} teacher={teacher}/>
+          <LecturerCourse
+            isOpen={isOpen}
+            toggle={toggle}
+            data={teacher.courses}
+            acc={account}
+            teacher={teacher}
+          />
           <div className="sidebar-content">
             {userRole === "Teacher" ? (
               <Sidebar
@@ -245,7 +251,7 @@ function Home() {
                     <div className="col-6">
                       <button
                         className="create-course-button"
-                        style={{ width: "100%" }}
+                        style={{ width: "100%", borderRadius: "0.25rem" }}
                         onClick={() => handleShowModalAddCourse()}
                       >
                         Create Course
@@ -254,7 +260,7 @@ function Home() {
                     <div className="col-6">
                       <button
                         className="set-discussion-button"
-                        style={{ width: "100%" }}
+                        style={{ width: "100%", borderRadius: "0.25rem" }}
                         onClick={() => handleShowModalAddDiscussion()}
                       >
                         Set Discussion
@@ -263,7 +269,11 @@ function Home() {
                     <div className="col-6">
                       <button
                         className="private-discussion-button"
-                        style={{ width: "100%", marginTop: "2rem" }}
+                        style={{
+                          width: "100%",
+                          marginTop: "2rem",
+                          borderRadius: "0.25rem",
+                        }}
                         onClick={() => handlePageChangePrivateDiscussion()}
                       >
                         Private Discussion Request{" "}
@@ -298,7 +308,11 @@ function Home() {
                     <div className="col-6">
                       <button
                         className="coin-withdraw-button"
-                        style={{ width: "100%", marginTop: "2rem" }}
+                        style={{
+                          width: "100%",
+                          marginTop: "2rem",
+                          borderRadius: "0.25rem",
+                        }}
                         onClick={() => handlePageChangeToCoin()}
                       >
                         Coin{" "}
@@ -315,7 +329,7 @@ function Home() {
                       </button>
                     </div>
                   </div>
-                  <div className="top-courses">
+                  <div className="top-courses h-100">
                     <h1 className="fw-bold">Your Top Courses</h1>
                     <div className="row d-flex m-0 justify-content-around">
                       {teacher.courses
@@ -386,9 +400,36 @@ function Home() {
                             ))
                         : null}
                     </div>
-                    <div className="w-100 d-flex justify-content-center mt-3">
-                      <button className="see-all-btn" onClick={toggle}>See All</button>
-                    </div>
+                    {teacher.courses?.length === 0 ? (
+                      <div
+                        className="align-items-center h-100 d-flex justify-content-center"
+                        style={{
+                          height: "5rem",
+                          gap: "0.5rem",
+                          backgroundColor: "rgba(255,255,255,0.1)",
+                          borderRadius: "0.25rem",
+                        }}
+                      >
+                        You dont have any Course yet. Lets make your own Course
+                        by Clicking{" "}
+                        <p
+                          style={{
+                            color: "var(--yelo)",
+                            fontWeight: "bold",
+                            margin: "0",
+                          }}
+                        >
+                          Set Discussion{" "}
+                        </p>{" "}
+                        !
+                      </div>
+                    ) : (
+                      <div className="w-100 d-flex justify-content-center mt-3">
+                        <button className="see-all-btn" onClick={toggle}>
+                          See All
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               ) : (
@@ -566,141 +607,176 @@ function Home() {
               </Link>
               {!isLoadingHome ? (
                 <>
-                  {userRole === "Teacher"
-                    ? teacher.discussion &&
-                      teacher.discussion.slice(0, 3).map((disc, idx) => (
-                        <div
-                          className={
-                            "card-body  right-disc" +
-                            (idx === 0 ? " right-disc-active" : " ")
-                          }
-                          // style={{
-                          //   backgroundColor: idx === 0 ? "rgba(97, 134, 246, 0.3)" : "none",
-                          // }}
-                          key={idx}
-                          onClick={() => goToDisc(disc.date)}
-                        >
-                          <div className="updisc-container w-100 mx-2">
-                            <h5 className="card-text d-flex justify-content-between">
-                              <div className="disc-date mx-auto text-center border-end border-white justify-content-center align-items-center align-items-center d-flex row">
-                                <h4
-                                  style={{
-                                    margin: 0,
-                                    fontSize: "32px",
-                                    fontWeight: "bold",
-                                  }}
-                                >
-                                  {dayjs(disc.date).format("DD")}
-                                </h4>
-                                <h5
-                                  style={{
-                                    fontSize: "18px",
-                                    fontWeight: "bold",
-                                  }}
-                                >
-                                  {dayjs(disc.date).format("MMM")}
-                                </h5>
-                              </div>
-                              <div className="disc-title my-auto d-flex row px-2 ">
-                                <h6 style={{ margin: 0, fontSize: "14px" }}>
-                                  {disc.title}
-                                  <br />
-                                </h6>
-                                <h6
-                                  style={{
-                                    margin: 0,
-                                    fontSize: "10px",
-                                    color: "var(--yelo)",
-                                  }}
-                                >
-                                  by {teacher.account.fullName}
-                                </h6>
-                              </div>
-                              <div className="disc-time d-flex justify-content-center px-2 border-start border-white">
-                                <h6
-                                  className="d-flex align-items-center justify-content-center"
-                                  style={{ height: "100%", fontSize: "12px" }}
-                                >
-                                  {disc.starttime.toString().slice(0, 5)} -{" "}
-                                  {disc.endtime.toString().slice(0, 5)}
-                                </h6>
-                              </div>
-                            </h5>
-                          </div>
+                  {userRole === "Teacher" ? (
+                    teacher.discussion &&
+                    teacher.discussion.slice(0, 3).map((disc, idx) => (
+                      <div
+                        className={
+                          "card-body right-disc" +
+                          (idx === 0 ? " right-disc-active" : " ")
+                        }
+                        // style={{
+                        //   backgroundColor: idx === 0 ? "rgba(97, 134, 246, 0.3)" : "none",
+                        // }}
+                        key={idx}
+                        onClick={() => goToDisc(disc.date)}
+                      >
+                        <div className="updisc-container w-100 mx-2">
+                          <h5 className="card-text d-flex justify-content-between">
+                            <div className="disc-date mx-auto text-center border-end border-white justify-content-center align-items-center align-items-center d-flex row">
+                              <h4
+                                style={{
+                                  margin: 0,
+                                  fontSize: "32px",
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                {dayjs(disc.date).format("DD")}
+                              </h4>
+                              <h5
+                                style={{
+                                  fontSize: "18px",
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                {dayjs(disc.date).format("MMM")}
+                              </h5>
+                            </div>
+                            <div className="disc-title my-auto d-flex row px-2 ">
+                              <h6 style={{ margin: 0, fontSize: "14px" }}>
+                                {disc.title}
+                                <br />
+                              </h6>
+                              <h6
+                                style={{
+                                  margin: 0,
+                                  fontSize: "10px",
+                                  color: "var(--yelo)",
+                                }}
+                              >
+                                by {teacher.account.fullName}
+                              </h6>
+                            </div>
+                            <div className="disc-time d-flex justify-content-center px-2 border-start border-white">
+                              <h6
+                                className="d-flex align-items-center justify-content-center"
+                                style={{ height: "100%", fontSize: "12px" }}
+                              >
+                                {disc.starttime.toString().slice(0, 5)} -{" "}
+                                {disc.endtime.toString().slice(0, 5)}
+                              </h6>
+                            </div>
+                          </h5>
                         </div>
+                      </div>
+                    ))
+                  ) : account.studentdisc_list.length === 0 ? (
+                    <div
+                      className="w-100  h-100 d-flex justify-content-center align-items-center"
+                      style={{
+                        borderRadius: "0rem",
+                        backgroundColor: "rgba(255,255,255,0.1)",
+                        fontSize: "14px",
+                        borderEndEndRadius: "0.5rem",
+                        borderEndStartRadius: "0.5rem",
+                        gap: "0.25rem",
+                      }}
+                    >
+                      You dont have any{" "}
+                      <p
+                        style={{
+                          fontSize: "14px",
+                          margin: "0",
+                          color: "var(--yelo)",
+                        }}
+                      >
+                        Discussion Agenda
+                      </p>{" "}
+                      yet
+                    </div>
+                  ) : (
+                    account.studentdisc_list
+                      .filter((x) => x.status != "Completed")
+                      .slice(0, 3)
+                      .map((disc, idx) => (
+                        <>
+                          <div
+                            className={
+                              "card-body  right-disc" +
+                              (idx === 0 ? " right-disc-active" : " ")
+                            }
+                            // style={{
+                            //   backgroundColor: idx === 0 ? "rgba(97, 134, 246, 0.3)" : "none",
+                            // }}
+                            key={idx}
+                            onClick={() => goToDisc(disc.discussion.disc_date)}
+                          >
+                            <div className="updisc-container w-100 mx-2">
+                              <h5 className="card-text d-flex justify-content-between">
+                                <div className="disc-date mx-auto text-center border-end border-white justify-content-center align-items-center align-items-center d-flex row">
+                                  <h4
+                                    style={{
+                                      margin: 0,
+                                      fontSize: "32px",
+                                      fontWeight: "bold",
+                                    }}
+                                  >
+                                    {dayjs(disc.discussion.disc_date).format(
+                                      "DD"
+                                    )}
+                                  </h4>
+                                  <h5
+                                    style={{
+                                      fontSize: "18px",
+                                      fontWeight: "bold",
+                                    }}
+                                  >
+                                    {dayjs(disc.discussion.disc_date).format(
+                                      "MMM"
+                                    )}
+                                  </h5>
+                                </div>
+
+                                <div className="disc-title my-auto d-flex row px-2 ">
+                                  <h6 style={{ margin: 0, fontSize: "14px" }}>
+                                    {disc.discussion.disc_title}
+                                    <br />
+                                  </h6>
+                                  <h6
+                                    style={{
+                                      margin: 0,
+                                      fontSize: "10px",
+                                      color: "var(--yelo)",
+                                    }}
+                                  >
+                                    by {disc.discussion.teacher.user.firstName}{" "}
+                                    {disc.discussion.teacher.user.lastName}
+                                  </h6>
+                                </div>
+
+                                <div className="disc-time d-flex justify-content-center px-2 border-start border-white">
+                                  <h6
+                                    className="d-flex align-items-center justify-content-center"
+                                    style={{
+                                      height: "100%",
+                                      fontSize: "12px",
+                                    }}
+                                  >
+                                    {disc.discussion.disc_starttime
+                                      .toString()
+                                      .slice(0, 5)}{" "}
+                                    -{" "}
+                                    {disc.discussion.disc_endtime
+                                      .toString()
+                                      .slice(0, 5)}
+                                  </h6>
+                                </div>
+                              </h5>
+                            </div>
+                          </div>
+                        </>
                       ))
-                    : account.studentdisc_list.filter((x) => x.status != "Completed").slice(0, 3).map((disc, idx) => (
-                        <div
-                          className={
-                            "card-body  right-disc" +
-                            (idx === 0 ? " right-disc-active" : " ")
-                          }
-                          // style={{
-                          //   backgroundColor: idx === 0 ? "rgba(97, 134, 246, 0.3)" : "none",
-                          // }}
-                          key={idx}
-                          onClick={() => goToDisc(disc.discussion.disc_date)}
-                        >
-                          <div className="updisc-container w-100 mx-2">
-                            <h5 className="card-text d-flex justify-content-between">
-                              <div className="disc-date mx-auto text-center border-end border-white justify-content-center align-items-center align-items-center d-flex row">
-                                <h4
-                                  style={{
-                                    margin: 0,
-                                    fontSize: "32px",
-                                    fontWeight: "bold",
-                                  }}
-                                >
-                                  {dayjs(disc.discussion.disc_date).format(
-                                    "DD"
-                                  )}
-                                </h4>
-                                <h5
-                                  style={{
-                                    fontSize: "18px",
-                                    fontWeight: "bold",
-                                  }}
-                                >
-                                  {dayjs(disc.discussion.disc_date).format(
-                                    "MMM"
-                                  )}
-                                </h5>
-                              </div>
-
-                              <div className="disc-title my-auto d-flex row px-2 ">
-                                <h6 style={{ margin: 0, fontSize: "14px" }}>
-                                  {disc.discussion.disc_title}
-                                  <br />
-                                </h6>
-                                <h6
-                                  style={{
-                                    margin: 0,
-                                    fontSize: "10px",
-                                    color: "var(--yelo)",
-                                  }}
-                                >
-                                  by {disc.discussion.teacher.user.firstName} {disc.discussion.teacher.user.lastName}
-                                </h6>
-                              </div>
-
-                              <div className="disc-time d-flex justify-content-center px-2 border-start border-white">
-                                <h6
-                                  className="d-flex align-items-center justify-content-center"
-                                  style={{ height: "100%", fontSize: "12px" }}
-                                >
-                                  {disc.discussion.disc_starttime
-                                    .toString()
-                                    .slice(0, 5)}{" "}
-                                  -{" "}
-                                  {disc.discussion.disc_endtime
-                                    .toString()
-                                    .slice(0, 5)}
-                                </h6>
-                              </div>
-                            </h5>
-                          </div>
-                        </div>
-                      ))}
+                  )}
                 </>
               ) : (
                 <div
@@ -753,16 +829,77 @@ function Home() {
                   </svg>
                 </div>
               )}
+              {userRole === "Teacher" && teacher.discussion?.length === 0 ? (
+                <div
+                  className="w-100  h-100 d-flex justify-content-center align-items-center"
+                  style={{
+                    borderRadius: "0rem",
+                    backgroundColor: "rgba(255,255,255,0.1)",
+                    fontSize: "14px",
+                    borderEndEndRadius: "0.5rem",
+                    borderEndStartRadius: "0.5rem",
+                    gap: "0.25rem",
+                  }}
+                >
+                  You dont have any{" "}
+                  <p
+                    style={{
+                      fontSize: "14px",
+                      margin: "0",
+                      color: "var(--yelo)",
+                    }}
+                  >
+                    Discussion Agenda
+                  </p>{" "}
+                  yet
+                </div>
+              ) : (
+                ""
+              )}
             </div>
 
             <div className="statistic">
               {!isLoadingHome ? (
-                <div className="card-title fw-bold">
-                  <h2>Statistics</h2>
+                <div className="h-100">
+                  <p
+                    style={{
+                      marginLeft: "1rem",
+                      marginTop: "1rem",
+                      fontSize: "21px",
+                      fontWeight: "bold",
+                      flexGrow: "0",
+                    }}
+                  >
+                    Statistic
+                  </p>
                   {isLogged ? (
                     <>{account && <Statistic account={account}></Statistic>}</>
                   ) : (
-                    <p>Sign in to view your statistic</p>
+                    <div
+                      className="w-100 d-flex justify-content-center align-items-center"
+                      style={{
+                        borderRadius: "0rem",
+                        backgroundColor: "rgba(255,255,255,0.1)",
+                        fontSize: "14px",
+                        borderEndEndRadius: "0.5rem",
+                        borderEndStartRadius: "0.5rem",
+                        gap: "0.25rem",
+                        flexGrow: "1",
+                        height: "88.5%",
+                      }}
+                    >
+                      Sign in to view your{" "}
+                      <p
+                        style={{
+                          fontSize: "14px",
+                          margin: "0",
+                          color: "var(--yelo)",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Statistic
+                      </p>
+                    </div>
                   )}
                 </div>
               ) : (

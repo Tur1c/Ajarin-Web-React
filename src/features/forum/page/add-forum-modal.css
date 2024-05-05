@@ -27,10 +27,10 @@
 }
 
 .filtering {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
   width: 15vw;
-  height: 3vh;
+  height: 4vh;
   border-radius: 1rem;
   padding: 0rem 0.5rem;
   color: var(--white);

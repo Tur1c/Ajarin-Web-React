@@ -1,24 +1,32 @@
 import dayjs from "dayjs";
-import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useRef, useState } from "react";
+import {
+  JSXElementConstructor,
+  Key,
+  ReactElement,
+  ReactNode,
+  ReactPortal,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import Carousel from "react-bootstrap/Carousel";
 import {
   BiSolidChevronLeftSquare,
   BiSolidChevronRightSquare,
 } from "react-icons/bi";
-import Swal from 'sweetalert2'
 import { IoSearch } from "react-icons/io5";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import axios from "../../api/axios";
 import { StudentCourse, StudentDisc } from "../../model/Account";
 import { getMonth } from "../../model/calendar/calendar-detail";
 import { ClassList, CourseList } from "../../model/course/course-list";
-import axios from "../../api/axios";
-import Carousel from 'react-bootstrap/Carousel';
 // import ExampleCarouselImage from 'components/ExampleCarouselImage';
+import { GrNext, GrPrevious } from "react-icons/gr";
 import { Sidebar } from "../../shared";
 import "./Calendar.css";
-import { GrPrevious, GrNext } from "react-icons/gr";
-import { BsChevronLeft } from "react-icons/bs";
 
-var relativeTime = require('dayjs/plugin/relativeTime')
+var relativeTime = require("dayjs/plugin/relativeTime");
 dayjs.extend(relativeTime);
 
 const Calendar = () => {
@@ -31,7 +39,6 @@ const Calendar = () => {
   const formatDate = "YYYY-MM-DD";
   const navigate = useNavigate();
 
-  
   const [searchText, setSearchText] = useState("");
   const [currMonthIdx, setCurrMonthIdx] = useState(
     state.discDate ? dayjs(state.discDate).month() : dayjs().month()
@@ -51,21 +58,28 @@ const Calendar = () => {
       : state.account
       ? state.account
       : state;
-  const [accountDisc,setAccountDisc] =  useState<StudentDisc[]>(account.studentdisc_list);
-  const [accountCourse, setAccountCourse] = useState(account.studentcourse_list);
+  const [accountDisc, setAccountDisc] = useState<StudentDisc[]>(
+    account.studentdisc_list
+  );
+  const [accountCourse, setAccountCourse] = useState(
+    account.studentcourse_list
+  );
   // const accountCourse: StudentCourse[] = account.studentcourse_list;
   const accountCourseTemp: StudentCourse[] = account.studentcourse_list;
 
   let CANCEL_URL = "/api/account/cancelDisc?account=" + account.id + "&disc=";
-  let COMPLETE_DISC_URL = "/api/account/completeDisc?account=" + account.id + "&disc=";
+  let COMPLETE_DISC_URL =
+    "/api/account/completeDisc?account=" + account.id + "&disc=";
   // Teacher
   const teacher = state.teacher ? state.teacher : null;
   const teacherDisc: ClassList[] = teacher ? teacher.discussion : null;
-  const [teacherCourse, setTeacherCourse] = useState(teacher ? teacher.courses : null);
+  const [teacherCourse, setTeacherCourse] = useState(
+    teacher ? teacher.courses : null
+  );
   // const teacherCourse: CourseList[] = teacher ? teacher.courses : null;
   const teacherCourseTemp: CourseList[] = teacher ? teacher.courses : null;
 
-  console.log(accountCourse,accountDisc,userRole,account);
+  console.log(accountCourse, accountDisc, userRole, account);
   console.log(teacher, teacherDisc, teacherCourse);
 
   //draggable
@@ -194,7 +208,7 @@ const Calendar = () => {
     return "";
   };
 
-  const cancelDisc = (id:number) => {
+  const cancelDisc = (id: number) => {
     Swal.fire({
       title: "Do you want to cancel joining the discussion?",
       icon: "warning",
@@ -210,53 +224,47 @@ const Calendar = () => {
         CANCEL_URL = CANCEL_URL + id;
         console.log(CANCEL_URL);
         try {
-          const response = await axios.get(
-            CANCEL_URL,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + isLogged,
-              },
-              withCredentials: true,
-            }
-          );
-            console.log(response);
-            navigate("/");
-            // if(disc){
-              // setDisc(disc?.filter((x) => x.discussion.disc_id != id));
-              // setAccountDisc(accountDisc.filter((x) => x.discussion.disc_id != id));
-            // }
+          const response = await axios.get(CANCEL_URL, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + isLogged,
+            },
+            withCredentials: true,
+          });
+          console.log(response);
+          navigate("/");
+          // if(disc){
+          // setDisc(disc?.filter((x) => x.discussion.disc_id != id));
+          // setAccountDisc(accountDisc.filter((x) => x.discussion.disc_id != id));
+          // }
         } catch (error) {}
       }
     });
-  }
+  };
 
-  const completeDisc = async(id:number) => {
+  const completeDisc = async (id: number) => {
     COMPLETE_DISC_URL = COMPLETE_DISC_URL + id;
     console.log(COMPLETE_DISC_URL);
     try {
-      const response = await axios.get(
-        COMPLETE_DISC_URL,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + isLogged,
-          },
-          withCredentials: true,
-        }
-      );
-        console.log(response);
-        navigate("/");
-        // if(disc){
-          // setDisc(disc?.filter((x) => x.discussion.disc_id != id));
-          // setAccountDisc(accountDisc.filter((x) => x.discussion.disc_id != id));
-        // }
+      const response = await axios.get(COMPLETE_DISC_URL, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + isLogged,
+        },
+        withCredentials: true,
+      });
+      console.log(response);
+      navigate("/");
+      // if(disc){
+      // setDisc(disc?.filter((x) => x.discussion.disc_id != id));
+      // setAccountDisc(accountDisc.filter((x) => x.discussion.disc_id != id));
+      // }
     } catch (error) {}
-  }
+  };
 
   const joinDisc = () => {
     window.open("http://www.w3schools.com");
-  }
+  };
 
   // for draggable
   const handleMouseDown = (e: any) => {
@@ -286,29 +294,70 @@ const Calendar = () => {
   };
 
   const handleSearch = () => {
-    
-    if(userRole === "Teacher") {
-      const findCourse = teacherCourseTemp.filter((u) => u.title.toLowerCase().includes(searchText));
-      setTeacherCourse(findCourse); 
+    if (userRole === "Teacher") {
+      const findCourse = teacherCourseTemp.filter((u) =>
+        u.title.toLowerCase().includes(searchText)
+      );
+      setTeacherCourse(findCourse);
     } else {
-      const findCourse = accountCourseTemp.filter((u) => u.course.course_title.toLowerCase().includes(searchText));
+      const findCourse = accountCourseTemp.filter((u) =>
+        u.course.course_title.toLowerCase().includes(searchText)
+      );
       setAccountCourse(findCourse);
     }
-  }
+  };
 
   const handleLoadingTrue = () => setIsLoadingChangeAccount(true);
   const handleLoadingFalse = () => setIsLoadingChangeAccount(false);
 
-  
+  console.log(
+    accountDisc.at(0)?.discussion.disc_date.toString() +
+      " " +
+      accountDisc.at(0)?.discussion.disc_starttime.toString()
+  );
+  console.log(
+    currTeacherDisc,
+    dayjs(accountDisc.at(0)?.discussion.disc_date),
+    dayjs(
+      accountDisc.at(0)?.discussion.disc_date.toString() +
+        " " +
+        accountDisc.at(0)?.discussion.disc_starttime.toString()
+    )
+  );
 
-  console.log(accountDisc.at(0)?.discussion.disc_date.toString() + " " + accountDisc.at(0)?.discussion.disc_starttime.toString());
-  console.log(currTeacherDisc,dayjs(accountDisc.at(0)?.discussion.disc_date), dayjs(accountDisc.at(0)?.discussion.disc_date.toString() + " " + accountDisc.at(0)?.discussion.disc_starttime.toString()));
-  
   console.log(accountDisc.at(6));
-  console.log(dayjs(accountDisc.at(6)?.discussion.disc_date.toString().substring(0,10) + " " + accountDisc.at(6)?.discussion.disc_endtime.toString()).add(1,'day').diff(dayjs(), 'minutes'),
-  dayjs(accountDisc.at(6)?.discussion.disc_date.toString().substring(0,10) + " " + accountDisc.at(6)?.discussion.disc_endtime.toString()).add(1, 'day').diff(dayjs(), 'minutes')
-  )
-  console.log( dayjs(accountDisc.at(6)?.discussion.disc_date.toString().substring(0,10) + " " + accountDisc.at(6)?.discussion.disc_endtime.toString()).add(1, 'day').diff(dayjs(), 'minutes') < 0 && dayjs(accountDisc.at(6)?.discussion.disc_date.toString().substring(0,10) + " " + accountDisc.at(6)?.discussion.disc_endtime.toString()).add(1, 'day').diff(dayjs(), 'minutes') >= -5)
+  console.log(
+    dayjs(
+      accountDisc.at(6)?.discussion.disc_date.toString().substring(0, 10) +
+        " " +
+        accountDisc.at(6)?.discussion.disc_endtime.toString()
+    )
+      .add(1, "day")
+      .diff(dayjs(), "minutes"),
+    dayjs(
+      accountDisc.at(6)?.discussion.disc_date.toString().substring(0, 10) +
+        " " +
+        accountDisc.at(6)?.discussion.disc_endtime.toString()
+    )
+      .add(1, "day")
+      .diff(dayjs(), "minutes")
+  );
+  console.log(
+    dayjs(
+      accountDisc.at(6)?.discussion.disc_date.toString().substring(0, 10) +
+        " " +
+        accountDisc.at(6)?.discussion.disc_endtime.toString()
+    )
+      .add(1, "day")
+      .diff(dayjs(), "minutes") < 0 &&
+      dayjs(
+        accountDisc.at(6)?.discussion.disc_date.toString().substring(0, 10) +
+          " " +
+          accountDisc.at(6)?.discussion.disc_endtime.toString()
+      )
+        .add(1, "day")
+        .diff(dayjs(), "minutes") >= -5
+  );
 
   return (
     <div>
@@ -439,122 +488,229 @@ const Calendar = () => {
                             </p>
                           </div>
                           <div className="disc-container d-flex">
-                          <Carousel indicators={false} wrap={false} style={{ width: "65%", padding: 0 }} 
-                              prevIcon={<GrPrevious style={{ fontSize:"36px",stroke:"#11235A",fill:"white",strokeWidth:"5px",fontWeight:"bold" }}/>}
-                              nextIcon={<GrNext style={{ fontSize:"36px",stroke:"#11235A",fill:"white",strokeWidth:"5px",fontWeight:"bold" }}/>}>
-                            {currTeacherDisc.map((data, idx) => (
-                              <Carousel.Item>
-                              <div
-                                className="card disc-item"
-                                key={idx}
-                                style={{ width: "100%", padding: 0 }}
-                              >
-                                <img
-                                  className="disc-image"
-                                  src={
-                                    data.image
-                                      ? `assets/${data.image}`
-                                      : "assets/private.png"
-                                  }
-                                  alt=""
+                            <Carousel
+                              indicators={false}
+                              wrap={false}
+                              style={{ width: "65%", padding: 0 }}
+                              prevIcon={
+                                <GrPrevious
+                                  style={{
+                                    fontSize: "36px",
+                                    stroke: "#11235A",
+                                    fill: "white",
+                                    strokeWidth: "5px",
+                                    fontWeight: "bold",
+                                  }}
                                 />
-                                <div className="participant-total">
-                                  {data.participant} / {data.maxPeople}
-                                </div>
+                              }
+                              nextIcon={
+                                <GrNext
+                                  style={{
+                                    fontSize: "36px",
+                                    stroke: "#11235A",
+                                    fill: "white",
+                                    strokeWidth: "5px",
+                                    fontWeight: "bold",
+                                  }}
+                                />
+                              }
+                            >
+                              {currTeacherDisc.map((data, idx) => (
+                                <Carousel.Item>
+                                  <div
+                                    className="card disc-item"
+                                    key={idx}
+                                    style={{ width: "100%", padding: 0 }}
+                                  >
+                                    <img
+                                      className="disc-image"
+                                      src={
+                                        data.image
+                                          ? `assets/${data.image}`
+                                          : "assets/private.png"
+                                      }
+                                      alt=""
+                                    />
+                                    <div className="participant-total">
+                                      {data.participant} / {data.maxPeople}
+                                    </div>
 
-                                <div className="disc-body">
-                                  <div className="updisc-container w-100 mx-2">
-                                    <h5 className="card-text d-flex justify-content-between">
-                                      <div className="text-center border-end border-white justify-content-center align-items-center d-flex row">
-                                        <h4
-                                          style={{
-                                            margin: 0,
-                                            fontSize: "32px",
-                                            fontWeight: "bold",
-                                          }}
-                                        >
-                                          {dayjs(data.date).format("DD")}
-                                        </h4>
-                                        <h5
-                                          style={{
-                                            fontSize: "18px",
-                                            fontWeight: "bold",
-                                          }}
-                                        >
-                                          {dayjs(data.date).format("MMM")}
+                                    <div className="disc-body">
+                                      <div className="updisc-container w-100 mx-2">
+                                        <h5 className="card-text d-flex justify-content-between">
+                                          <div className="text-center border-end border-white justify-content-center align-items-center d-flex row">
+                                            <h4
+                                              style={{
+                                                margin: 0,
+                                                fontSize: "32px",
+                                                fontWeight: "bold",
+                                              }}
+                                            >
+                                              {dayjs(data.date).format("DD")}
+                                            </h4>
+                                            <h5
+                                              style={{
+                                                fontSize: "18px",
+                                                fontWeight: "bold",
+                                              }}
+                                            >
+                                              {dayjs(data.date).format("MMM")}
+                                            </h5>
+                                          </div>
+
+                                          <div className="my-auto d-flex row">
+                                            <h6
+                                              style={{
+                                                margin: 0,
+                                                fontSize: "14px",
+                                              }}
+                                            >
+                                              {data.title} <br />
+                                              by {teacher.account.fullName}
+                                            </h6>
+                                          </div>
+                                          <div className="justify-content-center px-2 border-start border-white">
+                                            <h6
+                                              className="d-flex align-items-center justify-content-center pe-2"
+                                              style={{
+                                                height: "100%",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              {data.starttime
+                                                .toString()
+                                                .slice(0, 5)}{" "}
+                                              -{" "}
+                                              {data.endtime
+                                                .toString()
+                                                .slice(0, 5)}
+                                            </h6>
+                                          </div>
                                         </h5>
                                       </div>
-
-                                      <div className="my-auto d-flex row">
-                                        <h6
-                                          style={{
-                                            margin: 0,
-                                            fontSize: "14px",
-                                          }}
-                                        >
-                                          {data.title} <br />
-                                          by {teacher.account.fullName}
-                                        </h6>
-                                      </div>
-                                      <div className="justify-content-center px-2 border-start border-white">
-                                        <h6
-                                          className="d-flex align-items-center justify-content-center pe-2"
-                                          style={{
-                                            height: "100%",
-                                            fontSize: "12px",
-                                          }}
-                                        >
-                                          {data.starttime
-                                            .toString()
-                                            .slice(0, 5)}{" "}
-                                          -{" "}
-                                          {data.endtime.toString().slice(0, 5)}
-                                        </h6>
-                                      </div>
-                                    </h5>
-                                  </div>
-                                </div>
-                                <div className="d-flex button-disc justify-content-around">
-                                      {dayjs().format("YYYY-MM-DD").localeCompare(dayjs(data.date.toString()).format("YYYY-MM-DD")) === 0?
-                                        (
-                                          //di hari ini tapi masih belum selisih 15 menit
-                                          dayjs(data.date.toString().substring(0,10) + " " + data.starttime.toString()).add(1, 'day').diff(dayjs(), 'minutes') > 15?
-                                            <>
-                                              <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Join Disabled didalem</button>
-                                            </>
-                                          :
-                                          //di hari ini dan selisih uda 15 menit
-                                          dayjs(data.date.toString().substring(0,10) + " " + data.starttime.toString()).add(1, 'day').diff(dayjs(), 'minutes') <= 15 && dayjs(data.date.toString().substring(0,10) + " " + data.endtime.toString()).add(1, 'day').diff(dayjs(), 'minutes') > 0 ?
-                                          (
-                                            <>
-                                              <button className="badge px-5 py-2" onClick={() => joinDisc()} style={{ backgroundColor:"#11235A",color:"white" }}>Join DDekat</button>
-                                            </>
-                                          )
-                                          :
-                                          (
-                                            <>
-                                              <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Completed asd</button> 
-                                            </>
-                                          )
-                                        ) 
-                                        :
-                                        (
-                                          //kurang dari hari discnya jalan
-                                          dayjs().format("YYYY-MM-DD") < data.date.toString()?
-                                          <>
-                                            <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Join Disabled</button>
-                                          </>
-                                          :
-                                          //lebih dari, otomatis close
-                                          <>
-                                            <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Completed</button>
-                                          </>
-                                        )
-                                    }
                                     </div>
-                              </div>
-                              </Carousel.Item>
-                            ))}
+                                  </div>
+                                  <div
+                                    className="d-flex button-disc justify-content-around"
+                                    style={{ height: "auto" }}
+                                  >
+                                    {dayjs()
+                                      .format("YYYY-MM-DD")
+                                      .localeCompare(
+                                        dayjs(data.date.toString()).format(
+                                          "YYYY-MM-DD"
+                                        )
+                                      ) === 0 ? (
+                                      //di hari ini tapi masih belum selisih 15 menit
+                                      dayjs(
+                                        data.date.toString().substring(0, 10) +
+                                          " " +
+                                          data.starttime.toString()
+                                      )
+                                        .add(1, "day")
+                                        .diff(dayjs(), "minutes") > 15 ? (
+                                        <>
+                                          <div
+                                            className="d-flex row align-items-center justify-content-center text-center"
+                                            style={{ width: "10vw" }}
+                                          >
+                                            <button
+                                              className="join-btn-disabled"
+                                              disabled={true}
+                                            >
+                                              Join
+                                            </button>
+                                            <p
+                                              className="d-flex justify-content-center"
+                                              style={{
+                                                fontSize: "9px",
+                                                color: "#6e6e6e",
+                                                cursor: "default",
+                                              }}
+                                            >
+                                              Discussion Room will be opened 15
+                                              minutes before started
+                                            </p>
+                                          </div>
+                                        </>
+                                      ) : //di hari ini dan selisih uda 15 menit
+                                      dayjs(
+                                          data.date
+                                            .toString()
+                                            .substring(0, 10) +
+                                            " " +
+                                            data.starttime.toString()
+                                        )
+                                          .add(1, "day")
+                                          .diff(dayjs(), "minutes") <= 15 &&
+                                        dayjs(
+                                          data.date
+                                            .toString()
+                                            .substring(0, 10) +
+                                            " " +
+                                            data.endtime.toString()
+                                        )
+                                          .add(1, "day")
+                                          .diff(dayjs(), "minutes") > 0 ? (
+                                        <>
+                                          <button
+                                            className="join-btn"
+                                            onClick={() => joinDisc()}
+                                          >
+                                            Join
+                                          </button>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <button
+                                            className="auto-complete-btn"
+                                            disabled={true}
+                                          >
+                                            Completed
+                                          </button>
+                                        </>
+                                      )
+                                    ) : //kurang dari hari discnya jalan
+                                    dayjs().format("YYYY-MM-DD") <
+                                      data.date.toString() ? (
+                                      <>
+                                        <div
+                                          className="d-flex row align-items-center justify-content-center text-center"
+                                          style={{ width: "10vw" }}
+                                        >
+                                          <button
+                                            className="join-btn-disabled"
+                                            disabled={true}
+                                          >
+                                            Join
+                                          </button>
+                                          <p
+                                            className="d-flex justify-content-center"
+                                            style={{
+                                              fontSize: "9px",
+                                              color: "#6e6e6e",
+                                              cursor: "default",
+                                            }}
+                                          >
+                                            Discussion Room will be opened 15
+                                            minutes before started
+                                          </p>
+                                        </div>
+                                      </>
+                                    ) : (
+                                      //lebih dari, otomatis close
+                                      <>
+                                        <button
+                                          className="auto-complete-btn"
+                                          disabled={true}
+                                        >
+                                          Completed
+                                        </button>
+                                      </>
+                                    )}
+                                  </div>
+                                </Carousel.Item>
+                              ))}
                             </Carousel>
                           </div>
                         </>
@@ -578,15 +734,330 @@ const Calendar = () => {
                         </div>
                         <div className="disc-container d-flex">
                           {/* {disc.length > 1 ? ( */}
-                            <Carousel indicators={false} wrap={false} style={{ width: "65%", padding: 0 }} 
-                              prevIcon={<GrPrevious style={{ fontSize:"36px",stroke:"#11235A",fill:"white",strokeWidth:"5px",fontWeight:"bold" }}/>}
-                              nextIcon={<GrNext style={{ fontSize:"36px",stroke:"#11235A",fill:"white",strokeWidth:"5px",fontWeight:"bold" }}/>}>
-                              {disc.map((data, idx) => (
-                                <Carousel.Item>
+                          <Carousel
+                            indicators={false}
+                            wrap={false}
+                            style={{ width: "65%", padding: 0 }}
+                            prevIcon={
+                              <GrPrevious
+                                style={{
+                                  fontSize: "36px",
+                                  stroke: "#11235A",
+                                  fill: "white",
+                                  strokeWidth: "5px",
+                                  fontWeight: "bold",
+                                }}
+                              />
+                            }
+                            nextIcon={
+                              <GrNext
+                                style={{
+                                  fontSize: "36px",
+                                  stroke: "#11235A",
+                                  fill: "white",
+                                  strokeWidth: "5px",
+                                  fontWeight: "bold",
+                                }}
+                              />
+                            }
+                          >
+                            {disc.map((data, idx) => (
+                              <Carousel.Item>
+                                <div
+                                  className="card disc-item"
+                                  key={idx}
+                                  style={{ width: "100%", padding: 0 }}
+                                >
+                                  <img
+                                    className=" disc-image"
+                                    src={
+                                      data.discussion.disc_image
+                                        ? `assets/${data.discussion.disc_image}`
+                                        : "assets/private.png"
+                                    }
+                                    alt=""
+                                  />
+                                  <div className="participant-total">
+                                    {data.discussion.joinedParticipant} /{" "}
+                                    {data.discussion.disc_participant}
+                                  </div>
+
+                                  <div className="disc-body">
+                                    <div className="updisc-container w-100 mx-2">
+                                      <h5 className="card-text d-flex justify-content-between">
+                                        <div className="text-center border-end border-white justify-content-center align-items-center d-flex row">
+                                          <h4
+                                            style={{
+                                              margin: 0,
+                                              fontSize: "32px",
+                                              fontWeight: "bold",
+                                            }}
+                                          >
+                                            {dayjs(
+                                              data.discussion.disc_date
+                                            ).format("DD")}
+                                          </h4>
+                                          <h5
+                                            style={{
+                                              fontSize: "18px",
+                                              fontWeight: "bold",
+                                            }}
+                                          >
+                                            {dayjs(
+                                              data.discussion.disc_date
+                                            ).format("MMM")}
+                                          </h5>
+                                        </div>
+
+                                        <div className="my-auto d-flex row">
+                                          <h6
+                                            style={{
+                                              margin: 0,
+                                              fontSize: "14px",
+                                            }}
+                                          >
+                                            {data.discussion.disc_title}
+                                            <br />
+                                          </h6>
+                                          <h6
+                                            style={{
+                                              margin: 0,
+                                              fontSize: "10px",
+                                              color: "var(--yelo)",
+                                            }}
+                                          >
+                                            by{" "}
+                                            {
+                                              data.discussion.teacher.user
+                                                .firstName
+                                            }
+                                          </h6>
+                                        </div>
+
+                                        <div className="justify-content-center px-2 border-start border-white">
+                                          <h6
+                                            className="d-flex align-items-center justify-content-center pe-2"
+                                            style={{
+                                              height: "100%",
+                                              fontSize: "12px",
+                                            }}
+                                          >
+                                            {data.discussion.disc_starttime
+                                              .toString()
+                                              .slice(0, 5)}{" "}
+                                            -{" "}
+                                            {data.discussion.disc_endtime
+                                              .toString()
+                                              .slice(0, 5)}
+                                          </h6>
+                                        </div>
+                                      </h5>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="d-flex button-disc justify-content-around">
+                                  {dayjs()
+                                    .format("YYYY-MM-DD")
+                                    .localeCompare(
+                                      dayjs(
+                                        data.discussion.disc_date.toString()
+                                      ).format("YYYY-MM-DD")
+                                    ) === 0 ? (
+                                    //di hari ini tapi masih belum selisih 15 menit
+                                    dayjs(
+                                      data.discussion.disc_date
+                                        .toString()
+                                        .substring(0, 10) +
+                                        " " +
+                                        data.discussion.disc_starttime.toString()
+                                    )
+                                      .add(1, "day")
+                                      .diff(dayjs(), "minutes") > 15 ? (
+                                      <>
+                                        <div
+                                          className="d-flex row align-items-center justify-content-center text-center"
+                                          style={{ width: "10vw" }}
+                                        >
+                                          <button
+                                            className="join-btn-disabled"
+                                            disabled={true}
+                                          >
+                                            Join
+                                          </button>
+                                          <p
+                                            className="d-flex justify-content-center"
+                                            style={{
+                                              fontSize: "9px",
+                                              color: "#6e6e6e",
+                                              cursor: "default",
+                                            }}
+                                          >
+                                            Discussion Room will be opened 15
+                                            minutes before started
+                                          </p>
+                                        </div>
+
+                                        <button
+                                          className="cancel-btn"
+                                          onClick={() =>
+                                            cancelDisc(data.discussion.disc_id)
+                                          }
+                                        >
+                                          Cancel
+                                        </button>
+                                      </>
+                                    ) : //di hari ini dan selisih uda 15 menit
+                                    dayjs(
+                                        data.discussion.disc_date
+                                          .toString()
+                                          .substring(0, 10) +
+                                          " " +
+                                          data.discussion.disc_starttime.toString()
+                                      )
+                                        .add(1, "day")
+                                        .diff(dayjs(), "minutes") <= 15 &&
+                                      dayjs(
+                                        data.discussion.disc_date
+                                          .toString()
+                                          .substring(0, 10) +
+                                          " " +
+                                          data.discussion.disc_endtime.toString()
+                                      )
+                                        .add(1, "day")
+                                        .diff(dayjs(), "minutes") > 0 ? (
+                                      <>
+                                        <button
+                                          onClick={() => joinDisc()}
+                                          className="join-btn"
+                                        >
+                                          Join
+                                        </button>
+                                        <button
+                                          className="cancel-btn"
+                                          onClick={() =>
+                                            cancelDisc(data.discussion.disc_id)
+                                          }
+                                        >
+                                          Cancel
+                                        </button>
+                                      </>
+                                    ) : dayjs(
+                                        data.discussion.disc_date
+                                          .toString()
+                                          .substring(0, 10) +
+                                          " " +
+                                          data.discussion.disc_endtime.toString()
+                                      )
+                                        .add(1, "day")
+                                        .diff(dayjs(), "minutes") <= 0 &&
+                                      dayjs(
+                                        data.discussion.disc_date
+                                          .toString()
+                                          .substring(0, 10) +
+                                          " " +
+                                          data.discussion.disc_endtime.toString()
+                                      )
+                                        .add(1, "day")
+                                        .diff(dayjs(), "minutes") >= -5 &&
+                                      userRole !== "Teacher" ? (
+                                      //5 menit buat mark as complete
+                                      <>
+                                        <button
+                                          className="badge px-5 py-2"
+                                          onClick={() =>
+                                            completeDisc(
+                                              data.discussion.disc_id
+                                            )
+                                          }
+                                          disabled={
+                                            data.status === "Completed"
+                                              ? true
+                                              : false
+                                          }
+                                          style={{
+                                            backgroundColor: "#11235A",
+                                            color: "white",
+                                          }}
+                                        >
+                                          {data.status === "Completed"
+                                            ? "Completed"
+                                            : "Mark as Complete"}
+                                        </button>
+                                      </>
+                                    ) : (
+                                      //5 menit habis, jadi dia completed sndiri tapi status ga keset complete
+                                      <>
+                                        <button
+                                          className="complete-btn"
+                                          disabled={true}
+                                        >
+                                          Completed
+                                        </button>
+                                      </>
+                                    )
+                                  ) : //kurang dari hari discnya jalan
+                                  dayjs().format("YYYY-MM-DD") <
+                                    data.discussion.disc_date.toString() ? (
+                                    <>
+                                      <div
+                                        className="d-flex row align-items-center justify-content-center text-center"
+                                        style={{ width: "10vw" }}
+                                      >
+                                        <button
+                                          className="join-btn-disabled"
+                                          disabled={true}
+                                        >
+                                          Join
+                                        </button>
+                                        <p
+                                          className="d-flex justify-content-center"
+                                          style={{
+                                            fontSize: "9px",
+                                            color: "#6e6e6e",
+                                            cursor: "default",
+                                          }}
+                                        >
+                                          Discussion Room will be opened 15
+                                          minutes before started
+                                        </p>
+                                      </div>
+
+                                      <button
+                                        className="cancel-btn"
+                                        style={{
+                                          backgroundColor: "white",
+                                          color: "#11235A",
+                                        }}
+                                        onClick={() =>
+                                          cancelDisc(data.discussion.disc_id)
+                                        }
+                                      >
+                                        Cancel
+                                      </button>
+                                    </>
+                                  ) : (
+                                    //lebih dari, otomatis close
+                                    <>
+                                      <button
+                                        className="auto-complete-btn"
+                                        disabled={true}
+                                      >
+                                        Completed
+                                      </button>
+                                    </>
+                                  )}
+                                </div>
+                              </Carousel.Item>
+                            ))}
+                          </Carousel>
+                          {/* )
+                          :
+                          (
+                              disc.map((data, idx) => (
                                   <div
                                     className="card disc-item"
                                     key={idx}
-                                    style={{ width: "100%", padding: 0 }}
+                                    style={{ width: "65%", padding: 0 }}
                                   >
                                     <img
                                       className=" disc-image"
@@ -667,59 +1138,10 @@ const Calendar = () => {
                                         </h5>
                                       </div>
                                     </div>
-                                  </div>
-                                    <div className="d-flex button-disc justify-content-around">
-                                      {dayjs().format("YYYY-MM-DD").localeCompare(dayjs(data.discussion.disc_date.toString()).format("YYYY-MM-DD")) === 0?
-                                        (
-                                          //di hari ini tapi masih belum selisih 15 menit
-                                          dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_starttime.toString()).add(1, 'day').diff(dayjs(), 'minutes') > 15?
-                                            <>
-                                              <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Join Disabled didalem</button>
-                                              <button className="badge px-5 py-2" style={{ backgroundColor:"white",color:"#11235A" }} onClick={() => cancelDisc(data.discussion.disc_id)}>Cancel</button>
-                                            </>
-                                          :
-                                          //di hari ini dan selisih uda 15 menit
-                                          dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_starttime.toString()).add(1, 'day').diff(dayjs(), 'minutes') <= 15 && dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_endtime.toString()).add(1, 'day').diff(dayjs(), 'minutes') > 0 ?
-                                          (
-                                            <>
-                                              <button className="badge px-5 py-2" onClick={() => joinDisc()} style={{ backgroundColor:"#11235A",color:"white" }}>Join DDekat</button>
-                                              <button className="badge px-5 py-2" style={{ backgroundColor:"white",color:"#11235A" }} onClick={() => cancelDisc(data.discussion.disc_id)}>Cancel</button>
-                                            </>
-                                          )
-                                          :
-                                          (
-                                            dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_endtime.toString()).add(1, 'day').diff(dayjs(), 'minutes') <= 0 && dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_endtime.toString()).add(1, 'day').diff(dayjs(), 'minutes') >= -5 && userRole !== "Teacher" ?
-                                            //5 menit buat mark as complete
-                                            <>
-                                              <button className="badge px-5 py-2" onClick={() => completeDisc(data.discussion.disc_id)} disabled={data.status === "Completed" ? true : false} style={{ backgroundColor:"#11235A",color:"white" }}>{data.status === "Completed"? "Completed" : "Mark as Complete"}</button>
-                                            </>
-                                            :
-                                            //5 menit habis, jadi dia completed sndiri tapi status ga keset complete
-                                            <>
-                                              <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Completed asd</button> 
-                                            </>
-                                          )
-                                        ) 
-                                        :
-                                        (
-                                          //kurang dari hari discnya jalan
-                                          dayjs().format("YYYY-MM-DD") < data.discussion.disc_date.toString()?
-                                          <>
-                                            <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Join Disabled</button>
-                                            <button className="badge px-5 py-2" style={{ backgroundColor:"white",color:"#11235A" }} onClick={() => cancelDisc(data.discussion.disc_id)}>Cancel</button>
-                                          </>
-                                          :
-                                          //lebih dari, otomatis close
-                                          <>
-                                            <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Completed</button>
-                                          </>
-                                        )
-                                    }
-                                    </div>
-                                </Carousel.Item>
-                              ))}
-
-                            </Carousel>
+                                 </div>
+                              ))
+                          )
+                        } */}
                         </div>
                       </>
                     )}
@@ -764,13 +1186,16 @@ const Calendar = () => {
                           placeholder="Search"
                           className="search-left-bar"
                           onChange={(e) => {
-                            setSearchText(e.target.value)
+                            setSearchText(e.target.value);
                           }}
                         />
                       </div>
                       <div className="search-right">
-                        <button className="search-button" id="search"
-                        onClick={() => handleSearch()}>
+                        <button
+                          className="search-button"
+                          id="search"
+                          onClick={() => handleSearch()}
+                        >
                           <IoSearch color="#6E6E6E" fontSize={"24"} />
                         </button>
                       </div>
@@ -786,18 +1211,59 @@ const Calendar = () => {
                     onMouseMove={handleMouseMove}
                   >
                     {teacher
-                      ? teacherCourse.map((data: { image: any; title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; level: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; category: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }, idx:any) => (
-                          
-                          <div
-                            key={idx}
-                            className="d-flex bg-warning"
-                            style={{ width: "20rem" }}
-                          >
+                      ? teacherCourse.map(
+                          (
+                            data: {
+                              image: any;
+                              title:
+                                | string
+                                | number
+                                | boolean
+                                | ReactElement<
+                                    any,
+                                    string | JSXElementConstructor<any>
+                                  >
+                                | Iterable<ReactNode>
+                                | ReactPortal
+                                | null
+                                | undefined;
+                              level:
+                                | string
+                                | number
+                                | boolean
+                                | ReactElement<
+                                    any,
+                                    string | JSXElementConstructor<any>
+                                  >
+                                | Iterable<ReactNode>
+                                | ReactPortal
+                                | null
+                                | undefined;
+                              category:
+                                | string
+                                | number
+                                | boolean
+                                | ReactElement<
+                                    any,
+                                    string | JSXElementConstructor<any>
+                                  >
+                                | Iterable<ReactNode>
+                                | ReactPortal
+                                | null
+                                | undefined;
+                            },
+                            idx: any
+                          ) => (
                             <div
-                              className="card"
+                              key={idx}
+                              className="d-flex"
                               style={{ border: "none", width: "20rem" }}
                             >
-                              {/* <Link
+                              <div
+                                className="card"
+                                style={{ border: "none", width: "20rem" }}
+                              >
+                                {/* <Link
                                 to={"/home"}
                                 key={idx}
                                 // state={{
@@ -830,7 +1296,8 @@ const Calendar = () => {
                                     >
                                       <img
                                         src={
-                                          "/assets/" + teacher.account.urlImage ||
+                                          "/assets/" +
+                                            teacher.account.urlImage ||
                                           `assets/default_picture.png`
                                         }
                                         alt=""
@@ -876,99 +1343,179 @@ const Calendar = () => {
                                     </div>
                                   </div>
                                 </div>
-                              {/* </Link> */}
+                                {/* </Link> */}
+                              </div>
                             </div>
-                          </div>
-                        ))
-                        : accountCourse.map((data: { course: { course_title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined; teacher: { user: { profile_pic: string; firstName: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; lastName: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }; }; course_image: any; course_level: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; category: { category_name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> |  null | undefined; }; }; }, idx: Key | null | undefined) => (
-                          
-                            <div className="card" style={{ border: "none",width:"20rem" }}>
-                              <Link
-                                to={"/course/" + data.course.course_title}
-                                key={idx}
-                                state={{
-                                  data: data,
-                                  acc: account,
-                                  teacher: data.course.teacher,
-                                  link: "/calendar"
-                                }}
-                                style={{ textDecoration: "none" }}
+                          )
+                        )
+                      : accountCourse.map(
+                          (
+                            data: {
+                              course: {
+                                course_title:
+                                  | string
+                                  | number
+                                  | boolean
+                                  | ReactElement<
+                                      any,
+                                      string | JSXElementConstructor<any>
+                                    >
+                                  | Iterable<ReactNode>
+                                  | null
+                                  | undefined;
+                                teacher: {
+                                  user: {
+                                    profile_pic: string;
+                                    firstName:
+                                      | string
+                                      | number
+                                      | boolean
+                                      | ReactElement<
+                                          any,
+                                          string | JSXElementConstructor<any>
+                                        >
+                                      | Iterable<ReactNode>
+                                      | ReactPortal
+                                      | null
+                                      | undefined;
+                                    lastName:
+                                      | string
+                                      | number
+                                      | boolean
+                                      | ReactElement<
+                                          any,
+                                          string | JSXElementConstructor<any>
+                                        >
+                                      | Iterable<ReactNode>
+                                      | ReactPortal
+                                      | null
+                                      | undefined;
+                                  };
+                                };
+                                course_image: any;
+                                course_level:
+                                  | string
+                                  | number
+                                  | boolean
+                                  | ReactElement<
+                                      any,
+                                      string | JSXElementConstructor<any>
+                                    >
+                                  | Iterable<ReactNode>
+                                  | ReactPortal
+                                  | null
+                                  | undefined;
+                                category: {
+                                  category_name:
+                                    | string
+                                    | number
+                                    | boolean
+                                    | ReactElement<
+                                        any,
+                                        string | JSXElementConstructor<any>
+                                      >
+                                    | null
+                                    | undefined;
+                                };
+                              };
+                            },
+                            idx: Key | null | undefined
+                          ) => (
+                            <div
+                              className="d-flex"
+                              style={{ border: "none", width: "20rem" }}
+                            >
+                              <div
+                                className="card"
+                                style={{ border: "none", width: "20rem" }}
                               >
-                                <div className="container-class-header">
-                                  <div className="class-thumbnail">
-                                    <img
-                                      src={`assets/${data.course.course_image}`}
-                                      className="img-fluid card-img-top"
-                                      alt=""
-                                      style={{ objectFit: "fill" }}
-                                    />
-                                  </div>
-                                </div>
-
-                                <div className="card-body p-2">
-                                  <div className="d-flex row w-100 h-100 justify-content-between m-0">
-                                    <div
-                                      className="p-0"
-                                      style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        height: "fit-content",
-                                      }}
-                                    >
+                                <Link
+                                  to={"/course/" + data.course.course_title}
+                                  key={idx}
+                                  state={{
+                                    data: data,
+                                    acc: account,
+                                    teacher: data.course.teacher,
+                                    link: "/calendar",
+                                  }}
+                                  style={{ textDecoration: "none" }}
+                                >
+                                  <div className="container-class-header">
+                                    <div className="class-thumbnail">
                                       <img
-                                        src={
-                                          "/assets/" +
-                                          data.course.teacher.user.profile_pic
-                                        }
+                                        src={`assets/${data.course.course_image}`}
+                                        className="img-fluid card-img-top"
                                         alt=""
-                                        className="me-2"
-                                        style={{
-                                          width: "3vh",
-                                          height: "3vh",
-                                          borderRadius: "0.25rem",
-                                        }}
+                                        style={{ objectFit: "fill" }}
                                       />
-                                      <span
+                                    </div>
+                                  </div>
+
+                                  <div className="card-body p-2">
+                                    <div className="d-flex row w-100 h-100 justify-content-between m-0">
+                                      <div
+                                        className="p-0"
                                         style={{
-                                          color: "#000",
+                                          display: "flex",
                                           alignItems: "center",
-                                          fontSize: "10px",
-                                          fontWeight: "bold",
+                                          height: "fit-content",
                                         }}
                                       >
-                                        {data.course.teacher.user.firstName}{" "}
-                                        {data.course.teacher.user.lastName}
-                                      </span>
-                                    </div>
-                                    <div className="title-class m-0 p-0 ">
-                                      <h3
-                                        style={{
-                                          color: "#000",
-                                          fontSize: "18px",
-                                          marginTop: "0.5rem",
-                                          fontWeight: "bold",
-                                        }}
-                                      >
-                                        {data.course.course_title}
-                                      </h3>
-                                    </div>
-                                    <div
-                                      className="d-flex p-0 align-content-end align-items-end"
-                                      style={{ gap: "0.5rem" }}
-                                    >
-                                      <div className="chip">
-                                        {data.course.category.category_name}
+                                        <img
+                                          src={
+                                            "/assets/" +
+                                            data.course.teacher.user.profile_pic
+                                          }
+                                          alt=""
+                                          className="me-2"
+                                          style={{
+                                            width: "3vh",
+                                            height: "3vh",
+                                            borderRadius: "0.25rem",
+                                          }}
+                                        />
+                                        <span
+                                          style={{
+                                            color: "#000",
+                                            alignItems: "center",
+                                            fontSize: "10px",
+                                            fontWeight: "bold",
+                                          }}
+                                        >
+                                          {data.course.teacher.user.firstName}{" "}
+                                          {data.course.teacher.user.lastName}
+                                        </span>
                                       </div>
-                                      <div className="chip">
-                                        {data.course.course_level}
+                                      <div className="title-class m-0 p-0 ">
+                                        <h3
+                                          style={{
+                                            color: "#000",
+                                            fontSize: "18px",
+                                            marginTop: "0.5rem",
+                                            fontWeight: "bold",
+                                          }}
+                                        >
+                                          {data.course.course_title}
+                                        </h3>
+                                      </div>
+                                      <div
+                                        className="d-flex p-0 align-content-end align-items-end"
+                                        style={{ gap: "0.5rem" }}
+                                      >
+                                        <div className="chip">
+                                          {data.course.category.category_name}
+                                        </div>
+                                        <div className="chip">
+                                          {data.course.course_level}
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
-                                </div>
-                              </Link>
+                                </Link>
+                              </div>
                             </div>
-                          
-                        ))}
+                          )
+                        )}
                   </div>
                 </div>
               </>
@@ -1025,9 +1572,6 @@ const Calendar = () => {
             )}
           </div>
         </div>
-
-
-        
       ) : (
         <div
           className="d-flex justify-content-center align-items-center"

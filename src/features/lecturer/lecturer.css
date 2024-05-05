@@ -31,11 +31,9 @@
 
 .lecturer-page .lecturer-content {
   flex: block;
+  margin-top: 6rem;
 }
 
-.lecturer-page .table-container {
-  margin-bottom: 6rem;
-}
 
 .lecturer-content .greetings,
 .lecturer-subscribed,

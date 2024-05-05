@@ -53,7 +53,7 @@
   height: 45rem;
   background: var(--white);
   border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 15%);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 25%);
   scroll-snap-align: start;
   transition: all 0.2s;
 }
@@ -119,10 +119,10 @@
 }
 
 .lecturer-detail-page .logout-btn {
-  background-color: var(--purple);
+  background-color: rgba(255, 255, 255, 0%);
   border: 1px solid white;
   outline: none;
-  border-radius: 50px;
+  border-radius: 0.5rem;
   color: var(--white);
   width: 10vw;
   height: 3vw;

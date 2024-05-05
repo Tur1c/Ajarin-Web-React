@@ -55,7 +55,10 @@ export function transformToAccountNoROutput(
     country: response.country,
     school: response.school,
     coin: response.coin,
-    urlImage: response.profile_pic !== null ? response.profile_pic : "default_picture.png",
+    urlImage:
+      response.profile_pic !== null
+        ? response.profile_pic
+        : "default_picture.png",
   };
   // console.log(result, "abc account hehe");
   return result;
@@ -128,7 +131,7 @@ export interface AccountLoginOutput {
 
 export function transfromToAccountOutput(
   response: AccountSchema
-) : AccountOutput {
+): AccountOutput {
   // console.log(response.subscribed_lecturer,"asddd");
   const result: AccountOutput = {
     id: response.id,
@@ -144,38 +147,54 @@ export function transfromToAccountOutput(
     country: response.country,
     school: response.school,
     coin: response.coin,
-    urlImage: !response.profile_pic? "" : "assets/" + response.profile_pic,
-    studentdisc_list: response.studentdisc_list ? response.studentdisc_list
-    .sort( (x,y) => x.discussion.disc_date.toString().localeCompare(y.discussion.disc_date.toString()) || x.discussion.disc_starttime.toString().localeCompare(y.discussion.disc_starttime.toString()))
-    .map( (data) => {
-      return {
-        discussion: data.discussion,
-        status: data.status,
-        joined_date: data.joined_date
-      };
-    }) : [],
-    studentcourse_list: response.studentcourse_list ? response.studentcourse_list.map( (data) => {
-      return {
-        course: data.course,
-        status: data.status,
-        completed_chap: data.completed_chap,
-        rating: data.rating,
-        comment: data.comment,
-        joined_date: data.joined_date
-      }
-    }) : [],
-    subscribed_lecturer: response.subscribed_lecturer ? response.subscribed_lecturer.map((data) => {
-      return {
-        id: data.id,
-        achievement: data.achievement,
-        education: data.education,
-        experience: data.experience,
-        profile_description: data.profile_description,
-        rating: data.rating,
-        user: data.user
-      }
-    }) : [],
-    notification: response.notifs
+    urlImage: !response.profile_pic
+      ? "assets/default_picture.png"
+      : "assets/" + response.profile_pic,
+    studentdisc_list: response.studentdisc_list
+      ? response.studentdisc_list
+          .sort(
+            (x, y) =>
+              x.discussion.disc_date
+                .toString()
+                .localeCompare(y.discussion.disc_date.toString()) ||
+              x.discussion.disc_starttime
+                .toString()
+                .localeCompare(y.discussion.disc_starttime.toString())
+          )
+          .map((data) => {
+            return {
+              discussion: data.discussion,
+              status: data.status,
+              joined_date: data.joined_date,
+            };
+          })
+      : [],
+    studentcourse_list: response.studentcourse_list
+      ? response.studentcourse_list.map((data) => {
+          return {
+            course: data.course,
+            status: data.status,
+            completed_chap: data.completed_chap,
+            rating: data.rating,
+            comment: data.comment,
+            joined_date: data.joined_date,
+          };
+        })
+      : [],
+    subscribed_lecturer: response.subscribed_lecturer
+      ? response.subscribed_lecturer.map((data) => {
+          return {
+            id: data.id,
+            achievement: data.achievement,
+            education: data.education,
+            experience: data.experience,
+            profile_description: data.profile_description,
+            rating: data.rating,
+            user: data.user,
+          };
+        })
+      : [],
+    notification: response.notifs,
   };
   console.log(result, "abc account");
   return result;

@@ -45,7 +45,7 @@
   border: none;
   outline: none;
   border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 40px;
+  border-radius: 0.25rem;
   display: inline;
   padding: 20px 45px 20px 24px;
 }
@@ -79,7 +79,7 @@
   border: none;
   outline: none;
   border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 40px;
+  border-radius: 0.25rem;
   display: inline;
   padding: 20px 45px 20px 24px;
 }
@@ -114,8 +114,8 @@
 }
 
 .upload-cv {
-  margin-left: 1rem;
-  margin-bottom: 2rem;
+  
+  margin-bottom: 4rem;
 }
 
 .upload-btn {
@@ -137,9 +137,11 @@
   background-color: var(--yelodark);
 }
 
- button {
-  
-
-  /* padding-top: 1rem;
-  padding-bottom: 1rem; */
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }

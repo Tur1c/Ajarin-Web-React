@@ -199,7 +199,13 @@ function Coin() {
 
   return (
     <>
-      <div className="coin-container">
+      <div
+        className="coin-container"
+        style={{
+          backgroundImage: `url(/assets/background.png)`,
+          backgroundSize: "cover",
+        }}
+      >
         <div className="coin-body">
           <div className="coin-top d-flex row" style={{ marginBottom: "1rem" }}>
             <div className="close">
@@ -342,7 +348,7 @@ function Coin() {
                     <div className="col-6" style={{ width: "40%" }}>
                       <div className="payment-box" style={{ width: "100%" }}>
                         <p style={{ width: "fit-content", textAlign: "start" }}>
-                          Notes:
+                          <b>Notes:</b>
                           <br />
                           1) One Coin will be converted into IDR 500,00
                           <br />

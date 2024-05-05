@@ -411,7 +411,7 @@ function TeacherModalAddDiscussion(props: any) {
                       })
                     }
                   />
-                  <label>Teams Link</label>
+                  <label>Discussion Meeting Link</label>
                 </div>
                 <div className="d-flex justify-content-center align-items-center">
                   {image ? (

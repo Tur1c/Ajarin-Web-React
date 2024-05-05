@@ -209,7 +209,7 @@ const Sidebar = ({
                         </b>
                       </button>
                     </div>
-                    <div>
+                    <div className="to-profile">
                       <Link
                         to={"/lecturer/" + teacheracc?.account.fullName}
                         state={{ data: teacheracc }}
@@ -217,9 +217,10 @@ const Sidebar = ({
                         <img
                           className="img-fluid rounded-circle bg-light"
                           src={
-                             !account?.urlImage?
-                            "/assets/default_picture.png"
-                           : "/" + account.urlImage}
+                            !account?.urlImage
+                              ? "/assets/default_picture.png"
+                              : "/" + account.urlImage
+                          }
                           alt=""
                           style={{
                             height: "5vw",
@@ -227,6 +228,7 @@ const Sidebar = ({
                             marginTop: "1rem",
                           }}
                         />
+                        <span className="tooltip-profile-btn">Lecturer Profile</span>
                       </Link>
                     </div>
                   </div>
@@ -256,13 +258,13 @@ const Sidebar = ({
                         </b>
                       </button>
                     </div>
-                    <div>
+                    <div className="to-profile">
                       <Link to={"/profile"} state={account}>
                         <img
                           className="img-fluid rounded-circle bg-light"
                           src={
                             "/" + account?.urlImage ||
-                            `/assets/default_picture.png`
+                            "/assets/default_picture.png"
                           }
                           alt=""
                           style={{
@@ -271,11 +273,23 @@ const Sidebar = ({
                             marginTop: "1rem",
                           }}
                         />
-                {account.notification.filter( (x) => !x.isRead).length > 0? 
-                  <span className="position-absolute translate-middle badge rounded-pill bg-danger" style={{ top:"88%",left:"77%",fontSize:"18px" }}>
-                    {account.notification.length}
-                  </span>   
-                : ""}
+                        <span className="tooltip-profile-btn">Profile</span>
+
+                        {account.notification.filter((x) => !x.isRead).length >
+                        0 ? (
+                          <span
+                            className="position-absolute translate-middle badge rounded-pill bg-danger"
+                            style={{
+                              top: "88%",
+                              left: "77%",
+                              fontSize: "18px",
+                            }}
+                          >
+                            {account.notification.length}
+                          </span>
+                        ) : (
+                          ""
+                        )}
                       </Link>
                     </div>
                   </div>

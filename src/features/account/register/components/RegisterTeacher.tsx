@@ -154,27 +154,47 @@ function RegisterTeacher() {
                       })
                     }
                   />
-                  <label>Add Your Acheivement</label>
+                  <label>Add Your Achievement</label>
                 </div>
               </div>
 
               <div className="upload-cv d-flex row">
-                <label>Upload Your CV Image</label>
-
-                <input
-                  type="file"
-                  required
-                  id="cv"
-                  onChange={handleImageChange}
-                  accept="application/pdf"
-                />
+                <label
+                  className="btn btn-default text-light d-flex justify-content-center w-50"
+                  style={{
+                    backgroundColor: "var(--lightblue2",
+                    marginLeft: "0.7rem",
+                  }}
+                >
+                  Upload Your CV Image
+                  <input
+                    type="file"
+                    required
+                    id="cv"
+                    onChange={handleImageChange}
+                    accept="application/pdf"
+                    className="inputfile"
+                  />
+                </label>
               </div>
 
               <div className="upload-btn d-flex justify-content-between align-items-center">
                 <button type="submit" className="fw-bold">
-                  Create Account
+                  Become Lecturer
                 </button>
               </div>
+              {/* <label
+                className="mt-4 btn btn-default text-light d-flex justify-content-center w-50"
+                style={{ backgroundColor: "var(--lightblue2" }}
+              >
+                <input
+                  type="file"
+                  onChange={handleImageChange}
+                  accept="image/*"
+                  className="inputfile"
+                />
+                Upload Thumbnail
+              </label> */}
             </div>
           </form>
         </div>

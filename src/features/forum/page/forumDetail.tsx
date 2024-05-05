@@ -418,7 +418,6 @@ const ForumDetail = () => {
       // const newReplyList: ForumReplyList[] = sortForum(
       //   response.data.outputSchema.replies
       // );
-      // console.log("new reply list", newReplyList);
 
       // const newReplyListData: ForumReplyListOutput = {
       //   forum_reply_list: [],
@@ -548,13 +547,10 @@ const ForumDetail = () => {
                           alt=""
                         />
                         <div className="name-and-date">
-                          <h3>{forum.questionUser.fullName}</h3>
-                          <p style={{ marginTop: "0.25rem" }}>
+                          <h3 style={{fontSize:"21px"}}>{forum.questionUser.fullName}</h3>
+                          <p style={{ marginTop: "0.25rem", fontSize: "14px" }}>
                             Created on{" "}
-                            {format(
-                              forum.createdDate,
-                              "MMMM do yyyy, h:mm:ss a"
-                            )}
+                            {format(forum.createdDate, "MMMM do yyyy, hh:mm a")}
                           </p>
                         </div>
                       </div>
@@ -651,7 +647,7 @@ const ForumDetail = () => {
                               alt=""
                             />
                             <div className="name-and-date">
-                              <h3>
+                              <h3 style={{fontSize:"21px"}}>
                                 {
                                   ForumReplyListData.forum_reply_list[
                                     editReplyID
@@ -663,13 +659,13 @@ const ForumDetail = () => {
                                   ].fr_user.lastName
                                 }
                               </h3>
-                              <p>
+                              <p style={{ fontSize: "14px" }}>
                                 Replied on{" "}
                                 {format(
                                   ForumReplyListData.forum_reply_list[
                                     editReplyID
                                   ].fr_replied_at,
-                                  "MMMM do yyyy, h:mm:ss a"
+                                  "MMMM do yyyy, hh:mm a"
                                 )}
                               </p>
                             </div>
@@ -738,15 +734,17 @@ const ForumDetail = () => {
                                   alt=""
                                 />
                                 <div className="name-and-date">
-                                  <h3>
+                                  <h3 style={{fontSize:"21px"}}>
                                     {data.fr_user.firstName}{" "}
                                     {data.fr_user.lastName}
                                   </h3>
-                                  <p>
+                                  <p style={{ fontSize: "14px" }}>
                                     Replied on{" "}
                                     {format(
-                                      data.fr_replied_at,
-                                      "MMMM do yyyy, h:mm:ss a"
+                                      ForumReplyListData.forum_reply_list[
+                                        editReplyID
+                                      ].fr_replied_at,
+                                      "MMMM do yyyy, hh:mm a"
                                     )}
                                   </p>
                                 </div>
@@ -754,6 +752,7 @@ const ForumDetail = () => {
                                 {data.fr_user.email === email ? (
                                   <div className="edit-and-delete">
                                     <button
+                                    className="edit-btn-reply"
                                       onClick={() =>
                                         handleClickEditReply(index)
                                       }
@@ -761,6 +760,7 @@ const ForumDetail = () => {
                                       Edit
                                     </button>
                                     <button
+                                    className="delete-btn-reply"
                                       onClick={() =>
                                         handleDeleteReplyModal(
                                           forum.questionId,

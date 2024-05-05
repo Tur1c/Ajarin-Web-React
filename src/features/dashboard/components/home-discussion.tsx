@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "../../../api/axios";
 // import { CategoryListOutput } from "../../../model/category/category-model";
+import { AccountOutput } from "../../../model/Account";
 import {
   ClassList,
   DiscussionListOutput,
@@ -9,7 +10,6 @@ import {
 } from "../../../model/course/course-list";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import { ModalCentered, Pagination } from "../../../shared";
-import { AccountOutput } from "../../../model/Account";
 
 const CLASS_URL = "/api/discussion";
 
@@ -31,7 +31,7 @@ function HomeDiscussion(props: any) {
   });
   const currentFiltered = filteredList.slice(0, 3);
   const [searchTextFromHome, setSearchTextFromHome] = useState("");
-  const account:AccountOutput = props.account;
+  const account: AccountOutput = props.account;
 
   const [classData, setClassData] = useState<ClassList>({
     id: 0,
@@ -103,17 +103,16 @@ function HomeDiscussion(props: any) {
     setIsLoading(false);
   };
 
-  const checkJoined = (title:string) => {
+  const checkJoined = (title: string) => {
     const test = account?.studentdisc_list.find(
       (x) => x.discussion.disc_title === title
     );
-    if(test) {
-      return true
+    if (test) {
+      return true;
+    } else {
+      return false;
     }
-    else {
-      return false
-    };
-  }
+  };
 
   const handleCloseModal = () => setShowModal(false);
 
@@ -132,6 +131,7 @@ function HomeDiscussion(props: any) {
       title: data.title,
       participant: data.participant,
       level: data.level,
+      teacher: data.teacher,
     });
     setShowModal(true);
     setJoined(checkJoined(data.title));
@@ -155,16 +155,18 @@ function HomeDiscussion(props: any) {
         setClassList(tempClassList);
         return;
       }
-      const findClass = tempClassList.classList.filter((u) =>
-        u.title.toLowerCase().includes(searchTextFromHome.toLowerCase()) ||
-        u.teacher?.account.fullName.toLocaleLowerCase().includes(searchTextFromHome.toLowerCase())
+      const findClass = tempClassList.classList.filter(
+        (u) =>
+          u.title.toLowerCase().includes(searchTextFromHome.toLowerCase()) ||
+          u.teacher?.account.fullName
+            .toLocaleLowerCase()
+            .includes(searchTextFromHome.toLowerCase())
       );
       setClassList({ classList: findClass });
     } else {
       setClassList(tempClassList);
     }
     console.log(currentClass, "curr class");
-    
   }
 
   useEffect(() => {
@@ -239,7 +241,7 @@ function HomeDiscussion(props: any) {
     <>
       {!isLoading ? (
         <div className="disc-container homes">
-          <div className="d-flex row w-100" style={{margin:"0.5rem 0rem"}}>
+          <div className="d-flex row w-100" style={{ margin: "0.5rem 0rem" }}>
             <div className="filter">
               {/* <div className="filter-btn">Subject</div>
             <div className="filter-btn">Education Level</div> */}

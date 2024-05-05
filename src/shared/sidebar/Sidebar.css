@@ -114,7 +114,7 @@
   padding: 0.25rem 1rem;
   margin-left: 2rem;
   position: absolute;
-  z-index: 1;
+  z-index: 999;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -122,7 +122,33 @@
   background-color: var(--purple);
 }
 
+.sidebar .change-role-btn:hover {
+  filter: brightness(120%);
+}
+
 .sidebar .change-role-btn:hover .tooltip-role-btn {
+  visibility: visible;
+  transition: 0.25s all ease;
+  transition-delay: 0.5s;
+}
+
+.sidebar .tooltip-profile-btn {
+  visibility: hidden;
+  font-size: 14px;
+  font-weight: lighter;
+  background-color: var(--lightblue);
+  color: #fff;
+  text-align: center;
+  border-radius: 0.5rem;
+  padding: 0.25rem 1rem;
+  margin-left: 0.5rem;
+  margin-top: 2.7rem;
+  position: absolute;
+  z-index: 1;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar .to-profile:hover .tooltip-profile-btn {
   visibility: visible;
   transition: 0.25s all ease;
   transition-delay: 0.5s;

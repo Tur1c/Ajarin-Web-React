@@ -118,8 +118,9 @@
 
 .account-course-content {
   margin: 0rem 2rem 6rem 2rem;
+  width: 88vw;
   padding-bottom: 1rem;
-  display: flex;
+  display: inline-flex;
   gap: 1rem;
   list-style: none;
   overflow-x: hidden;
@@ -127,18 +128,18 @@
   /* user-select: none; */
 }
 
-/* .account-course-content:hover {
+.account-course-content:hover {
   overflow-x: scroll;
   scroll-snap-type: x mandatory;
   transition: all 2s;
-} */
+}
 
-/* .account-course-content::-webkit-scrollbar {
+.account-course-content::-webkit-scrollbar {
   height: 1rem;
   background-color: var(--lightblue);
-} */
+}
 
-/* .account-course-content::-webkit-scrollbar-thumb,
+.account-course-content::-webkit-scrollbar-thumb,
 .account-course-contentl::-webkit-scrollbar-track {
   margin-top: 2rem;
   border-radius: 92px;
@@ -146,15 +147,99 @@
 
 .account-course-content::-webkit-scrollbar-thumb {
   background: var(--lightblue2);
-} */
-
+}
 
 .carousel-control-prev-icon .carousel-control-next-icon {
-
   border-color: #fff !important;
   stroke: #dddddd !important;
   fill: red !important;
-  color:black !important;
+  color: black !important;
   text-shadow: #11235a !important;
+}
 
+.all-page-calendar .join-btn {
+  background-color: var(--blue);
+  border: none;
+  width: 8vw;
+  height: 5vh;
+  font-weight: bold;
+  color: var(--white);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0rem;
+  margin-top: 1rem;
+}
+
+.all-page-calendar .join-btn:hover {
+  background-color: var(--blue);
+  filter: brightness(80%);
+}
+
+.all-page-calendar .join-btn-disabled {
+  background-color: #eeeeee;
+  border: none;
+  width: 8vw;
+  height: 5vh;
+  font-weight: bold;
+  color: #6e6e6e;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0rem;
+  margin-top: 1rem;
+}
+
+.all-page-calendar .cancel-btn {
+  border: 2px solid var(--blue);
+  background-color: white;
+  width: 8vw;
+  height: 5vh;
+  font-weight: bold;
+  color: var(--blue);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0rem;
+  margin-top: 1rem;
+}
+
+.all-page-calendar .cancel-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.all-page-calendar .auto-complete-btn {
+  background-color: var(--lightblue2);
+  border: none;
+  width: 8vw;
+  height: 5vh;
+  font-weight: bold;
+  color: white;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0rem;
+  margin-top: 1rem;
+  opacity: 60%;
+}
+
+.all-page-calendar .complete-btn {
+  background-color: var(--lightblue2);
+  border: none;
+  width: 8vw;
+  height: 5vh;
+  font-weight: bold;
+  color: white;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0rem;
+  margin-top: 1rem;
+  opacity: 60%;
+}
+
+.all-page-calendar .mark-complete-btn {
+  background-color: var(--lightblue2);
+  border: none;
+  width: 8vw;
+  height: 5vh;
+  font-weight: bold;
+  color: white;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0rem;
+  margin-top: 1rem;
+}
+
+.all-page-calendar .mark-complete-btn:hover {
+  background-color: var(--lightblue);
 }

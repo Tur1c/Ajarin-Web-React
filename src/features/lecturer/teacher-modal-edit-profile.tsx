@@ -1,12 +1,15 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-import axios from "../../api/axios";
-import { AccountSchema, TeacherRegisterSchema } from "../../model/Account";
-import { ApiResponse } from "../../model/schema/base_schema";
-import "./teacher-modal-edit-profile.css";
 import { useNavigate } from "react-router-dom";
-import { InquiryTeacherSchema, Teacher, transformToTeacherOutput } from "../../model/teacher/teacher-model";
+import axios from "../../api/axios";
+import { TeacherRegisterSchema } from "../../model/Account";
+import { ApiResponse } from "../../model/schema/base_schema";
+import {
+  Teacher,
+  transformToTeacherOutput,
+} from "../../model/teacher/teacher-model";
+import "./teacher-modal-edit-profile.css";
 
 const EDIT_PROFILE = "/api/account/teacher/update/";
 
@@ -51,12 +54,18 @@ function TeacherModalEditProfile(props: any) {
         }
       );
       console.log(response, "response ni");
-      
-      navigate("/lecturer/" + response.data.outputSchema.user.firstName + " " + response.data.outputSchema.user.lastName, {
-        state: {
-            data: transformToTeacherOutput(response.data.outputSchema)
+
+      navigate(
+        "/lecturer/" +
+          response.data.outputSchema.user.firstName +
+          " " +
+          response.data.outputSchema.user.lastName,
+        {
+          state: {
+            data: transformToTeacherOutput(response.data.outputSchema),
+          },
         }
-      })
+      );
       props.onHide();
       props.loadingSuccess();
     } catch (err) {
@@ -137,6 +146,7 @@ function TeacherModalEditProfile(props: any) {
                     <textarea
                       className="scrollable"
                       id="description"
+                      placeholder="Describe About You"
                       onChange={(e) =>
                         setAccountRegister({
                           ...accountRegister,
@@ -202,14 +212,22 @@ function TeacherModalEditProfile(props: any) {
                   className="upload-cv d-flex row text-white"
                   style={{ marginBottom: "2rem" }}
                 >
-                  <label>Upload Your CV Image</label>
-
-                  <input
-                    type="file"
-                    id="cv"
-                    onChange={handleImageChange}
-                    accept="application/pdf"
-                  />
+                  <label
+                    className="btn btn-default text-light d-flex justify-content-center w-25"
+                    style={{
+                      backgroundColor: "var(--lightblue2",
+                      marginLeft: "0.7rem",
+                    }}
+                  >
+                    Upload Your CV Image
+                    <input
+                      type="file"
+                      id="cv"
+                      onChange={handleImageChange}
+                      accept="application/pdf"
+                      className="inputfile"
+                    />
+                  </label>
                 </div>
 
                 <div className="next-btn d-flex justify-content-center align-items-center">

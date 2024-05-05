@@ -308,7 +308,7 @@ const CourseDetail = () => {
 
   return (
     <div
-      className="container-fluid"
+      className="container-fluid course-detail-container"
       style={{
         height: "100vh",
         padding: "2rem 4rem",

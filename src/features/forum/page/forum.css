@@ -4,11 +4,14 @@
   --yelo: #f6eca9;
   --black: #000;
   --white: #fff;
-  --grey: #999999;
-  --lightgrey: #b3b3b3;
+  --grey: #6e6e6e;
+  --lightgrey: #aeaeae;
   --lightblue: #273a72;
-  --whitedark: #eeeeee;
+  --lightblue2: #596fb7;
+  --whitedark: #dddddd;
   --yelodark: #f6e976;
+  --cream: #c6cf9b;
+  --red: #ff3333;
 }
 
 .forum-content {
@@ -204,7 +207,7 @@
 
 .forum-content-list a {
   text-decoration: none;
-  color:#000;
+  color: #000;
 }
 
 .forum-content .forum-list-container {
@@ -340,16 +343,11 @@
   border-radius: 5rem;
   font-weight: light;
   color: var(--white);
-  background-color: var(--grey);
+  background-color: var(--lightblue2);
   height: fit-content;
   width: fit-content;
   text-align: center;
   cursor: default;
-}
-
-.subject-edu:hover {
-  background-color: var(--lightgrey);
-  color: var(--whitedark);
 }
 
 .reply-btn button {
@@ -498,4 +496,30 @@ input:focus {
 
 .cancel-btn button:hover {
   background-color: var(--blue);
+}
+
+.edit-btn-reply {
+  background-color: var(--yelo);
+  color: var(--blue);
+  border: none;
+  width: 5vw;
+  border-radius: 0.25rem;
+  font-weight: bold;
+}
+
+.delete-btn-reply {
+  border: 2px solid white;
+  background-color: rgba(255, 255, 255, 0);
+  color: var(--white);
+  width: 5vw;
+  border-radius: 0.25rem;
+  font-weight: bold;
+}
+
+.edit-btn-reply:hover {
+  background-color: var(--yelodark);
+}
+
+.delete-btn-reply:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }

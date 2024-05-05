@@ -108,10 +108,7 @@ const Forum = () => {
   }, []);
 
   useEffect(() => {
-    console.log(state, "ganti sort");
-
     account = !state?.firstName ? undefined : state;
-    console.log(account);
   }, [sortCategory]);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -171,9 +168,6 @@ const Forum = () => {
   }
 
   const handleSortCategory = async (category: string) => {
-    console.log(category);
-    console.log(forumList);
-
     if (category === "Latest Activity") {
       forumList.forum_list.sort((a, b) =>
         a.createdDate < b.createdDate ? 1 : -1
@@ -401,7 +395,7 @@ const Forum = () => {
                                           {data.questionUser.fullName} at{" "}
                                           {format(
                                             data.createdDate,
-                                            "MMMM do yyyy, h:mm:ss a"
+                                            "MMMM do yyyy, hh:mm a"
                                           )}
                                         </span>
                                       </div>
@@ -507,7 +501,10 @@ const Forum = () => {
                                             >
                                               Created by{" "}
                                               {data.questionUser.fullName} at{" "}
-                                              {data.createdDate.toString()}
+                                              {format(
+                                                data.createdDate,
+                                                "MMMM do yyyy, hh:mm a"
+                                              )}
                                             </span>
                                           </div>
                                         </div>

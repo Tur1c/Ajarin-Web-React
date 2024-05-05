@@ -14,7 +14,7 @@
   --red: #ff3333;
 }
 
-.container-card-scroll {
+.course-detail-container .container-card-scroll {
   max-width: 1400px;
   /* padding: 0rem 1rem; */
   overflow-x: hidden;
@@ -25,25 +25,25 @@
   height: 55vh;
 }
 
-.container-card-scroll:hover {
+.course-detail-container .container-card-scroll:hover {
   overflow-x: scroll;
   scroll-snap-type: x mandatory;
   transition: all 2s;
 }
 
-.container-card-scroll::-webkit-scrollbar {
+.course-detail-container .container-card-scroll::-webkit-scrollbar {
   height: 1rem;
   background-color: var(--lightblue);
   margin-top: 2rem;
   border-radius: 92px;
 }
 
-.container-card-scroll::-webkit-scrollbar-thumb {
+.course-detail-container .container-card-scroll::-webkit-scrollbar-thumb {
   background: var(--lightblue2);
   border-radius: 92px;
 }
 
-.container-card-scroll h2 {
+.course-detail-container .container-card-scroll h2 {
   font-size: 32px;
   margin-bottom: 1em;
 }
@@ -331,7 +331,7 @@
   filter: brightness(120%);
 }
 
-.submit-btn {
+.course-detail-container .submit-btn {
   height: 3rem;
   width: 20%;
   background-color: var(--yelo);
@@ -342,6 +342,6 @@
   margin-top: 1rem;
 }
 
-.submit-btn:hover {
+.course-detail-container .submit-btn:hover {
   background-color: var(--yelodark);
 }
