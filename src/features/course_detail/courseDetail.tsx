@@ -48,6 +48,7 @@ const CourseDetail = () => {
     : state.acc.firstName !== ""
     ? state.acc
     : null;
+    
   const teacher: TeacherOutput = state.teacher.user
     ? state.teacher.user
     : state.teacher.account;

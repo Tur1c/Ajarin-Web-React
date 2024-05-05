@@ -23,21 +23,6 @@ export const pieChartData = {
     ],
 };
 
-export const pieChartData1 = {
-    labels: ["Red", "Green", "Yellow"],
-    datasets: [
-        {
-            label: "test Dataset",
-            data: [300,50,100],
-            backgroundColor: [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(255, 205, 86)",
-            ],
-            hoverOffset: 4,
-        },
-    ],
-};
 
 export interface PieChartData{
     labels: String[],
@@ -121,20 +106,6 @@ export function createCurrMonthPie(acc:AccountOutput, currMonth:any):PieChartDat
 }
 
 //Bar
-export const barData =  {
-    labels: ["Mon", "Tue", "Wed", "Thu"],
-    datasets: [
-        {
-            label: "test Dataset",
-            data: [3,6,9,3.69],
-            borderColor: "black",
-            backgroundColor: [
-                "aqua","red","blue","purple"
-            ],
-            borderWith: 1,
-        },
-    ],
-};
 
 export interface BarChartData{
     labels: String[],

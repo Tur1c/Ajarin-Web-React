@@ -211,7 +211,7 @@ function Home() {
     <>
       {!isLoading ? (
         <div className="all-page">
-          <LecturerCourse isOpen={isOpen} toggle={toggle} data={teacher.courses}/>
+          <LecturerCourse isOpen={isOpen} toggle={toggle} data={teacher.courses} acc={account} teacher={teacher}/>
           <div className="sidebar-content">
             {userRole === "Teacher" ? (
               <Sidebar
@@ -613,7 +613,7 @@ function Home() {
                                     color: "var(--yelo)",
                                   }}
                                 >
-                                  by Godwin
+                                  by {teacher.account.fullName}
                                 </h6>
                               </div>
                               <div className="disc-time d-flex justify-content-center px-2 border-start border-white">
@@ -629,7 +629,7 @@ function Home() {
                           </div>
                         </div>
                       ))
-                    : account.studentdisc_list.slice(0, 3).map((disc, idx) => (
+                    : account.studentdisc_list.filter((x) => x.status != "Completed").slice(0, 3).map((disc, idx) => (
                         <div
                           className={
                             "card-body  right-disc" +
@@ -679,7 +679,7 @@ function Home() {
                                     color: "var(--yelo)",
                                   }}
                                 >
-                                  by Godwin
+                                  by {disc.discussion.teacher.user.firstName} {disc.discussion.teacher.user.lastName}
                                 </h6>
                               </div>
 

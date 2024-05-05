@@ -131,6 +131,16 @@ const LecturerDetail = () => {
 
   console.log(state, "lecturer detail");
 
+  console.log(state.account.subscribed_lecturer.find( (x: { id: any; }) => x.id === state.data.id));
+
+  const checkSubscribe = () => {
+    if( state.account.subscribed_lecturer.find( (x: { id: any; }) => x.id === state.data.id)){
+      return true;
+    }
+    else
+    return false;
+  }
+
   // for draggable
   const handleMouseDown = (e:any) => {
     setIsMouseDown(true);
@@ -168,7 +178,7 @@ const LecturerDetail = () => {
         backgroundSize: "cover",
       }}
       >
-      <LecturerCourse isOpen={isOpen} toggle={toggle} data={state.data.courses}/>
+      <LecturerCourse isOpen={isOpen} toggle={toggle} data={state.data.courses} acc={state.account} teacher={state.data}/>
       {!isLoading ? (
         <>
           <div className="d-flex justify-content-between align-items-center ">
@@ -182,7 +192,7 @@ const LecturerDetail = () => {
                   fontSize: "50px",
                 }}
               >
-                <IoCloseCircleOutline onClick={() => navigate("/lecturer")} />
+                <IoCloseCircleOutline onClick={() => navigate(-1)} />
               </button>
             </div>
             <div className="logo_content" style={{ cursor: "default" }}>
@@ -278,13 +288,22 @@ const LecturerDetail = () => {
                       {userRole === "Student" &&
                       state.account.email !==
                         state.data.account.email ? (
-                        <button
-                          className="subs-edit-btn"
-                          type="button"
-                          onClick={() => hanldeSubscribe()}
-                        >
-                          <b>Subscribe</b>
-                        </button>
+                          checkSubscribe()?
+                            <button
+                              className="subs-edit-btn"
+                              type="button"
+                              disabled={true}
+                            >
+                              <b>Subscribed</b>
+                            </button>
+                          :
+                            <button
+                              className="subs-edit-btn"
+                              type="button"
+                              onClick={() => hanldeSubscribe()}
+                            >
+                              <b>Subscribe</b>
+                            </button>
                       ) : (
                         <></>
                       )}

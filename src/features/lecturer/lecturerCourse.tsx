@@ -2,11 +2,15 @@ import React from 'react'
 import { CourseList } from '../../model/course/course-list';
 import "./lecturerCourse.css";
 import { Link } from 'react-router-dom';
+import { AccountOutput } from '../../model/Account';
+import { TeacherOutput } from '../../model/teacher/teacher-model';
 
 interface ModalType{
     isOpen: boolean;
     toggle: () => void;
     data: CourseList[] | undefined;
+    acc: AccountOutput | undefined;
+    teacher: TeacherOutput | undefined;
 }
 
 const LecturerCourse = (props:ModalType) => {
@@ -46,7 +50,7 @@ const LecturerCourse = (props:ModalType) => {
                     <div className="card me-3 mt-4" key={idx} style={{ width: "20rem", padding:0 }}>
                         <img src={'/assets/' + course.image} className="card-img-to w-100" alt="..."/>
                         <div className="card-body d-flex flex-wrap">
-                            <Link to={"/course/" + course.title} state={{data:course}} style={{ textDecoration:"none" }}>
+                            <Link to={"/course/" + course.title} state={{data:course, acc:props.acc, teacher:props.teacher}} style={{ textDecoration:"none" }}>
                                 <div className="d-block p-1">
                                         <div className="title-class mb-2">
                                         <h3 style={{ color: "#000" }}>

@@ -56,7 +56,8 @@ const Calendar = () => {
   // const accountCourse: StudentCourse[] = account.studentcourse_list;
   const accountCourseTemp: StudentCourse[] = account.studentcourse_list;
 
-  let CANCEL_URL = "/api/discussion/cancelDisc?account=" + account.id + "&disc=";
+  let CANCEL_URL = "/api/account/cancelDisc?account=" + account.id + "&disc=";
+  let COMPLETE_DISC_URL = "/api/account/completeDisc?account=" + account.id + "&disc=";
   // Teacher
   const teacher = state.teacher ? state.teacher : null;
   const teacherDisc: ClassList[] = teacher ? teacher.discussion : null;
@@ -230,6 +231,33 @@ const Calendar = () => {
     });
   }
 
+  const completeDisc = async(id:number) => {
+    COMPLETE_DISC_URL = COMPLETE_DISC_URL + id;
+    console.log(COMPLETE_DISC_URL);
+    try {
+      const response = await axios.get(
+        COMPLETE_DISC_URL,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + isLogged,
+          },
+          withCredentials: true,
+        }
+      );
+        console.log(response);
+        navigate("/");
+        // if(disc){
+          // setDisc(disc?.filter((x) => x.discussion.disc_id != id));
+          // setAccountDisc(accountDisc.filter((x) => x.discussion.disc_id != id));
+        // }
+    } catch (error) {}
+  }
+
+  const joinDisc = () => {
+    window.open("http://www.w3schools.com");
+  }
+
   // for draggable
   const handleMouseDown = (e: any) => {
     setIsMouseDown(true);
@@ -270,6 +298,8 @@ const Calendar = () => {
 
   const handleLoadingTrue = () => setIsLoadingChangeAccount(true);
   const handleLoadingFalse = () => setIsLoadingChangeAccount(false);
+
+  
 
   console.log(accountDisc.at(0)?.discussion.disc_date.toString() + " " + accountDisc.at(0)?.discussion.disc_starttime.toString());
   console.log(currTeacherDisc,dayjs(accountDisc.at(0)?.discussion.disc_date), dayjs(accountDisc.at(0)?.discussion.disc_date.toString() + " " + accountDisc.at(0)?.discussion.disc_starttime.toString()));
@@ -409,11 +439,15 @@ const Calendar = () => {
                             </p>
                           </div>
                           <div className="disc-container d-flex">
+                          <Carousel indicators={false} wrap={false} style={{ width: "65%", padding: 0 }} 
+                              prevIcon={<GrPrevious style={{ fontSize:"36px",stroke:"#11235A",fill:"white",strokeWidth:"5px",fontWeight:"bold" }}/>}
+                              nextIcon={<GrNext style={{ fontSize:"36px",stroke:"#11235A",fill:"white",strokeWidth:"5px",fontWeight:"bold" }}/>}>
                             {currTeacherDisc.map((data, idx) => (
+                              <Carousel.Item>
                               <div
                                 className="card disc-item"
                                 key={idx}
-                                style={{ width: "65%", padding: 0 }}
+                                style={{ width: "100%", padding: 0 }}
                               >
                                 <img
                                   className="disc-image"
@@ -480,8 +514,48 @@ const Calendar = () => {
                                     </h5>
                                   </div>
                                 </div>
+                                <div className="d-flex button-disc justify-content-around">
+                                      {dayjs().format("YYYY-MM-DD").localeCompare(dayjs(data.date.toString()).format("YYYY-MM-DD")) === 0?
+                                        (
+                                          //di hari ini tapi masih belum selisih 15 menit
+                                          dayjs(data.date.toString().substring(0,10) + " " + data.starttime.toString()).add(1, 'day').diff(dayjs(), 'minutes') > 15?
+                                            <>
+                                              <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Join Disabled didalem</button>
+                                            </>
+                                          :
+                                          //di hari ini dan selisih uda 15 menit
+                                          dayjs(data.date.toString().substring(0,10) + " " + data.starttime.toString()).add(1, 'day').diff(dayjs(), 'minutes') <= 15 && dayjs(data.date.toString().substring(0,10) + " " + data.endtime.toString()).add(1, 'day').diff(dayjs(), 'minutes') > 0 ?
+                                          (
+                                            <>
+                                              <button className="badge px-5 py-2" onClick={() => joinDisc()} style={{ backgroundColor:"#11235A",color:"white" }}>Join DDekat</button>
+                                            </>
+                                          )
+                                          :
+                                          (
+                                            <>
+                                              <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Completed asd</button> 
+                                            </>
+                                          )
+                                        ) 
+                                        :
+                                        (
+                                          //kurang dari hari discnya jalan
+                                          dayjs().format("YYYY-MM-DD") < data.date.toString()?
+                                          <>
+                                            <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Join Disabled</button>
+                                          </>
+                                          :
+                                          //lebih dari, otomatis close
+                                          <>
+                                            <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }} disabled={true}>Completed</button>
+                                          </>
+                                        )
+                                    }
+                                    </div>
                               </div>
+                              </Carousel.Item>
                             ))}
+                            </Carousel>
                           </div>
                         </>
                       )
@@ -608,7 +682,7 @@ const Calendar = () => {
                                           dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_starttime.toString()).add(1, 'day').diff(dayjs(), 'minutes') <= 15 && dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_endtime.toString()).add(1, 'day').diff(dayjs(), 'minutes') > 0 ?
                                           (
                                             <>
-                                              <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }}>Join DDekat</button>
+                                              <button className="badge px-5 py-2" onClick={() => joinDisc()} style={{ backgroundColor:"#11235A",color:"white" }}>Join DDekat</button>
                                               <button className="badge px-5 py-2" style={{ backgroundColor:"white",color:"#11235A" }} onClick={() => cancelDisc(data.discussion.disc_id)}>Cancel</button>
                                             </>
                                           )
@@ -617,7 +691,7 @@ const Calendar = () => {
                                             dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_endtime.toString()).add(1, 'day').diff(dayjs(), 'minutes') <= 0 && dayjs(data.discussion.disc_date.toString().substring(0,10) + " " + data.discussion.disc_endtime.toString()).add(1, 'day').diff(dayjs(), 'minutes') >= -5 && userRole !== "Teacher" ?
                                             //5 menit buat mark as complete
                                             <>
-                                              <button className="badge px-5 py-2" style={{ backgroundColor:"#11235A",color:"white" }}>Mark as Complete</button>
+                                              <button className="badge px-5 py-2" onClick={() => completeDisc(data.discussion.disc_id)} disabled={data.status === "Completed" ? true : false} style={{ backgroundColor:"#11235A",color:"white" }}>{data.status === "Completed"? "Completed" : "Mark as Complete"}</button>
                                             </>
                                             :
                                             //5 menit habis, jadi dia completed sndiri tapi status ga keset complete
@@ -646,98 +720,6 @@ const Calendar = () => {
                               ))}
 
                             </Carousel>
-                          {/* )
-                          :
-                          (
-                              disc.map((data, idx) => (
-                                  <div
-                                    className="card disc-item"
-                                    key={idx}
-                                    style={{ width: "65%", padding: 0 }}
-                                  >
-                                    <img
-                                      className=" disc-image"
-                                      src={
-                                        data.discussion.disc_image
-                                          ? `assets/${data.discussion.disc_image}`
-                                          : "assets/private.png"
-                                      }
-                                      alt=""
-                                    />
-                                    <div className="participant-total">
-                                      {data.discussion.joinedParticipant} /{" "}
-                                      {data.discussion.disc_participant}
-                                    </div>
-
-                                    <div className="disc-body">
-                                      <div className="updisc-container w-100 mx-2">
-                                        <h5 className="card-text d-flex justify-content-between">
-                                          <div className="text-center border-end border-white justify-content-center align-items-center d-flex row">
-                                            <h4
-                                              style={{
-                                                margin: 0,
-                                                fontSize: "32px",
-                                                fontWeight: "bold",
-                                              }}
-                                            >
-                                              {dayjs(
-                                                data.discussion.disc_date
-                                              ).format("DD")}
-                                            </h4>
-                                            <h5
-                                              style={{
-                                                fontSize: "18px",
-                                                fontWeight: "bold",
-                                              }}
-                                            >
-                                              {dayjs(
-                                                data.discussion.disc_date
-                                              ).format("MMM")}
-                                            </h5>
-                                          </div>
-
-                                          <div className="my-auto d-flex row">
-                                            <h6
-                                              style={{ margin: 0, fontSize: "14px" }}
-                                            >
-                                              {data.discussion.disc_title}
-                                              <br />
-                                            </h6>
-                                            <h6
-                                              style={{
-                                                margin: 0,
-                                                fontSize: "10px",
-                                                color: "var(--yelo)",
-                                              }}
-                                            >
-                                              by {data.discussion.teacher.user.firstName}
-                                            </h6>
-                                          </div>
-
-                                          <div className="justify-content-center px-2 border-start border-white">
-                                            <h6
-                                              className="d-flex align-items-center justify-content-center pe-2"
-                                              style={{
-                                                height: "100%",
-                                                fontSize: "12px",
-                                              }}
-                                            >
-                                              {data.discussion.disc_starttime
-                                                .toString()
-                                                .slice(0, 5)}{" "}
-                                              -{" "}
-                                              {data.discussion.disc_endtime
-                                                .toString()
-                                                .slice(0, 5)}
-                                            </h6>
-                                          </div>
-                                        </h5>
-                                      </div>
-                                    </div>
-                                 </div>
-                              ))
-                          )
-                        } */}
                         </div>
                       </>
                     )}
