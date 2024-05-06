@@ -1,57 +1,103 @@
-import React from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
-import { IoCloseCircleOutline } from "react-icons/io5";
 import { FaStar } from "react-icons/fa";
-import { StudentCourse } from '../../model/Account';
+import { IoCloseCircleOutline } from "react-icons/io5";
+import { useLocation, useNavigate } from "react-router-dom";
+import { StudentCourse } from "../../model/Account";
+
+import "./lecturerRating.css";
 
 const LecturerRating = () => {
-    const { state } = useLocation();
-    const navigate = useNavigate();
-    const course_list:StudentCourse[] = state.state.data.course_list;
-    console.log(course_list);
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const course_list: StudentCourse[] = state.state.data.course_list;
+  console.log(course_list);
   return (
-    <div className='container-fluid m-5' style={{ width:"95%" }}>
-        <div className="mb-5 d-flex border-bottom">
-              <button
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: "white",
-                  fontSize: "50px",
-                  marginLeft: "5rem"
-                }}
-              >
-                <IoCloseCircleOutline onClick={() => navigate(-1)} />
-              </button>
-              <h3 className='mt-4 ms-5 text-white align-middle text-center'>Rating ( {state.state.data.course_list.length} )</h3>
+    <div className="bg-profile">
+      <div className="rating-container">
+        <div className=" d-flex justify-content-center">
+          <div
+            className="d-flex border-bottom align-items-center"
+            style={{ marginBottom: "2rem", width: "90%" }}
+          >
+            <button
+              className="close"
+              style={{
+                background: "none",
+                border: "none",
+                color: "white",
+                fontSize: "50px",
+                marginRight: "2rem",
+              }}
+            >
+              <IoCloseCircleOutline onClick={() => navigate(-1)} />
+            </button>
+            <h3
+              className="m-0 fw-bold p-0 text-white"
+              style={{ fontSize: "32px" }}
+            >
+              Ratings ( {state.state.data.course_list.length} )
+            </h3>
+          </div>
         </div>
-
-        {course_list.map((data,idx) => (
-            <div className='py-4 px-5 mb-3' key={idx} style={{ color:"white",backgroundColor:"rgba(255,255,255,0.5)",margin:"0 6rem 0 6rem",borderRadius:"2rem" }}>
-                <div className="user-profile d-flex">
-                    <img src={"/assets/" + data.account?.profile_pic} alt="" style={{ width:"1.5cm",height:"1.5cm", objectFit:"cover" }} className='rounded img-fluid'/>
-                    <span>{data.account?.firstName} {data.account?.lastName}</span>
-
+        <div className="d-flex row justify-content-center" style={{cursor:"default"}}>
+          {course_list.map((data, idx) => (
+            <div
+              className=""
+              key={idx}
+              style={{
+                color: "white",
+                backgroundColor: "rgba(255,255,255,0.2)",
+                width: "90%",
+                borderRadius: "0.5rem",
+                marginBottom: "1rem",
+                padding: "1rem 2rem",
+                minHeight: "12rem",
+              }}
+            >
+              <div className="user-profile d-flex">
+                <img
+                  src={"/assets/" + data.account?.profile_pic}
+                  alt=""
+                  style={{
+                    width: "4rem",
+                    height: "4rem",
+                    objectFit: "cover",
+                  }}
+                  className=" img-fluid"
+                />
+                <span style={{ fontSize: "21px", fontWeight: "bold" }}>
+                  {data.account?.firstName} {data.account?.lastName}
+                </span>
+              </div>
+              {/* <p style={{ color:"white" }}>{data.comment}</p> */}
+              <div className="comment-rating">
+                <div className="" style={{ margin: "1rem 0rem" }}>
+                  {data.comment.toString()}
                 </div>
-                {/* <p style={{ color:"white" }}>{data.comment}</p> */}
-                <div className="comment-rating mt-4">
-                    <span className='mt-4'>{data.comment.toString()}</span>
-                    <div className="rounded-pill border border-light p-2 mt-2" style={{ width:"3cm", backgroundColor:"#596FB7" }}>
-                        <FaStar
-                        style={{
-                            color: "green",
-                            fontSize: "25px",
-                            marginRight: "5px",
-                        }}
-                        />{" "}
-                        {data.rating}
-                    </div>
-
+                <div
+                  className="d-flex justify-content-center"
+                  style={{
+                    width: "8rem",
+                    backgroundColor: "var(--lightblue)",
+                    padding: "0.25rem 0rem",
+                    borderRadius: "1rem",
+                  }}
+                >
+                  <FaStar
+                    style={{
+                      color: "yellow",
+                      fontSize: "24px",
+                      marginRight: "4px",
+                    }}
+                  />{" "}
+                  <p className="p-0 m-0 fw-bold">{data.rating}</p>
                 </div>
+              </div>
             </div>
-        ))}
+          ))}
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default LecturerRating;

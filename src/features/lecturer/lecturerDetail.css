@@ -200,3 +200,7 @@
 .lecturer-detail-page .see-all-btn:hover {
   background-color: var(--lightblue2);
 }
+
+.to-ratings:hover {
+filter: brightness(65%);
+}

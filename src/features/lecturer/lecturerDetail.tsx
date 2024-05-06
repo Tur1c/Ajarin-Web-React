@@ -245,15 +245,15 @@ const LecturerDetail = () => {
                   </div>
                 </div>
 
-                <div className="" style={{ margin: "0.5rem 0rem" }} onClick={() => state.data.teacher_rating == 0 ? undefined : openNew()}>
-                  <FaStar
+                <div className="to-ratings d-flex align-items-center" style={{ margin: "0rem 0rem" }} onClick={() => state.data.teacher_rating == 0 ? undefined : openNew()}>
+                  <FaStar className="star"
                     style={{
                       color: "yellow",
                       fontSize: "25px",
                       marginRight: "4px",
                     }}
                   />{" "}
-                  <b>{state.data.teacher_rating} </b>From {state.data.course_list?.length ? state.data.course_list?.length : 0} reviews
+                  <b style={{fontSize:"24px", marginRight:"0.5rem"}} className="m-0 p-0">{state.data.teacher_rating} </b><p className="p-0" style={{marginLeft:"0.5rem", marginBottom:"0rem", fontSize:"16px", fontWeight:"bold", opacity:"0.6"}}>From {state.data.course_list?.length ? state.data.course_list?.length : 0} Reviews</p>
                 </div>
 
                 <div style={{ opacity: "0.6" }}>

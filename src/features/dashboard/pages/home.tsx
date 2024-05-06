@@ -99,6 +99,7 @@ function Home() {
   const navigate = useNavigate();
 
   console.log("account", account);
+  console.log("teacher", teacher);
 
   const fetchDataAccount = async () => {
     setIsLoadingHome(true);
@@ -697,7 +698,7 @@ function Home() {
                   ) : (
                     account.studentdisc_list
                       .filter((x) => x.status != "Completed")
-                      .sort((x, y) => x.joined_date > y.joined_date ? 1 : -1)
+                      .sort((x, y) => (x.joined_date > y.joined_date ? 1 : -1))
                       .slice(0, 3)
                       .map((disc, idx) => (
                         <>
@@ -876,9 +877,46 @@ function Home() {
                   {isLogged ? (
                     userRole === "Teacher" ? (
                       <>
-                      <div className="w-100 h-100 d-flex justify-content-center align-items-center">
-                        <p style={{fontSize: "1rem"}}>Currently on development</p>
-                      </div>
+                        <div
+                          className="w-100 row m-0 p-1 d-flex justify-content-between "
+                          style={{ height: "100%" }}
+                        >
+                          <div style={{ fontSize: "14px" }}>
+                            <b>Your Teaching Report</b>
+                          </div>
+                          <div>
+                            <div
+                              className="courses-pill"
+                              style={{ fontSize: "14px", marginBottom: "1rem" }}
+                            >
+                              Courses Sold :{" "}
+                              <b style={{ fontSize: "18px" }}>
+                                {teacher.courseSold} Courses
+                              </b>{" "}
+                            </div>
+                            <div
+                              className="courses-pill"
+                              style={{ fontSize: "14px", marginBottom: "1rem" }}
+                            >
+                              Discussion Participant :{" "}
+                              <b style={{ fontSize: "18px" }}>
+                                {teacher.discussionParticipant} Participants
+                              </b>
+                            </div>
+                            <div
+                              className="fpoints-pill"
+                              style={{ fontSize: "14px" }}
+                            >
+                              Forum Points :{" "}
+                              <b style={{ fontSize: "18px" }}>
+                                {teacher.forumPoints} Points
+                              </b>{" "}
+                            </div>
+                          </div>
+                          <div style={{ fontSize: "14px" }}>
+                            <b>Keep it Up !</b>
+                          </div>
+                        </div>
                       </>
                     ) : (
                       <>

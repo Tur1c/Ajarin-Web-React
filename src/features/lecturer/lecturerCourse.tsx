@@ -76,7 +76,10 @@ const LecturerCourse = (props: ModalType) => {
                         alt="..."
                         style={{ height: "20rem", objectFit: "fill" }}
                       />
-                      <div className="card-bodyy d-flex flex-wrap">
+                      <div
+                        className="d-flex w-100 "
+                        style={{ height: "10rem" }}
+                      >
                         <Link
                           to={"/course/" + course.title}
                           state={{
@@ -86,8 +89,8 @@ const LecturerCourse = (props: ModalType) => {
                           }}
                           style={{ textDecoration: "none" }}
                         >
-                          <div className="d-block p-2">
-                            <div className="title-class mt-2 mb-2">
+                          <div className="d-flex row p-2 m-0 justify-content-between bg-warnin h-100 w-100 align-content-between">
+                            <div className="title-class mt-2 bg-dar">
                               <h3
                                 style={{
                                   color: "#000",
@@ -97,12 +100,24 @@ const LecturerCourse = (props: ModalType) => {
                               >
                                 {course.title}
                               </h3>
+                              <h4
+                                style={{
+                                  color: "#000",
+                                  fontSize: "14px",
+                                  fontWeight: "bold",
+                                  opacity: "0.6",
+                                }}
+                              >
+                                {course.sold} Purchased
+                              </h4>
                             </div>
-                            <div className="gap-2 d-flex">
-                                <span className="pill ">{course.category}</span>
-                            <span className="pill ">{course.level}</span>
+                            <div
+                              className="gap-2 d-flex bg-dange"
+                              style={{ height: "fit-content" }}
+                            >
+                              <span className="pill ">{course.category}</span>
+                              <span className="pill ">{course.level}</span>
                             </div>
-                            
                           </div>
                         </Link>
                       </div>

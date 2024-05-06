@@ -480,10 +480,10 @@ const Calendar = () => {
                       ) : (
                         <>
                           <div
-                            className=" d-flex m-0 fw-bold justify-content-center"
-                            style={{ padding: "1.5rem 0rem 0rem 0rem" }}
+                            className=" d-flex m-0 fw-bold justify-content-center "
+                            style={{ padding: "1rem 0rem" }}
                           >
-                            <p style={{ fontSize: "32px" }}>
+                            <p style={{ fontSize: "32px", margin: "0" }}>
                               Upcoming Discussion
                             </p>
                           </div>
@@ -732,9 +732,9 @@ const Calendar = () => {
                       <>
                         <div
                           className=" d-flex m-0 fw-bold justify-content-center"
-                          style={{ padding: "1.5rem 0rem 0rem 0rem" }}
+                          style={{ padding: "1rem 0rem" }}
                         >
-                          <p style={{ fontSize: "32px" }}>
+                          <p style={{ fontSize: "32px", margin: "0" }}>
                             Upcoming Discussion
                           </p>
                         </div>
@@ -1030,10 +1030,6 @@ const Calendar = () => {
 
                                       <button
                                         className="cancel-btn"
-                                        style={{
-                                          backgroundColor: "white",
-                                          color: "#11235A",
-                                        }}
                                         onClick={() =>
                                           cancelDisc(data.discussion.disc_id)
                                         }

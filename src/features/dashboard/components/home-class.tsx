@@ -102,10 +102,13 @@ function HomeClass({ account, searchData }: Props) {
         return;
       }
       console.log(tempCourseList);
-      
-      const findCourse = tempCourseList.courseList.filter((u) =>
-        u.title.toLowerCase().includes(searchData.toLowerCase()) ||
-        u.teacher?.account.fullName.toLocaleLowerCase().includes(searchTextFromHome.toLowerCase())
+
+      const findCourse = tempCourseList.courseList.filter(
+        (u) =>
+          u.title.toLowerCase().includes(searchData.toLowerCase()) ||
+          u.teacher?.account.fullName
+            .toLocaleLowerCase()
+            .includes(searchTextFromHome.toLowerCase())
       );
       setCourseList({ courseList: findCourse });
     } else {
@@ -184,7 +187,7 @@ function HomeClass({ account, searchData }: Props) {
   return (
     <>
       {!isLoading ? (
-        <div className=" d-flex row w-100" style={{margin:"0.5rem 0rem"}}>
+        <div className=" d-flex row w-100" style={{ margin: "0.5rem 0rem" }}>
           <div className="filter">
             {/* <div className="filter-btn">Subject</div>
           <div className="filter-btn">Education Level</div> */}
@@ -215,14 +218,17 @@ function HomeClass({ account, searchData }: Props) {
                         className="course-item-box p-2 col-md-3 d-flex align-items-stretch mb-2"
                         key={index}
                       >
-                        <div className="card" style={{ border: "none" }}>
+                        <div
+                          className="card"
+                          style={{ border: "none", height: "30rem" }}
+                        >
                           <Link
                             to={"/course/" + data.title}
                             state={{
                               data: data,
                               acc: account,
                               teacher: data.teacher,
-                              link: "/"
+                              link: "/",
                             }}
                             style={{ textDecoration: "none" }}
                           >
@@ -263,7 +269,8 @@ function HomeClass({ account, searchData }: Props) {
                                 >
                                   <img
                                     src={
-                                      "/assets/" + data.teacher?.account.urlImage
+                                      "/assets/" +
+                                      data.teacher?.account.urlImage
                                     }
                                     alt="abc"
                                     className="me-2"
@@ -284,7 +291,10 @@ function HomeClass({ account, searchData }: Props) {
                                     {data.teacher?.account.fullName}
                                   </span>
                                 </div>
-                                <div className="d-block h-75 justify-content-between align-content-between d-flex row m-0">
+                                <div
+                                  className="justify-content-between align-content-between d-flex row m-0 bg-warnin"
+                                  style={{ height: "90%" }}
+                                >
                                   <div className="title-class m-0 p-0">
                                     <h3
                                       style={{
@@ -294,6 +304,15 @@ function HomeClass({ account, searchData }: Props) {
                                       }}
                                     >
                                       {data.title}
+                                    </h3>
+                                    <h3
+                                      style={{
+                                        color: "#000",
+                                        fontSize: "12px",
+                                        opacity: 0.6,
+                                      }}
+                                    >
+                                      {data.sold} Learned
                                     </h3>
                                   </div>
                                   <div

@@ -390,7 +390,7 @@
   padding: 1rem;
   margin: 1rem 2rem;
   background-color: var(--lightblue);
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
 }
 
 .unlike-btn button {
@@ -451,8 +451,8 @@ input:focus {
   outline: none;
   background: none;
   width: 10vw;
-  border-radius: 5rem;
-  border: #fff 1px solid;
+  border-radius: 0.25rem;
+  border: none;
   color: #fff;
   font-size: 14px;
   height: 4vh;

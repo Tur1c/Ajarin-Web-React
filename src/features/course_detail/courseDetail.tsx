@@ -41,6 +41,7 @@ const CourseDetail = () => {
     joined_date: new Date(),
   });
   const [isOpen, setisOpen] = useState(true);
+  console.log("kurs", studentCourse);
 
   console.log(state.course?.course ? true : false);
   const account: AccountOutput = !state.acc
@@ -48,7 +49,7 @@ const CourseDetail = () => {
     : state.acc.firstName !== ""
     ? state.acc
     : null;
-    
+
   const teacher: TeacherOutput = state.teacher.user
     ? state.teacher.user
     : state.teacher.account;
@@ -76,8 +77,8 @@ const CourseDetail = () => {
     } else {
       console.log(account.coin);
       console.log(course.price);
-      
-      if(account.coin - course.price < 0) {
+
+      if (account.coin - course.price < 0) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -86,7 +87,7 @@ const CourseDetail = () => {
           color: "#fff",
           confirmButtonColor: "#f6e976",
           confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
-        }).then(function() {
+        }).then(function () {
           navigate("/");
         });
         return;
@@ -263,9 +264,8 @@ const CourseDetail = () => {
   };
 
   console.log(!studentCourse.rating);
-  
-  function handleLecturerDetail(): void {
 
+  function handleLecturerDetail(): void {
     navigate(
       "/lecturer/" +
         (state.teacher.account
@@ -276,9 +276,7 @@ const CourseDetail = () => {
               state.teacher.account.lastName
           : state.teacher.user.fullName
           ? state.teacher.user.fullName
-          : state.teacher.user.firstName +
-            " " +
-            state.teacher.user.lastName),
+          : state.teacher.user.firstName + " " + state.teacher.user.lastName),
       {
         state: {
           data: teachers.teachers.find((x) => {
@@ -538,19 +536,26 @@ const CourseDetail = () => {
                       )
                     }
                   >
-                    <img
-                      className="img-fluid"
-                      style={{
-                        width: "2vw",
-                        height: "2vw",
-                        marginRight: "0.25rem",
-                      }}
-                      src={`/assets/coin.png`}
-                      alt=""
-                    />
-                    {!studentCourse.course
-                      ? course.price
-                      : studentCourse.course?.price}
+                    <div className="">
+                      <div>
+                        <img
+                          className="img-fluid"
+                          style={{
+                            width: "2vw",
+                            height: "2vw",
+                            marginRight: "0.25rem",
+                          }}
+                          src={`/assets/coin.png`}
+                          alt=""
+                        />
+                        {!studentCourse.course
+                          ? course.price
+                          : studentCourse.course?.price}
+                      </div>
+                      <div className="" style={{ fontSize: "12px", opacity:"0.6" }}>
+                        {course.sold} Learned
+                      </div>
+                    </div>
                   </button>
                 ) : (
                   <>
@@ -688,6 +693,7 @@ const CourseDetail = () => {
                       height: "3vw",
                       margin: "0.75rem",
                       borderRadius: "0.5rem",
+                      backgroundColor:"var(--whitedark)"
                     }}
                   />
                   <p className="d-flex p-0 m-0 fw-bold">
