@@ -131,10 +131,10 @@ const LecturerDetail = () => {
 
   console.log(state, "lecturer detail");
 
-  console.log(state.account.subscribed_lecturer.find( (x: { id: any; }) => x.id === state.data.id));
+  console.log(state.account?.subscribed_lecturer.find( (x: { id: any; }) => x.id === state.data.id));
 
   const checkSubscribe = () => {
-    if( state.account.subscribed_lecturer.find( (x: { id: any; }) => x.id === state.data.id)){
+    if( state.account?.subscribed_lecturer.find( (x: { id: any; }) => x.id === state.data.id)){
       return true;
     }
     else
@@ -253,7 +253,7 @@ const LecturerDetail = () => {
                       marginRight: "4px",
                     }}
                   />{" "}
-                  {state.data.teacher_rating}
+                  <b>{state.data.teacher_rating} </b>From {state.data.course_list?.length ? state.data.course_list?.length : 0} reviews
                 </div>
 
                 <div style={{ opacity: "0.6" }}>

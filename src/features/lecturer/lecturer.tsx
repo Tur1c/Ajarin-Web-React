@@ -1128,12 +1128,12 @@ const Lecturer = () => {
                     </svg>
                   </div>
                 )}
-                {/* <Pagination
+                <Pagination
                   totalClass={teachers.teachers.length}
                   classPerPage={classPerPageTeacher}
                   onPageChange={handlePageTeacherChange}
                   currentPage={currentPageTeacher}
-                /> */}
+                />
               </div>
             </div>
           </div>

@@ -27,7 +27,7 @@ const LecturerRating = () => {
         </div>
 
         {course_list.map((data,idx) => (
-            <div className='py-4 px-5' key={idx} style={{ color:"white",backgroundColor:"rgba(255,255,255,0.5)",margin:"0 6rem 0 6rem",borderRadius:"2rem" }}>
+            <div className='py-4 px-5 mb-3' key={idx} style={{ color:"white",backgroundColor:"rgba(255,255,255,0.5)",margin:"0 6rem 0 6rem",borderRadius:"2rem" }}>
                 <div className="user-profile d-flex">
                     <img src={"/assets/" + data.account?.profile_pic} alt="" style={{ width:"1.5cm",height:"1.5cm", objectFit:"cover" }} className='rounded img-fluid'/>
                     <span>{data.account?.firstName} {data.account?.lastName}</span>
@@ -50,7 +50,6 @@ const LecturerRating = () => {
                 </div>
             </div>
         ))}
-        <div>lecturerRating</div>
     </div>
   )
 }

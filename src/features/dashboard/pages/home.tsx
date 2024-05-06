@@ -697,6 +697,7 @@ function Home() {
                   ) : (
                     account.studentdisc_list
                       .filter((x) => x.status != "Completed")
+                      .sort((x, y) => x.joined_date > y.joined_date ? 1 : -1)
                       .slice(0, 3)
                       .map((disc, idx) => (
                         <>
@@ -873,7 +874,17 @@ function Home() {
                     Statistic
                   </p>
                   {isLogged ? (
-                    <>{account && <Statistic account={account}></Statistic>}</>
+                    userRole === "Teacher" ? (
+                      <>
+                      <div className="w-100 h-100 d-flex justify-content-center align-items-center">
+                        <p style={{fontSize: "1rem"}}>Currently on development</p>
+                      </div>
+                      </>
+                    ) : (
+                      <>
+                        {account && <Statistic account={account}></Statistic>}
+                      </>
+                    )
                   ) : (
                     <div
                       className="w-100 d-flex justify-content-center align-items-center"

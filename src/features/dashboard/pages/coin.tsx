@@ -107,7 +107,17 @@ function Coin() {
           withCredentials: true,
         }
       );
-      setAccount(transfromToAccountOutput(response.data.outputSchema));
+      Swal.fire({
+        icon: "success",
+        title: "Success Topup " + value + " coins",
+        background: "#11235a",
+        color: "#fff",
+        confirmButtonColor: "#f6e976",
+        confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+      }).then(function () {
+        setAccount(transfromToAccountOutput(response.data.outputSchema));
+        navigate("/");
+      });
     } catch {}
   };
 
@@ -159,9 +169,9 @@ function Coin() {
 
   const handleTopup = (value: string, price: string) => {
     topupCoin(value, price);
-    setTimeout(() => {
-      navigate("/");
-    }, 500);
+    // setTimeout(() => {
+    //   navigate("/");
+    // }, 500);
   };
 
   const handlePayment = async (value: string, price: string) => {

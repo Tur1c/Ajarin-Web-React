@@ -503,7 +503,7 @@ const Forum = () => {
                                               {data.questionUser.fullName} at{" "}
                                               {format(
                                                 data.createdDate,
-                                                "MMMM do yyyy, hh:mm a"
+                                                "MMMM do yyyy, h:mm:ss a"
                                               )}
                                             </span>
                                           </div>
