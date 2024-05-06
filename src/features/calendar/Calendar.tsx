@@ -496,10 +496,11 @@ const Calendar = () => {
                                 <GrPrevious
                                   style={{
                                     fontSize: "36px",
-                                    stroke: "#11235A",
-                                    fill: "white",
-                                    strokeWidth: "5px",
+                                    stroke: "var(--blue)",
+                                    backgroundColor: "white",
+                                    borderRadius: "0.25rem",
                                     fontWeight: "bold",
+                                    padding: "0.25rem",
                                   }}
                                 />
                               }
@@ -507,10 +508,11 @@ const Calendar = () => {
                                 <GrNext
                                   style={{
                                     fontSize: "36px",
-                                    stroke: "#11235A",
-                                    fill: "white",
-                                    strokeWidth: "5px",
+                                    stroke: "var(--blue)",
+                                    backgroundColor: "white",
+                                    borderRadius: "0.25rem",
                                     fontWeight: "bold",
+                                    padding: "0.25rem",
                                   }}
                                 />
                               }
@@ -612,7 +614,9 @@ const Calendar = () => {
                                         <>
                                           <div
                                             className="d-flex row align-items-center justify-content-center text-center"
-                                            style={{ width: "10vw" }}
+                                            style={{
+                                              width: "10vw",
+                                            }}
                                           >
                                             <button
                                               className="join-btn-disabled"
@@ -662,12 +666,14 @@ const Calendar = () => {
                                         </>
                                       ) : (
                                         <>
-                                          <button
-                                            className="auto-complete-btn"
-                                            disabled={true}
-                                          >
-                                            Completed
-                                          </button>
+                                          <div>
+                                            <button
+                                              className="auto-complete-btn"
+                                              disabled={true}
+                                            >
+                                              Completed
+                                            </button>
+                                          </div>
                                         </>
                                       )
                                     ) : //kurang dari hari discnya jalan
