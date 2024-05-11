@@ -295,7 +295,7 @@ function TeacherModalAddCourse(props: any) {
                               })
                             }
                           />
-                          <label>Discussion Title</label>
+                          <label>Course Title</label>
                         </div>
 
                         <div className="d-flex col" style={{ gap: "1rem" }}>

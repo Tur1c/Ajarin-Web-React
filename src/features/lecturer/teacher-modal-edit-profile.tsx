@@ -10,6 +10,7 @@ import {
   transformToTeacherOutput,
 } from "../../model/teacher/teacher-model";
 import "./teacher-modal-edit-profile.css";
+import Swal from "sweetalert2";
 
 const EDIT_PROFILE = "/api/account/teacher/update/";
 
@@ -55,19 +56,28 @@ function TeacherModalEditProfile(props: any) {
       );
       console.log(response, "response ni");
 
-      navigate(
-        "/lecturer/" +
-          response.data.outputSchema.user.firstName +
-          " " +
-          response.data.outputSchema.user.lastName,
-        {
-          state: {
-            data: transformToTeacherOutput(response.data.outputSchema),
-          },
-        }
-      );
-      props.onHide();
-      props.loadingSuccess();
+      Swal.fire({
+        title: "Success Update Profile",
+        icon: "success",
+        background: "#11235a",
+        color: "#fff",
+        confirmButtonColor: "#f6e976",
+        confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+      }).then(function () {
+        navigate(
+          "/lecturer/" +
+            response.data.outputSchema.user.firstName +
+            " " +
+            response.data.outputSchema.user.lastName,
+          {
+            state: {
+              data: transformToTeacherOutput(response.data.outputSchema),
+            },
+          }
+        );
+        props.onHide();
+        props.loadingSuccess();
+      });
     } catch (err) {
       console.log(err);
     }

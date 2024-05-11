@@ -420,7 +420,7 @@ function Home() {
                             margin: "0",
                           }}
                         >
-                          Set Discussion{" "}
+                          Create Course{" "}
                         </p>{" "}
                         !
                       </div>

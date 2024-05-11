@@ -255,6 +255,14 @@ const CourseDetail = () => {
         withCredentials: true,
       });
       console.log(response, "sukses rate course");
+      Swal.fire({
+        icon: "success",
+        title: "Success Rating Teacher",
+        background: "#11235a",
+        color: "#fff",
+        confirmButtonColor: "#f6e976",
+        confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+      });
     } catch (error) {
       if (error instanceof AxiosError) {
         console.log(error?.response?.data.errorSchema);
@@ -594,7 +602,7 @@ const CourseDetail = () => {
               >
                 <ul className="cards">
                   {!studentCourse.course
-                    ? course.course_detail.map((data, index) => (
+                    ? course.course_detail.sort((x, y) => x.course_detail_chapter > y.course_detail_chapter ? 1 : -1).map((data, index) => (
                         <
                           // to={"/login"}
                         >
@@ -624,7 +632,7 @@ const CourseDetail = () => {
                           </div>
                         </>
                       ))
-                    : studentCourse.course?.course_detail.map((data, index) => (
+                    : studentCourse.course?.course_detail.sort((x,y) => x.course_detail_chapter > y.course_detail_chapter ? 1 : -1).map((data, index) => (
                         <Link
                           to={
                             "/course/" +

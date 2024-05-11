@@ -285,7 +285,7 @@ const Sidebar = ({
                               fontSize: "18px",
                             }}
                           >
-                            {account.notification.length}
+                            {account.notification.filter((x) => !x.isRead).length}
                           </span>
                         ) : (
                           ""

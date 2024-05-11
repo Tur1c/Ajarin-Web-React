@@ -12,6 +12,7 @@ import {
 import { AddForumSchema } from "../../../model/forum/forum-model";
 import { ApiResponse } from "../../../model/schema/base_schema";
 import "./add-forum-modal.css";
+import Swal from "sweetalert2";
 
 const ADD_FORUM_URL = "/api/forum/add";
 const CATEGORY_URL = "/api/category";
@@ -88,7 +89,16 @@ function AddForumModal(props: any) {
         }
       );
       console.log("keluar apa", response);
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Success Add New Forum",
+        background: "#11235a",
+        color: "#fff",
+        confirmButtonColor: "#f6e976",
+        confirmButtonText: "<span style='color:#000'> <b>OK</b> </span>",
+      }).then(function () {
+        window.location.reload();
+      });
     } catch (error) {
       console.error("Error adding data: ", error);
       // window.location.reload();

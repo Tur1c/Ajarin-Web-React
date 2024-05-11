@@ -50,6 +50,10 @@ const Lecturer = () => {
     teachers: [],
   });
 
+  const [leaderboardTeachers, setLeaderboardTeacher] = useState<TeacherListOutput>({
+    teachers: [],
+  });
+
   const [tempTeachers, setTempTeacher] = useState<TeacherListOutput>({
     teachers: [],
   });
@@ -114,6 +118,7 @@ const Lecturer = () => {
       // console.log(response,"lecturer");
       setIsLoading(true);
       setTeacher(transfromToTeacherListOutput(response.data.outputSchema));
+      setLeaderboardTeacher(transfromToTeacherListOutput(response.data.outputSchema));
       setTempTeacher(transfromToTeacherListOutput(response.data.outputSchema));
     } catch (error) {}
     // setTimeout(() => {
@@ -856,7 +861,7 @@ const Lecturer = () => {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {teachers.teachers.slice(0, 10).map((data, index) => (
+                        {leaderboardTeachers.teachers.slice(0, 10).map((data, index) => (
                           <TableRow
                             className="lecturer-leaderboard-table"
                             key={index}
